@@ -1,9 +1,7 @@
 package microxt.entity.entity;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import microxt.entity.common.AbstractEntity;
 import microxt.entity.common.GeneralEntity;
@@ -12,8 +10,8 @@ import microxt.entity.common.GeneralEntity;
 /**
  * The persistent class for the DATA_TYPE database table.
  */
-@Entity
-@Table(name="DATA_TYPE")
+//@Entity
+//@Table(name="DATA_TYPE")
 public class DataType extends AbstractEntity implements GeneralEntity {
 	private static final long serialVersionUID = 1L;
 

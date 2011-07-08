@@ -16,8 +16,8 @@ import microxt.entity.util.PersistenceTime;
  * The persistent class for the PARAMETER_ID database table.
  * 
  */
-@Entity
-@Table(name="PARAMETER_ID")
+//@Entity
+//@Table(name="PARAMETER_ID")
 public class ParameterId extends AbstractEntityId implements GeneralEntityId {
 	private static final long serialVersionUID = 1L;
 

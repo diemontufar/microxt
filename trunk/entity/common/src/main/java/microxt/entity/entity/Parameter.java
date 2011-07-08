@@ -22,8 +22,8 @@ import microxt.entity.common.OptimisticLocking;
  * The persistent class for the PARAMETER database table.
  * 
  */
-@Entity
-@Table(name="PARAMETER")
+//@Entity
+//@Table(name="PARAMETER")
 public class Parameter extends AbstractHistoricalLocking implements Serializable, Cloneable,
 		GeneralEntity, Multicompany, Multilanguage, Historical, OptimisticLocking {
 	private static final long serialVersionUID = 1L;
