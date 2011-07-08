@@ -12,6 +12,6 @@
   <name>MICROXT ENTITY</name>
   <description>MICROXT ENTITY MODULE</description>
   <modules>
-  	<module>common</module>
+  	<module>jpacommon</module>
   </modules>
 </project>
