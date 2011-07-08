@@ -8,5 +8,6 @@
   <description>MICROXT PROJECT	</description>
   <modules>
   	<module>entity</module>
+  	<module>tools</module>
   </modules>
 </project>
