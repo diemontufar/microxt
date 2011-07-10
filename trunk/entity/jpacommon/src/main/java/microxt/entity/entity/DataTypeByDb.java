@@ -41,7 +41,6 @@ public class DataTypeByDb extends AbstractEntity implements Serializable, Genera
 		this.dataBaseValue = dataBaseValue;
 	}
 
-	@Override
 	public void setPk(Object pk) {
 		setPk((DataTypeByDbPK)pk);
 	}
