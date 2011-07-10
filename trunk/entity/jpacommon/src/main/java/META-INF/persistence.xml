@@ -8,6 +8,8 @@
 		<class>microxt.entity.entity.EntityFieldPK</class>
 		<class>microxt.entity.entity.EntityField</class>
 		<class>microxt.entity.entity.Entity</class>
+		<class>microxt.entity.entity.DataTypeByDbPK</class>
+		<class>microxt.entity.entity.DataTypeByDb</class>
 		<class>microxt.entity.common.AbstractOptimisticLocking</class>
 		<class>microxt.entity.common.AbstractMultilanguageKey</class>
 		<class>microxt.entity.common.AbstractMultilanguageAndCompanyKey</class>
@@ -19,8 +21,6 @@
 		<class>microxt.entity.common.AbstractHistoricalAndLanguageAndCompanyKey</class>
 		<class>microxt.entity.common.AbstractHistorical</class>
 		<class>microxt.entity.common.AbstractEntity</class>
-		<class>microxt.entity.entity.DataTypeByDb</class>
-		<class>microxt.entity.entity.DataTypeByDbPK</class>
 		<properties>
             <!--Conexion-->
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/thesis"/>
