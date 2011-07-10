@@ -7,8 +7,8 @@
   </parent>
   <groupId>microxt</groupId>
   <artifactId>microxt.entity</artifactId>
-  <packaging>pom</packaging>
   <version>1.0</version>
+  <packaging>pom</packaging>
   <name>MicroXT - Entity</name>
   <description>MicroXT Entity Module</description>
   <modules>
