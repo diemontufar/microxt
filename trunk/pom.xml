@@ -2,10 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>microxt</groupId>
   <artifactId>microxt</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>MICROXT</name>
-  <description>MICROXT PROJECT	</description>
+  <version>1.0</version>
+  <name>MicroXT</name>
+  <description>McroXT Project</description>
   <modules>
   	<module>entity</module>
   	<module>tools</module>
