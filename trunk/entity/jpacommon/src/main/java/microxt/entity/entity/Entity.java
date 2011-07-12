@@ -150,5 +150,4 @@ public class Entity extends AbstractEntity implements Serializable, GeneralEntit
 		"Historical"+this.getHistoricalData()
 		+ "]";
 	}
-
 }
