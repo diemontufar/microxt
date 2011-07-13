@@ -11,8 +11,8 @@ import microxt.entity.common.GeneralEntity;
  * The persistent class for the DATA_TYPE_BY_DB database table.
  * 
  */
-@javax.persistence.Entity
-@Table(name="DATA_TYPE_BY_DB")
+//@javax.persistence.Entity
+//@Table(name="DATA_TYPE_BY_DB")
 public class DataTypeByDb extends AbstractEntity implements Serializable, GeneralEntity {
 	private static final long serialVersionUID = 1L;
 

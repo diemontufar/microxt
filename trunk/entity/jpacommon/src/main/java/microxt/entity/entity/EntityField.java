@@ -13,8 +13,8 @@ import java.math.BigDecimal;
  * The persistent class for the ENTITY_FIELD database table.
  * 
  */
-@javax.persistence.Entity
-@Table(name="ENTITY_FIELD")
+//@javax.persistence.Entity
+//@Table(name="ENTITY_FIELD")
 public class EntityField extends AbstractEntity implements Serializable, GeneralEntity {
 	private static final long serialVersionUID = 1L;
 

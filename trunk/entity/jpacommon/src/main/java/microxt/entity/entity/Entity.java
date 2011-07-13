@@ -11,8 +11,8 @@ import microxt.entity.common.GeneralEntity;
  * The persistent class for the ENTITY database table.
  * 
  */
-@javax.persistence.Entity
-@Table(name="ENTITY")
+//@javax.persistence.Entity
+//@Table(name="ENTITY")
 public class Entity extends AbstractEntity implements Serializable, GeneralEntity {
 	private static final long serialVersionUID = 1L;
 
