@@ -10,19 +10,19 @@ public class Generator {
 	 */
 	public static void main(String[] args) {
 		try {
-			// Initialize Jpa
+			// Initialize Jpa persistence
 			PersistenceFactory.createEntityManagerFactory();
 			JpaManager.createEntityManager();
 
-			SqlGenerator sqlGenerator = new SqlGenerator();
+			//Execute sql generator
+			SqlGenerator sqlGenerator = new SqlGenerator("HNDT","MYSQL");
 			sqlGenerator.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{
+			//Close Jpa persistence
 			JpaManager.close();
 			PersistenceFactory.close();
 		}
-
 	}
-
 }
