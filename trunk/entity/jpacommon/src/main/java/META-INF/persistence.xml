@@ -4,12 +4,10 @@
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<class>microxt.entity.entity.ParameterPk</class>
 		<class>microxt.entity.entity.EntityRelationshipPK</class>
-		<class>microxt.entity.entity.EntityRelationship</class>
+		<class>microxt.entity.entity.EntityRelationshipFieldPK</class>
+		<class>microxt.entity.entity.EntityRelationshipField</class>
 		<class>microxt.entity.entity.EntityFieldPK</class>
-		<class>microxt.entity.entity.EntityField</class>
-		<class>microxt.entity.entity.Entity</class>
 		<class>microxt.entity.entity.DataTypeByDbPK</class>
-		<class>microxt.entity.entity.DataTypeByDb</class>
 		<class>microxt.entity.common.AbstractOptimisticLocking</class>
 		<class>microxt.entity.common.AbstractMultilanguageKey</class>
 		<class>microxt.entity.common.AbstractMultilanguageAndCompanyKey</class>
@@ -21,6 +19,9 @@
 		<class>microxt.entity.common.AbstractHistoricalAndLanguageAndCompanyKey</class>
 		<class>microxt.entity.common.AbstractHistorical</class>
 		<class>microxt.entity.common.AbstractEntity</class>
+		<class>microxt.entity.entity.Hijo</class>
+		<class>microxt.entity.entity.HijoPK</class>
+		<class>microxt.entity.entity.Padre</class>
 		<properties>
             <!--Conexion-->
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/thesis"/>
