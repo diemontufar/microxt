@@ -88,16 +88,16 @@ public class SqlGenerator {
 		
 		TypedQuery<EntityField> query = JpaManager.getEntityManager().createQuery(FIELD_SQL, EntityField.class);
 		query.setParameter("company", company);
-		query.setParameter("entityId", ent.getEntityId());
+		query.setParameter("entityId", ent.getPk().getEntityId());
 		//query.setLockMode(LockModeType.READ);
 		lField = query.getResultList();
 		
 		String pks = "";
 		
 		if (lField.size() == 0) {
-			buffer.append("--ERROR. TABLE: " + ent.getName() + ". NO FIELDS DEFINED" + NEW_LINE+NEW_LINE);
+			buffer.append("--ERROR. TABLE: " + ent.getPk().getEntityId() + ". NO FIELDS DEFINED" + NEW_LINE+NEW_LINE);
 		} else {
-			buffer.append("CREATE TABLE " + ent.getName() + " (" + NEW_LINE);
+			buffer.append("CREATE TABLE " + ent.getPk().getEntityId() + " (" + NEW_LINE);
 			
 			for (int i = 0; i < lField.size(); i++) {
 				EntityField f = lField.get(i);
@@ -105,10 +105,10 @@ public class SqlGenerator {
 
 				// Name
 				buffer.append(TAB);
-				buffer.append(f.getName());
+				buffer.append(f.getPk().getFieldId());
 				// Data type
 				DataTypeByDbPK pk = new DataTypeByDbPK();
-				pk.setDataTypeId(f.getDataTypeId());
+				pk.setDataTypeId(f.getDataType().getDataTypeId());
 				pk.setDataBase(dataBase);
 				DataTypeByDb dataType = JpaManager.getEntityManager().find(
 						DataTypeByDb.class, pk);
@@ -153,7 +153,7 @@ public class SqlGenerator {
 					if (!pks.isEmpty()) {
 						pks = pks.concat(", ");
 					}
-					pks = pks.concat(f.getName());
+					pks = pks.concat(f.getPk().getFieldId());
 				}
 			}
 			
@@ -193,7 +193,7 @@ public class SqlGenerator {
 			buffer.append("--ERROR. RELATIONSHIP: " + rel.getPk().getName() + ". NO FIELDS DEFINED" + NEW_LINE+NEW_LINE);
 		} else {
 //ALTER TABLE ENTITY_FIELD ADD CONSTRAINT ENTITY_FIELD_FK FOREIGN KEY (ENTITY_ID) REFERENCES ENTITY (ENTITY_ID);			
-			buffer.append("ALTER TABLE " + rel.getEntityFrom().getName() + " ADD CONSTRAINT " +
+			buffer.append("ALTER TABLE " + rel.getEntityFrom().getPk().getEntityId() + " ADD CONSTRAINT " +
 					rel.getPk().getName() + " FOREIGN KEY (");
 	
 			//Relationship fields
@@ -203,6 +203,7 @@ public class SqlGenerator {
 				EntityRelationshipField f = lField.get(i);
 				System.out.println(f);
 
+				/*
 				EntityFieldPK pkFrom = new EntityFieldPK();
 				pkFrom.setEntityId(f.getEntityFrom());
 				pkFrom.setFieldId(f.getFieldFrom());
@@ -212,6 +213,7 @@ public class SqlGenerator {
 				pkFrom.setFieldId(f.getFieldTo());
 				EntityField fieldTo = JpaManager.getEntityManager().find(EntityField.class, pkTo);
 				
+				
 				if (!fromFields.isEmpty()) {
 					fromFields = fromFields.concat(", ");
 				}
@@ -220,10 +222,11 @@ public class SqlGenerator {
 					toFields = toFields.concat(", ");
 				}
 				toFields = toFields.concat(fieldTo.getName());
+				*/
 			}
 			
 			buffer.append(fromFields+") " +
-					"REFERENCES "+rel.getEntityTo().getName()+" ("+toFields+");" + NEW_LINE);
+					"REFERENCES "+rel.getEntityTo().getPk().getEntityId()+" ("+toFields+");" + NEW_LINE);
 			buffer.append(NEW_LINE);
 		}
 	}

@@ -15,8 +15,15 @@ public class Generator {
 			JpaManager.createEntityManager();
 
 			//Execute sql generator
+			/*
 			SqlGenerator sqlGenerator = new SqlGenerator("HNDT","MYSQL");
 			sqlGenerator.execute();
+			*/
+			
+			// Execute entity generator
+			EntityGenerator entityGenerator = new EntityGenerator("ALL","/home/ronald");
+			entityGenerator.execute();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{
