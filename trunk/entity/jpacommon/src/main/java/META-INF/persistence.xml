@@ -19,9 +19,19 @@
 		<class>microxt.entity.common.AbstractHistoricalAndLanguageAndCompanyKey</class>
 		<class>microxt.entity.common.AbstractHistorical</class>
 		<class>microxt.entity.common.AbstractEntity</class>
-		<class>microxt.entity.entity.Hijo</class>
-		<class>microxt.entity.entity.HijoPK</class>
-		<class>microxt.entity.entity.Padre</class>
+		<class>microxt.entity.entity.Company</class>
+		<class>microxt.entity.entity.DatabaseType</class>
+		<class>microxt.entity.entity.DatabaseTypePK</class>
+		<class>microxt.entity.entity.DataType</class>
+		<class>microxt.entity.entity.Entity</class>
+		<class>microxt.entity.entity.EntityPK</class>
+		<class>microxt.entity.entity.EntityField</class>
+		<class>microxt.entity.entity.EntityFieldId</class>
+		<class>microxt.entity.entity.EntityFieldIdPK</class>
+		<class>microxt.entity.entity.EntityId</class>
+		<class>microxt.entity.entity.Sequential</class>
+		<class>microxt.entity.entity.SequentialPK</class>
+		<class>microxt.entity.entity.SequentialId</class>
 		<properties>
             <!--Conexion-->
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/thesis"/>
