@@ -51,7 +51,7 @@ public class Main {
 //			Parameter param4 = JpaManager.findActiveEntity(id4);
 //			JpaManager.delete(param4);
             //JpaManager.
-  
+            
             JpaManager.commitTransaction();
         } catch (Exception e) {
 			e.printStackTrace();
