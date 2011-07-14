@@ -2,10 +2,6 @@ package microxt.entity.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import microxt.entity.common.AbstractEntity;
-import microxt.entity.common.GeneralEntity;
-
 import java.math.BigDecimal;
 
 
@@ -13,9 +9,9 @@ import java.math.BigDecimal;
  * The persistent class for the ENTITY_FIELD database table.
  * 
  */
-//@javax.persistence.Entity
-//@Table(name="ENTITY_FIELD")
-public class EntityField extends AbstractEntity implements Serializable, GeneralEntity {
+@javax.persistence.Entity
+@Table(name="ENTITY_FIELD")
+public class EntityField implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -24,17 +20,11 @@ public class EntityField extends AbstractEntity implements Serializable, General
 	@Column(name="CALCULATION", length=100)
 	private String calculation;
 
-	@Column(name="COMPANY_ID", nullable=false, length=4)
-	private String companyId;
-
 	@Column(name="DATA_SCALE", nullable=false, precision=10)
 	private BigDecimal dataScale;
 
 	@Column(name="DATA_SIZE", nullable=false, precision=10)
 	private BigDecimal dataSize;
-
-	@Column(name="DATA_TYPE_ID", nullable=false, length=30)
-	private String dataTypeId;
 
 	@Column(name="DEFAULT_VALUE", length=30)
 	private String defaultValue;
@@ -48,7 +38,7 @@ public class EntityField extends AbstractEntity implements Serializable, General
 	@Column(name="HIDDEN", nullable=false, length=1)
 	private String hidden;
 
-	@Column(name="LABEL", length=100)
+	@Column(name="`LABEL`", length=100)
 	private String label;
 
 	@Column(name="MASK", length=100)
@@ -59,9 +49,6 @@ public class EntityField extends AbstractEntity implements Serializable, General
 
 	@Column(name="MINIMUM_VALUE", length=30)
 	private String minimumValue;
-
-	@Column(name="NAME", nullable=false, length=30)
-	private String name;
 
 	@Column(name="NULLABLE", nullable=false, length=1)
 	private String nullable;
@@ -75,9 +62,6 @@ public class EntityField extends AbstractEntity implements Serializable, General
 	@Column(name="SECURITY_LEVEL", nullable=false, precision=10)
 	private BigDecimal securityLevel;
 
-	@Column(name="SEQUENCE_NAME", length=30)
-	private String sequenceName;
-
 	@Column(name="TOOLTIP", length=100)
 	private String tooltip;
 
@@ -87,9 +71,30 @@ public class EntityField extends AbstractEntity implements Serializable, General
 	@Column(name="VALIDATION", length=100)
 	private String validation;
 
+	//uni-directional many-to-one association to DataType
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="DATA_TYPE_ID", nullable=false)
+	private DataType dataType;
+
+	//uni-directional many-to-one association to EntityFieldId
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name="ENTITY_ID", referencedColumnName="ENTITY_ID", nullable=false, insertable=false, updatable=false),
+		@JoinColumn(name="FIELD_ID", referencedColumnName="FIELD_ID", nullable=false, insertable=false, updatable=false)
+		})
+	private EntityFieldId entityFieldId;
+
+	//uni-directional many-to-one association to SequentialId
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="SEQUENTIAL_ID")
+	private SequentialId sequentialIdBean;
+
 	//uni-directional many-to-one association to Entity
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="ENTITY_ID", nullable=false, insertable=false, updatable=false)
+	@JoinColumns({
+		@JoinColumn(name="COMPANY_ID", referencedColumnName="COMPANY_ID", nullable=false, insertable=false, updatable=false),
+		@JoinColumn(name="ENTITY_ID", referencedColumnName="ENTITY_ID", nullable=false, insertable=false, updatable=false)
+		})
 	private Entity entity;
 
     public EntityField() {
@@ -111,14 +116,6 @@ public class EntityField extends AbstractEntity implements Serializable, General
 		this.calculation = calculation;
 	}
 
-	public String getCompanyId() {
-		return this.companyId;
-	}
-
-	public void setCompanyId(String companyId) {
-		this.companyId = companyId;
-	}
-
 	public BigDecimal getDataScale() {
 		return this.dataScale;
 	}
@@ -133,14 +130,6 @@ public class EntityField extends AbstractEntity implements Serializable, General
 
 	public void setDataSize(BigDecimal dataSize) {
 		this.dataSize = dataSize;
-	}
-
-	public String getDataTypeId() {
-		return this.dataTypeId;
-	}
-
-	public void setDataTypeId(String dataTypeId) {
-		this.dataTypeId = dataTypeId;
 	}
 
 	public String getDefaultValue() {
@@ -207,14 +196,6 @@ public class EntityField extends AbstractEntity implements Serializable, General
 		this.minimumValue = minimumValue;
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getNullable() {
 		return this.nullable;
 	}
@@ -247,14 +228,6 @@ public class EntityField extends AbstractEntity implements Serializable, General
 		this.securityLevel = securityLevel;
 	}
 
-	public String getSequenceName() {
-		return this.sequenceName;
-	}
-
-	public void setSequenceName(String sequenceName) {
-		this.sequenceName = sequenceName;
-	}
-
 	public String getTooltip() {
 		return this.tooltip;
 	}
@@ -279,27 +252,36 @@ public class EntityField extends AbstractEntity implements Serializable, General
 		this.validation = validation;
 	}
 
+	public DataType getDataType() {
+		return this.dataType;
+	}
+
+	public void setDataType(DataType dataType) {
+		this.dataType = dataType;
+	}
+	
+	public EntityFieldId getEntityFieldId() {
+		return this.entityFieldId;
+	}
+
+	public void setEntityFieldId(EntityFieldId entityFieldId) {
+		this.entityFieldId = entityFieldId;
+	}
+	
+	public SequentialId getSequentialIdBean() {
+		return this.sequentialIdBean;
+	}
+
+	public void setSequentialIdBean(SequentialId sequentialIdBean) {
+		this.sequentialIdBean = sequentialIdBean;
+	}
+	
 	public Entity getEntity() {
 		return this.entity;
 	}
 
 	public void setEntity(Entity entity) {
 		this.entity = entity;
-	}
-
-	public void setPk(Object pk) {
-		setPk((EntityFieldPK)pk);
-	}
-
-	@Override
-	public String toString() {
-		return "[" + 
-		this.getPk().toString() + ", " +
-		this.getName() + ", " +
-		this.getDataTypeId() + ", " +
-		this.getDataSize() + ", " +
-		this.getDataScale() 
-		+ "]";
 	}
 	
 }

@@ -3,28 +3,21 @@ package microxt.entity.entity;
 import java.io.Serializable;
 import javax.persistence.*;
 
-import microxt.entity.common.AbstractEntity;
-import microxt.entity.common.GeneralEntity;
-
 
 /**
  * The persistent class for the ENTITY database table.
  * 
  */
-//@javax.persistence.Entity
-//@Table(name="ENTITY")
-public class Entity extends AbstractEntity implements Serializable, GeneralEntity {
+@javax.persistence.Entity
+@Table(name="ENTITY")
+public class Entity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="ENTITY_ID", unique=true, nullable=false, precision=10)
-	private Long entityId;
+	@EmbeddedId
+	private EntityPK pk;
 
 	@Column(name="CACHE_MEMORY", nullable=false, length=1)
 	private String cacheMemory;
-
-	@Column(name="COMPANY_ID", nullable=false, length=4)
-	private String companyId;
 
 	@Column(name="DESCRIPTION", length=100)
 	private String description;
@@ -41,37 +34,39 @@ public class Entity extends AbstractEntity implements Serializable, GeneralEntit
 	@Column(name="MULTI_LANGUAGE", nullable=false, length=1)
 	private String multiLanguage;
 
-	@Column(name="NAME", nullable=false, length=30)
-	private String name;
+	@Column(name="OPTIMISTIC_LOCKING", nullable=false, length=1)
+	private String optimisticLocking;
 
 	@Column(name="PACKAGE_NAME", nullable=false, length=30)
 	private String packageName;
 
+	//uni-directional many-to-one association to EntityId
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="ENTITY_ID", nullable=false, insertable=false, updatable=false)
+	private EntityId entityIdBean;
+
+	//uni-directional many-to-one association to Company
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="COMPANY_ID", nullable=false, insertable=false, updatable=false)
+	private Company company;
+
     public Entity() {
     }
 
-	public Long getEntityId() {
-		return this.entityId;
+	public EntityPK getPk() {
+		return this.pk;
 	}
 
-	public void setEntityId(Long entityId) {
-		this.entityId = entityId;
+	public void setPk(EntityPK pk) {
+		this.pk = pk;
 	}
-
+	
 	public String getCacheMemory() {
 		return this.cacheMemory;
 	}
 
 	public void setCacheMemory(String cacheMemory) {
 		this.cacheMemory = cacheMemory;
-	}
-
-	public String getCompanyId() {
-		return this.companyId;
-	}
-
-	public void setCompanyId(String companyId) {
-		this.companyId = companyId;
 	}
 
 	public String getDescription() {
@@ -114,12 +109,12 @@ public class Entity extends AbstractEntity implements Serializable, GeneralEntit
 		this.multiLanguage = multiLanguage;
 	}
 
-	public String getName() {
-		return this.name;
+	public String getOptimisticLocking() {
+		return this.optimisticLocking;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setOptimisticLocking(String optimisticLocking) {
+		this.optimisticLocking = optimisticLocking;
 	}
 
 	public String getPackageName() {
@@ -130,24 +125,20 @@ public class Entity extends AbstractEntity implements Serializable, GeneralEntit
 		this.packageName = packageName;
 	}
 
-	public Object getPk() {
-		return getEntityId();
+	public EntityId getEntityIdBean() {
+		return this.entityIdBean;
 	}
 
-	public void setPk(Object pk) {
-		setEntityId((Long) pk);
+	public void setEntityIdBean(EntityId entityIdBean) {
+		this.entityIdBean = entityIdBean;
+	}
+	
+	public Company getCompany() {
+		return this.company;
 	}
 
-	@Override
-	public String toString() {
-		return "[" + 
-		this.getPk().toString() + ", " +
-		this.getName() + ", " +
-		this.getDescription() + ", " +
-		this.getPackageName() + ", " +
-		"MCompany:"+this.getMultiCompany() + ", " +
-		"MLanguage:"+this.getMultiLanguage() + ", " +
-		"Historical"+this.getHistoricalData()
-		+ "]";
+	public void setCompany(Company company) {
+		this.company = company;
 	}
+	
 }

@@ -4,11 +4,11 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 /**
- * The primary key class for the ENTITY_FIELD database table.
+ * The primary key class for the ENTITY database table.
  * 
  */
 @Embeddable
-public class EntityFieldPK implements Serializable {
+public class EntityPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
@@ -18,10 +18,7 @@ public class EntityFieldPK implements Serializable {
 	@Column(name="ENTITY_ID", unique=true, nullable=false, length=30)
 	private String entityId;
 
-	@Column(name="FIELD_ID", unique=true, nullable=false, length=30)
-	private String fieldId;
-
-    public EntityFieldPK() {
+    public EntityPK() {
     }
 	public String getCompanyId() {
 		return this.companyId;
@@ -35,25 +32,18 @@ public class EntityFieldPK implements Serializable {
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
-	public String getFieldId() {
-		return this.fieldId;
-	}
-	public void setFieldId(String fieldId) {
-		this.fieldId = fieldId;
-	}
 
 	public boolean equals(Object other) {
 		if (this == other) {
 			return true;
 		}
-		if (!(other instanceof EntityFieldPK)) {
+		if (!(other instanceof EntityPK)) {
 			return false;
 		}
-		EntityFieldPK castOther = (EntityFieldPK)other;
+		EntityPK castOther = (EntityPK)other;
 		return 
 			this.companyId.equals(castOther.companyId)
-			&& this.entityId.equals(castOther.entityId)
-			&& this.fieldId.equals(castOther.fieldId);
+			&& this.entityId.equals(castOther.entityId);
 
     }
     
@@ -62,7 +52,6 @@ public class EntityFieldPK implements Serializable {
 		int hash = 17;
 		hash = hash * prime + this.companyId.hashCode();
 		hash = hash * prime + this.entityId.hashCode();
-		hash = hash * prime + this.fieldId.hashCode();
 		
 		return hash;
     }
