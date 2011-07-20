@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>microxt</groupId>
+    <artifactId>microxt.entity</artifactId>
+    <version>1.0</version>
+  </parent>
+  <groupId>microxt.entity</groupId>
+  <artifactId>microxt.entity.jpacommon</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0</version>
+  <name>MicroXT - Entity Common</name>
+  <description>MicroXT Entity Common Project</description>
+  <dependencies>
+  	<dependency>
+  		<groupId>microxt.tools</groupId>
+  		<artifactId>microxt.tools.common</artifactId>
+  		<version>1.0</version>
+  		<type>jar</type>
+  		<scope>compile</scope>
+  	</dependency>
+  </dependencies>
+</project>
