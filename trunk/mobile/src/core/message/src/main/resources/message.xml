@@ -1,0 +1,47 @@
+<message>
+        <data id = "session">
+                <field name = "id">1fdd235eba8477530febac</field>
+                <field name = "user">JUAN</field>
+                <field name = "host">PC1234</field>
+                <field name = "ip">192.168.1.1</field>
+                <field name = "channel">PC</field>
+                <field name = "level">10</field>
+                <field name = "company"/>
+        </data>
+        <data id = "variable">
+                <field name = "date">2008-12-31</field>
+        </data>
+        <data id = "response">
+                <field name = "code">0000</field>
+                <field name = "description">Proceso exitoso</field>
+                <field name = "error">Clase.metodo:Exception</field>
+        </data>
+        <data id = "person" page = "1" size = "20" items = "2" total = "100" event = "mobile.test.Class">
+                <field name = "name" operator = "like" order = "1 asc">A%</field>
+                <field name = "date" operator = "gt">25-12-1979</field>
+                <field name = "date" operator = "lt">25-12-1979</field>
+                <field name = "city" operator = "in">Quito,Poznan</field>
+                <field name = "weight" operator = "between">50,100</field>
+                <field name = "age" order = "2 desc"/>
+                <field name = "gender" operator = "is">null</field>
+                <item number = "1" action = "update">
+                        <field name = "pk.code">jalmeida</field>
+                        <field name = "name">Juan Almeida</field>
+                        <field name = "date">25-12-1979</field>
+                        <field name = "age">28</field>
+                        <field name = "gender">M</field>
+                        <field name = "weight">70.25</field>
+                        <field name = "time">25-12-1979 15:48:23</field>
+                        <field name = "city">Poznan</field>
+                </item>
+                <item number = "2">
+                        <field name = "pk.code">folalla</field>
+                        <field name = "name">Francisco Olalla</field>
+                        <field name = "date">25-12-1979</field>
+                        <field name = "age">29</field>
+                        <field name = "gender">M</field>
+                        <field name = "weight">150</field>
+                        <field name = "time"/>
+                </item>
+        </data>
+</message>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="central" transaction-type="RESOURCE_LOCAL">
+		<jar-file>../../../common/target/mobile.entity.common-2.0.jar</jar-file>
+		<jar-file>../../../parameter/target/mobile.entity.parameter-2.0.jar</jar-file>
+		<jar-file>../../../person/target/mobile.entity.person-2.0.jar</jar-file>
+		<jar-file>../../../security/target/mobile.entity.security-2.0.jar</jar-file>
+		<jar-file>../../../transport/target/mobile.entity.transport-2.0.jar</jar-file>		
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<properties>
+			<!--Conexion -->
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/microxt" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="" />
+			<!--MySQL -->
+			<property name="eclipselink.target-database"
+				value="org.eclipse.persistence.platform.database.MySQLPlatform" />
+			<!--Logging -->
+			<property name="eclipselink.logging.level" value="FINE" />
+			<property name="eclipselink.logging.timestamp" value="false" />
+			<property name="eclipselink.logging.session" value="false" />
+			<property name="eclipselink.logging.thread" value="false" />
+			<property name="eclipselink.logging.exceptions" value="true" />
+			<property name="eclipselink.logging.connection" value="true" />
+		</properties>
+	</persistence-unit>
+</persistence>
