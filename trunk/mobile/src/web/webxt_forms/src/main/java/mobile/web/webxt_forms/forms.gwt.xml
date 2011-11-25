@@ -1,0 +1,31 @@
+<!DOCTYPE module PUBLIC "//gwt-module/" "http://google-web-toolkit.googlecode.com/svn/tags/1.6.2/distro-source/core/src/gwt-module.dtd">
+<module>
+
+	<!-- Inherit the core Web Toolkit stuff. -->
+	<inherits name='com.google.gwt.user.User' />
+	<inherits name="com.extjs.gxt.ui.GXT" />
+	<inherits name="mobile.web.MSG" />
+<!-- 	<inherits name="mobile.web.webxt_mvc.Mobile" /> -->
+	<inherits name="com.google.gwt.json.JSON" />
+	
+	<!-- 	<inherits name="com.google.gwt.junit.JUnit" /> -->
+
+	<!-- inherit css based theme -->
+	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+	
+
+	<!-- Specify the app entry point class. -->
+	<entry-point class='mobile.web.webxt_forms.client.Principal' />
+
+	<!-- Specify the application specific style sheet. -->
+	<stylesheet src='Application.css' />
+	<source path="client" excludes="*/*Test*.java" />
+
+	<!-- Specify the paths for translatable code -->
+	<source path='client' />
+	<source path='shared' />
+	<source path='widgets' />
+	<source path='validator' />
+	<source path='services' />
+
+</module>
