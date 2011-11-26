@@ -17,5 +17,7 @@
         <module>message</module>
         <module>server</module>
 	<module>structure</module>
+	<module>security</module>
+	<module>parameter</module>
     </modules>
 </project>
