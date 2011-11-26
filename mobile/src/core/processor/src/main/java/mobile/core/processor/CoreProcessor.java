@@ -102,6 +102,11 @@ public class CoreProcessor {
 		List<ProcessComponent> lProcesses = query.getResultList();
 		JPManager.detachList(lProcesses);
 		
+		if(lProcesses.size()==0){
+			new MaintenanceProcessor().process(msg);
+			new QueryProcessor().process(msg);
+		}
+		
 		for (ProcessComponent processComponent : lProcesses) {
 			log.info("Processing: " + processComponent.getComponentId());
 			
