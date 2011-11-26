@@ -1,1 +1,0 @@
-<message><data id="login"><user>jalmeida</user><pwd>juan2012</pwd></data></message>
