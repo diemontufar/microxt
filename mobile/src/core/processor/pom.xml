@@ -39,13 +39,13 @@
         	<scope>compile</scope>
         </dependency>
         <dependency>
-        	<groupId>mobile.bus</groupId>
-        	<artifactId>mobile.bus.security</artifactId>
+        	<groupId>mobile.core</groupId>
+        	<artifactId>mobile.core.security</artifactId>
         	<version>2.0</version>
         </dependency>
         <dependency>
-        	<groupId>mobile.bus</groupId>
-        	<artifactId>mobile.bus.parameter</artifactId>
+        	<groupId>mobile.core</groupId>
+        	<artifactId>mobile.core.parameter</artifactId>
         	<version>2.0</version>
         </dependency>
         <dependency>
