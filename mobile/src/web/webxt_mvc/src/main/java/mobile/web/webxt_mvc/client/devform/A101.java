@@ -1,4 +1,4 @@
-package mobile.web.webxt_mvc.client.components;
+package mobile.web.webxt_mvc.client.devform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,22 +21,22 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.form.ComboBox;
-import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
-import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
-import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.google.gwt.user.client.Element;
 
-public class EditableGrid2 extends LayoutContainer {
+public class A101 extends LayoutContainer {
 
-	private final Integer PAGE_SIZE = 10;
+	private final Integer PAGE_SIZE = 5;
+	
+	private final String process = "A101";
+	
+	private final String entity = "UserStatus";
 
 	@Override
 	protected void onRender(Element parent, int index) {
@@ -45,14 +45,11 @@ public class EditableGrid2 extends LayoutContainer {
 		getAriaSupport().setPresentation(true);
 
 		// Config
-		String process = "A002";
-		String entity = "Parameter";
 		final List<String> lfields = new ArrayList<String>();
-		lfields.add("pk_parameterId");
-		lfields.add("subsystemId");
-		lfields.add("dataTypeId");
-		lfields.add("parameterValue");
-		lfields.add("description");
+		lfields.add("pk_companyId");
+		lfields.add("pk_languageId");
+		lfields.add("pk_userStatusId");
+		lfields.add("name");
 		lfields.add("_expire");
 		MyProcessConfig config = new MyProcessConfig(process, entity, lfields);
 		
@@ -67,7 +64,7 @@ public class EditableGrid2 extends LayoutContainer {
 
 		ColumnConfig column = new ColumnConfig();
 		column.setId(lfields.get(0));
-		column.setHeader("Parametro");
+		column.setHeader("Compania");
 		column.setWidth(100);
 
 		TextField<String> text = new TextField<String>();
@@ -79,35 +76,28 @@ public class EditableGrid2 extends LayoutContainer {
 
 		column = new ColumnConfig();
 		column.setId(lfields.get(1));
-		column.setHeader("Sub");
-		column.setWidth(40);
+		column.setHeader("Idioma");
+		column.setWidth(50);
 		text = new TextField<String>();
 		text.setAllowBlank(false);
 		text.setMaxLength(2);
 		column.setEditor(new CellEditor(text));
 		configs.add(column);
 
-		CellEditor editor = getDataTypeComboEditor();
 		column = new ColumnConfig();
 		column.setId(lfields.get(2));
-		column.setHeader("Tipo");
-		column.setWidth(70);
-		column.setEditor(editor);
-		configs.add(column);
-
-		column = new ColumnConfig();
-		column.setId(lfields.get(3));
-		column.setHeader("Valor");
+		column.setHeader("Estado");
 		column.setWidth(100);
 		text = new TextField<String>();
 		text.setAllowBlank(false);
+		text.setMaxLength(15);
 		column.setEditor(new CellEditor(text));
 		configs.add(column);
 
 		column = new ColumnConfig();
-		column.setId(lfields.get(4));
+		column.setId(lfields.get(3));
 		column.setHeader("Descripcion");
-		column.setWidth(200);
+		column.setWidth(150);
 		text = new TextField<String>();
 		text.setAllowBlank(false);
 		column.setEditor(new CellEditor(text));
@@ -117,16 +107,9 @@ public class EditableGrid2 extends LayoutContainer {
 
 		ColumnModel cm = new ColumnModel(configs);
 
-		// Filters
-		GridFilters filters = new GridFilters();
-		StringFilter parameterIdFilter = new StringFilter(lfields.get(0));
-		StringFilter subsystemFilter = new StringFilter(lfields.get(1));
-		filters.addFilter(parameterIdFilter);
-		filters.addFilter(subsystemFilter);
-
 		// Content panel
 		ContentPanel cp = new ContentPanel();
-		cp.setHeading("Parámetros");
+		cp.setHeading("Estados de Usuarios");
 		cp.setBodyBorder(true);  
 	    cp.setIcon(Resources.ICONS.table());
 	    cp.setButtonAlign(HorizontalAlignment.CENTER);
@@ -136,9 +119,8 @@ public class EditableGrid2 extends LayoutContainer {
 		// Grid
 		final EditorGrid<ModelData> grid = new EditorGrid<ModelData>(store, cm);
 		grid.setBorders(false);  
-		grid.setAutoExpandColumn("description");
+		grid.setAutoExpandColumn("name");
 		grid.getView().setEmptyText("No hay datos");
-		grid.addPlugin(filters);
 		grid.setLoadMask(true);
 		grid.setStripeRows(true);
 		cp.add(grid);
@@ -156,7 +138,6 @@ public class EditableGrid2 extends LayoutContainer {
 		newModel.set(lfields.get(2), null);
 		newModel.set(lfields.get(3), null);
 		newModel.set(lfields.get(4), null);
-		newModel.set(lfields.get(5), null);
 		GridToolBar toolBar = new GridToolBar(grid, store, newModel);
 		cp.setTopComponent(toolBar);
 
@@ -166,81 +147,4 @@ public class EditableGrid2 extends LayoutContainer {
 
 		add(cp);
 	}
-
-	private CellEditor getDataTypeComboEditor() {
-		// ListStore<ModelData> store;
-		// Store<ModelData> s;
-
-		// Define process
-		String process = "A002";
-
-		// Define entity
-		String entity = "DataType";
-		final List<String> lfields = new ArrayList<String>();
-		lfields.add("dataTypeId");
-		lfields.add("description");
-
-		// Page size
-		final int COMBO_PAGE_SIZE = 0;
-
-		// Proxy - Loader - Store
-		final MyProcessConfig config = new MyProcessConfig(process, entity,
-				lfields);
-		final MyHttpProxy<PagingLoadResult<ModelData>> proxy = new MyHttpProxy<PagingLoadResult<ModelData>>();
-		final MyPagingLoader<PagingLoadResult<ModelData>> loader = new MyPagingLoader<PagingLoadResult<ModelData>>(
-				proxy, config);
-		final MyListStore<ModelData> store = new MyListStore<ModelData>(loader);
-
-		// Combo
-		final ComboBox<ModelData> combo = new ComboBox<ModelData>() {
-			// @SuppressWarnings("unchecked")
-			@Override
-			public void doQuery(String q, boolean forceAll) {
-				expand();
-			}
-		};
-
-		combo.setForceSelection(true);
-		combo.setTriggerAction(TriggerAction.ALL);
-		combo.setDisplayField(lfields.get(0));
-		combo.setStore(store);
-		// combo.setPageSize(COMBO_PAGE_SIZE);
-		// combo.getPagingToolBar().bind(loader);
-		combo.setMinListWidth(250);
-		combo.setTemplate(getTemplate());
-
-		// Load values
-		loader.load(0, COMBO_PAGE_SIZE);
-
-		// Cell editor
-		CellEditor editor = new CellEditor(combo) {
-			@Override
-			public Object preProcessValue(Object value) {
-				if (value == null) {
-					return value;
-				}
-				return combo.getModel();
-			}
-
-			@Override
-			public Object postProcessValue(Object value) {
-				if (value == null) {
-					return value;
-				}
-				return ((ModelData) value).get("dataTypeId");
-			}
-		};
-
-		return editor;
-	}
-
-	private String getTemplate() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<tpl for=\".\">");
-		// sb.append("<div class='x-combo-list-item'><b>{dataTypeId}</b><ul><il>{description}</il></ul></div>");
-		sb.append("<div class='x-combo-list-item'>{dataTypeId} : {description}</div>");
-		sb.append("</tpl>");
-		return sb.toString();
-	}
-
 }
