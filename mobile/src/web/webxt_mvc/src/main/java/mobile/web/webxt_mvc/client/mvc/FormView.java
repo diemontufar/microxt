@@ -44,7 +44,7 @@ public class FormView extends View {
 
 		// Load the form  
 		String processId = process.get("id");
-		if(processId.compareTo("A002")==0){
+		if(processId.compareTo("G101")==0){
 			// Parameters
 			final EditableGrid2 eGrid2 = new EditableGrid2();
 			tabItem.add(eGrid2);	
