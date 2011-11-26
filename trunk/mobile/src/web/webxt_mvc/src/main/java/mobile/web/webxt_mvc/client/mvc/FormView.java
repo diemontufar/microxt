@@ -1,7 +1,8 @@
 package mobile.web.webxt_mvc.client.mvc;
 
-import mobile.web.webxt_mvc.client.components.EditableGrid2;
 import mobile.web.webxt_mvc.client.components.FormPanel;
+import mobile.web.webxt_mvc.client.devform.A101;
+import mobile.web.webxt_mvc.client.devform.G101;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.EventType;
@@ -44,10 +45,16 @@ public class FormView extends View {
 
 		// Load the form  
 		String processId = process.get("id");
-		if(processId.compareTo("G101")==0){
+		
+		System.out.println(processId);
+		if(processId.compareTo("A101")==0){
+			// UserStatus
+			final A101 form = new A101();
+			tabItem.add(form);	
+		}else if(processId.compareTo("G101")==0){
 			// Parameters
-			final EditableGrid2 eGrid2 = new EditableGrid2();
-			tabItem.add(eGrid2);	
+			final G101 form = new G101();
+			tabItem.add(form);	
 		}
 		
 		tabItem.addListener(Events.Select, new Listener<TabPanelEvent>() {
