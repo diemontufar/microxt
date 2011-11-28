@@ -2,7 +2,9 @@ package mobile.web.webxt_mvc.client.mvc;
 
 import mobile.web.webxt_mvc.client.components.FormPanel;
 import mobile.web.webxt_mvc.client.devform.A101;
+import mobile.web.webxt_mvc.client.devform.A102;
 import mobile.web.webxt_mvc.client.devform.G101;
+import mobile.web.webxt_mvc.shared.PositionWidget;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.EventType;
@@ -46,15 +48,27 @@ public class FormView extends View {
 		// Load the form  
 		String processId = process.get("id");
 		
+		
 		System.out.println(processId);
 		if(processId.compareTo("A101")==0){
 			// UserStatus
 			final A101 form = new A101();
-			tabItem.add(form);	
+			PositionWidget positionwidget = new PositionWidget("ESTADO DE USUARIOS");
+			positionwidget.add(form);
+			tabItem.add(positionwidget);	
+		}else if(processId.compareTo("A102")==0){
+			// Parameters
+			final A102 form = new A102();
+			PositionWidget positionwidget = new PositionWidget("TIPO DE USUARIOS");
+			positionwidget.add(form);
+			tabItem.add(positionwidget);		
+			
 		}else if(processId.compareTo("G101")==0){
 			// Parameters
 			final G101 form = new G101();
-			tabItem.add(form);	
+			PositionWidget positionwidget = new PositionWidget("PARAMETROS GENERALES");
+			positionwidget.add(form);
+			tabItem.add(positionwidget);	
 		}
 		
 		tabItem.addListener(Events.Select, new Listener<TabPanelEvent>() {
