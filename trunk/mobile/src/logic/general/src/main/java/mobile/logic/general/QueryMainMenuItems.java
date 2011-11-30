@@ -1,6 +1,5 @@
 package mobile.logic.general;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -23,6 +22,7 @@ public class QueryMainMenuItems implements GeneralProcessor {
 	private final String QRY_SUBSYSTEMS = "Select s from Subsystem s where "
 			+ "s.pk.subsystemId in "
 			+ "( Select distinct p.pk.subsystemId from Process p where p.enable = 1 "
+			+ "and p.menu = 1 "
 			+ "and p.pk.companyId = :companyId "
 			+ "and p.pk.languageId = :languageId "
 			+ "and p.pk.expired = :expired ) "
@@ -33,6 +33,7 @@ public class QueryMainMenuItems implements GeneralProcessor {
 	private final String N_QRY_MODULES = "Select m.* from MODULE m where "
 			+ "CONCAT(m.SUBSYSTEM_ID,m.MODULE_ID) in "
 			+ "( Select distinct CONCAT(p.SUBSYSTEM_ID,p.MODULE_ID) from PROCESS p where p.ENABLE = :enable "
+			+ "and p.menu = 1 "
 			+ "and p.COMPANY_ID = :companyId "
 			+ "and p.LANGUAGE_ID = :languageId "
 			+ "and p.EXPIRED = :expired ) " + "and m.COMPANY_ID = :companyId "
@@ -40,6 +41,7 @@ public class QueryMainMenuItems implements GeneralProcessor {
 			+ "order by m.SUBSYSTEM_ID, m.MODULE_ID";
 
 	private final String QRY_PROCESSES = "Select p from Process p where p.enable = 1 "
+			+ "and p.menu = 1 "
 			+ "and p.pk.companyId = :companyId "
 			+ "and p.pk.languageId = :languageId "
 			+ "and p.pk.expired = :expired ";
@@ -78,13 +80,6 @@ public class QueryMainMenuItems implements GeneralProcessor {
 
 	@SuppressWarnings({ "unchecked" })
 	private void obtainModules(Message msg) throws Exception {
-		// query.setParameter("enable","1");
-		// query.setParameter("companyId",
-		// LocalParameter.get(ParameterEnum.COMPANY, String.class));
-		// query.setParameter("languageId",
-		// LocalParameter.get(ParameterEnum.LANGUAGE, String.class));
-		// query.setParameter("expired", PersistenceTime.getExpiredTime());
-
 		String COMPANY = LocalParameter
 				.get(ParameterEnum.COMPANY, String.class);
 		String LANGUAGE = LocalParameter.get(ParameterEnum.LANGUAGE,
