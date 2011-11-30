@@ -35,6 +35,12 @@ public class Process extends AbstractHistorical implements Multicompany,
 	private Boolean enable;
 
 	/**
+	 * Menu
+	 */
+	@Column(name = "MENU", nullable = false)
+	private Boolean menu;
+	
+	/**
 	 * URL
 	 */
 	@Column(name = "URL", nullable = false)
