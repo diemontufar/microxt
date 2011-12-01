@@ -28,14 +28,18 @@ import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.Element;
 
-public class A101 extends LayoutContainer {
 
-	private final String process = "A101";
+/**
+ * Roles
+ */
+public class A201 extends LayoutContainer {
+
+	private final String process = "A201";
 	
-	private final String entity = "UserStatus";
-	
+	private final String entity = "Profile";
+
 	private final Integer PAGE_SIZE = 10;
-
+	
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
@@ -44,8 +48,9 @@ public class A101 extends LayoutContainer {
 
 		// Process configuration
 		final List<String> lfields = new ArrayList<String>();
-		lfields.add("pk_userStatusId");
+		lfields.add("pk_profileId");
 		lfields.add("name");
+		lfields.add("description");
 		lfields.add("_expire");
 		MyProcessConfig config = new MyProcessConfig(process, entity, lfields);
 		
@@ -57,14 +62,15 @@ public class A101 extends LayoutContainer {
 
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-		configs.add(new NormalColumn(lfields.get(0), "Estado", 100, 15, false));
+		configs.add(new NormalColumn(lfields.get(0), "Id", 50, 4, false));
 		configs.add(new NormalColumn(lfields.get(1), "Nombre", 150, 40, false));
+		configs.add(new NormalColumn(lfields.get(2), "Descripcion", 200, 150, false));
 		configs.add(new ExpireColumnConfig());
 		ColumnModel cm = new ColumnModel(configs);
-		
+
 		// Content panel
 		ContentPanel cp = new ContentPanel();
-		cp.setHeading("Estados de Usuarios");
+		cp.setHeading("Roles de usuario");
 		cp.setBodyBorder(true);  
 	    cp.setIcon(Resources.ICONS.table());
 	    cp.setButtonAlign(HorizontalAlignment.CENTER);
@@ -74,7 +80,7 @@ public class A101 extends LayoutContainer {
 		// Grid
 		final EditorGrid<ModelData> grid = new EditorGrid<ModelData>(store, cm);
 		grid.setBorders(false);  
-		grid.setAutoExpandColumn("name");
+		grid.setAutoExpandColumn("description");
 		grid.getView().setEmptyText("No hay datos");
 		grid.setLoadMask(true);
 		grid.setStripeRows(true);

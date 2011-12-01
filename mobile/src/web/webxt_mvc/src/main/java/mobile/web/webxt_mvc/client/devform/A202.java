@@ -21,39 +21,45 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.form.ComboBox;
-import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
-import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
-import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
 import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.Element;
 
-public class G101 extends LayoutContainer {
 
-	private final Integer PAGE_SIZE = 10;
+/**
+ * 
+ * Processes by role
+ *
+ */
+public class A202 extends LayoutContainer {
+
+	private final Integer PAGE_SIZE = 5;
+	
+	private final String process = "A202";
+	
+	private final String entity = "Role";
 
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-		//setLayout(new FlowLayout(10));
 		setLayout(new CenterLayout());
-		//getAriaSupport().setPresentation(true);
-		
+		getAriaSupport().setPresentation(true);
+
 		// Config
-		String process = "A002";
-		String entity = "Parameter";
 		final List<String> lfields = new ArrayList<String>();
-		lfields.add("pk_parameterId");
-		lfields.add("subsystemId");
-		lfields.add("dataTypeId");
-		lfields.add("parameterValue");
-		lfields.add("description");
+		lfields.add("pk_profileId");
+		lfields.add("pk_subsystemId");
+		lfields.add("pk_moduleId");
+		lfields.add("pk_processId");
+		lfields.add("pk_dayId");
+		lfields.add("hourFrom");
+		lfields.add("hourTo");
+		lfields.add("editable");
 		lfields.add("_expire");
 		MyProcessConfig config = new MyProcessConfig(process, entity, lfields);
 		
@@ -68,66 +74,90 @@ public class G101 extends LayoutContainer {
 
 		ColumnConfig column = new ColumnConfig();
 		column.setId(lfields.get(0));
-		column.setHeader("Parametro");
-		column.setWidth(100);
-
+		column.setHeader("Rol");
+		column.setWidth(50);
 		TextField<String> text = new TextField<String>();
 		text.setAllowBlank(false);
-		text.setAutoValidate(true);
-		text.setMaxLength(40);
+		text.setMaxLength(4);
 		column.setEditor(new CellEditor(text));
 		configs.add(column);
 
 		column = new ColumnConfig();
 		column.setId(lfields.get(1));
 		column.setHeader("Sub");
-		column.setWidth(40);
+		column.setWidth(50);
 		text = new TextField<String>();
 		text.setAllowBlank(false);
 		text.setMaxLength(2);
 		column.setEditor(new CellEditor(text));
 		configs.add(column);
 
-		CellEditor editor = getDataTypeComboEditor();
 		column = new ColumnConfig();
 		column.setId(lfields.get(2));
-		column.setHeader("Tipo");
-		column.setWidth(70);
-		column.setEditor(editor);
-		configs.add(column);
-
-		column = new ColumnConfig();
-		column.setId(lfields.get(3));
-		column.setHeader("Valor");
-		column.setWidth(100);
+		column.setHeader("Mod");
+		column.setWidth(50);
 		text = new TextField<String>();
 		text.setAllowBlank(false);
+		text.setMaxLength(2);
+		column.setEditor(new CellEditor(text));
+		configs.add(column);
+		
+		column = new ColumnConfig();
+		column.setId(lfields.get(3));
+		column.setHeader("Proc");
+		column.setWidth(50);
+		text = new TextField<String>();
+		text.setAllowBlank(false);
+		text.setMaxLength(2);
 		column.setEditor(new CellEditor(text));
 		configs.add(column);
 
 		column = new ColumnConfig();
 		column.setId(lfields.get(4));
-		column.setHeader("Descripcion");
-		column.setWidth(200);
+		column.setHeader("Dia");
+		column.setWidth(50);
 		text = new TextField<String>();
 		text.setAllowBlank(false);
+		text.setMaxLength(3);
+		column.setEditor(new CellEditor(text));
+		configs.add(column);
+		
+		column = new ColumnConfig();
+		column.setId(lfields.get(5));
+		column.setHeader("Hora desde");
+		column.setWidth(75);
+		text = new TextField<String>();
+		text.setAllowBlank(false);
+		text.setMaxLength(4);
 		column.setEditor(new CellEditor(text));
 		configs.add(column);
 
+		column = new ColumnConfig();
+		column.setId(lfields.get(6));
+		column.setHeader("Hora hasta");
+		column.setWidth(75);
+		text = new TextField<String>();
+		text.setAllowBlank(false);
+		text.setMaxLength(4);
+		column.setEditor(new CellEditor(text));
+		configs.add(column);
+
+		column = new ColumnConfig();
+		column.setId(lfields.get(7));
+		column.setHeader("Editable?");
+		column.setWidth(100);
+		text = new TextField<String>();
+		text.setAllowBlank(false);
+		//text.setMaxLength(3);
+		column.setEditor(new CellEditor(text));
+		configs.add(column);		
 		configs.add(new ExpireColumnConfig());
 
 		ColumnModel cm = new ColumnModel(configs);
 
-		// Filters
-		GridFilters filters = new GridFilters();
-		StringFilter parameterIdFilter = new StringFilter(lfields.get(0));
-		StringFilter subsystemFilter = new StringFilter(lfields.get(1));
-		filters.addFilter(parameterIdFilter);
-		filters.addFilter(subsystemFilter);
-
 		// Content panel
 		ContentPanel cp = new ContentPanel();
-		cp.setHeading("Parámetros");
+		cp.setHeading("Roles de usuario");
 		cp.setBodyBorder(true);  
 	    cp.setIcon(Resources.ICONS.table());
 	    cp.setButtonAlign(HorizontalAlignment.CENTER);
@@ -137,9 +167,8 @@ public class G101 extends LayoutContainer {
 		// Grid
 		final EditorGrid<ModelData> grid = new EditorGrid<ModelData>(store, cm);
 		grid.setBorders(false);  
-		grid.setAutoExpandColumn("description");
+		grid.setAutoExpandColumn("pk_processId");
 		grid.getView().setEmptyText("No hay datos");
-		grid.addPlugin(filters);
 		grid.setLoadMask(true);
 		grid.setStripeRows(true);
 		cp.add(grid);
@@ -156,8 +185,6 @@ public class G101 extends LayoutContainer {
 		newModel.set(lfields.get(1), null);
 		newModel.set(lfields.get(2), null);
 		newModel.set(lfields.get(3), null);
-		newModel.set(lfields.get(4), null);
-		newModel.set(lfields.get(5), null);
 		GridToolBar toolBar = new GridToolBar(grid, store, newModel);
 		cp.setTopComponent(toolBar);
 
@@ -167,81 +194,4 @@ public class G101 extends LayoutContainer {
 
 		add(cp);
 	}
-
-	private CellEditor getDataTypeComboEditor() {
-		// ListStore<ModelData> store;
-		// Store<ModelData> s;
-
-		// Define process
-		String process = "A002";
-
-		// Define entity
-		String entity = "DataType";
-		final List<String> lfields = new ArrayList<String>();
-		lfields.add("dataTypeId");
-		lfields.add("description");
-
-		// Page size
-		final int COMBO_PAGE_SIZE = 0;
-
-		// Proxy - Loader - Store
-		final MyProcessConfig config = new MyProcessConfig(process, entity,
-				lfields);
-		final MyHttpProxy<PagingLoadResult<ModelData>> proxy = new MyHttpProxy<PagingLoadResult<ModelData>>();
-		final MyPagingLoader<PagingLoadResult<ModelData>> loader = new MyPagingLoader<PagingLoadResult<ModelData>>(
-				proxy, config);
-		final MyListStore<ModelData> store = new MyListStore<ModelData>(loader);
-
-		// Combo
-		final ComboBox<ModelData> combo = new ComboBox<ModelData>() {
-			// @SuppressWarnings("unchecked")
-			@Override
-			public void doQuery(String q, boolean forceAll) {
-				expand();
-			}
-		};
-
-		combo.setForceSelection(true);
-		combo.setTriggerAction(TriggerAction.ALL);
-		combo.setDisplayField(lfields.get(0));
-		combo.setStore(store);
-		// combo.setPageSize(COMBO_PAGE_SIZE);
-		// combo.getPagingToolBar().bind(loader);
-		combo.setMinListWidth(250);
-		combo.setTemplate(getTemplate());
-
-		// Load values
-		loader.load(0, COMBO_PAGE_SIZE);
-
-		// Cell editor
-		CellEditor editor = new CellEditor(combo) {
-			@Override
-			public Object preProcessValue(Object value) {
-				if (value == null) {
-					return value;
-				}
-				return combo.getModel();
-			}
-
-			@Override
-			public Object postProcessValue(Object value) {
-				if (value == null) {
-					return value;
-				}
-				return ((ModelData) value).get("dataTypeId");
-			}
-		};
-
-		return editor;
-	}
-
-	private String getTemplate() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<tpl for=\".\">");
-		// sb.append("<div class='x-combo-list-item'><b>{dataTypeId}</b><ul><il>{description}</il></ul></div>");
-		sb.append("<div class='x-combo-list-item'>{dataTypeId} : {description}</div>");
-		sb.append("</tpl>");
-		return sb.toString();
-	}
-
 }
