@@ -1,12 +1,11 @@
 package mobile.entity.security;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractCompanyLanguageHistoricalKey;
-import mobile.entity.schema.HistoricalKey;
 import mobile.entity.schema.MulticompanyKey;
 import mobile.entity.schema.MultilanguageKey;
+import mobile.entity.schema.HistoricalKey;
 
 /**
  * The primary key class for the PROCESS database table.

@@ -1,9 +1,6 @@
 package mobile.entity.security;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractEntity;
 import mobile.entity.schema.Multicompany;
@@ -26,6 +23,12 @@ public class Profile extends AbstractEntity implements Multicompany,
 	 */
 	@Column(name = "NAME", nullable = false)
 	private String name;
+
+	/**
+	 * Description of profile
+	 */
+	@Column(name = "DESCRIPTION", nullable = true)
+	private String description;
 
 	public Profile() {
 	}
@@ -55,6 +58,14 @@ public class Profile extends AbstractEntity implements Multicompany,
 		this.name = name;
 	}
 
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	@Override
 	public void setPk(Object pk) {
 		this.pk = (ProfilePk) pk;
@@ -63,7 +74,6 @@ public class Profile extends AbstractEntity implements Multicompany,
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		Profile copy = (Profile) super.clone();
-
 		copy.setPk((ProfilePk) this.pk.clone());
 		return copy;
 	}
@@ -71,6 +81,6 @@ public class Profile extends AbstractEntity implements Multicompany,
 	@Override
 	public String toString() {
 		return "PROFILE:[" + this.getPk().toString() + ", " + this.getName()
-				+ "]";
+				+ ", " + this.getDescription() + "]";
 	}
 }

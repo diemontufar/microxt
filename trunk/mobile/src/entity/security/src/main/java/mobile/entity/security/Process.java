@@ -1,14 +1,11 @@
 package mobile.entity.security;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractHistorical;
-import mobile.entity.schema.Historical;
 import mobile.entity.schema.Multicompany;
 import mobile.entity.schema.Multilanguage;
+import mobile.entity.schema.Historical;
 
 /**
  * The persistent class for the PROCESS database table. Values of processes
@@ -35,11 +32,11 @@ public class Process extends AbstractHistorical implements Multicompany,
 	private Boolean enable;
 
 	/**
-	 * Menu
+	 * Show in app menu
 	 */
 	@Column(name = "MENU", nullable = false)
 	private Boolean menu;
-	
+
 	/**
 	 * URL
 	 */
@@ -65,10 +62,12 @@ public class Process extends AbstractHistorical implements Multicompany,
 		this.pk = pk;
 	}
 
-	public Process(ProcessPk pk, String name, Boolean enable, String url) {
+	public Process(ProcessPk pk, String name, Boolean enable, Boolean menu,
+			String url) {
 		this.pk = pk;
 		this.name = name;
 		this.enable = enable;
+		this.menu = menu;
 		this.url = url;
 	}
 
@@ -94,6 +93,14 @@ public class Process extends AbstractHistorical implements Multicompany,
 
 	public void setEnable(Boolean enable) {
 		this.enable = enable;
+	}
+
+	public Boolean getMenu() {
+		return this.menu;
+	}
+
+	public void setMenu(Boolean menu) {
+		this.menu = menu;
 	}
 
 	public String getUrl() {
@@ -128,7 +135,6 @@ public class Process extends AbstractHistorical implements Multicompany,
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		Process copy = (Process) super.clone();
-
 		copy.setPk((ProcessPk) this.pk.clone());
 		return copy;
 	}
@@ -137,7 +143,7 @@ public class Process extends AbstractHistorical implements Multicompany,
 	public String toString() {
 		return "PROCESS:[" + this.getPk().toString() + ", " + this.getCreated()
 				+ ", " + this.getName() + ", " + this.getEnable() + ", "
-				+ this.getUrl() + ", " + this.getDatafileId() + ", "
-				+ this.getWorkflowId() + "]";
+				+ this.getMenu() + ", " + this.getUrl() + ", "
+				+ this.getDatafileId() + ", " + this.getWorkflowId() + "]";
 	}
 }
