@@ -17,10 +17,10 @@ import mobile.entity.common.EntityRelationship;
 import mobile.entity.common.EntityTable;
 import mobile.entity.manager.JPManager;
 
-public class SqlGeneratorAllinOneFile {
+public class SqlGeneratorAllinOne {
 
 	// Company
-	private final String COMPANY = "HNDT";
+	private final String COMPANY = "MXT";
 
 	// Name of the data base, for syntaxes conventions
 	// Actually supported: ORACLE: MYSQL
@@ -83,7 +83,7 @@ public class SqlGeneratorAllinOneFile {
 	 * @param outputFolder
 	 *            for the output file
 	 */
-	public SqlGeneratorAllinOneFile(String dbName, String outputFolder) {
+	public SqlGeneratorAllinOne(String dbName, String outputFolder) {
 		this.dataBaseName = dbName;
 		this.outputFolder = outputFolder;
 
