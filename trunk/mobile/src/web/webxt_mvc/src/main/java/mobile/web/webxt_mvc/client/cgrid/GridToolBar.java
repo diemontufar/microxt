@@ -19,6 +19,10 @@ public class GridToolBar extends ToolBar {
 	private Button saveButton;
 	private ModelData initModel;
 
+	public GridToolBar(EditorGrid<ModelData> grid, MyListStore<ModelData> store) {
+		this(grid, store, new BaseModelData());
+	}
+	
 	public GridToolBar(EditorGrid<ModelData> grid,
 			MyListStore<ModelData> store, ModelData initModel) {
 		this.grid = grid;
