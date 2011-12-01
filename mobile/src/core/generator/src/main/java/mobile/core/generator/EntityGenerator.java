@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 import mobile.core.common.FileUtil;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityTable;
+import mobile.entity.common.EntityTablePk;
 import mobile.entity.manager.JPManager;
 
 enum EntityType {
@@ -20,7 +21,9 @@ enum EntityType {
 public class EntityGenerator {
 
 	// Company
-	private String company;
+	private final String COMPANY = "MXT";
+	
+	private final String ALL_COMPANY = "ALL";
 
 	// Package for generated entities.
 	private String outputPackage;
@@ -33,7 +36,7 @@ public class EntityGenerator {
 
 	// JPQL to query entities
 	private String ENTITY_SQL = "Select e from EntityTable e where e.pk.companyId in ('ALL',:companyId)";
-
+	
 	// JPQL to query fields
 	private String FIELD_SQL = "Select f from EntityField f where "
 			+ "f.pk.companyId in ('ALL',:companyId) and f.pk.tableId=:tableId "
@@ -57,8 +60,7 @@ public class EntityGenerator {
 	// Semicolon + new line
 	private final String END_LINE = ";\n";
 
-	public EntityGenerator(String company, String path, String outputPackage) {
-		this.company = company;
+	public EntityGenerator(String path, String outputPackage) {
 		this.pathToSave = path;
 		this.outputPackage = outputPackage;
 	}
@@ -72,7 +74,7 @@ public class EntityGenerator {
 		// Query entities
 		TypedQuery<EntityTable> queryEntities = JPManager.getEntityManager()
 				.createQuery(ENTITY_SQL, EntityTable.class);
-		queryEntities.setParameter("companyId", company);
+		queryEntities.setParameter("companyId", COMPANY);
 		List<EntityTable> lEntity = queryEntities.getResultList();
 
 		if (lEntity.size() < 1) {
@@ -81,22 +83,40 @@ public class EntityGenerator {
 
 		// For each entity generate the associated fields
 		for (EntityTable entity : lEntity) {
-			// Query fields
-			TypedQuery<EntityField> queryFields = JPManager.getEntityManager()
-					.createQuery(FIELD_SQL, EntityField.class);
-			queryFields.setParameter("companyId", company);
-			queryFields.setParameter("tableId", entity.getPk().getTableId());
-			List<EntityField> lField = queryFields.getResultList();
+			generateEntity(entity);
+		}
+	}
+	
+	public void generateOneEntity(String tableId) throws Exception {
+		// Find the entity
+		EntityTablePk pk = new EntityTablePk(tableId);
+		pk.setCompanyId(ALL_COMPANY);
+		
+		EntityTable entity = JPManager.find(EntityTable.class, pk);
 
-			// Check fields definition
-			if (lField.size() == 0) {
-				throw new Exception("ERROR. ENTITY: "
-						+ entity.getPk().getTableId() + ". NO FIELDS DEFINED");
-			} else {
-				// Generate the builders
-				generateBuilders(entity, lField);
-				writeFiles(entity);
-			}
+		if (entity == null) {
+			throw new Exception("NO ENTITY INFORMATION");
+		}
+
+		generateEntity(entity);
+	}
+
+	private void generateEntity(EntityTable entity) throws Exception {
+		// Query fields
+		TypedQuery<EntityField> queryFields = JPManager.getEntityManager()
+				.createQuery(FIELD_SQL, EntityField.class);
+		queryFields.setParameter("companyId", COMPANY);
+		queryFields.setParameter("tableId", entity.getPk().getTableId());
+		List<EntityField> lField = queryFields.getResultList();
+
+		// Check fields definition
+		if (lField.size() == 0) {
+			throw new Exception("ERROR. ENTITY: " + entity.getPk().getTableId()
+					+ ". NO FIELDS DEFINED");
+		} else {
+			// Generate the builders
+			generateBuilders(entity, lField);
+			writeFiles(entity);
 		}
 	}
 
