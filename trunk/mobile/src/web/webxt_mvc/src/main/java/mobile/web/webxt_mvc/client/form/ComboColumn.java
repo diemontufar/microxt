@@ -21,6 +21,8 @@ public class ComboColumn extends ColumnConfig {
 	
 	private int pageSize = 0;
 	
+	private List<String> lFields;
+	
 	public ComboColumn(String id, String header, int width, int maxLength, boolean allowBlank) {
 		super();
 		setId(id);
@@ -32,6 +34,7 @@ public class ComboColumn extends ColumnConfig {
 	}
 	
 	public void setRqData(String process, String entity, List<String> lFields) {
+		this.lFields = lFields; 
 		CellEditor editor = getComboEditor(process, entity, lFields);
 		setEditor(editor);
 	}
@@ -90,8 +93,17 @@ public class ComboColumn extends ColumnConfig {
 	private String getTemplate() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<tpl for=\".\">");
-		// sb.append("<div class='x-combo-list-item'><b>{dataTypeId}</b><ul><il>{description}</il></ul></div>");
-		sb.append("<div class='x-combo-list-item'>{dataTypeId} : {description}</div>");
+		// sb.append("<div class='x-combo-list-item'>{dataTypeId} : {description}</div>");
+		sb.append("<div class='x-combo-list-item'>");
+		int counter = 0;
+		for (String field : lFields) {
+			if(counter>0){
+				sb.append(" : ");	
+			}
+			sb.append("{" + field + "}");
+			counter++;
+		}
+		sb.append("</div>");
 		sb.append("</tpl>");
 		return sb.toString();
 	}
