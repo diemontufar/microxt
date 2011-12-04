@@ -3,6 +3,8 @@ package mobile.web.webxt_mvc.client.mvc;
 import mobile.web.webxt_mvc.client.components.FormPanel;
 import mobile.web.webxt_mvc.client.devform.A101;
 import mobile.web.webxt_mvc.client.devform.A102;
+import mobile.web.webxt_mvc.client.devform.A201;
+import mobile.web.webxt_mvc.client.devform.A202;
 import mobile.web.webxt_mvc.client.devform.G101;
 import mobile.web.webxt_mvc.shared.PositionWidget;
 
@@ -51,11 +53,8 @@ public class FormView extends View {
 		
 		System.out.println(processId);
 		if(processId.compareTo("A101")==0){
-			// UserStatus
-			final A101 form = new A101();
-			PositionWidget positionwidget = new PositionWidget("ESTADO DE USUARIOS");
-			positionwidget.add(form);
-			tabItem.add(positionwidget);	
+			// User status
+			tabItem.add(new A101()	);	
 		}else if(processId.compareTo("A102")==0){
 			// Parameters
 			final A102 form = new A102();
@@ -63,12 +62,13 @@ public class FormView extends View {
 			positionwidget.add(form);
 			tabItem.add(positionwidget);		
 			
+		}else if(processId.compareTo("A201")==0){
+			tabItem.add(new A201());	
+		}else if(processId.compareTo("A202")==0){
+			tabItem.add(new A202());	
 		}else if(processId.compareTo("G101")==0){
 			// Parameters
-			final G101 form = new G101();
-			PositionWidget positionwidget = new PositionWidget("PARAMETROS GENERALES");
-			positionwidget.add(form);
-			tabItem.add(positionwidget);	
+			tabItem.add(new G101());	
 		}
 		
 		tabItem.addListener(Events.Select, new Listener<TabPanelEvent>() {
