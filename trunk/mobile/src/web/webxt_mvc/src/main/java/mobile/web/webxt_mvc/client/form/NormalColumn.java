@@ -6,9 +6,6 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 
 public class NormalColumn extends ColumnConfig {
 	
-	public NormalColumn() {
-	}
-	
 	public NormalColumn(String id, String header, int width, int maxLength, boolean allowBlank) {
 		super();
 		setId(id);
