@@ -12,31 +12,28 @@ import mobile.web.webxt_mvc.client.data.MyPagingLoader;
 import mobile.web.webxt_mvc.client.data.MyProcessConfig;
 import mobile.web.webxt_mvc.client.form.ArrayColumnData;
 import mobile.web.webxt_mvc.client.form.ComboColumn;
+import mobile.web.webxt_mvc.client.form.EntityContentPanel;
+import mobile.web.webxt_mvc.client.form.EntityEditorGrid;
 import mobile.web.webxt_mvc.client.form.MyColumnData;
 import mobile.web.webxt_mvc.client.form.NormalColumn;
-import mobile.web.webxt_mvc.client.resources.Resources;
 
-import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
-import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
 import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
 import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
 import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.Element;
 
 public class G101 extends LayoutContainer {
 
-	private final Integer PAGE_SIZE = 5;
+	private final Integer PAGE_SIZE = 10;
 	
 	private final String process = "G101";
 
@@ -99,26 +96,15 @@ public class G101 extends LayoutContainer {
 		filters.addFilter(subsystemFilter);
 
 		// Content panel
-		ContentPanel cp = new ContentPanel();
-		cp.setHeading("Parámetros");
-		cp.setBodyBorder(true);
-		cp.setIcon(Resources.ICONS.table());
-		cp.setButtonAlign(HorizontalAlignment.CENTER);
-		cp.setLayout(new FitLayout());
-		cp.setSize(600, 230);
+		EntityContentPanel cp = new EntityContentPanel("Parámetros",600,340);
 
 		// Grid
-		final EditorGrid<ModelData> grid = new EditorGrid<ModelData>(store, cm);
-		grid.setBorders(false);
+		final EntityEditorGrid grid = new EntityEditorGrid(store, cm);
 		grid.setAutoExpandColumn("description");
-		grid.getView().setEmptyText("No hay datos");
 		grid.addPlugin(filters);
-		grid.setLoadMask(true);
-		grid.setStripeRows(true);
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
-				//loader.load(0, PAGE_SIZE);
 				store.sort(cdata.getIdFields().get(0), SortDir.ASC);
 			}
 		});
