@@ -8,7 +8,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 // Typical heights: 
 // 5 records	230
-// 10 records	300
+// 10 records	340
 
 public class EntityContentPanel extends ContentPanel {
 	public EntityContentPanel(String title, int width, int height) {
