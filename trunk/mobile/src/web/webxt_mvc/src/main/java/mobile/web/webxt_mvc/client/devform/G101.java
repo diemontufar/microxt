@@ -10,7 +10,9 @@ import mobile.web.webxt_mvc.client.data.MyHttpProxy;
 import mobile.web.webxt_mvc.client.data.MyListStore;
 import mobile.web.webxt_mvc.client.data.MyPagingLoader;
 import mobile.web.webxt_mvc.client.data.MyProcessConfig;
+import mobile.web.webxt_mvc.client.form.ArrayColumnData;
 import mobile.web.webxt_mvc.client.form.ComboColumn;
+import mobile.web.webxt_mvc.client.form.MyColumnData;
 import mobile.web.webxt_mvc.client.form.NormalColumn;
 import mobile.web.webxt_mvc.client.resources.Resources;
 
@@ -45,14 +47,17 @@ public class G101 extends LayoutContainer {
 		// Config
 		String process = "A002";
 		String entity = "Parameter";
-		final List<String> lfields = new ArrayList<String>();
-		lfields.add("pk_parameterId");
-		lfields.add("subsystemId");
-		lfields.add("dataTypeId");
-		lfields.add("parameterValue");
-		lfields.add("description");
-		lfields.add("_expire");
-		MyProcessConfig config = new MyProcessConfig(process, entity, lfields);
+
+		final ArrayColumnData cdata = new ArrayColumnData();
+		cdata.add(new MyColumnData("pk_parameterId", "Parametro", 100, 40,
+				false));
+		cdata.add(new MyColumnData("subsystemId", "Sub", 40, 2, false));
+		cdata.add(new MyColumnData("dataTypeId", "Tipo", 70, 10, false));
+		cdata.add(new MyColumnData("parameterValue", "Valor", 100, 50, false));
+		cdata.add(new MyColumnData("description", "Descripcion", 200, 150,false));
+
+		MyProcessConfig config = new MyProcessConfig(process, entity,
+				cdata.getIdFields());
 
 		// Proxy - loader - store
 		MyHttpProxy<PagingLoadResult<ModelData>> proxy = new MyHttpProxy<PagingLoadResult<ModelData>>();
@@ -62,29 +67,27 @@ public class G101 extends LayoutContainer {
 
 		// Column model
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-		configs.add(new NormalColumn(lfields.get(0), "Parametro", 100, 40,
-				false));
-		configs.add(new NormalColumn(lfields.get(1), "Sub", 40, 2, false));
 
-		ComboColumn comboCol = new ComboColumn(lfields.get(2), "Tipo", 70, 10,
-				false);
+		configs.add(new NormalColumn(cdata.get(0)));
+		configs.add(new NormalColumn(cdata.get(1)));
+
+		ComboColumn comboCol = new ComboColumn(cdata.get(2));
 		List<String> lFields = new ArrayList<String>();
 		lFields.add("dataTypeId");
 		lFields.add("description");
 		comboCol.setRqData("G101", "DataType", lFields);
 		configs.add(comboCol);
 
-		configs.add(new NormalColumn(lfields.get(3), "Valor", 100, 50, false));
-		configs.add(new NormalColumn(lfields.get(4), "Descripcion", 200, 150,
-				false));
+		configs.add(new NormalColumn(cdata.get(3)));
+		configs.add(new NormalColumn(cdata.get(4)));
 		configs.add(new ExpireColumnConfig());
 
 		ColumnModel cm = new ColumnModel(configs);
 
 		// Filters
 		GridFilters filters = new GridFilters();
-		StringFilter parameterIdFilter = new StringFilter(lfields.get(0));
-		StringFilter subsystemFilter = new StringFilter(lfields.get(1));
+		StringFilter parameterIdFilter = new StringFilter(cdata.getIdFields().get(0));
+		StringFilter subsystemFilter = new StringFilter(cdata.getIdFields().get(1));
 		filters.addFilter(parameterIdFilter);
 		filters.addFilter(subsystemFilter);
 
@@ -109,7 +112,7 @@ public class G101 extends LayoutContainer {
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
 				// loader.load(0, PAGE_SIZE);
-				// store.sort(lfields.get(1), SortDir.ASC);
+				//store.sort(cdata.getIdFields().get(0), SortDir.ASC);
 			}
 		});
 
