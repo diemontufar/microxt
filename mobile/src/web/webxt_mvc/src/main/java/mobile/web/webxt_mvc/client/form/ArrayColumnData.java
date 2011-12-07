@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayColumnData extends ArrayList<MyColumnData> {
+	public ArrayColumnData() {
+		super();
+	}
 
 	private static final long serialVersionUID = 1L;
 
