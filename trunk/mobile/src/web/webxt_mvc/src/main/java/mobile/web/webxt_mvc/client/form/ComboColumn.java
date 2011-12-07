@@ -9,7 +9,6 @@ import mobile.web.webxt_mvc.client.data.MyProcessConfig;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
-import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
@@ -23,14 +22,14 @@ public class ComboColumn extends ColumnConfig {
 	
 	private List<String> lFields;
 	
-	public ComboColumn(String id, String header, int width, int maxLength, boolean allowBlank) {
+	public ComboColumn(MyColumnData columnData) {
 		super();
-		setId(id);
-		setHeader(header);
-		setWidth(width);
+		setId(columnData.getId());
+		setHeader(columnData.getName());
+		setWidth(columnData.getWidth());
 		TextField<String> text = new TextField<String>();
-		text.setAllowBlank(allowBlank);
-		text.setMaxLength(maxLength);
+		text.setAllowBlank(columnData.isAllowBlank());
+		text.setMaxLength(columnData.getMaxLength());
 	}
 	
 	public void setRqData(String process, String entity, List<String> lFields) {
@@ -49,12 +48,13 @@ public class ComboColumn extends ColumnConfig {
 		final MyListStore<ModelData> store = new MyListStore<ModelData>(loader);
 
 		// Combo
-		final ComboBox<ModelData> combo = new ComboBox<ModelData>() {
-			@Override
-			public void doQuery(String q, boolean forceAll) {
-				expand();
-			}
-		};
+		final MyComboBox<ModelData> combo = new MyComboBox<ModelData>();
+//		final ComboBox<ModelData> combo = new ComboBox<ModelData>() {
+//			@Override
+//			public void doQuery(String q, boolean forceAll) {
+//				expand();
+//			}
+//		};
 
 		combo.setForceSelection(true);
 		combo.setTriggerAction(TriggerAction.ALL);
@@ -62,11 +62,16 @@ public class ComboColumn extends ColumnConfig {
 		combo.setStore(store);
 		combo.setMinListWidth(MIN_LIST_WIDTH);
 		combo.setTemplate(getTemplate());
+		combo.setPageSize(pageSize);
+
+	    combo.setItemSelector("tr.search-item");  
+		combo.setEditable(false);
+		combo.setForceSelection(true); 
 		
 		//	combo.setHideTrigger(true);
 
 		// Load values
-		loader.load(0, pageSize);
+		//loader.load(0, pageSize);
 
 		// Cell editor
 		CellEditor editor = new CellEditor(combo) {
@@ -92,20 +97,50 @@ public class ComboColumn extends ColumnConfig {
 
 	private String getTemplate() {
 		StringBuilder sb = new StringBuilder();
+		
+		sb.append("<table cellpadding=\"10\" cellspacing=\"0\" role=\"presentation\" class=\"x-component\">");
+		sb.append("<tbody>"); 
+		
+		sb.append("<tr class=\"x-grid3-hd-row\" role=\"presentation\">");
+		sb.append("<td class=\"x-grid3-header x-grid3-hd x-grid3-cell x-grid3-td-name \" role=\"presentation\" align=\"left\" style=\"\">");
+		sb.append("<div role=\"columnheader\" aria-haspopup=\"false\" class=\"x-grid3-hd-inner x-component\" style=\"width: 70px; height: 14px; \" aria-sort=\"none\">");
+		sb.append("<span class=\"x-component\">Tipo</span>");
+		sb.append("</div></td>");
+		sb.append("<td class=\"x-grid3-header x-grid3-hd x-grid3-cell x-grid3-td-name \" role=\"presentation\" align=\"left\" style=\"\">");
+		sb.append("<div role=\"columnheader\" aria-haspopup=\"false\" class=\"x-grid3-hd-inner x-component\" style=\"width: 150px; height: 14px; \" aria-sort=\"none\">");
+		sb.append("<span class=\"x-component\">Descripcion</span>");
+		sb.append("</div></td>");
+		sb.append("</tr>");
+		
+		sb.append("<div class=\"x-grid3-row\">");
+		
 		sb.append("<tpl for=\".\">");
-		// sb.append("<div class='x-combo-list-item'>{dataTypeId} : {description}</div>");
-		sb.append("<div class='x-combo-list-item'>");
-		int counter = 0;
+		sb.append("<tr class=\"search-item x-grid3-row\">");
+		
 		for (String field : lFields) {
-			if(counter>0){
-				sb.append(" : ");	
-			}
+			sb.append("<td class=\"x-grid3-cell \">");
+			sb.append("<div style=\"padding: 2px 2px 2px 3px\" >");
 			sb.append("{" + field + "}");
-			counter++;
+			sb.append("</div></td>");
 		}
-		sb.append("</div>");
+		
+		sb.append("</tr>");
 		sb.append("</tpl>");
+		sb.append("</div>");
+		
+		sb.append("</tbody>");
+		sb.append("</table>");
+		//sb.append("</div>");
+		
 		return sb.toString();
+	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
 	}
 
 }

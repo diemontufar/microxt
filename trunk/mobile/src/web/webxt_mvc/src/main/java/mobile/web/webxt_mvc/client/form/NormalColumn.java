@@ -6,6 +6,17 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 
 public class NormalColumn extends ColumnConfig {
 	
+	public NormalColumn(MyColumnData columnData) {
+		super();
+		setId(columnData.getId());
+		setHeader(columnData.getName());
+		setWidth(columnData.getWidth());
+		TextField<String> text = new TextField<String>();
+		text.setAllowBlank(columnData.isAllowBlank());
+		text.setMaxLength(columnData.getMaxLength());
+		setEditor(new CellEditor(text));
+	}
+
 	public NormalColumn(String id, String header, int width, int maxLength, boolean allowBlank) {
 		super();
 		setId(id);
