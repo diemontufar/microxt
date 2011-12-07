@@ -17,6 +17,7 @@ import mobile.web.webxt_mvc.client.form.NormalColumn;
 import mobile.web.webxt_mvc.client.resources.Resources;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -36,16 +37,16 @@ import com.google.gwt.user.client.Element;
 public class G101 extends LayoutContainer {
 
 	private final Integer PAGE_SIZE = 5;
+	
+	private final String process = "G101";
 
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-		// setLayout(new FlowLayout(10));
 		setLayout(new CenterLayout());
-		// getAriaSupport().setPresentation(true);
+		getAriaSupport().setPresentation(true);
 
 		// Config
-		String process = "A002";
 		String entity = "Parameter";
 
 		final ArrayColumnData cdata = new ArrayColumnData();
@@ -69,13 +70,19 @@ public class G101 extends LayoutContainer {
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
 		configs.add(new NormalColumn(cdata.get(0)));
-		configs.add(new NormalColumn(cdata.get(1)));
 
-		ComboColumn comboCol = new ComboColumn(cdata.get(2));
-		List<String> lFields = new ArrayList<String>();
-		lFields.add("dataTypeId");
-		lFields.add("description");
-		comboCol.setRqData("G101", "DataType", lFields);
+		ComboColumn comboCol = new ComboColumn(cdata.get(1));
+		ArrayColumnData cdataCombo = new ArrayColumnData();
+		cdataCombo.add(new MyColumnData("pk_subsystemId", "Sub", 40));
+		cdataCombo.add(new MyColumnData("name", "Nombre", 150));
+		comboCol.setRqData("Subsystem", cdataCombo);
+		configs.add(comboCol);
+		
+		comboCol = new ComboColumn(cdata.get(2));
+		cdataCombo = new ArrayColumnData();
+		cdataCombo.add(new MyColumnData("dataTypeId", "Tipo", 70));
+		cdataCombo.add(new MyColumnData("description", "Descripcion", 200));
+		comboCol.setRqData("DataType", cdataCombo);
 		configs.add(comboCol);
 
 		configs.add(new NormalColumn(cdata.get(3)));
@@ -111,8 +118,8 @@ public class G101 extends LayoutContainer {
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
-				// loader.load(0, PAGE_SIZE);
-				//store.sort(cdata.getIdFields().get(0), SortDir.ASC);
+				//loader.load(0, PAGE_SIZE);
+				store.sort(cdata.getIdFields().get(0), SortDir.ASC);
 			}
 		});
 
