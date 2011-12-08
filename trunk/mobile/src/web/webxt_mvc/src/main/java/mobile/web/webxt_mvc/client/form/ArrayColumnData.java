@@ -3,7 +3,7 @@ package mobile.web.webxt_mvc.client.form;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArrayColumnData extends ArrayList<MyColumnData> {
+public class ArrayColumnData extends ArrayList<ColumnDataInterface> {
 	public ArrayColumnData() {
 		super();
 	}

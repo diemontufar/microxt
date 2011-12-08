@@ -240,6 +240,9 @@ public class MyHttpProxy<D> implements DataProxy<D> {
 					}
 					item.addField(field);
 				}
+				if(modelData.get("_expire")!=null){
+					item.addField(new Field("_expire", "1"));
+				}
 				if(modelData.get("_isNew")!=null){
 					item.addField(new Field("_isNew", String.valueOf(modelData.get("_isNew"))));
 				}

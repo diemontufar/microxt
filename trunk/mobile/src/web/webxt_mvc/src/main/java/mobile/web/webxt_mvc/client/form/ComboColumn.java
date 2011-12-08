@@ -22,7 +22,7 @@ public class ComboColumn extends ColumnConfig {
 
 	private ArrayColumnData cdata;
 
-	public ComboColumn(MyColumnData columnData) {
+	public ComboColumn(ColumnDataInterface columnData) {
 		super();
 		setId(columnData.getId());
 		setHeader(columnData.getName());
@@ -96,7 +96,7 @@ public class ComboColumn extends ColumnConfig {
 		sb.append("<tr class=\"x-grid3-hd-row\" role=\"presentation\">");
 		width = 0;
 		for (int i = 0; i < cdata.size(); i++) {
-			MyColumnData columnData = cdata.get(i);
+			ColumnDataInterface columnData = cdata.get(i);
 			sb.append("<td class=\"x-grid3-header x-grid3-hd x-grid3-cell x-grid3-td-name \" role=\"presentation\" align=\"left\" style=\"\">");
 			sb.append("<div role=\"columnheader\" aria-haspopup=\"false\" class=\"x-grid3-hd-inner x-component\" style=\"width: "
 					+ columnData.getWidth()

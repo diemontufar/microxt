@@ -6,7 +6,7 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 
 public class NormalColumn extends ColumnConfig {
 	
-	public NormalColumn(MyColumnData columnData) {
+	public NormalColumn(ColumnDataInterface columnData) {
 		super();
 		setId(columnData.getId());
 		setHeader(columnData.getName());

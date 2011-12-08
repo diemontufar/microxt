@@ -53,6 +53,7 @@ public class G101 extends LayoutContainer {
 		cdata.add(new MyColumnData("dataTypeId", "Tipo", 70, 10, false));
 		cdata.add(new MyColumnData("parameterValue", "Valor", 100, 50, false));
 		cdata.add(new MyColumnData("description", "Descripcion", 200, 150,false));
+		cdata.add(new MyColumnData("description", "Descripcion", 200, 150,false));
 
 		MyProcessConfig config = new MyProcessConfig(process, entity,
 				cdata.getIdFields());
