@@ -1,7 +1,7 @@
 package mobile.web.webxt_mvc.client.components;
 
 import mobile.web.webxt_mvc.client.MobileConfig;
-import mobile.web.webxt_mvc.client.devform.A201;
+import mobile.web.webxt_mvc.client.devform.A202;
 import mobile.web.webxt_mvc.client.resources.Resources;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -22,8 +22,7 @@ public class FormPanel extends ContentPanel {
 			add(tabPanel);			
 		}else{
 			// Add here the tested form
-			//add(new EditableGrid2());
-			add(new A201());
+			add(new A202());
 		}
 
 	}

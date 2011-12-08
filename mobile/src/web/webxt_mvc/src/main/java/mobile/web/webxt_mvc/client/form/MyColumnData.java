@@ -3,7 +3,7 @@ package mobile.web.webxt_mvc.client.form;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 
 
-public class MyColumnData extends ColumnData{
+public class MyColumnData extends ColumnData implements ColumnDataInterface{
 	private int width;
 	
 	private int maxLength;
@@ -21,7 +21,7 @@ public class MyColumnData extends ColumnData{
 		this.maxLength = maxLength;
 		this.allowBlank = allowBlank;
 	}
-
+	
 	public String getId() {
 		return id;
 	}

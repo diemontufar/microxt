@@ -66,16 +66,16 @@ public class ProcessorTest{
 			// Message
 			Message msg = new Message();
 			Data header = new Data("header");
-			header.addField(new Field("proc", "G001"));
+			header.addField(new Field("proc", "A202"));
 			msg.addData(header);
 
-//			Data data = new Data("Parameter");
-//			data.addField(new Field("_type", "QRY"));
-//			data.addField(new Field("_qry_fields", "pk_parameterId;subsystemId;dataTypeId;parameterValue;description"));
-//			data.addField(new Field("_pag_offset", "0"));
-//			data.addField(new Field("_pag_limit", "10"));
-//			data.addField(new Field("_filters", "pk_parameterId::PARAM11"));
-//			msg.addData(data);
+			Data data = new Data("Role");
+			data.addField(new Field("_type", "QRY"));
+			data.addField(new Field("_qry_fields", "pk_profileId;editable"));
+			data.addField(new Field("_pag_offset", "0"));
+			data.addField(new Field("_pag_limit", "10"));
+			//data.addField(new Field("_filters", "pk_parameterId::PARAM11"));
+			msg.addData(data);
 
 			// Process
 			proc.process(msg);

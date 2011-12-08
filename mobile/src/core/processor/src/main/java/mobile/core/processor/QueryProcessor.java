@@ -191,11 +191,17 @@ public class QueryProcessor implements GeneralProcessor {
 			fieldCounter = 0;
 			for (String qryField : queryFields) {
 				Object resField = result[fieldCounter++];
-				Field field = new Field(qryField, resField.toString());
+				//Field field = new Field(qryField, resField.toString());
+				Field field = null;
+				if(resField.getClass().getSimpleName().compareTo("Boolean")==0){
+					field = new Field(qryField, "((Boolean))" + resField.toString());
+				}else{
+					field = new Field(qryField, resField.toString());
+				}
 				item.addField(field);
 			}
 			if (hasExpire) {
-				item.addField(new Field("_expire", ""));
+				item.addField(new Field("_expire", "((Boolean))false"));
 			}
 			data.addItem(item);
 		}

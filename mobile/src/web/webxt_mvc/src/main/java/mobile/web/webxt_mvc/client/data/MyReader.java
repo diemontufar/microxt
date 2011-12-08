@@ -51,20 +51,11 @@ public class MyReader<D> implements DataReader<D> {
 				ModelData model = new BaseModelData();
 				for (String strField : config.getlFields()) {
 					Field field = item.getField(strField);
-					// model.set(field.getName().substring(field.getName().lastIndexOf(".")+1),
-					// field.getValue().replaceAll("\"", ""));
-					
-					if (field.getName().compareTo("_expire") == 0) {
-						if (field.getValue().compareTo("") == 0
-								|| field.getValue().compareTo("0") == 0) {
-							model.set(field.getName(), false);
-						} else {
-							model.set(field.getName(), true);
-						}
+					if (field.getValue().startsWith("((Boolean))")) {
+						model.set(field.getName(), new Boolean(field.getValue()));
 					} else {
 						model.set(field.getName(), field.getValue());
 					}
-					
 				}
 				models.add(model);
 			}

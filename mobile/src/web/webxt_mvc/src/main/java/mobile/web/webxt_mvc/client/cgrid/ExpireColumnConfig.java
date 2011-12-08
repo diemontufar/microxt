@@ -6,7 +6,7 @@ import com.extjs.gxt.ui.client.widget.grid.CheckColumnConfig;
 
 public class ExpireColumnConfig extends CheckColumnConfig{
 	public ExpireColumnConfig() {
-		super("_expire", "Caducar", 60);
+		super("_expire", "Eliminar", 50);
 		CellEditor checkBoxEditor = new CellEditor(new CheckBox());
 		this.setEditor(checkBoxEditor);
 	}
