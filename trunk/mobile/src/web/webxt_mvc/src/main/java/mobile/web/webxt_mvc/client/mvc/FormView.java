@@ -5,8 +5,11 @@ import mobile.web.webxt_mvc.client.devform.A101;
 import mobile.web.webxt_mvc.client.devform.A102;
 import mobile.web.webxt_mvc.client.devform.A201;
 import mobile.web.webxt_mvc.client.devform.A202;
+import mobile.web.webxt_mvc.client.devform.A203;
+import mobile.web.webxt_mvc.client.devform.A204;
+import mobile.web.webxt_mvc.client.devform.A205;
+import mobile.web.webxt_mvc.client.devform.A206;
 import mobile.web.webxt_mvc.client.devform.G101;
-import mobile.web.webxt_mvc.shared.PositionWidget;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.EventType;
@@ -50,22 +53,25 @@ public class FormView extends View {
 		// Load the form  
 		String processId = process.get("id");
 		
-		
 		System.out.println(processId);
 		if(processId.compareTo("A101")==0){
 			// User status
-			tabItem.add(new A101()	);	
+			tabItem.add(new A101());	
 		}else if(processId.compareTo("A102")==0){
 			// Parameters
-			final A102 form = new A102();
-			PositionWidget positionwidget = new PositionWidget("TIPO DE USUARIOS");
-			positionwidget.add(form);
-			tabItem.add(positionwidget);		
-			
+			tabItem.add(new A102());		
 		}else if(processId.compareTo("A201")==0){
 			tabItem.add(new A201());	
 		}else if(processId.compareTo("A202")==0){
-			tabItem.add(new A202());	
+			tabItem.add(new A202());
+		}else if(processId.compareTo("A203")==0){
+			tabItem.add(new A203());
+		}else if(processId.compareTo("A204")==0){
+			tabItem.add(new A204());
+		}else if(processId.compareTo("A205")==0){
+			tabItem.add(new A205());
+		}else if(processId.compareTo("A206")==0){
+			tabItem.add(new A206());
 		}else if(processId.compareTo("G101")==0){
 			// Parameters
 			tabItem.add(new G101());	
