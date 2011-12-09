@@ -13,7 +13,6 @@
     <modules>
         <module>general</module>
         <module>person</module>
-        <module>coupon</module>
         <module>microxt</module>
     </modules>
 </project>
