@@ -1,13 +1,13 @@
 package mobile.core.processor;
 
 import mobile.core.common.Log;
-import mobile.core.message.Data;
-import mobile.core.message.Field;
-import mobile.core.message.Item;
-import mobile.core.message.Message;
 import mobile.entity.manager.JPManagerFactory;
 import mobile.entity.manager.util.LocalParameter;
 import mobile.entity.manager.util.ParameterEnum;
+import mobile.message.message.Data;
+import mobile.message.message.Field;
+import mobile.message.message.Item;
+import mobile.message.message.Message;
 
 import org.apache.log4j.Logger;
 import org.junit.After;

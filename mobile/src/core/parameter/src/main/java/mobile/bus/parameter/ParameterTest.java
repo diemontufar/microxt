@@ -1,8 +1,8 @@
 package mobile.bus.parameter;
 
 import mobile.core.common.Log;
-import mobile.core.message.Message;
 import mobile.core.structure.processor.GeneralProcessor;
+import mobile.message.message.Message;
 
 import org.apache.log4j.Logger;
 

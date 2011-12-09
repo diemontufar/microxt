@@ -14,15 +14,15 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import mobile.core.common.Log;
-import mobile.core.message.Data;
-import mobile.core.message.Field;
-import mobile.core.message.Message;
 import mobile.core.structure.processor.GeneralProcessor;
 import mobile.entity.manager.JPManager;
 import mobile.entity.manager.util.FormatDates;
 import mobile.entity.manager.util.LocalParameter;
 import mobile.entity.manager.util.ParameterEnum;
 import mobile.entity.security.ProcessComponent;
+import mobile.message.message.Data;
+import mobile.message.message.Field;
+import mobile.message.message.Message;
 
 import org.apache.log4j.Logger;
 

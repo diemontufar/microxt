@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mobile.core.common.Log;
-import mobile.core.message.Message;
-import mobile.core.message.Parser;
+import mobile.message.message.Message;
+import mobile.message.message.Parser;
 import mobile.core.processor.CoreProcessor;
 
 import org.apache.log4j.Logger;
