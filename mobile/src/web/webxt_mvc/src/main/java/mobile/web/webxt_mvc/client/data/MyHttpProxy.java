@@ -3,10 +3,10 @@ package mobile.web.webxt_mvc.client.data;
 import java.util.List;
 import java.util.Map;
 
-import mobile.web.message.Data;
-import mobile.web.message.Field;
-import mobile.web.message.Item;
-import mobile.web.message.Message;
+import mobile.message.wmessage.Data;
+import mobile.message.wmessage.Field;
+import mobile.message.wmessage.Item;
+import mobile.message.wmessage.Message;
 import mobile.web.webxt_mvc.client.data.MyProcessConfig.ProcessType;
 import mobile.web.webxt_mvc.client.windows.AlertDialog;
 
