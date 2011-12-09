@@ -6,8 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import mobile.core.common.Log;
 import mobile.entity.manager.util.FormatDates;
+import mobile.tools.common.Log;
 
 import org.apache.log4j.Logger;
 
