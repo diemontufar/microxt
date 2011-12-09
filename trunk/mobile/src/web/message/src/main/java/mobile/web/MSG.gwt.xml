@@ -1,7 +1,0 @@
-<!DOCTYPE module PUBLIC "//gwt-module/" "http://google-web-toolkit.googlecode.com/svn/tags/1.6.2/distro-source/core/src/gwt-module.dtd">
-
-<module rename-to="MSG">
-    <!-- Importamos el core de GWT -->
-	<inherits name='com.google.gwt.user.User'/>
-	<source path='message' />
-</module>
