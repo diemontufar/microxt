@@ -6,10 +6,11 @@
     <version>2.0</version>
     <name>MOBILE</name>
     <modules>
-        <module>core</module>
-        <module>entity</module>
+        <module>tools</module>
 	<module>message</module>
+        <module>core</module>
         <module>logic</module>
+        <module>entity</module>
         <module>web</module>
         <module>mis</module>
     </modules>
