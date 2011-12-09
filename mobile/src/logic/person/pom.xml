@@ -12,18 +12,13 @@
     <name>MOBILE LOGIC PERSON</name>
     <dependencies>
         <dependency>
-            <groupId>mobile.core</groupId>
-            <artifactId>mobile.core.common</artifactId>
+            <groupId>mobile.tools</groupId>
+            <artifactId>mobile.tools.common</artifactId>
             <version>2.0</version>
         </dependency>
         <dependency>
             <groupId>mobile.entity</groupId>
             <artifactId>mobile.entity.manager</artifactId>
-            <version>2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>mobile.entity</groupId>
-            <artifactId>mobile.entity.person</artifactId>
             <version>2.0</version>
         </dependency>
         <dependency>
