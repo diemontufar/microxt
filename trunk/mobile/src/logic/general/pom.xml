@@ -11,18 +11,18 @@
   <name>MOBILE LOGIC GENERAL</name>
   <dependencies>
   	<dependency>
-  		<groupId>mobile.core</groupId>
-  		<artifactId>mobile.core.structure</artifactId>
-  		<version>2.0</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>mobile.core</groupId>
-  		<artifactId>mobile.core.common</artifactId>
+  		<groupId>mobile.tools</groupId>
+  		<artifactId>mobile.tools.common</artifactId>
   		<version>2.0</version>
   	</dependency>
   	<dependency>
   		<groupId>mobile.message</groupId>
-  		<artifactId>mobile.message.message</artifactId>
+  		<artifactId>mobile.message.cmessage</artifactId>
+  		<version>2.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>mobile.core</groupId>
+  		<artifactId>mobile.core.structure</artifactId>
   		<version>2.0</version>
   	</dependency>
   	<dependency>

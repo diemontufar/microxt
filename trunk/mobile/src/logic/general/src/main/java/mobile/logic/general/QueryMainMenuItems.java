@@ -12,10 +12,10 @@ import mobile.entity.manager.util.ParameterEnum;
 import mobile.entity.manager.util.PersistenceTime;
 import mobile.entity.security.Module;
 import mobile.entity.security.Subsystem;
-import mobile.message.message.Data;
-import mobile.message.message.Field;
-import mobile.message.message.Item;
-import mobile.message.message.Message;
+import mobile.message.cmessage.Data;
+import mobile.message.cmessage.Field;
+import mobile.message.cmessage.Item;
+import mobile.message.cmessage.Message;
 
 public class QueryMainMenuItems implements GeneralProcessor {
 
