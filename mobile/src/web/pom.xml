@@ -13,7 +13,6 @@
     <modules>
         <!--<module>webxt</module>-->
     	<module>webxt_mvc</module>
-        <module>message</module>
         <!--<module>console</module>-->
     </modules>
 </project>
