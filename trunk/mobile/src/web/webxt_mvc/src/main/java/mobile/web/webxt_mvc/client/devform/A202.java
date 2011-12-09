@@ -55,7 +55,6 @@ public class A202 extends LayoutContainer {
 		cdata.add(new MyColumnData("pk_subsystemId", "Sub", 50, 2, false));
 		cdata.add(new MyColumnData("pk_moduleId", "Mod", 50, 2, false));
 		cdata.add(new MyColumnData("pk_processId", "Pro", 50, 2, false));
-		cdata.add(new MyColumnData("pk_subsystemId", "Sub", 50, 2, false));
 		cdata.add(new MyColumnData("pk_dayId", "Día", 50, 3, false));
 		cdata.add(new MyColumnData("hourFrom", "Hora desde", 100, 150, true));
 		cdata.add(new MyColumnData("hourTo", "Hora hasta", 100, 150, true));
@@ -81,10 +80,10 @@ public class A202 extends LayoutContainer {
 		comboCol.setRqData("Profile", cdataCombo);
 		configs.add(comboCol);
 
-		//configs.add(new NormalColumn(cdata.get(1)));
-		NormalColumn c = new NormalColumn(cdata.get(1));
-		c.setHidden(true);
-		configs.add(c);
+		configs.add(new NormalColumn(cdata.get(1)));
+//		NormalColumn c = new NormalColumn(cdata.get(1));
+//		c.setHidden(true);
+//		configs.add(c);
 		configs.add(new NormalColumn(cdata.get(2)));
 		configs.add(new NormalColumn(cdata.get(3)));
 		configs.add(new NormalColumn(cdata.get(4)));

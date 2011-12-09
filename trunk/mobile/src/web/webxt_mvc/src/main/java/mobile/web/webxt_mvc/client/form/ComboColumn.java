@@ -7,8 +7,7 @@ import mobile.web.webxt_mvc.client.data.MyProcessConfig;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
-import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
-import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 
@@ -16,24 +15,15 @@ public class ComboColumn extends ColumnConfig {
 
 	private int pageSize = 0;
 
-	private String process = "G201";
+	private String process = "G201"; // General process for list of values
 
-	private int width = 0;
-
-	private ArrayColumnData cdata;
+	private int width = 0; // Calculated from cdata
 
 	public ComboColumn(ColumnDataInterface columnData) {
-		super();
-		setId(columnData.getId());
-		setHeader(columnData.getName());
-		setWidth(columnData.getWidth());
-		TextField<String> text = new TextField<String>();
-		text.setAllowBlank(columnData.isAllowBlank());
-		text.setMaxLength(columnData.getMaxLength());
+		super(columnData.getId(),columnData.getName(),columnData.getWidth());
 	}
 
 	public void setRqData(String entity, ArrayColumnData cdata) {
-		this.cdata = cdata;
 		CellEditor editor = getComboEditor(process, entity, cdata);
 		setEditor(editor);
 	}
@@ -52,10 +42,10 @@ public class ComboColumn extends ColumnConfig {
 		final MyComboBox<ModelData> combo = new MyComboBox<ModelData>();
 
 		combo.setForceSelection(true);
-		combo.setTriggerAction(TriggerAction.ALL);
+		//combo.setTriggerAction(TriggerAction.ALL);
 		combo.setDisplayField(cdata.getIdFields().get(0));
 		combo.setStore(store);
-		combo.setTemplate(getTemplate());
+		combo.setTemplate(getTemplate(cdata));
 		combo.setMinListWidth(width);
 		combo.setPageSize(pageSize);
 
@@ -82,12 +72,26 @@ public class ComboColumn extends ColumnConfig {
 				}
 				return ((ModelData) value).get(cdata.getIdFields().get(0));
 			}
+			
+			@Override
+			public void completeEdit() {
+				super.completeEdit();
+				Info.display("Evento","Se disparo el evento");
+			}
 		};
+		
+//		Listener<FieldEvent> listener = new Listener<FieldEvent>() {
+//		      public void handleEvent(FieldEvent fe) {
+//		    	  Info.display("Evento","Se disparo el evento");
+//		      }
+//		    };
+//		    
+//		editor.addListener(Events.Complete, listener); 
 
 		return editor;
 	}
 
-	private String getTemplate() {
+	private String getTemplate(final ArrayColumnData cdata) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("<table cellpadding=\"10\" cellspacing=\"0\" role=\"presentation\" class=\"x-component\">");
