@@ -8,11 +8,11 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
-import mobile.core.common.FileUtil;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityTable;
 import mobile.entity.common.EntityTablePk;
 import mobile.entity.manager.JPManager;
+import mobile.tools.common.FileUtil;
 
 enum EntityType {
 	ENTITY, ENTITY_ID

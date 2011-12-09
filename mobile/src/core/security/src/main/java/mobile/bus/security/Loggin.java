@@ -1,15 +1,15 @@
 package mobile.bus.security;
 
-import mobile.core.common.Log;
 import mobile.core.structure.processor.GeneralProcessor;
 import mobile.entity.manager.JPManager;
 import mobile.entity.security.UserAccess;
 import mobile.entity.security.UserAccessPk;
 import mobile.entity.security.UserAccount;
 import mobile.entity.security.UserAccountPk;
-import mobile.message.message.Data;
-import mobile.message.message.Field;
-import mobile.message.message.Message;
+import mobile.message.cmessage.Data;
+import mobile.message.cmessage.Field;
+import mobile.message.cmessage.Message;
+import mobile.tools.common.Log;
 
 import org.apache.log4j.Logger;
 

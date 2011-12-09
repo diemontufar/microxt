@@ -12,8 +12,8 @@
     <name>MOBILE CORE GENERATOR</name>
     <dependencies>
         <dependency>
-            <groupId>mobile.core</groupId>
-            <artifactId>mobile.core.common</artifactId>
+            <groupId>mobile.tools</groupId>
+            <artifactId>mobile.tools.common</artifactId>
             <version>2.0</version>
         </dependency>
         <dependency>
