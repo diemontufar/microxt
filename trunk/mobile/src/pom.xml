@@ -8,9 +8,10 @@
     <modules>
         <module>core</module>
         <module>entity</module>
+	<module>message</module>
         <module>logic</module>
-        <module>mis</module>
         <module>web</module>
+        <module>mis</module>
     </modules>
     <build>
         <plugins>
