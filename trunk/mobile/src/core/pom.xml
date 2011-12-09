@@ -11,8 +11,6 @@
     <version>2.0</version>
     <name>MOBILE CORE</name>
     <modules>
-        <module>common</module>
-	<module>tools</module>
         <module>processor</module>
         <module>generator</module>
         <module>server</module>

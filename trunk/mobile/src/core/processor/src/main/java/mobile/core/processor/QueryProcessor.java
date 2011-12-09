@@ -5,17 +5,17 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import mobile.core.common.Log;
 import mobile.core.structure.processor.GeneralProcessor;
 import mobile.entity.common.EntityTable;
 import mobile.entity.manager.JPManager;
 import mobile.entity.manager.util.LocalParameter;
 import mobile.entity.manager.util.ParameterEnum;
 import mobile.entity.manager.util.PersistenceTime;
-import mobile.message.message.Data;
-import mobile.message.message.Field;
-import mobile.message.message.Item;
-import mobile.message.message.Message;
+import mobile.message.cmessage.Data;
+import mobile.message.cmessage.Field;
+import mobile.message.cmessage.Item;
+import mobile.message.cmessage.Message;
+import mobile.tools.common.Log;
 
 import org.apache.log4j.Logger;
 

@@ -12,8 +12,8 @@
     <name>MOBILE CORE PARAMETER</name>
     <dependencies>
         <dependency>
-            <groupId>mobile.core</groupId>
-            <artifactId>mobile.core.common</artifactId>
+            <groupId>mobile.tools</groupId>
+            <artifactId>mobile.tools.common</artifactId>
             <version>2.0</version>
         </dependency>
         <dependency>
@@ -22,9 +22,9 @@
             <version>2.0</version>
         </dependency>
         <dependency>
-            <groupId>mobile.entity</groupId>
-            <artifactId>mobile.entity.parameter</artifactId>
-            <version>2.0</version>
+        	<groupId>mobile.core</groupId>
+        	<artifactId>mobile.core.structure</artifactId>
+        	<version>2.0</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
@@ -36,11 +36,6 @@
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-        	<groupId>mobile.core</groupId>
-        	<artifactId>mobile.core.structure</artifactId>
-        	<version>2.0</version>
         </dependency>
     </dependencies>
 </project>

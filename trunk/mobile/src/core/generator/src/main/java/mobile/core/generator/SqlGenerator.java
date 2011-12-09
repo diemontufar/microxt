@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import mobile.core.common.FileUtil;
+import mobile.tools.common.FileUtil;
 import mobile.entity.common.DatabaseType;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityFieldPk;

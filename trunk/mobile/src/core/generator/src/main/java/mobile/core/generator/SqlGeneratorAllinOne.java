@@ -9,13 +9,14 @@ import java.util.Map;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import mobile.core.common.FileUtil;
 import mobile.entity.common.DatabaseType;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityFieldPk;
 import mobile.entity.common.EntityRelationship;
 import mobile.entity.common.EntityTable;
 import mobile.entity.manager.JPManager;
+import mobile.tools.common.FileUtil;
+
 
 public class SqlGeneratorAllinOne {
 
