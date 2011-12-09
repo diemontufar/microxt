@@ -73,6 +73,7 @@ public class MyReader<D> implements DataReader<D> {
 
 		} catch (Exception e) {
 			new AlertDialog("MyReader", e.getMessage()).show();
+			e.printStackTrace();
 		}
 		
 		return (D) paginatedModels;
