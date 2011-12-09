@@ -15,7 +15,6 @@
 	<module>tools</module>
         <module>processor</module>
         <module>generator</module>
-        <module>message</module>
         <module>server</module>
 	<module>structure</module>
 	<module>security</module>
