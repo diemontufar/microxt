@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 
 import mobile.core.common.Log;
-import mobile.core.message.Item;
 import mobile.entity.common.EntityTable;
 import mobile.entity.common.EntityTablePk;
 import mobile.entity.manager.util.EntityConvertManager;
@@ -24,6 +23,7 @@ import mobile.entity.schema.HistoricalKey;
 import mobile.entity.schema.MulticompanyKey;
 import mobile.entity.schema.MultilanguageKey;
 import mobile.entity.schema.OptimisticLocking;
+import mobile.message.message.Item;
 
 import org.apache.log4j.Logger;
 
@@ -503,8 +503,8 @@ public class JPManager {
 			if (classField.getName().compareTo("pk") == 0) {
 				// Parse embedded pk
 				// Separate pk fields
-				List<mobile.core.message.Field> pkFields = new ArrayList<mobile.core.message.Field>();
-				for (mobile.core.message.Field itemField : item.getFieldList()) {
+				List<mobile.message.message.Field> pkFields = new ArrayList<mobile.message.message.Field>();
+				for (mobile.message.message.Field itemField : item.getFieldList()) {
 					if (itemField.getName().startsWith("pk_")) {
 						pkFields.add(itemField);
 					}
@@ -573,7 +573,7 @@ public class JPManager {
 	}
 
 	private static GeneralEntityKey parsePk(Class<?> entityKeyClass,
-			List<mobile.core.message.Field> pkFields) throws Exception {
+			List<mobile.message.message.Field> pkFields) throws Exception {
 		// Instantiate object
 		Object pk = entityKeyClass.newInstance();
 
@@ -583,7 +583,7 @@ public class JPManager {
 				continue;
 			}
 
-			mobile.core.message.Field itemField = getField(field.getName(),
+			mobile.message.message.Field itemField = getField(field.getName(),
 					pkFields);
 			if (itemField != null) {
 				Method setterMethod = entityKeyClass.getMethod("set"
@@ -598,9 +598,9 @@ public class JPManager {
 		return (GeneralEntityKey) pk;
 	}
 
-	private static mobile.core.message.Field getField(String name,
-			List<mobile.core.message.Field> lField) {
-		for (mobile.core.message.Field field : lField) {
+	private static mobile.message.message.Field getField(String name,
+			List<mobile.message.message.Field> lField) {
+		for (mobile.message.message.Field field : lField) {
 			if ((field.getName().compareTo("pk_"+name)) == 0) {
 				return field;
 			}
