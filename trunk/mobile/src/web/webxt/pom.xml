@@ -14,7 +14,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>mobile.message</groupId>
-			<artifactId>mobile.message.message</artifactId>
+			<artifactId>mobile.message.wmessage</artifactId>
 			<version>2.0</version>
 		</dependency>
 		<dependency>
