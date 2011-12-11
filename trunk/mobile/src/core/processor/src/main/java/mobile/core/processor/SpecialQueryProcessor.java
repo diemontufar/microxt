@@ -24,7 +24,7 @@ import mobile.tools.common.convertion.ConvertionManager;
 
 import org.apache.log4j.Logger;
 
-public class QueryProcessor implements GeneralProcessor {
+public class SpecialQueryProcessor implements GeneralProcessor {
 	private final Logger log = Log.getInstance();
 
 	private final String F_QRY_FIELDS = "_qry_fields";
@@ -48,34 +48,19 @@ public class QueryProcessor implements GeneralProcessor {
 		for (Data data : msg.getDataList()) {
 			if (data.getField("_type") != null
 					&& data.getField("_type").getValue().compareTo("QRY") == 0) {
-				if(decideProcessor(data)==0){
-					processQuery(data);
-				}else{
-					SpecialQueryProcessor specialProc = new SpecialQueryProcessor();
-					specialProc.processQuery(data);
-				}
+				processQuery(data);
 			}
 		}
 
 		return msg;
 	}
 		
-	private int decideProcessor(Data data) {
-		Field qryFields = data.getField(F_QRY_FIELDS);
-		if(qryFields!=null
-				&& qryFields.getValue()!=null
-				&& qryFields.getValue().indexOf("d:")>0){
-			return 1;
-		}
-		return 0;
-	}
-
 	@SuppressWarnings("rawtypes")
-	private void processQuery(Data data) throws Exception {
+	public void processQuery(Data data) throws Exception {
 		StringBuilder sql = new StringBuilder();
 
 		// Build query
-		sql.append("Select ");
+		sql.append("SELECT ");
 
 		// Query fields
 		List<String> queryFields = new ArrayList<String>();
@@ -85,25 +70,32 @@ public class QueryProcessor implements GeneralProcessor {
 				&& data.getField(F_QRY_FIELDS).getValue() != null) {
 			for (String strField : data.getField(F_QRY_FIELDS).getValue()
 					.split(";")) {
+				// Expire fields
 				if (strField.compareTo("_expire") == 0) {
 					hasExpire = true;
 					continue;
 				}
+				// Description field
+				if (strField.startsWith("d:")) {
+					createInnerSelect(sql, queryFields, fieldCounter, strField);
+					continue;
+				}
+				
 				queryFields.add(strField);
 				if (fieldCounter > 0) {
 					sql.append(", ");
 				}
-				sql.append("a." + strField.replaceAll("pk_", "pk."));
+				sql.append("a." + toSqlName(strField.replaceAll("pk_", "")) );
 				fieldCounter++;
 			}
 		}
 
 		// From
-		sql.append(" from " + data.getId() + " a");
+		sql.append(" from " + toSqlName(data.getId()) + " a");
 
 		//Get fields information
 		Map<String,String> mtypes = getMapTypeFields(data.getId());
-		
+				
 		// Filters
 		List<Object> lParameters = new ArrayList<Object>();
 		int filtersCounter = 0;
@@ -119,7 +111,7 @@ public class QueryProcessor implements GeneralProcessor {
 				String[] part = filter.split(":");
 				if (part[1] == null
 						|| (part[1] != null && part[1].compareTo("") == 0)) {
-					sql.append("a." + part[0].replaceAll("pk_", "pk.")
+					sql.append("a." + part[0].replaceAll("pk_", "")
 							+ " like ?" + (filtersCounter + 1));
 					lParameters.add(part[2] + "%");
 				}else{
@@ -146,7 +138,7 @@ public class QueryProcessor implements GeneralProcessor {
 			if (filtersCounter > 0) {
 				sql.append(" and ");
 			}
-			sql.append("a.pk.expired = ?" + (filtersCounter + 1));
+			sql.append("a.EXPIRED = ?" + (filtersCounter + 1));
 			lParameters.add(PersistenceTime.getExpiredTime());
 			filtersCounter++;
 		}
@@ -157,7 +149,7 @@ public class QueryProcessor implements GeneralProcessor {
 			if (filtersCounter > 0) {
 				sql.append(" and ");
 			}
-			sql.append("a.pk.companyId = ?" + (filtersCounter + 1));
+			sql.append("a.COMPANY_ID = ?" + (filtersCounter + 1));
 			lParameters.add(LocalParameter.get(ParameterEnum.COMPANY,
 					String.class));
 			filtersCounter++;
@@ -168,8 +160,8 @@ public class QueryProcessor implements GeneralProcessor {
 				&& data.getField(F_ORDER).getValue() != null) {
 			sql.append(" order by "
 					+ "a."
-					+ data.getField(F_ORDER).getValue()
-							.replaceAll("pk_", "pk."));
+					+ toSqlName(data.getField(F_ORDER).getValue().replaceAll("pk_", ""))
+							.replaceAll("pk_", ""));
 			if (data.getField(F_ORDER_DIR) != null
 					&& data.getField(F_ORDER_DIR).getValue() != null
 					&& data.getField(F_ORDER_DIR).getValue()
@@ -180,7 +172,7 @@ public class QueryProcessor implements GeneralProcessor {
 
 		// Query
 		log.info("Query: " + sql.toString());
-		Query query = JPManager.getEntityManager().createQuery(sql.toString());
+		Query query = JPManager.getEntityManager().createNativeQuery(sql.toString());
 
 		// Set parameters
 		filtersCounter = 0;
@@ -191,7 +183,7 @@ public class QueryProcessor implements GeneralProcessor {
 
 		// Get result
 		List results = query.getResultList();
-
+		
 		// Pagination:
 		int totalLength = results.size();
 
@@ -212,7 +204,11 @@ public class QueryProcessor implements GeneralProcessor {
 			limit = Math.min(offset + limit, totalLength);
 		}
 
+		//-----------------------------------------------------------------------
+		// Fill items
+		//-----------------------------------------------------------------------
 		int itemCounter = 1;
+		
 		for (int i = offset; i < limit; i++) {
 			Item item = new Item(itemCounter++);
 
@@ -222,8 +218,9 @@ public class QueryProcessor implements GeneralProcessor {
 			for (String qryField : queryFields) {
 				Object resField = result[fieldCounter++];
 				Field field = null;
-				if(resField.getClass().getSimpleName().compareTo("Boolean")==0){
-					field = new Field(qryField, "((Boolean))" + resField.toString());
+				
+				if(mtypes.get(qryField)!=null && mtypes.get(qryField).compareTo("Boolean")==0){
+					field = new Field(qryField, "((Boolean))" + "false");
 				}else{
 					field = new Field(qryField, resField.toString());
 				}
@@ -241,7 +238,7 @@ public class QueryProcessor implements GeneralProcessor {
 			data.addField(new Field(F_TOTAL_LENGTH, String.valueOf(totalLength)));
 		}
 	}
-	
+
 	private Map<String, String> getMapTypeFields(String id) {
 		String SQL_FIELDS = "Select f from EntityField f where f.pk.tableId=:tableId";
 		
@@ -263,6 +260,62 @@ public class QueryProcessor implements GeneralProcessor {
 		return mtypefields;
 	}
 
+	private void createInnerSelect(StringBuilder sql, List<String> queryFields,
+			int fieldCounter, String strField) throws Exception {
+		
+		String[] props =  strField.split(":");
+		String id = props[1];
+		String entity = props[2];
+		String field = props[3];
+		List<String> lfilter = new ArrayList<String>();
+		for (int i = 4; i < props.length; i++) {
+			lfilter.add(props[i]);
+		}
+		
+		if(fieldCounter>0){
+			sql.append(", ");
+		}
+		fieldCounter++;
+		
+		sql.append("(Select ");
+		
+		queryFields.add(id);
+		sql.append("b." + toSqlName(field.replaceAll("pk_", "")));
+		
+		// From
+		sql.append(" from " + toSqlName(entity) + " b");
+
+		// Filters
+		sql.append(" where ");
+		int filtersCounter = 0;
+		for (String filter : lfilter) {
+			if (filtersCounter > 0) {
+				sql.append(" and ");
+			}
+			sql.append("b." + toSqlName(filter.replaceAll("pk_", "")) + "=a." + toSqlName(filter.replaceAll("pk_", "")));
+			filtersCounter++;
+		}
+
+		// Automatic filters
+		EntityTable entityTable = JPManager.getEntityTable(entity);
+		if (entityTable.getHistoricalData()) {
+			if (filtersCounter > 0) {
+				sql.append(" and ");
+			}
+			sql.append("b.EXPIRED = '9999-12-31' ");
+			filtersCounter++;
+		}
+		if (entityTable.getMultiCompany()) {
+			if (filtersCounter > 0) {
+				sql.append(" and ");
+			}
+			sql.append("b.COMPANY_ID = '" + LocalParameter.get(ParameterEnum.COMPANY, String.class) + "' ");
+			filtersCounter++;
+		}
+		
+		sql.append(")");
+	}
+	
 	public String toSqlName(String name) {
 		String sqlName = "";
 

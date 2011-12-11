@@ -81,6 +81,7 @@ public class CoreProcessor {
 
 		log.info("Output message: \n"
 				+ formatXml(msg.toXML(), 2));
+
 		return msg;
 	}
 
