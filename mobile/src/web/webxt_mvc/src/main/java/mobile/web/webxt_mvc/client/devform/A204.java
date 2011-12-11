@@ -15,11 +15,8 @@ import mobile.web.webxt_mvc.client.form.ComboColumn;
 import mobile.web.webxt_mvc.client.form.EntityContentPanel;
 import mobile.web.webxt_mvc.client.form.EntityEditorGrid;
 import mobile.web.webxt_mvc.client.form.MyColumnData;
-import mobile.web.webxt_mvc.client.form.NormalColumn;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
-import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -54,11 +51,10 @@ private final Integer PAGE_SIZE = 5;
 		MyProcessConfig config = new MyProcessConfig(process, entity,cdata.getIdFields());
 		
 		// Proxy - loader - store
-		MyHttpProxy<PagingLoadResult<ModelData>> proxy = new MyHttpProxy<PagingLoadResult<ModelData>>();
-		final MyPagingLoader<PagingLoadResult<ModelData>> loader = new MyPagingLoader<PagingLoadResult<ModelData>>(
-				proxy, config);
-		final MyListStore<ModelData> store = new MyListStore<ModelData>(loader);
-
+		MyHttpProxy proxy = new MyHttpProxy();
+		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
+		final MyListStore store = new MyListStore(loader);
+		
 		// Column model
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 

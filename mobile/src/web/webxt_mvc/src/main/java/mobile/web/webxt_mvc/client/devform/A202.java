@@ -16,11 +16,11 @@ import mobile.web.webxt_mvc.client.form.ComboColumn;
 import mobile.web.webxt_mvc.client.form.EntityContentPanel;
 import mobile.web.webxt_mvc.client.form.EntityEditorGrid;
 import mobile.web.webxt_mvc.client.form.MyColumnData;
+import mobile.web.webxt_mvc.client.form.MyColumnData.ColumnType;
 import mobile.web.webxt_mvc.client.form.NormalColumn;
+import mobile.web.webxt_mvc.client.form.SpecialComboColumn;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
-import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -51,51 +51,78 @@ public class A202 extends LayoutContainer {
 
 		// Process configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_profileId", "Rol", 100, 4, false));
-		cdata.add(new MyColumnData("pk_subsystemId", "Sub", 50, 2, false));
-		cdata.add(new MyColumnData("pk_moduleId", "Mod", 50, 2, false));
-		cdata.add(new MyColumnData("pk_processId", "Pro", 50, 2, false));
+		cdata.add(new MyColumnData("pk_profileId", "Rol", 70, 4, false));
+		MyColumnData procDesc = new MyColumnData("process_url", "Proceso", 70,
+				4, false, ColumnType.DESC);
+		procDesc.setDescriptionFields("Process", "url",
+				"pk_subsystemId:pk_moduleId:pk_processId");
+		cdata.add(procDesc);
+		// cdata.add(new MyColumnData("pk_subsystemId", "Sub", 30, 2, false));
+		// cdata.add(new MyColumnData("pk_moduleId", "Mod", 30, 2, false));
+		// cdata.add(new MyColumnData("pk_processId", "Pro", 30, 2, false));
+		cdata.add(new MyColumnData("pk_subsystemId", ColumnType.HIDDEN));
+		cdata.add(new MyColumnData("pk_moduleId", ColumnType.HIDDEN));
+		cdata.add(new MyColumnData("pk_processId", ColumnType.HIDDEN));
 		cdata.add(new MyColumnData("pk_dayId", "Día", 50, 3, false));
 		cdata.add(new MyColumnData("hourFrom", "Hora desde", 100, 150, true));
 		cdata.add(new MyColumnData("hourTo", "Hora hasta", 100, 150, true));
 		cdata.add(new MyColumnData("editable", "Editable", 60, 10, false));
 
 		MyProcessConfig config = new MyProcessConfig(process, entity,
-				cdata.getIdFields());
+				cdata.getRqFields());
 
 		// Proxy - loader - store
-		MyHttpProxy<PagingLoadResult<ModelData>> proxy = new MyHttpProxy<PagingLoadResult<ModelData>>();
-		final MyPagingLoader<PagingLoadResult<ModelData>> loader = new MyPagingLoader<PagingLoadResult<ModelData>>(
-				proxy, config);
-		final MyListStore<ModelData> store = new MyListStore<ModelData>(loader);
+		MyHttpProxy proxy = new MyHttpProxy();
+		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
+		final MyListStore store = new MyListStore(loader);
 
 		// Column model
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
+		// Combo profile
 		ComboColumn comboCol = new ComboColumn(cdata.get(0));
 		ArrayColumnData cdataCombo = new ArrayColumnData();
 		cdataCombo.add(new MyColumnData("pk_profileId", "Rol", 70));
-		cdataCombo.add(new MyColumnData("name", "Nombre", 150));
-		cdataCombo.add(new MyColumnData("description", "Descripción", 200));
+		cdataCombo.add(new MyColumnData("name", "Nombre", 200));
 		comboCol.setRqData("Profile", cdataCombo);
 		configs.add(comboCol);
 
-		configs.add(new NormalColumn(cdata.get(1)));
-//		NormalColumn c = new NormalColumn(cdata.get(1));
-//		c.setHidden(true);
-//		configs.add(c);
+		// Combo process
+		SpecialComboColumn spcComboCol = new SpecialComboColumn(cdata.get(1));
+		spcComboCol.setPageSize(10);
+		cdataCombo = new ArrayColumnData();
+		cdataCombo.add(new MyColumnData("url", "Proceso", 70));
+		cdataCombo.add(new MyColumnData("name", "Nombre	", 200));
+		MyColumnData hidden = new MyColumnData("pk_subsystemId",
+				ColumnType.HIDDEN);
+		hidden.setAssociatedField("pk_subsystemId");
+		cdataCombo.add(hidden);
+		hidden = new MyColumnData("pk_moduleId", ColumnType.HIDDEN);
+		hidden.setAssociatedField("pk_moduleId");
+		cdataCombo.add(hidden);
+		hidden = new MyColumnData("pk_processId", ColumnType.HIDDEN);
+		hidden.setAssociatedField("pk_processId");
+		cdataCombo.add(hidden);
+		spcComboCol.setRqData("Process", cdataCombo);
+		spcComboCol.setFilter("enable", "1");
+		spcComboCol.setFilter("menu", "1");
+		configs.add(spcComboCol);
+
 		configs.add(new NormalColumn(cdata.get(2)));
 		configs.add(new NormalColumn(cdata.get(3)));
 		configs.add(new NormalColumn(cdata.get(4)));
+
 		configs.add(new NormalColumn(cdata.get(5)));
 		configs.add(new NormalColumn(cdata.get(6)));
-		configs.add(new CheckColumn(cdata.get(7)));
+		configs.add(new NormalColumn(cdata.get(7)));
+		configs.add(new CheckColumn(cdata.get(8)));
+
 		configs.add(new ExpireColumnConfig());
 
 		ColumnModel cm = new ColumnModel(configs);
 
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Procesos por rol", 600,
+		EntityContentPanel cp = new EntityContentPanel("Procesos por rol", 500,
 				340);
 
 		// Grid

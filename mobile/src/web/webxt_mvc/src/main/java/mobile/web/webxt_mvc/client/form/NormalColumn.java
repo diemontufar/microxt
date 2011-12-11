@@ -1,5 +1,7 @@
 package mobile.web.webxt_mvc.client.form;
 
+import mobile.web.webxt_mvc.client.form.MyColumnData.ColumnType;
+
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -15,6 +17,16 @@ public class NormalColumn extends ColumnConfig {
 		text.setAllowBlank(columnData.isAllowBlank());
 		text.setMaxLength(columnData.getMaxLength());
 		setEditor(new CellEditor(text));
+		
+		//Hidden
+		setHidden(columnData);
+		
+	}
+	
+	private void setHidden(ColumnDataInterface columnData) {
+		if(columnData.getColumnType()==ColumnType.HIDDEN){
+			setHidden(true);
+		}
 	}
 
 	public NormalColumn(String id, String header, int width, int maxLength, boolean allowBlank) {

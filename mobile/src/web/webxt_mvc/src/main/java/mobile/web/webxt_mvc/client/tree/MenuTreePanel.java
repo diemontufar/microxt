@@ -66,7 +66,7 @@ public class MenuTreePanel extends LayoutContainer {
 					}
 				};
 				MyProcessConfig config = new MyProcessConfig("G001");
-				MyHttpProxy<Message> proxy = new MyHttpProxy<Message>();
+				MyHttpProxy proxy = new MyHttpProxy();
 				proxy.requestMsg(config, callback);
 				return true;
 			}

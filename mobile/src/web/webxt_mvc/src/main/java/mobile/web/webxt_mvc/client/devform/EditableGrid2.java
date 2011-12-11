@@ -15,7 +15,6 @@ import mobile.web.webxt_mvc.client.resources.Resources;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -57,11 +56,10 @@ public class EditableGrid2 extends LayoutContainer {
 		MyProcessConfig config = new MyProcessConfig(process, entity, lfields);
 		
 		// Proxy - loader - store
-		MyHttpProxy<PagingLoadResult<ModelData>> proxy = new MyHttpProxy<PagingLoadResult<ModelData>>();
-		final MyPagingLoader<PagingLoadResult<ModelData>> loader = new MyPagingLoader<PagingLoadResult<ModelData>>(
-				proxy, config);
-		final MyListStore<ModelData> store = new MyListStore<ModelData>(loader);
-
+		MyHttpProxy proxy = new MyHttpProxy();
+		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
+		final MyListStore store = new MyListStore(loader);
+		
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
@@ -186,11 +184,10 @@ public class EditableGrid2 extends LayoutContainer {
 		// Proxy - Loader - Store
 		final MyProcessConfig config = new MyProcessConfig(process, entity,
 				lfields);
-		final MyHttpProxy<PagingLoadResult<ModelData>> proxy = new MyHttpProxy<PagingLoadResult<ModelData>>();
-		final MyPagingLoader<PagingLoadResult<ModelData>> loader = new MyPagingLoader<PagingLoadResult<ModelData>>(
-				proxy, config);
-		final MyListStore<ModelData> store = new MyListStore<ModelData>(loader);
-
+		MyHttpProxy proxy = new MyHttpProxy();
+		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
+		final MyListStore store = new MyListStore(loader);
+		
 		// Combo
 		final ComboBox<ModelData> combo = new ComboBox<ModelData>() {
 			// @SuppressWarnings("unchecked")

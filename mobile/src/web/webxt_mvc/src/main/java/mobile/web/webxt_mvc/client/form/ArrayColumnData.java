@@ -3,6 +3,8 @@ package mobile.web.webxt_mvc.client.form;
 import java.util.ArrayList;
 import java.util.List;
 
+import mobile.web.webxt_mvc.client.form.MyColumnData.ColumnType;
+
 public class ArrayColumnData extends ArrayList<ColumnDataInterface> {
 	public ArrayColumnData() {
 		super();
@@ -17,4 +19,24 @@ public class ArrayColumnData extends ArrayList<ColumnDataInterface> {
 		}
 		return lIdFields;
 	}
+
+	public List<String> getRqFields() {
+		List<String> lQryFields = new ArrayList<String>();
+		for (int i = 0; i < this.size(); i++) {
+			ColumnDataInterface column = get(i);
+
+			if (column.getColumnType() == null
+					|| (column.getColumnType() != null && column
+							.getColumnType() != ColumnType.DESC)) {
+				lQryFields.add(column.getId());
+			} else {
+				lQryFields.add("d:" + column.getId() + ":" 
+						+ column.getDescriptionEntity() + ":"
+						+ column.getDescriptionField() + ":"
+						+ column.getDescriptionCriterion());
+			}
+		}
+		return lQryFields;
+	}
+
 }

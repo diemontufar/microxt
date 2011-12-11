@@ -15,6 +15,7 @@ import com.extjs.gxt.ui.client.data.DataReader;
 import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -22,7 +23,7 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public class MyHttpProxy<D> implements DataProxy<D> {
+public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 	protected RequestBuilder builder;
 
@@ -54,7 +55,7 @@ public class MyHttpProxy<D> implements DataProxy<D> {
 
 	private final String F_FILTERS = "_filters";
 
-	private final MyReader<D> reader;
+	private final MyReader reader;
 
 	public MyHttpProxy() {
 		builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
@@ -62,18 +63,15 @@ public class MyHttpProxy<D> implements DataProxy<D> {
 
 		this.initUrl = builder.getUrl();
 
-		reader = new MyReader<D>();
+		reader = new MyReader();
 	}
 
-	public void load(final DataReader<D> readerNull, final Object loadConfig,
-			final AsyncCallback<D> callback) {
+	public void load(final DataReader<PagingLoadResult<ModelData>> readerNull, final Object loadConfig,
+			final AsyncCallback<PagingLoadResult<ModelData>> callback) {
 		System.out.println("MyHttpProxy.load: " + loadConfig.toString());
 
 		// Config
 		final MyProcessConfig config = (MyProcessConfig) loadConfig;
-
-		// Reader
-		final MyReader<D> reader = this.reader;
 
 		try {
 			// Header
@@ -118,12 +116,12 @@ public class MyHttpProxy<D> implements DataProxy<D> {
 			}
 
 			// Entity.filtering
-			List<FilterConfig> filters = paginationConfig.getFilterConfigs();
+			List<FilterConfig> filters = config.getFilterConfigs();
 			System.out.println("Filters: " + filters);
 			if (filters != null && filters.size() > 0) {
 				String strFilters = "";
 				int filtersCounter = 0;
-				for (FilterConfig filter : paginationConfig.getFilterConfigs()) {
+				for (FilterConfig filter : filters) {
 					System.out.println("Filter:" + filter.getField() + ":"
 							+ filter.getComparison() + ":" + filter.getValue());
 					String strFilter = filter.getField()
@@ -133,7 +131,8 @@ public class MyHttpProxy<D> implements DataProxy<D> {
 					if (filtersCounter > 0) {
 						strFilters = strFilters + ";";
 					}
-					strFilters = strFilter;
+					strFilters = strFilters + strFilter;
+					filtersCounter++;
 				}
 				entityData.addField(new Field(F_FILTERS, strFilters));
 			}
@@ -154,7 +153,7 @@ public class MyHttpProxy<D> implements DataProxy<D> {
 					try {
 						evaluateResponse(response, config);
 						String text = response.getText();
-						D data = reader.read(config, text);
+						PagingLoadResult<ModelData> data = reader.read(config, text);
 						callback.onSuccess(data);
 					} catch (Exception e) {
 						callback.onFailure(e);
@@ -206,7 +205,7 @@ public class MyHttpProxy<D> implements DataProxy<D> {
 	}
 
 	public void commit(final MyProcessConfig commitConfig,
-			List<ModelData> lModified, final AsyncCallback<D> callback) {
+			List<ModelData> lModified, final AsyncCallback<PagingLoadResult<ModelData>> callback) {
 		System.out.println("MyHttpProxy.commit");
 
 		final MyProcessConfig config = (MyProcessConfig) commitConfig;
@@ -232,6 +231,9 @@ public class MyHttpProxy<D> implements DataProxy<D> {
 			for (ModelData modelData : lModified) {
 				Item item = new Item(counter++);
 				for (String strField : config.getlFields()) {
+					if(strField.startsWith("d:")){
+						continue;
+					}
 					Field field = new Field(strField, null);
 					if (modelData.get(strField) != null
 							&& modelData.get(strField).toString().trim()
@@ -269,7 +271,7 @@ public class MyHttpProxy<D> implements DataProxy<D> {
 						Response response) {
 					try {
 						evaluateResponse(response, config);
-						D data = null;
+						PagingLoadResult<ModelData> data = null;
 						callback.onSuccess(data);
 					} catch (Exception e) {
 						callback.onFailure(e);

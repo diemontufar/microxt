@@ -1,15 +1,22 @@
 package mobile.web.webxt_mvc.client.form;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mobile.web.webxt_mvc.client.data.MyHttpProxy;
 import mobile.web.webxt_mvc.client.data.MyListStore;
 import mobile.web.webxt_mvc.client.data.MyPagingLoader;
 import mobile.web.webxt_mvc.client.data.MyProcessConfig;
+import mobile.web.webxt_mvc.client.form.MyColumnData.ColumnType;
 
+import com.extjs.gxt.ui.client.data.BaseFilterConfig;
+import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
+import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 
-public class ComboColumn extends ColumnConfig {
+public class SpecialComboColumn extends ColumnConfig {
 
 	private int pageSize = 0;
 
@@ -17,30 +24,31 @@ public class ComboColumn extends ColumnConfig {
 
 	private int width = 0; // Calculated from cdata
 
-	public ComboColumn(ColumnDataInterface columnData) {
-		super(columnData.getId(),columnData.getName(),columnData.getWidth());
+	private MyComboBox combo;
+
+	public SpecialComboColumn(ColumnDataInterface columnData) {
+		super(columnData.getId(), columnData.getName(), columnData.getWidth());
 	}
 
 	public void setRqData(String entity, ArrayColumnData cdata) {
-		CellEditor editor = getComboEditor(process, entity, cdata);
+		CellEditor editor = getComboEditor(entity, cdata);
 		setEditor(editor);
 	}
 
-	private CellEditor getComboEditor(String process, String entity,
-			final ArrayColumnData cdata) {
+	private CellEditor getComboEditor(String entity, final ArrayColumnData cdata) {
 		// Proxy - Loader - Store
 		final MyProcessConfig config = new MyProcessConfig(process, entity,
 				cdata.getIdFields());
 		final MyHttpProxy proxy = new MyHttpProxy();
-		final MyPagingLoader loader = new MyPagingLoader(
-				proxy, config);
+		final MyPagingLoader loader = new MyPagingLoader(proxy, config);//loader.load(offset, limit)
 		final MyListStore store = new MyListStore(loader);
 
 		// Combo
-		final MyComboBox combo = new MyComboBox();
+		// final MyComboBox combo = new MyComboBox();
+		combo = new MyComboBox();
 
 		combo.setForceSelection(true);
-		//combo.setTriggerAction(TriggerAction.ALL);
+		// combo.setTriggerAction(TriggerAction.ALL);
 		combo.setDisplayField(cdata.getIdFields().get(0));
 		combo.setStore(store);
 		combo.setTemplate(getTemplate(cdata));
@@ -52,7 +60,7 @@ public class ComboColumn extends ColumnConfig {
 		combo.setForceSelection(true);
 
 		// combo.setHideTrigger(true);
-		
+
 		// Cell editor
 		CellEditor editor = new CellEditor(combo) {
 			@Override
@@ -68,11 +76,47 @@ public class ComboColumn extends ColumnConfig {
 				if (value == null) {
 					return value;
 				}
-				return ((ModelData) value).get(cdata.getIdFields().get(0));
+
+				String returnValue = "";
+
+				ModelData model = (ModelData) value;
+
+				boolean isFirst = true;
+				for (ColumnDataInterface cd : cdata) {
+					if (isFirst) {
+						returnValue = model.get(cdata.getIdFields().get(0));
+						isFirst = false;
+					} else if (cd.getAssociatedField() != null) {
+						returnValue = returnValue + ";"
+								+ cd.getAssociatedField() + ":"
+								+ model.get(cd.getId());
+					}
+				}
+
+				return returnValue;
 			}
+
 		};
-		
+
 		return editor;
+	}
+
+	public void setFilter(String fieldId, String filter) {
+		MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) combo
+				.getStore().getLoader()).getConfig();
+
+		List<FilterConfig> filters = config.getFilterConfigs();
+		if (filters == null) {
+			System.out.println("Crear");
+			filters = new ArrayList<FilterConfig>();
+			config.setFilterConfigs(filters);
+		}
+
+		BaseFilterConfig newFilter = new BaseStringFilterConfig("", "=",
+				filter);
+		newFilter.setField(fieldId);
+		
+		filters.add(newFilter);
 	}
 
 	private String getTemplate(final ArrayColumnData cdata) {
@@ -85,6 +129,12 @@ public class ComboColumn extends ColumnConfig {
 		width = 0;
 		for (int i = 0; i < cdata.size(); i++) {
 			ColumnDataInterface columnData = cdata.get(i);
+
+			if (columnData.getColumnType() != null
+					&& columnData.getColumnType() == ColumnType.HIDDEN) {
+				continue;
+			}
+
 			sb.append("<td class=\"x-grid3-header x-grid3-hd x-grid3-cell x-grid3-td-name \" role=\"presentation\" align=\"left\" style=\"\">");
 			sb.append("<div role=\"columnheader\" aria-haspopup=\"false\" class=\"x-grid3-hd-inner x-component\" style=\"width: "
 					+ columnData.getWidth()

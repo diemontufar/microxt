@@ -23,6 +23,7 @@ public class FormPanel extends ContentPanel {
 		}else{
 			// Add here the tested form
 			add(new A202());
+			//add(new G101());
 		}
 
 	}
