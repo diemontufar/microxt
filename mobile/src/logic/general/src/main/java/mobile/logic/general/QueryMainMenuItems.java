@@ -7,15 +7,15 @@ import javax.persistence.TypedQuery;
 
 import mobile.core.structure.processor.GeneralProcessor;
 import mobile.entity.manager.JPManager;
-import mobile.entity.manager.util.LocalParameter;
-import mobile.entity.manager.util.ParameterEnum;
-import mobile.entity.manager.util.PersistenceTime;
 import mobile.entity.security.Module;
 import mobile.entity.security.Subsystem;
 import mobile.message.cmessage.Data;
 import mobile.message.cmessage.Field;
 import mobile.message.cmessage.Item;
 import mobile.message.cmessage.Message;
+import mobile.tools.common.param.LocalParameter;
+import mobile.tools.common.param.ParameterEnum;
+import mobile.tools.common.param.PersistenceTime;
 
 public class QueryMainMenuItems implements GeneralProcessor {
 
