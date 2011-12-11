@@ -12,15 +12,15 @@ import mobile.core.structure.processor.GeneralProcessor;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityTable;
 import mobile.entity.manager.JPManager;
-import mobile.entity.manager.util.LocalParameter;
-import mobile.entity.manager.util.ParameterEnum;
-import mobile.entity.manager.util.PersistenceTime;
 import mobile.message.cmessage.Data;
 import mobile.message.cmessage.Field;
 import mobile.message.cmessage.Item;
 import mobile.message.cmessage.Message;
 import mobile.tools.common.Log;
 import mobile.tools.common.convertion.ConvertionManager;
+import mobile.tools.common.param.LocalParameter;
+import mobile.tools.common.param.ParameterEnum;
+import mobile.tools.common.param.PersistenceTime;
 
 import org.apache.log4j.Logger;
 
