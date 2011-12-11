@@ -1,15 +1,21 @@
 package mobile.core.processor;
 
+import java.util.List;
+
+import javax.persistence.Query;
+
+import mobile.entity.manager.JPManager;
 import mobile.entity.manager.JPManagerFactory;
-import mobile.entity.manager.util.LocalParameter;
-import mobile.entity.manager.util.ParameterEnum;
 import mobile.message.cmessage.Data;
 import mobile.message.cmessage.Field;
 import mobile.message.cmessage.Item;
 import mobile.message.cmessage.Message;
 import mobile.tools.common.Log;
+import mobile.tools.common.param.LocalParameter;
+import mobile.tools.common.param.ParameterEnum;
 
 import org.apache.log4j.Logger;
+import org.eclipse.persistence.config.QueryHints;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -56,12 +62,66 @@ public class ProcessorTest{
 		}
 	}
 
+	@Ignore
+	@Test
+	public void testJpa() {
+		try {
+//			String sql = 
+//					"Select e.pk.profileId, " +
+//					"(Select b.url from Process b where b.pk.subsystemId=e.pk.subsystemId " +
+//					"and b.pk.moduleId=e.pk.moduleId and b.pk.processId=e.pk.processId " +
+//					"and b.pk.expired = '9999-12-31'  and b.pk.companyId = 'MXT' ), " +
+//					"e.editable " +
+//					"from Role e where e.pk.expired = :expired and e.pk.companyId = :companyId";
+
+			String sql = 
+			"Select e.pk.profileId, e.editable, " +
+			"p.url " +
+			"from Role e " +
+			"inner join Process p on p.pk.companyId=e.pk.companyId and p.pk.expired=e.pk.expired " +
+			"and p.pk.subsystemId=e.pk.subsystemId and p.pk.moduleId=e.pk.moduleId " +
+			"and p.pk.processId=e.pk.processId";
+			
+//			String sql = 
+//					"Select e.pk.profileId, " + 
+//					"e.editable " +
+//					"from Role e where e.pk.expired = :expired and e.pk.companyId = :companyId";
+			
+			JPManager.createEntityManager();
+			
+			Query query = JPManager.getEntityManager().createQuery(sql);
+			//query.setParameter("expired", PersistenceTime.getExpiredTime());
+			//query.setParameter("companyId", "MXT");
+
+			query.setHint(QueryHints.READ_ONLY, "1");
+			
+			List results = query.getResultList();
+
+			// Pagination:
+			for (int i = 0; i < results.size(); i++) {
+				Object[] result = (Object[]) results.get(i);
+
+				for (Object obj : result) {
+					System.out.print(obj + " ");
+				}
+				System.out.println();
+			}
+
+			JPManager.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	//@Ignore
 	@Test
 	public void testQuery1() {
 		try {
+			JPManager.createEntityManager();
+			
 			// Processor
-			CoreProcessor proc = new CoreProcessor();
+			//CoreProcessor proc = new CoreProcessor();
+			SpecialQueryProcessor proc = new SpecialQueryProcessor();
 
 			// Message
 			Message msg = new Message();
@@ -71,7 +131,7 @@ public class ProcessorTest{
 
 			Data data = new Data("Role");
 			data.addField(new Field("_type", "QRY"));
-			data.addField(new Field("_qry_fields", "pk_profileId;editable"));
+			data.addField(new Field("_qry_fields", "pk_profileId;d:Process:url:pk_subsystemId:pk_moduleId:pk_processId;editable"));
 			data.addField(new Field("_pag_offset", "0"));
 			data.addField(new Field("_pag_limit", "10"));
 			//data.addField(new Field("_filters", "pk_parameterId::PARAM11"));
@@ -79,6 +139,8 @@ public class ProcessorTest{
 
 			// Process
 			proc.process(msg);
+			
+			JPManager.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
