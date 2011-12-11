@@ -3,11 +3,11 @@ package mobile.entity.manager;
 import java.util.List;
 
 import junit.framework.TestCase;
-import mobile.entity.manager.util.LocalParameter;
-import mobile.entity.manager.util.ParameterEnum;
 import mobile.entity.parameter.Branch;
 import mobile.entity.parameter.Parameter;
 import mobile.entity.schema.GeneralEntity;
+import mobile.tools.common.param.LocalParameter;
+import mobile.tools.common.param.ParameterEnum;
 
 import org.junit.Before;
 import org.junit.Test;
