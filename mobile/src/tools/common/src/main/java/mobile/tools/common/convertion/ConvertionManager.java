@@ -62,8 +62,12 @@ public class ConvertionManager {
 		if (value == null) {
 			return null;
 		}
+		
 		if ((pType.getName().compareTo("java.lang.String") == 0) && pUpper) {
 			value = value.toString().toUpperCase();
+		}
+		if ((pType.getName().compareTo("java.lang.String") == 0)) {
+			value = value.toString();
 		}
 
 		if ((value.getClass().getName().compareTo(pType.getName()) == 0)) {
@@ -73,18 +77,19 @@ public class ConvertionManager {
 				&& (pValue.toString().compareTo("") == 0)) {
 			return null;
 		}
+		
 		if ((value.getClass().getName().compareTo("java.lang.String") == 0)
 				&& (pType.getName().compareTo("java.lang.Boolean") == 0)) {
 			String val = String.valueOf(value).trim();
 			T oVal;
-			if (val.compareTo("1") == 0) {
+			if (val.compareTo("1") == 0 || val.compareTo("true") == 0) {
 				oVal = (T) new Boolean(true);
 			} else {
 				oVal = (T) new Boolean(false);
 			}
 			return oVal;
 		}
-
+		
 		try {
 			T oVal = ConvertionManager.convertValueByType(value, pType);
 			if (oVal != null) {
