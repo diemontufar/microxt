@@ -10,10 +10,6 @@ import javax.persistence.LockModeType;
 
 import mobile.entity.common.EntityTable;
 import mobile.entity.common.EntityTablePk;
-import mobile.entity.manager.util.EntityConvertManager;
-import mobile.entity.manager.util.LocalParameter;
-import mobile.entity.manager.util.ParameterEnum;
-import mobile.entity.manager.util.PersistenceTime;
 import mobile.entity.schema.GeneralEntity;
 import mobile.entity.schema.GeneralEntityId;
 import mobile.entity.schema.GeneralEntityKey;
@@ -24,6 +20,10 @@ import mobile.entity.schema.MultilanguageKey;
 import mobile.entity.schema.OptimisticLocking;
 import mobile.message.cmessage.Item;
 import mobile.tools.common.Log;
+import mobile.tools.common.convertion.ConvertionManager;
+import mobile.tools.common.param.LocalParameter;
+import mobile.tools.common.param.ParameterEnum;
+import mobile.tools.common.param.PersistenceTime;
 
 import org.apache.log4j.Logger;
 
@@ -533,7 +533,7 @@ public class JPManager {
 							+ classField.getName().substring(0, 1).toUpperCase()
 							+ classField.getName().substring(1),
 							classField.getType());
-					pk = EntityConvertManager.convertObject(
+					pk = ConvertionManager.convertObject(
 							item.getField("pk_" + classField.getName()).getValue(),
 							classField.getType());
 					setterMethod.invoke(entity, pk);
@@ -562,9 +562,13 @@ public class JPManager {
 						+ classField.getName().substring(0, 1).toUpperCase()
 						+ classField.getName().substring(1),
 						classField.getType());
-				Object val = EntityConvertManager.convertObject(
+				Object val = ConvertionManager.convertObject(
 						item.getField(classField.getName()).getValue(),
 						classField.getType());
+//				System.out.println("Seteando...");
+//				System.out.println(classField.getName());
+//				System.out.println(item.getField(classField.getName()).getValue());
+//				System.out.println(val);
 				setterMethod.invoke(entity, val);
 			}
 		}
@@ -589,7 +593,7 @@ public class JPManager {
 				Method setterMethod = entityKeyClass.getMethod("set"
 						+ field.getName().substring(0, 1).toUpperCase()
 						+ field.getName().substring(1), field.getType());
-				Object val = EntityConvertManager.convertObject(
+				Object val = ConvertionManager.convertObject(
 						itemField.getValue(), field.getType());
 				setterMethod.invoke(pk, val);
 			}
