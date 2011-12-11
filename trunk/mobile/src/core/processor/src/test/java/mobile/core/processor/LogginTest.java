@@ -3,12 +3,12 @@ package mobile.core.processor;
 import junit.framework.TestCase;
 import mobile.entity.manager.JPManager;
 import mobile.entity.manager.JPManagerFactory;
-import mobile.entity.manager.util.LocalParameter;
-import mobile.entity.manager.util.ParameterEnum;
 import mobile.entity.security.UserAccess;
 import mobile.entity.security.UserAccessPk;
 import mobile.entity.security.UserAccount;
 import mobile.entity.security.UserAccountPk;
+import mobile.tools.common.param.LocalParameter;
+import mobile.tools.common.param.ParameterEnum;
 
 public class LogginTest extends TestCase{
 

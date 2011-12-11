@@ -11,12 +11,12 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import mobile.entity.manager.JPManagerFactory;
-import mobile.entity.manager.util.LocalParameter;
-import mobile.entity.manager.util.ParameterEnum;
 import mobile.message.cmessage.Message;
 import mobile.message.cmessage.Parser;
 import mobile.tools.common.FileUtil;
 import mobile.tools.common.Log;
+import mobile.tools.common.param.LocalParameter;
+import mobile.tools.common.param.ParameterEnum;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
