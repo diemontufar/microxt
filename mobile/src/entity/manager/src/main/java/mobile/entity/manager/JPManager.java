@@ -608,7 +608,7 @@ public class JPManager {
 		return null;
 	}
 
-	private static String toTableName(String entityName) {
+	public static String toTableName(String entityName) {
 		String tableName = "";
 
 		for (int i = 0; i < entityName.length(); i++) {
@@ -620,6 +620,20 @@ public class JPManager {
 		}
 
 		return tableName;
+	}
+	
+	public static String toSqlName(String name) {
+		String sqlName = "";
+
+		for (int i = 0; i < name.length(); i++) {
+			String letter = name.substring(i, i + 1);
+			if (letter.matches("[A-Z]") && i > 0) {
+				letter = "_" + letter;
+			}
+			sqlName = sqlName + letter;
+		}
+
+		return sqlName.toUpperCase();
 	}
 
 	/**
