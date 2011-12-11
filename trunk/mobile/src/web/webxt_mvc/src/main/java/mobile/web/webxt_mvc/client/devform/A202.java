@@ -25,6 +25,7 @@ import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.grid.CheckColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
@@ -115,7 +116,9 @@ public class A202 extends LayoutContainer {
 		configs.add(new NormalColumn(cdata.get(5)));
 		configs.add(new NormalColumn(cdata.get(6)));
 		configs.add(new NormalColumn(cdata.get(7)));
-		configs.add(new CheckColumn(cdata.get(8)));
+		
+		CheckColumnConfig a = new CheckColumn(cdata.get(8)); 
+		configs.add(a);
 
 		configs.add(new ExpireColumnConfig());
 
@@ -134,7 +137,7 @@ public class A202 extends LayoutContainer {
 				store.sort(cdata.getIdFields().get(0), SortDir.ASC);
 			}
 		});
-
+		
 		// Top tool bar
 		GridToolBar toolBar = new GridToolBar(grid, store);
 		cp.setTopComponent(toolBar);

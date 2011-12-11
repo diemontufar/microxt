@@ -57,9 +57,16 @@ public class ComboColumn extends ColumnConfig {
 		CellEditor editor = new CellEditor(combo) {
 			@Override
 			public Object preProcessValue(Object value) {
+				System.out.println("ComboColumn. Cell Editor. preProcessValue");
+				System.out.println(value);
+				
 				if (value == null) {
 					return value;
 				}
+				
+				System.out.println(combo.getModel());
+				System.out.println(combo.findModel(cdata.getIdFields().get(0), value.toString()));
+				
 				return combo.getModel();
 			}
 

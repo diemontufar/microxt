@@ -9,6 +9,7 @@ public class MyComboBox extends ComboBox<ModelData>{
 	
 	public MyComboBox() {
 	}
+	
 	@SuppressWarnings("rawtypes")
 	public void doQuery(String q, boolean forceAll) {
 		if(!isLoaded){
@@ -17,5 +18,9 @@ public class MyComboBox extends ComboBox<ModelData>{
 		}
 		expand();
 	}
-
+	
+	@Override
+	protected ModelData findModel(String property, String value) {
+		return super.findModel(property, value);
+	}
 }
