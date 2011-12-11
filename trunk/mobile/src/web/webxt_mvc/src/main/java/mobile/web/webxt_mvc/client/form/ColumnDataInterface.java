@@ -1,5 +1,7 @@
 package mobile.web.webxt_mvc.client.form;
 
+import mobile.web.webxt_mvc.client.form.MyColumnData.ColumnType;
+
 public interface ColumnDataInterface {
 
 	public String getId();
@@ -21,5 +23,18 @@ public interface ColumnDataInterface {
 	public boolean isAllowBlank();
 
 	public void setAllowBlank(boolean allowBlank);
+	
+	public ColumnType getColumnType();
 
+	public void setColumnType(ColumnType columnType);
+	
+	public String getDescriptionEntity();
+	
+	public String getDescriptionField();
+	
+	public String getDescriptionCriterion();
+
+	public String getAssociatedField();
+
+	public void setAssociatedField(String associatedField);
 }

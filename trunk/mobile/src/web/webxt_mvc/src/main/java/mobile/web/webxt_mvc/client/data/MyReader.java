@@ -16,7 +16,7 @@ import com.extjs.gxt.ui.client.data.DataReader;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 
-public class MyReader<D> implements DataReader<D> {
+public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 
 	private final String MSG_TYPE = Parser.JSON;
 	
@@ -29,15 +29,13 @@ public class MyReader<D> implements DataReader<D> {
 	public MyReader() {
 	}
 
-	@SuppressWarnings("unchecked")
-	public D read(Object loadConfig, Object data) {
+	public PagingLoadResult<ModelData> read(Object loadConfig, Object data) {
 		System.out.println("MyReader.read: " + data.toString());
 		ArrayList<ModelData> models = new ArrayList<ModelData>();
 		PagingLoadResult<ModelData> paginatedModels = new BasePagingLoadResult<ModelData>(models);
 		
-		// Config
+		// Configuration
 		MyProcessConfig config = (MyProcessConfig) loadConfig;
-		System.out.println(config.toString());
 		
 		try {
 			String strData = data.toString();
@@ -50,7 +48,13 @@ public class MyReader<D> implements DataReader<D> {
 			for (Item item : entityData.getItemList()) {
 				ModelData model = new BaseModelData();
 				for (String strField : config.getlFields()) {
-					Field field = item.getField(strField);
+					Field field = null;
+					if(strField.startsWith("d:")){
+						String[] params = strField.split(":");
+						field = item.getField(params[1]);
+					}else{
+						field = item.getField(strField);
+					}
 					if (field.getValue().startsWith("((Boolean))")) {
 						model.set(field.getName(), new Boolean(field.getValue()));
 					} else {
@@ -59,6 +63,12 @@ public class MyReader<D> implements DataReader<D> {
 				}
 				models.add(model);
 			}
+//			System.out.println("Modelos");
+//			for (ModelData model : models) {
+//				for (String prop : model.getPropertyNames()) {
+//					System.out.println(prop + ":" + model.get(prop));
+//				}
+//			}
 
 			// Pagination
 			System.out.println("reading pagination");
@@ -76,7 +86,7 @@ public class MyReader<D> implements DataReader<D> {
 			e.printStackTrace();
 		}
 		
-		return (D) paginatedModels;
+		return (PagingLoadResult<ModelData>) paginatedModels;
 	}
 
 	public Message readMessage(Object loadConfig, Object data){
@@ -104,6 +114,6 @@ public class MyReader<D> implements DataReader<D> {
 	@SuppressWarnings("unchecked")
 	protected Object createReturnData(Object loadConfig,
 			List<ModelData> records, int totalCount) {
-		return (D) records;
+		return (PagingLoadResult<ModelData>) records;
 	}
 }

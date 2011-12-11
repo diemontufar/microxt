@@ -8,18 +8,12 @@ import mobile.web.webxt_mvc.client.data.MyListStore;
 import mobile.web.webxt_mvc.client.data.MyPagingLoader;
 import mobile.web.webxt_mvc.client.data.MyProcessConfig;
 import mobile.web.webxt_mvc.client.data.MyProcessConfig.ProcessType;
-import mobile.web.webxt_mvc.client.form.ArrayColumnData;
-import mobile.web.webxt_mvc.client.form.ComboColumn;
-import mobile.web.webxt_mvc.client.form.MyColumnData;
 import mobile.web.webxt_mvc.client.form.MyComboBox;
 import mobile.web.webxt_mvc.client.widgets.CustomFormPanel;
 import mobile.web.webxt_mvc.client.widgets.InputBox;
 
-import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
-import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.google.gwt.user.client.Element;
 
@@ -48,16 +42,15 @@ private final Integer PAGE_SIZE = 5;
 		config.setProcessType(ProcessType.QUERY);
 		//this.getComboEditor(process, entity, lfields);
 		
-		// Proxy - Loader - Store
-
-		final MyHttpProxy<PagingLoadResult<ModelData>> proxy = new MyHttpProxy<PagingLoadResult<ModelData>>();
-		final MyPagingLoader<PagingLoadResult<ModelData>> loader = new MyPagingLoader<PagingLoadResult<ModelData>>(proxy, config);
-		final MyListStore<ModelData> store = new MyListStore<ModelData>(loader);
+		// Proxy - loader - store
+		MyHttpProxy proxy = new MyHttpProxy();
+		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
+		final MyListStore store = new MyListStore(loader);
 		
 		//InputBox usuario = new InputBox("Usuario", 50, "txt"); //combo
 		
 		// Combo
-		final MyComboBox<ModelData> userCombo = new MyComboBox<ModelData>();
+		final MyComboBox userCombo = new MyComboBox();
 
 		userCombo.setForceSelection(true);
 		userCombo.setFieldLabel("Usuario"); 

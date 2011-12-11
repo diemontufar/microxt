@@ -10,32 +10,29 @@ import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public class MyPagingLoader<D extends PagingLoadResult<?>> extends
-		BasePagingLoader<D> {
+public class MyPagingLoader extends
+		BasePagingLoader<PagingLoadResult<ModelData>> {
 
 	private final MyProcessConfig config;
 
-	public MyPagingLoader(DataProxy<D> proxy, MyProcessConfig config) {
+	public MyPagingLoader(DataProxy<PagingLoadResult<ModelData>> proxy, MyProcessConfig config) {
 		super(proxy);
 		this.setRemoteSort(true);
 		this.config = config;
+		setReuseLoadConfig(false);
 	}
 
 	@Override
 	protected Object newLoadConfig() {
-		// BasePagingLoadConfig config = new BaseFilterPagingLoadConfig();
-		//config.setProcessType(ProcessType.QUERY);
 		return config;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void commitChanges(List<ModelData> lModified,
-			final AsyncCallback<D> callback) {
-		//config.setProcessType(ProcessType.MAINTENANCE);
+			final AsyncCallback<PagingLoadResult<ModelData>> callback) {
 		((MyHttpProxy) this.proxy).commit(config, lModified, callback);
 	}
 
-	protected void onLoadSuccess(Object loadConfig, D result) {
+	protected void onLoadSuccess(Object loadConfig, PagingLoadResult<ModelData> result) {
 		super.onLoadSuccess(loadConfig, result);
 	};
 
@@ -43,6 +40,10 @@ public class MyPagingLoader<D extends PagingLoadResult<?>> extends
 	protected void onLoadFailure(Object loadConfig, Throwable t) {
 		super.onLoadFailure(loadConfig, t);
 		new AlertDialog("Load exception", t.getMessage()).show();
+	}
+
+	public MyProcessConfig getConfig() {
+		return config;
 	}
 	
 }

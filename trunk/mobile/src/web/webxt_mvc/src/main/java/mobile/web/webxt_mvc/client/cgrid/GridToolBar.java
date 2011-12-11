@@ -13,18 +13,18 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 
 public class GridToolBar extends ToolBar {
 	private EditorGrid<ModelData> grid;
-	private MyListStore<ModelData> store;
+	private MyListStore store;
 	private Button addButton;
 	private Button resetButton;
 	private Button saveButton;
 	private ModelData initModel;
 
-	public GridToolBar(EditorGrid<ModelData> grid, MyListStore<ModelData> store) {
+	public GridToolBar(EditorGrid<ModelData> grid, MyListStore store) {
 		this(grid, store, new BaseModelData());
 	}
 	
 	public GridToolBar(EditorGrid<ModelData> grid,
-			MyListStore<ModelData> store, ModelData initModel) {
+			MyListStore store, ModelData initModel) {
 		this.grid = grid;
 		this.store = store;
 		this.initModel = initModel;

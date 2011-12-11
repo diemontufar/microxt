@@ -55,10 +55,8 @@ public class FormView extends View {
 		
 		System.out.println(processId);
 		if(processId.compareTo("A101")==0){
-			// User status
 			tabItem.add(new A101());	
 		}else if(processId.compareTo("A102")==0){
-			// Parameters
 			tabItem.add(new A102());		
 		}else if(processId.compareTo("A201")==0){
 			tabItem.add(new A201());	
@@ -73,7 +71,6 @@ public class FormView extends View {
 		}else if(processId.compareTo("A206")==0){
 			tabItem.add(new A206());
 		}else if(processId.compareTo("G101")==0){
-			// Parameters
 			tabItem.add(new G101());	
 		}
 		

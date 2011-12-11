@@ -4,7 +4,7 @@ import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 
-public class MyComboBox<D extends ModelData> extends ComboBox<D>{
+public class MyComboBox extends ComboBox<ModelData>{
 	private boolean isLoaded = false;
 	
 	public MyComboBox() {
