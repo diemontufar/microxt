@@ -1,99 +1,119 @@
 package mobile.web.webxt_mvc.client.devform;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import mobile.web.webxt_mvc.client.data.MyHttpProxy;
-import mobile.web.webxt_mvc.client.data.MyListStore;
-import mobile.web.webxt_mvc.client.data.MyPagingLoader;
-import mobile.web.webxt_mvc.client.data.MyProcessConfig;
-import mobile.web.webxt_mvc.client.data.MyProcessConfig.ProcessType;
-import mobile.web.webxt_mvc.client.form.MyComboBox;
+import mobile.web.webxt_mvc.client.form.ArrayColumnData;
+import mobile.web.webxt_mvc.client.form.ComboForm;
+import mobile.web.webxt_mvc.client.form.MyColumnData;
 import mobile.web.webxt_mvc.client.widgets.CustomFormPanel;
 import mobile.web.webxt_mvc.client.widgets.InputBox;
+import mobile.web.webxt_mvc.client.windows.AlertDialog;
 
+
+import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FormEvent;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.event.WindowEvent;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
+import com.extjs.gxt.ui.client.widget.MessageBox;
+import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.form.DateField;
+import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.google.gwt.user.client.Element;
 
-public class A205 extends LayoutContainer {
+public class A205 extends FormPanel {
 
-private final Integer PAGE_SIZE = 5;
-	
+	private final Integer PAGE_SIZE = 5;
+
 	private final String process = "A205";
 	
+	private final String title = "Acceso Usuarios";
+	
+	private final String width = "350";
 
-	@Override
-	protected void onRender(Element parent, int index) {
-		super.onRender(parent, index);
-		setLayout(new CenterLayout());
-		getAriaSupport().setPresentation(true);
+	// fields:
+	private InputBox password;
+	private InputBox retypePassword;
+	private ComboForm userComboColumn;
+	private DateField cambio;
+
+	
+	public A205() {
 		
+		
+		setHeading(title);
+		setFrame(true);
+		setWidth(width);
+
 		// Config
 		String entity = "UserAccess";
-				
-		CustomFormPanel fp = new CustomFormPanel("Acceso Usuarios", 350);
+
 		
-		final List<String> lfields = new ArrayList<String>();
-		lfields.add("pk_userId");
+//		fp.addListener(Events.Submit, new Listener<FormEvent>() {
+//            public void handleEvent(FormEvent arg0) {
+//
+//                MessageBox.alert("Result", "Check Forums on how to get an actual result: "
+//                        + arg0.resultHtml, new Listener<WindowEvent>(){
+//                    public void handleEvent(WindowEvent arg0) {}
+//                });
+//             }
+//         }
 		
-		MyProcessConfig config = new MyProcessConfig(process, entity, lfields);
-		config.setProcessType(ProcessType.QUERY);
-		//this.getComboEditor(process, entity, lfields);
-		
-		// Proxy - loader - store
-		MyHttpProxy proxy = new MyHttpProxy();
-		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
-		final MyListStore store = new MyListStore(loader);
-		
-		//InputBox usuario = new InputBox("Usuario", 50, "txt"); //combo
-		
+
 		// Combo
-		final MyComboBox userCombo = new MyComboBox();
+		userComboColumn = new ComboForm("Usuario", "pk_userId");
+		ArrayColumnData cdataComboUser = new ArrayColumnData();
+		cdataComboUser.add(new MyColumnData("pk_userId", "ID", 40));
+		cdataComboUser.add(new MyColumnData("name", "Nombre", 150));
+		userComboColumn.setRqData("UserAccount", cdataComboUser);
 
-		userCombo.setForceSelection(true);
-		userCombo.setFieldLabel("Usuario"); 
-		userCombo.setTriggerAction(TriggerAction.ALL);
-		userCombo.setDisplayField("userId");
-		userCombo.setStore(store);
-		//combo.setTemplate(getTemplate());
-		//combo.setMinListWidth(width);
-		userCombo.setMinListWidth(100);
-		userCombo.setPageSize(5);
+		password = new InputBox("Password","UserAccess.USER_KEY", 50, "pass");
+		retypePassword = new InputBox("Repita Password","UserAccess.USER_KEY", 50, "pass");
 
-		userCombo.setItemSelector("tr.search-item");
-		userCombo.setEditable(false);
-		userCombo.setForceSelection(true);
+		cambio = new DateField();
+		cambio.setName("date");
+		cambio.setFieldLabel("Ultimo Cambio");
 
-		
-//		ComboBox<Stock> combo = new ComboBox<Stock>();  
-//	    combo.setFieldLabel("Usuario");  
-//	    combo.setDisplayField("pk_userId");  
-//	    combo.setTriggerAction(TriggerAction.ALL);  
-//	    combo.setStore(store);
-//		
-//		
-//		ComboColumn personComboColumn = new ComboColumn(cdata.get(0));
-//		ArrayColumnData cdataComboPerson = new ArrayColumnData();
-//		cdataComboPerson.add(new MyColumnData("pk_userId", "ID", 40));
-//		cdataComboPerson.add(new MyColumnData("name", "Nombre", 150));
-//		personComboColumn.setRqData("UserAccount", cdataComboPerson);
-		
-		
-		InputBox password = new InputBox("Password", 50, "pass"); 
-		InputBox cambio = new InputBox("Ultimo Cambio", 50, "txt-alfanum"); //cambio
-		InputBox pregunta = new InputBox("Pregunta", 50, "txt-alfanum"); //cambio
-		InputBox respuesta = new InputBox("Respuesta", 50, "txt-alfanum"); //cambio
-		
-		fp.add(userCombo);
-		fp.add(password);
-		fp.add(cambio);
-		fp.add(pregunta);
-		fp.add(respuesta);
+		add(userComboColumn);
+		add(password);
+		add(retypePassword);
+		add(cambio);
 
-		add(fp);
+		setButtonAlign(HorizontalAlignment.CENTER);
+		addButton(new Button("Limpiar",
+				new SelectionListener<ButtonEvent>() {
+					@Override
+					public void componentSelected(ButtonEvent ce) {
+						// grid.getStore().rejectChanges();
+					}
+				}));
+		addButton(new Button("Guardar",
+				new SelectionListener<ButtonEvent>() {
+					@Override
+					public void componentSelected(ButtonEvent ce) {
+						
+//						for (int i=0;i<getItemCount();i++){
+//							System.out.println(getFields());
+//						}
+//						
+//						System.out.println("hola");
+//						System.out.println(getItemCount());
+						//validateForm();
+						// grid.getStore().commitChanges();
+					}
+				}));
+
 	}
 	
-		
+	
+
+//	private void validateForm() {
+//		 if ( password.getValue().toString().compareTo("")==0 ){
+//			 new AlertDialog("Advertencia","Algun campo esta vacio o incorrecto");
+//		 }
+//
+//	}
+
 }

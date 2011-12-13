@@ -11,13 +11,16 @@ public class InputBox extends TextField<String> {
 	public CustomFormPanel frmPanel;
 
 	String label;
+	String nameEntity;
 	int minLenght;
 	int maxLenght;
 	int width;
 	int posY;
 	String type;
 
-	public InputBox(String lbl, int wdth, String Type) {
+	public InputBox(String lbl,String name, int wdth, String Type) {
+		
+		this.nameEntity=name.trim();
 		this.label = lbl.trim();
 		this.type = Type;
 		this.width = wdth;
@@ -47,7 +50,8 @@ public class InputBox extends TextField<String> {
 		if (type.compareTo("email") == 0) {
 			setValidator(new ValidationTypesValidator(ValidationTypes.EMAIL));
 		}
-
+		
+		setName(name);
 		setFieldLabel(label);
 		setMinLength(4);
 		setWidth(width);
