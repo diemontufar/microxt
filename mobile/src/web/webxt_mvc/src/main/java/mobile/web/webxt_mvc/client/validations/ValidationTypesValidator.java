@@ -14,7 +14,7 @@ public class ValidationTypesValidator implements Validator {
 	public String validate(Field<?> field, String value) {
 		String res = null;
 		if (!value.matches(type.regex)) {
-			res = value + " Isn't a valid " + type.name;
+			res = value + " Es un valor:  " + type.name + " incorrecto";
 		}
 		return res;
 	}
