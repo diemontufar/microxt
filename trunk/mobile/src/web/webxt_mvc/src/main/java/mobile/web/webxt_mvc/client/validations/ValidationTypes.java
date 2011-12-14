@@ -1,8 +1,8 @@
 package mobile.web.webxt_mvc.client.validations;
 
 public enum ValidationTypes {
-	ALPHABET("^[a-zA-Z_]+$", "ALPHABET"), ALPHANUMERIC("^[a-zA-Z0-9_]+$",
-			"ALPHANUMERIC"), NUMERIC("^[+0-9]+$", "NUMERIC"), EMAIL(
+	ALPHABET("^[a-zA-Z_]+$", "TEXTO"), ALPHANUMERIC("^[a-zA-Z0-9_]+$",
+			"ALFANUMERICO"), NUMERIC("^[+0-9]+$", "NUMERICO"), EMAIL(
 			"^(\\w+)([-+.][\\w]+)*@(\\w[-\\w]*\\.){1,5}([A-Za-z]){2,4}$",
 			"EMAIL");
 	String regex;

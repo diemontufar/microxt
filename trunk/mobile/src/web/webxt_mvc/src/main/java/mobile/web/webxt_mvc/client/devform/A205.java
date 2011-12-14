@@ -1,48 +1,40 @@
 package mobile.web.webxt_mvc.client.devform;
 
-import mobile.web.webxt_mvc.client.form.ArrayColumnData;
-import mobile.web.webxt_mvc.client.form.ComboForm;
-import mobile.web.webxt_mvc.client.form.MyColumnData;
-import mobile.web.webxt_mvc.client.widgets.CustomFormPanel;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import mobile.web.webxt_mvc.client.form.PersistentField;
+import mobile.web.webxt_mvc.client.validations.Validate;
 import mobile.web.webxt_mvc.client.widgets.InputBox;
 import mobile.web.webxt_mvc.client.windows.AlertDialog;
 
-
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.FormEvent;
-import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.event.WindowEvent;
-import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.DateField;
+import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
-import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
-import com.google.gwt.user.client.Element;
 
 public class A205 extends FormPanel {
 
-	private final Integer PAGE_SIZE = 5;
-
-	private final String process = "A205";
-	
-	private final String title = "Acceso Usuarios";
+	private final String title = "Cambio de Contraseña";
 	
 	private final String width = "350";
-
+	
+	Map<String,String> map=new HashMap<String, String>();
+	
+	
 	// fields:
-	private InputBox password;
+	private InputBox user;
+	private InputBox oldPassword;
 	private InputBox retypePassword;
-	private ComboForm userComboColumn;
-	private DateField cambio;
+	private InputBox newPassword;
+	//private ComboForm userComboColumn;
 
 	
 	public A205() {
-		
-		
+				
 		setHeading(title);
 		setFrame(true);
 		setWidth(width);
@@ -63,43 +55,51 @@ public class A205 extends FormPanel {
 		
 
 		// Combo
-		userComboColumn = new ComboForm("Usuario", "pk_userId");
-		ArrayColumnData cdataComboUser = new ArrayColumnData();
-		cdataComboUser.add(new MyColumnData("pk_userId", "ID", 40));
-		cdataComboUser.add(new MyColumnData("name", "Nombre", 150));
-		userComboColumn.setRqData("UserAccount", cdataComboUser);
+//		userComboColumn = new ComboForm("Usuario", "pk_userId");
+//		ArrayColumnData cdataComboUser = new ArrayColumnData();
+//		cdataComboUser.add(new MyColumnData("pk_userId", "ID", 40));
+//		cdataComboUser.add(new MyColumnData("name", "Nombre", 150));
+//		userComboColumn.setRqData("UserAccount", cdataComboUser);
 
-		password = new InputBox("Password","UserAccess.USER_KEY", 50, "pass");
-		retypePassword = new InputBox("Repita Password","UserAccess.USER_KEY", 50, "pass");
+		user = new InputBox("Usuario",entity,"userId",1, 50, Validate.TEXT);
+		oldPassword = new InputBox("Contraseña anterior",entity,"userKey",2, 50, Validate.PASSWORD);
+		retypePassword = new InputBox("Repita Contraseña",entity,"userKey",3, 50, Validate.PASSWORD);
+		newPassword = new InputBox("Contraseña nueva",entity,"userKey",4, 50, Validate.PASSWORD);
 
-		cambio = new DateField();
-		cambio.setName("date");
-		cambio.setFieldLabel("Ultimo Cambio");
-
-		add(userComboColumn);
-		add(password);
+		add(user);
+		add(oldPassword);
 		add(retypePassword);
-		add(cambio);
+		add(newPassword);
+		
 
 		setButtonAlign(HorizontalAlignment.CENTER);
 		addButton(new Button("Limpiar",
 				new SelectionListener<ButtonEvent>() {
 					@Override
 					public void componentSelected(ButtonEvent ce) {
-						// grid.getStore().rejectChanges();
+						user.clear();
+						oldPassword.clear();
+						retypePassword.clear();
+						newPassword.clear();
 					}
 				}));
+		
 		addButton(new Button("Guardar",
 				new SelectionListener<ButtonEvent>() {
 					@Override
 					public void componentSelected(ButtonEvent ce) {
 						
-//						for (int i=0;i<getItemCount();i++){
-//							System.out.println(getFields());
-//						}
-//						
-//						System.out.println("hola");
-//						System.out.println(getItemCount());
+						List<Field<?>> l = getFields();
+						for (Field<?> f : l) {
+							if(f instanceof PersistentField){
+								String key = ((PersistentField) f).getEntity() + ":" + ((PersistentField) f).getField() +":"+ ((PersistentField) f).getRegister();
+								System.out.println(key);
+								System.out.println(f.getValue());
+								
+								map.put(key, f.getValue().toString());
+							}
+						}
+												
 						//validateForm();
 						// grid.getStore().commitChanges();
 					}
@@ -107,13 +107,17 @@ public class A205 extends FormPanel {
 
 	}
 	
-	
-
-//	private void validateForm() {
-//		 if ( password.getValue().toString().compareTo("")==0 ){
-//			 new AlertDialog("Advertencia","Algun campo esta vacio o incorrecto");
-//		 }
-//
-//	}
-
+	public boolean validateForm(){
+		boolean result = false;
+		if (	user.getValue().compareTo("")==0
+				|| oldPassword.getValue().compareTo("")==0
+				|| retypePassword.getValue().compareTo("")==0
+				|| newPassword.getValue().compareTo("")==0	){
+			result=true;
+			new AlertDialog("Advertencia","Algun campo vacio, ingrese los datos correctos");
+		}
+		
+		return result;
+	}
+		
 }
