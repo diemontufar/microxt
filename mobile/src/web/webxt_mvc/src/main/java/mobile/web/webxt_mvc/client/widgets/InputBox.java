@@ -14,9 +14,7 @@ public class InputBox extends TextField<String> implements PersistentField {
 
 	String label;
 	
-	String entity;
-	String field;
-	int register;
+	String fieldInfo;
 	
 	int minLenght;
 	int maxLenght;
@@ -24,15 +22,12 @@ public class InputBox extends TextField<String> implements PersistentField {
 	int posY;
 	Validate type;
 	
-	public InputBox(String lbl, String entity, String field, int register, int wdth, Validate type) {
-		
-		this.setEntity(entity);
-		this.setField(field);
-		this.setRegister(register);
+	public InputBox(String lbl, String fieldInfo, int width, Validate type) {
+		this.setFieldInfo(fieldInfo);
 		
 		this.label = lbl.trim();
 		this.type = type;
-		this.width = wdth;
+		this.width = width;
 		
 		createInput();
 	}
@@ -66,31 +61,12 @@ public class InputBox extends TextField<String> implements PersistentField {
 		setWidth(width);
 	}
 
-	public String getEntity() {
-		return entity;
+	public String getFieldInfo() {
+		return fieldInfo;
 	}
 
-	public String getField() {
-		return field;
-	}
-
-	public int getRegister() {
-		return register;
-	}
-
-	public String setEntity(String entity) {
-		this.entity=entity;
-		return entity;
-	}
-
-	public String setField(String field) {
-		this.field=field;
-		return null;
-	}
-
-	public int setRegister(int register) {
-		this.register=register;
-		return 0;
+	public void setFieldInfo(String field) {
+		this.fieldInfo=field;
 	}
 
 
