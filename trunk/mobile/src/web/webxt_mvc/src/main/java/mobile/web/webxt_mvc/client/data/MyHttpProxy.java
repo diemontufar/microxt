@@ -1,5 +1,6 @@
 package mobile.web.webxt_mvc.client.data;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -273,6 +274,86 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 						evaluateResponse(response, config);
 						PagingLoadResult<ModelData> data = null;
 						callback.onSuccess(data);
+					} catch (Exception e) {
+						callback.onFailure(e);
+					}
+				}
+			});
+		} catch (Exception e) {
+			callback.onFailure(e);
+		}
+	}
+
+	public void commitForm(final MyProcessConfig config,
+			Map<String, String> mfields, final AsyncCallback<Boolean> callback) {
+		System.out.println("MyHttpProxy.commitForm");
+
+		try {
+			// Header
+			Message msg = new Message();
+			Data header = new Data(F_HEADER);
+			header.addField(new Field(F_PROCESS_ID, config.getProcess()));
+			msg.addData(header);
+
+			// Data map
+			Map<String, Data> mdata = new HashMap<String, Data>();
+			
+			// Fill datas
+			for (String key : mfields.keySet()) {
+				System.out.println(key);
+				String value = mfields.get(key);
+				System.out.println(value);
+				
+				String[] kp = key.split(":");
+				String entityName = kp[0];
+				String fieldName = kp[1];
+				int register = Integer.parseInt(kp[2]);
+			
+				Data data = mdata.get(entityName);
+				if(data == null){
+					data = new Data(entityName);
+					data.addField(new Field(F_PROCESS_TYPE,
+							ProcessType.MAINTENANCE.getProcessType()));
+					mdata.put(entityName, data);
+				}
+				Item item = data.getItem(register);
+				if(item == null){
+					item = new Item(register);
+					data.addItem(item);
+				}
+				Field field = new Field(fieldName, null);
+				if (value != null
+						&& value.trim()
+								.length() > 0) {
+					field.setValue(value);
+				}
+				item.addField(field);
+			}
+			
+			for (String entity : mdata.keySet()) {
+				msg.addData(mdata.get(entity));
+			}
+			
+			// Send message
+			System.out.println("Set message in json format...");
+			String data = "";
+			try {
+				data = "message=" + msg.toJSON();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			System.out.println("Send request...");
+			builder.sendRequest(data, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					callback.onFailure(exception);
+				}
+
+				public void onResponseReceived(Request request,
+						Response response) {
+					try {
+						evaluateResponse(response, config);
+						callback.onSuccess(true);
 					} catch (Exception e) {
 						callback.onFailure(e);
 					}
