@@ -1,7 +1,7 @@
 package mobile.web.webxt_mvc.client.widgets;
 
 
-import mobile.web.webxt_mvc.client.form.PersistentField;
+import mobile.web.webxt_mvc.client.formtools.PersistentField;
 import mobile.web.webxt_mvc.client.validations.Validate;
 import mobile.web.webxt_mvc.client.validations.ValidationTypes;
 import mobile.web.webxt_mvc.client.validations.ValidationTypesValidator;

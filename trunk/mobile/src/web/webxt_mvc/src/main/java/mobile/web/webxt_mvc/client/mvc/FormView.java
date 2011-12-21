@@ -10,6 +10,7 @@ import mobile.web.webxt_mvc.client.devform.A204;
 import mobile.web.webxt_mvc.client.devform.A205;
 import mobile.web.webxt_mvc.client.devform.A206;
 import mobile.web.webxt_mvc.client.devform.G101;
+import mobile.web.webxt_mvc.client.form.MyFormPanel;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.EventType;
@@ -19,7 +20,9 @@ import com.extjs.gxt.ui.client.event.TabPanelEvent;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.mvc.View;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.TabItem;
+import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 
 public class FormView extends View {
 	private final FormPanel formPanel = new FormPanel();
@@ -67,7 +70,7 @@ public class FormView extends View {
 		} else if (processId.compareTo("A204") == 0) {
 			tabItem.add(new A204());
 		} else if (processId.compareTo("A205") == 0) {
-			tabItem.add(new A205());
+			tabItem.add(centerForm(new A205()));
 		} else if (processId.compareTo("A206") == 0) {
 			tabItem.add(new A206());
 		} else if (processId.compareTo("G101") == 0) {
@@ -82,5 +85,13 @@ public class FormView extends View {
 		});
 
 		formPanel.addTab(tabItem);
+	}
+
+	private LayoutContainer centerForm(MyFormPanel form) {
+		LayoutContainer container = new LayoutContainer();
+		container.setLayout(new CenterLayout());
+		container.getAriaSupport().setPresentation(true);
+		container.add(form);
+		return container;
 	}
 }
