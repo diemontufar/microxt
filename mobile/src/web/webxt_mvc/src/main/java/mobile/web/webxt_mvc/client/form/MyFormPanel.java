@@ -6,6 +6,7 @@ import java.util.Map;
 
 import mobile.web.webxt_mvc.client.data.MyHttpProxy;
 import mobile.web.webxt_mvc.client.data.MyProcessConfig;
+import mobile.web.webxt_mvc.client.formtools.PersistentField;
 import mobile.web.webxt_mvc.client.mvc.AppEvents;
 import mobile.web.webxt_mvc.client.windows.AlertDialog;
 
