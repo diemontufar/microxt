@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
+import mobile.core.generator.util.EntityData;
+import mobile.core.generator.util.PropertyData;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityTable;
 import mobile.entity.common.EntityTablePk;
@@ -474,7 +476,7 @@ public class EntityGenerator {
 			builder.append("@Override" + NEW_LINE);
 			builder.append("public Object getPk() {" + NEW_LINE);
 			builder.append("return this."
-					+ entityData.getlProperties().get(0).name + END_LINE);
+					+ entityData.getlProperties().get(0).getName() + END_LINE);
 			builder.append("}" + NEW_LINE);
 		}
 
@@ -482,8 +484,8 @@ public class EntityGenerator {
 		builder.append(NEW_LINE);
 		builder.append("@Override" + NEW_LINE);
 		builder.append("public void setPk(Object pk) {" + NEW_LINE);
-		builder.append("this." + entityData.getlProperties().get(0).name + "="
-				+ "(" + entityData.getlProperties().get(0).type + ") pk"
+		builder.append("this." + entityData.getlProperties().get(0).getName() + "="
+				+ "(" + entityData.getlProperties().get(0).getType() + ") pk"
 				+ END_LINE);
 		builder.append("}" + NEW_LINE);
 
