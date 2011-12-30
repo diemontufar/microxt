@@ -47,9 +47,6 @@ public class A206 extends LayoutContainer {
 		final ArrayColumnData cdata = new ArrayColumnData();
 		cdata.add(new MyColumnData("pk_hostId", "ID Host", 70, 40,false));
 		cdata.add(new MyColumnData("address", "Dirección", 120, 40,false));
-		cdata.add(new MyColumnData("channelId", "Canal", 70, 40,false));
-		cdata.add(new MyColumnData("branchId", "Sucursal", 70, 40,false));
-		cdata.add(new MyColumnData("officeId", "Oficina", 70, 40,false));
 		cdata.add(new MyColumnData("timeZone", "Huso Horario", 100, 40, false));
 		
 		MyProcessConfig config = new MyProcessConfig(process, entity,cdata.getIdFields());
@@ -65,9 +62,6 @@ public class A206 extends LayoutContainer {
 		configs.add(new NormalColumn(cdata.get(0)));
 		configs.add(new NormalColumn(cdata.get(1)));
 		configs.add(new NormalColumn(cdata.get(2)));
-		configs.add(new NormalColumn(cdata.get(3)));
-		configs.add(new NormalColumn(cdata.get(4)));
-		configs.add(new NormalColumn(cdata.get(5)));
 		
 		configs.add(new ExpireColumnConfig());
 		
@@ -81,7 +75,7 @@ public class A206 extends LayoutContainer {
 		filters.addFilter(subsystemFilter);
 		
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Hosts",600,300);
+		EntityContentPanel cp = new EntityContentPanel("Terminales",400,300);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(store, cm);
