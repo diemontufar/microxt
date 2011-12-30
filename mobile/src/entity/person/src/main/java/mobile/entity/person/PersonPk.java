@@ -1,11 +1,10 @@
 package mobile.entity.person;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractCompanyHistoricalKey;
-import mobile.entity.schema.HistoricalKey;
 import mobile.entity.schema.MulticompanyKey;
+import mobile.entity.schema.HistoricalKey;
 
 /**
  * The primary key class for the PERSON database table.

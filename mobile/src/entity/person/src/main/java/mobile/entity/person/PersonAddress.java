@@ -1,13 +1,10 @@
 package mobile.entity.person;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractHistoricalLocking;
-import mobile.entity.schema.Historical;
 import mobile.entity.schema.Multicompany;
+import mobile.entity.schema.Historical;
 import mobile.entity.schema.OptimisticLocking;
 
 /**
@@ -194,7 +191,6 @@ public class PersonAddress extends AbstractHistoricalLocking implements
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		PersonAddress copy = (PersonAddress) super.clone();
-
 		copy.setPk((PersonAddressPk) this.pk.clone());
 		return copy;
 	}
