@@ -1,7 +1,6 @@
 package mobile.entity.security;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractCompanyKey;
 import mobile.entity.schema.MulticompanyKey;
@@ -13,12 +12,6 @@ import mobile.entity.schema.MulticompanyKey;
 public class ProcessComponentPk extends AbstractCompanyKey implements
 		MulticompanyKey {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Channel Id
-	 */
-	@Column(name = "CHANNEL_ID", nullable = false)
-	private String channelId;
 
 	/**
 	 * Subsystem Id
@@ -47,21 +40,12 @@ public class ProcessComponentPk extends AbstractCompanyKey implements
 	public ProcessComponentPk() {
 	}
 
-	public ProcessComponentPk(String channelId, String subsystemId,
-			String moduleId, String processId, Integer processSequence) {
-		this.channelId = channelId;
+	public ProcessComponentPk(String subsystemId, String moduleId,
+			String processId, Integer processSequence) {
 		this.subsystemId = subsystemId;
 		this.moduleId = moduleId;
 		this.processId = processId;
 		this.processSequence = processSequence;
-	}
-
-	public String getChannelId() {
-		return this.channelId;
-	}
-
-	public void setChannelId(String channelId) {
-		this.channelId = channelId;
 	}
 
 	public String getSubsystemId() {
@@ -98,8 +82,8 @@ public class ProcessComponentPk extends AbstractCompanyKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getChannelId() + ", "
-				+ this.getSubsystemId() + ", " + this.getModuleId() + ", "
-				+ this.getProcessId() + ", " + this.getProcessSequence() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getSubsystemId() + ", "
+				+ this.getModuleId() + ", " + this.getProcessId() + ", "
+				+ this.getProcessSequence() + "]";
 	}
 }

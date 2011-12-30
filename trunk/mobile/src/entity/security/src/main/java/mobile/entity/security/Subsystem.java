@@ -1,9 +1,6 @@
 package mobile.entity.security;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractEntity;
 import mobile.entity.schema.Multicompany;
@@ -63,7 +60,6 @@ public class Subsystem extends AbstractEntity implements Multicompany,
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		Subsystem copy = (Subsystem) super.clone();
-
 		copy.setPk((SubsystemPk) this.pk.clone());
 		return copy;
 	}

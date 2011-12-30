@@ -1,9 +1,6 @@
 package mobile.entity.security;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractEntity;
 import mobile.entity.schema.Multicompany;
@@ -64,7 +61,6 @@ public class UserStatus extends AbstractEntity implements Multicompany,
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		UserStatus copy = (UserStatus) super.clone();
-
 		copy.setPk((UserStatusPk) this.pk.clone());
 		return copy;
 	}

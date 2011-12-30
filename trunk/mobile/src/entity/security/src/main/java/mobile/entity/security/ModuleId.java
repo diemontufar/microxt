@@ -1,8 +1,6 @@
 package mobile.entity.security;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractEntityId;
 import mobile.entity.schema.GeneralEntityId;
@@ -41,7 +39,6 @@ public class ModuleId extends AbstractEntityId implements GeneralEntityId {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		ModuleId copy = (ModuleId) super.clone();
-
 		copy.setPk((ModuleIdPk) this.pk.clone());
 		return copy;
 	}

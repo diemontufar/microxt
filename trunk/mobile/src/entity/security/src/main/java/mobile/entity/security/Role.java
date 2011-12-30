@@ -1,13 +1,10 @@
 package mobile.entity.security;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractHistorical;
-import mobile.entity.schema.Historical;
 import mobile.entity.schema.Multicompany;
+import mobile.entity.schema.Historical;
 
 /**
  * The persistent class for the ROLE database table. Values of roles
@@ -91,7 +88,6 @@ public class Role extends AbstractHistorical implements Multicompany,
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		Role copy = (Role) super.clone();
-
 		copy.setPk((RolePk) this.pk.clone());
 		return copy;
 	}

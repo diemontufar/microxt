@@ -1,13 +1,10 @@
 package mobile.entity.security;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractHistorical;
-import mobile.entity.schema.Historical;
 import mobile.entity.schema.Multicompany;
+import mobile.entity.schema.Historical;
 
 /**
  * The persistent class for the USER_NOTIFICATION database table. Values of user
@@ -111,7 +108,6 @@ public class UserNotification extends AbstractHistorical implements
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		UserNotification copy = (UserNotification) super.clone();
-
 		copy.setPk((UserNotificationPk) this.pk.clone());
 		return copy;
 	}

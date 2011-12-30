@@ -1,9 +1,6 @@
 package mobile.entity.security;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractEntity;
 import mobile.entity.schema.Multicompany;
@@ -37,12 +34,6 @@ public class ProcessComponent extends AbstractEntity implements Multicompany {
 	 */
 	@Column(name = "AUTHORIZE", nullable = false)
 	private Boolean authorize;
-
-	/**
-	 * Workflow step Id
-	 */
-	@Column(name = "DECISION_ID", nullable = true)
-	private String decisionId;
 
 	public ProcessComponent() {
 	}
@@ -91,14 +82,6 @@ public class ProcessComponent extends AbstractEntity implements Multicompany {
 		this.authorize = authorize;
 	}
 
-	public String getDecisionId() {
-		return this.decisionId;
-	}
-
-	public void setDecisionId(String decisionId) {
-		this.decisionId = decisionId;
-	}
-
 	@Override
 	public void setPk(Object pk) {
 		this.pk = (ProcessComponentPk) pk;
@@ -107,7 +90,6 @@ public class ProcessComponent extends AbstractEntity implements Multicompany {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		ProcessComponent copy = (ProcessComponent) super.clone();
-
 		copy.setPk((ProcessComponentPk) this.pk.clone());
 		return copy;
 	}
@@ -116,6 +98,6 @@ public class ProcessComponent extends AbstractEntity implements Multicompany {
 	public String toString() {
 		return "PROCESS_COMPONENT:[" + this.getPk().toString() + ", "
 				+ this.getComponentId() + ", " + this.getEnable() + ", "
-				+ this.getAuthorize() + ", " + this.getDecisionId() + "]";
+				+ this.getAuthorize() + "]";
 	}
 }
