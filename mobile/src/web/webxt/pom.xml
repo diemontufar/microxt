@@ -84,7 +84,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.3.0-1</version>
+				<version>2.4.0</version>
 				<executions>
 					<execution>
 						<goals>
@@ -99,12 +99,12 @@
 						<dependency>
 							<groupId>com.google.gwt</groupId>
 							<artifactId>gwt-user</artifactId>
-							<version>2.3.0</version>
+							<version>2.4.0</version>
 						</dependency>
 						<dependency>
 							<groupId>com.google.gwt</groupId>
 							<artifactId>gwt-servlet</artifactId>
-							<version>2.3.0</version>
+							<version>2.4.0</version>
 						</dependency>
 						<dependency>
 							<groupId>javax.validation</groupId>
@@ -128,37 +128,6 @@
 				<configuration>
 					<packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-mobile-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/dependencies-mobile
-							</outputDirectory>
-							<includeGroupIds>mobile</includeGroupIds>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-external-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/applib
-							</outputDirectory>
-							<excludeGroupIds>mobile</excludeGroupIds>
-							<excludeScope>provided</excludeScope>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

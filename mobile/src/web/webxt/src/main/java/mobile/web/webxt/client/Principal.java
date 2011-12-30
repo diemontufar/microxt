@@ -1,18 +1,16 @@
 package mobile.web.webxt.client;
 
-import mobile.web.webxt.client.forms.LoginDialog;
-
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.RootPanel;
 
 public class Principal implements EntryPoint {
 
 	public void onModuleLoad() {
 		// Call the Login window
-		LoginDialog d = new LoginDialog();
-		d.show();
-		
-		//RootPanel.get().add(new EditableGrid2());
-
+//		MapWidget mapWidget = new MapWidget();
+//		mapWidget.setSize("1000", "500");
+		RootPanel.get().add(new Button());
 	}
 
 }
