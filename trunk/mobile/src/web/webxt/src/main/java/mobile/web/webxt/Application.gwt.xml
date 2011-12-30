@@ -19,7 +19,8 @@
 	<!-- Specify the application specific style sheet. -->
 	<stylesheet src='Application.css' />
 	<source path="client" excludes="*/*Test*.java" />
-
+	
+	
 	<!-- Specify the paths for translatable code -->
 	<source path='client' />
 	<source path='shared' />
