@@ -18,8 +18,6 @@
         <module>parameter</module>
         <module>person</module>
         <module>security</module>
-        <module>transport</module>
-        <module>coupon</module>
         <module>microxt</module>
     </modules>
 </project>
