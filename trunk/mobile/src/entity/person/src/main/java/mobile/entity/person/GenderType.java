@@ -1,9 +1,6 @@
 package mobile.entity.person;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractEntity;
 import mobile.entity.schema.Multilanguage;
@@ -62,7 +59,6 @@ public class GenderType extends AbstractEntity implements Multilanguage {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		GenderType copy = (GenderType) super.clone();
-
 		copy.setPk((GenderTypePk) this.pk.clone());
 		return copy;
 	}

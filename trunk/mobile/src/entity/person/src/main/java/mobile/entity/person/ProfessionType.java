@@ -1,9 +1,6 @@
 package mobile.entity.person;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractEntity;
 import mobile.entity.schema.Multicompany;
@@ -64,7 +61,6 @@ public class ProfessionType extends AbstractEntity implements Multicompany,
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		ProfessionType copy = (ProfessionType) super.clone();
-
 		copy.setPk((ProfessionTypePk) this.pk.clone());
 		return copy;
 	}

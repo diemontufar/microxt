@@ -1,7 +1,6 @@
 package mobile.entity.person;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractLanguageKey;
 import mobile.entity.schema.MultilanguageKey;

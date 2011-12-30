@@ -2,14 +2,11 @@ package mobile.entity.person;
 
 import java.sql.Date;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractHistoricalLocking;
-import mobile.entity.schema.Historical;
 import mobile.entity.schema.Multicompany;
+import mobile.entity.schema.Historical;
 import mobile.entity.schema.OptimisticLocking;
 
 /**
@@ -230,7 +227,6 @@ public class Person extends AbstractHistoricalLocking implements Multicompany,
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		Person copy = (Person) super.clone();
-
 		copy.setPk((PersonPk) this.pk.clone());
 		return copy;
 	}
