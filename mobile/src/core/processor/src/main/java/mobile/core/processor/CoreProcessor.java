@@ -33,7 +33,6 @@ public class CoreProcessor {
 
 	private final String QRY_PROCESSES = "Select p from ProcessComponent p "
 			+ "where p.pk.companyId = :companyId "
-			+ "and p.pk.channelId = :channelId "
 			+ "and p.pk.subsystemId = :subsystemId "
 			+ "and p.pk.moduleId = :moduleId "
 			+ "and p.pk.processId = :processId " + "and p.enable = true "
@@ -96,7 +95,6 @@ public class CoreProcessor {
 				.createQuery(QRY_PROCESSES, ProcessComponent.class);
 		query.setParameter("companyId",
 				LocalParameter.get(ParameterEnum.COMPANY, String.class));
-		query.setParameter("channelId", "PC");
 		query.setParameter("subsystemId", subsystem);
 		query.setParameter("moduleId", module);
 		query.setParameter("processId", process);
