@@ -1,4 +1,4 @@
-package mobile.core.generator;
+package mobile.core.generator.util;
 
 import java.util.ArrayList;
 import java.util.List;

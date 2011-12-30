@@ -1,4 +1,4 @@
-package mobile.core.generator;
+package mobile.core.generator.util;
 
 /**
  * Class for grouping property information
