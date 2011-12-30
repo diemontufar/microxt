@@ -21,11 +21,11 @@
 			<artifactId>mobile.web.message</artifactId>
 			<version>2.0</version>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>mobile.web</groupId> -->
-<!-- 			<artifactId>mobile.web.webxt_mvc</artifactId> -->
-<!-- 			<version>2.0</version> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>mobile.web</groupId> -->
+		<!-- <artifactId>mobile.web.webxt_mvc</artifactId> -->
+		<!-- <version>2.0</version> -->
+		<!-- </dependency> -->
 		<dependency>
 			<groupId>mobile.core</groupId>
 			<artifactId>mobile.core.processor</artifactId>
@@ -34,13 +34,13 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>2.3.0</version>
+			<version>2.4.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>2.3.0</version>
+			<version>2.4.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -81,6 +81,11 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google.gwt.google-apis</groupId>
+			<artifactId>gwt-maps</artifactId>
+			<version>3-0.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<outputDirectory>target/WEB-INF/classes</outputDirectory>
@@ -88,7 +93,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.3.0-1</version>
+				<version>2.4.0</version>
 				<executions>
 					<execution>
 						<goals>
@@ -103,12 +108,12 @@
 						<dependency>
 							<groupId>com.google.gwt</groupId>
 							<artifactId>gwt-user</artifactId>
-							<version>2.3.0</version>
+							<version>2.4.0</version>
 						</dependency>
 						<dependency>
 							<groupId>com.google.gwt</groupId>
 							<artifactId>gwt-servlet</artifactId>
-							<version>2.3.0</version>
+							<version>2.4.0</version>
 						</dependency>
 						<dependency>
 							<groupId>javax.validation</groupId>
@@ -136,15 +141,15 @@
 			</plugin>
 
 		</plugins>
-		 <!-- GWT necesita resources -->
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-		
+		<!-- GWT necesita resources -->
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+
 	</build>
 </project>

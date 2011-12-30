@@ -1,26 +1,37 @@
 package mobile.web.webxt_forms.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.maps.client.MapOptions;
+import com.google.gwt.maps.client.MapTypeId;
+import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.base.LatLng;
 import com.google.gwt.user.client.ui.RootPanel;
-
-import mobile.web.webxt_forms.client.security.EditableGrid2;
-import mobile.web.webxt_forms.client.security.PassChange;
-import mobile.web.webxt_forms.client.security.FormExample;
-import mobile.web.webxt_forms.client.security.PositionWidget;
 
 public class Principal implements EntryPoint {
 
-	public void onModuleLoad() {
-		// Call the Login window
-		PositionWidget pw =new PositionWidget("MANTENIMIENTO DE CONTRASEÑAS");
-		EditableGrid2 fe =new EditableGrid2();
-		PassChange cfe = new PassChange();
-		pw.add(fe);
-		//pw.add(cfe);
-		//pw.add(new Button("Holi"));
-		
-		RootPanel.get().add(pw);
-	}
+	 private MapWidget mapWidget;
 
+	  // GWT module entry point method.
+	  public void onModuleLoad() {
+	    final MapOptions options = new MapOptions();
+	    // Zoom level. Required
+	    options.setZoom(8);
+	    // Open a map centered on Cawker City, KS USA. Required
+	    options.setCenter(new LatLng(39.509, -98.434));
+	    // Map type. Required.
+	    options.setMapTypeId(new MapTypeId().getRoadmap());
+	    
+	    // Enable maps drag feature. Disabled by default.
+	    options.setDraggable(true);
+	    // Enable and add default navigation control. Disabled by default.
+	    options.setNavigationControl(true);
+	    // Enable and add map type control. Disabled by default.
+	    options.setMapTypeControl(true);
+	    mapWidget = new MapWidget(options);
+	    mapWidget.setSize("800px", "600px");
+	    
+	    
+	    // Add the map to the HTML host page
+	    RootPanel.get("mapsTutorial").add(mapWidget);
+	  }
 }
