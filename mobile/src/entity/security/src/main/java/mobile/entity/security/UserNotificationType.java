@@ -1,9 +1,6 @@
 package mobile.entity.security;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractEntity;
 import mobile.entity.schema.Multilanguage;
@@ -63,7 +60,6 @@ public class UserNotificationType extends AbstractEntity implements
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		UserNotificationType copy = (UserNotificationType) super.clone();
-
 		copy.setPk((UserNotificationTypePk) this.pk.clone());
 		return copy;
 	}

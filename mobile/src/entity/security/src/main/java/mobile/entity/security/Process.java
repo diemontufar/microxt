@@ -49,12 +49,6 @@ public class Process extends AbstractHistorical implements Multicompany,
 	@Column(name = "DATAFILE_ID", nullable = true)
 	private Long datafileId;
 
-	/**
-	 * Workflow Id
-	 */
-	@Column(name = "WORKFLOW_ID", nullable = true)
-	private Long workflowId;
-
 	public Process() {
 	}
 
@@ -119,14 +113,6 @@ public class Process extends AbstractHistorical implements Multicompany,
 		this.datafileId = datafileId;
 	}
 
-	public Long getWorkflowId() {
-		return this.workflowId;
-	}
-
-	public void setWorkflowId(Long workflowId) {
-		this.workflowId = workflowId;
-	}
-
 	@Override
 	public void setPk(Object pk) {
 		this.pk = (ProcessPk) pk;
@@ -144,6 +130,6 @@ public class Process extends AbstractHistorical implements Multicompany,
 		return "PROCESS:[" + this.getPk().toString() + ", " + this.getCreated()
 				+ ", " + this.getName() + ", " + this.getEnable() + ", "
 				+ this.getMenu() + ", " + this.getUrl() + ", "
-				+ this.getDatafileId() + ", " + this.getWorkflowId() + "]";
+				+ this.getDatafileId() + "]";
 	}
 }

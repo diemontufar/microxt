@@ -1,12 +1,10 @@
 package mobile.entity.security;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractHistorical;
-import mobile.entity.schema.Historical;
 import mobile.entity.schema.Multicompany;
+import mobile.entity.schema.Historical;
 
 /**
  * The persistent class for the USER_PROFILE database table. Values of user
@@ -44,7 +42,6 @@ public class UserProfile extends AbstractHistorical implements Multicompany,
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		UserProfile copy = (UserProfile) super.clone();
-
 		copy.setPk((UserProfilePk) this.pk.clone());
 		return copy;
 	}

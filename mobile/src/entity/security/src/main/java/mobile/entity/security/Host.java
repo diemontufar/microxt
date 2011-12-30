@@ -1,13 +1,10 @@
 package mobile.entity.security;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractHistorical;
-import mobile.entity.schema.Historical;
 import mobile.entity.schema.Multicompany;
+import mobile.entity.schema.Historical;
 
 /**
  * The persistent class for the HOST database table. Values of hosts
@@ -26,24 +23,6 @@ public class Host extends AbstractHistorical implements Multicompany,
 	 */
 	@Column(name = "ADDRESS", nullable = false)
 	private String address;
-
-	/**
-	 * Channel Id
-	 */
-	@Column(name = "CHANNEL_ID", nullable = true)
-	private String channelId;
-
-	/**
-	 * Branch Id
-	 */
-	@Column(name = "BRANCH_ID", nullable = true)
-	private String branchId;
-
-	/**
-	 * Office Id
-	 */
-	@Column(name = "OFFICE_ID", nullable = true)
-	private String officeId;
 
 	/**
 	 * Time zone
@@ -79,30 +58,6 @@ public class Host extends AbstractHistorical implements Multicompany,
 		this.address = address;
 	}
 
-	public String getChannelId() {
-		return this.channelId;
-	}
-
-	public void setChannelId(String channelId) {
-		this.channelId = channelId;
-	}
-
-	public String getBranchId() {
-		return this.branchId;
-	}
-
-	public void setBranchId(String branchId) {
-		this.branchId = branchId;
-	}
-
-	public String getOfficeId() {
-		return this.officeId;
-	}
-
-	public void setOfficeId(String officeId) {
-		this.officeId = officeId;
-	}
-
 	public String getTimeZone() {
 		return this.timeZone;
 	}
@@ -119,7 +74,6 @@ public class Host extends AbstractHistorical implements Multicompany,
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		Host copy = (Host) super.clone();
-
 		copy.setPk((HostPk) this.pk.clone());
 		return copy;
 	}
@@ -127,8 +81,6 @@ public class Host extends AbstractHistorical implements Multicompany,
 	@Override
 	public String toString() {
 		return "HOST:[" + this.getPk().toString() + ", " + this.getCreated()
-				+ ", " + this.getAddress() + ", " + this.getChannelId() + ", "
-				+ this.getBranchId() + ", " + this.getOfficeId() + ", "
-				+ this.getTimeZone() + "]";
+				+ ", " + this.getAddress() + ", " + this.getTimeZone() + "]";
 	}
 }

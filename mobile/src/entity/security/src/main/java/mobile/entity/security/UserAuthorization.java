@@ -1,12 +1,10 @@
 package mobile.entity.security;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractHistorical;
-import mobile.entity.schema.Historical;
 import mobile.entity.schema.Multicompany;
+import mobile.entity.schema.Historical;
 
 /**
  * The persistent class for the USER_AUTHORIZATION database table. Values of
@@ -44,7 +42,6 @@ public class UserAuthorization extends AbstractHistorical implements
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		UserAuthorization copy = (UserAuthorization) super.clone();
-
 		copy.setPk((UserAuthorizationPk) this.pk.clone());
 		return copy;
 	}

@@ -1,13 +1,10 @@
 package mobile.entity.security;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractHistoricalLocking;
-import mobile.entity.schema.Historical;
 import mobile.entity.schema.Multicompany;
+import mobile.entity.schema.Historical;
 import mobile.entity.schema.OptimisticLocking;
 
 /**
@@ -65,7 +62,6 @@ public class UserSession extends AbstractHistoricalLocking implements
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		UserSession copy = (UserSession) super.clone();
-
 		copy.setPk((UserSessionPk) this.pk.clone());
 		return copy;
 	}

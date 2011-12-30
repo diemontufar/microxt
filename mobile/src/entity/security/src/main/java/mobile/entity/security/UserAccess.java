@@ -2,14 +2,11 @@ package mobile.entity.security;
 
 import java.sql.Date;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractHistorical;
-import mobile.entity.schema.Historical;
 import mobile.entity.schema.Multicompany;
+import mobile.entity.schema.Historical;
 
 /**
  * The persistent class for the USER_ACCESS database table. Values of user
@@ -109,7 +106,6 @@ public class UserAccess extends AbstractHistorical implements Multicompany,
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		UserAccess copy = (UserAccess) super.clone();
-
 		copy.setPk((UserAccessPk) this.pk.clone());
 		return copy;
 	}
