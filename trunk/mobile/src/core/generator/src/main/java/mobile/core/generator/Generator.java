@@ -12,31 +12,41 @@ public class Generator {
 	 * Generate two scripts (drop, create) for all tables
 	 **/
 	private static void generateSqlScriptsForAllTables() throws Exception {
-		 SqlGeneratorAllinOne sqlGenerator = new SqlGeneratorAllinOne(
-		 "MYSQL", "/home/ronald/TesisOutput");
-		 sqlGenerator.execute();
+		SqlGenerator sqlGenerator = new SqlGenerator("/home/ronald/TesisOutput");
+		sqlGenerator.generateAllTables();
+	}
+
+	/**
+	 * Generate two scripts (drop, create) for a list of tables
+	 **/
+	private static void generateSqlScriptsForListOfTables(List<String> ltables)
+			throws Exception {
+		SqlGenerator sqlGenerator = new SqlGenerator("/home/ronald/TesisOutput");
+		sqlGenerator.generate(ltables);
 	}
 
 	/**
 	 * Generate file classes for all entities
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 **/
 	private static void generateClasesForAllEntities() throws Exception {
-		 //String outputFolder = "C:\\Users\\Ronald\\Tesis";
-		 String outputFolder = "/home/ronald/TesisOutput";
-		 String outputUpperPackage = "mobile.entity";
-		 EntityGenerator entityGenerator = new
-		 EntityGenerator(outputFolder,
-		 outputUpperPackage);
-		 entityGenerator.execute();
+		// String outputFolder = "C:/Users/Ronald/Tesis";
+		String outputFolder = "/home/ronald/TesisOutput";
+		String outputUpperPackage = "mobile.entity";
+		EntityGenerator entityGenerator = new EntityGenerator(outputFolder,
+				outputUpperPackage);
+		entityGenerator.generateAllEntities();
 	}
 
 	/**
 	 * Generates file classes for a list of entities
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
-	private static void generateClasesForListOfTables(List<String> lTables) throws Exception {
-		// String outputFolder = "C:\\Users\\Ronald\\Tesis";
+	private static void generateClasesForListOfTables(List<String> lTables)
+			throws Exception {
+		// String outputFolder = "C:/Users/Ronald/Tesis";
 		String outputFolder = "/home/ronald/TesisOutput";
 		String outputUpperPackage = "mobile.entity";
 		EntityGenerator entityGenerator = new EntityGenerator(outputFolder,
@@ -55,24 +65,31 @@ public class Generator {
 			JPManagerFactory.createEntityManagerFactory("generator");
 			JPManager.createEntityManager();
 
-			// Sql generator
-			generateSqlScriptsForAllTables();
+			//************************************************
+			// Generators for all tables
+			//************************************************
+			//generateSqlScriptsForAllTables();
+			generateClasesForAllEntities();
 
-			// Entity generator
-			//generateClasesForAllEntities();
+			//************************************************
+			// Generators for a list of tables
+			//************************************************
+//			List<String> ltables = new ArrayList<String>();
+//			ltables.add("ENTITY_FIELD");
+//			generateSqlScriptsForListOfTables(ltables);
+//			generateClasesForListOfTables(ltables);
 
-			// List of tables generator
-			List<String> lTables = new ArrayList<String>();
-			lTables.add("PROCESS");
-			lTables.add("PROFILE");
-			//generateClasesForListOfTables(lTables);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			JPManager.close();
 			JPManagerFactory.close();
 		}
+
+	}
+
+	private static void generateSQLScriptsForListOfTables(List<String> lTables) {
+		// TODO Auto-generated method stub
 
 	}
 

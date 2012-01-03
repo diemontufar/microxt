@@ -2,56 +2,59 @@ package mobile.core.generator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import mobile.core.generator.util.SpecialField;
 import mobile.entity.common.DatabaseType;
 import mobile.entity.common.EntityField;
-import mobile.entity.common.EntityFieldPk;
 import mobile.entity.common.EntityRelationship;
 import mobile.entity.common.EntityTable;
 import mobile.entity.manager.JPManager;
 import mobile.tools.common.FileUtil;
 
-
-public class SqlGeneratorAllinOne {
+public class SqlGenerator {
 
 	// Company
 	private final String COMPANY = "MXT";
 
-	// Name of the data base, for syntaxes conventions
-	// Actually supported: ORACLE: MYSQL
-	private String dataBaseName;
+	// Name of the data base, for syntaxes convention. Actually supported: MYSQL
+	private String DATABASE_NAME = "MYSQL";
 
 	// For the output file
 	private String outputFolder;
 
-	// Sql for entities
-	private String ENTITY_SQL = "Select e from EntityTable e where e.pk.companyId in ('ALL',:company) ";
+	// Sql for data type
+	private String DATA_TYPE_SQL = "Select d from DatabaseType d where "
+			+ "d.pk.databaseId = :databaseId ";
 
-	// Sql for fields
-	private String FIELD_SQL = "Select f from EntityField f where "
+	// QL for entities
+	private String ENTITY_QL = "Select e from EntityTable e where e.pk.companyId in ('ALL',:company) "
+			+ "order by e.packageName, e.pk.tableId";
+
+	// QL for a list of entities
+	private String ENTITY2_QL = "Select e from EntityTable e where e.pk.companyId in ('ALL',:company) "
+			+ "and e.pk.tableId in :tables order by e.packageName, e.pk.tableId";
+
+	// QL for fields
+	private String FIELD_QL = "Select f from EntityField f where "
 			+ "f.pk.companyId in ('ALL',:company) and f.pk.tableId=:tableId "
 			+ "order by f.fieldOrder";
 
-	// NATIVE SQL for distinct relationships (drop fks)
-	String RELATIONSHIP_IDS_SQL = "select distinct r.RELATIONSHIP_ID, r.TABLE_FROM from ENTITY_RELATIONSHIP r where "
-			+ "r.COMPANY_ID in ('ALL', :company) "
-			+ "order by r.TABLE_FROM, r.RELATIONSHIP_ID";
+	// QL for relationships
+	private String RELATIONSHIP2_QL = "select r from EntityRelationship r where "
+			+ "r.pk.companyId in ('ALL', :company) "
+			+ "and r.pk.relationshipOrder = 1 "
+			+ "and r.tableFrom in :tables "
+			+ "or r.tableTo in :tables "
+			+ "order by r.tableFrom, r.pk.relationshipId";
 
-	private String RELATIONSHIP_SQL = "Select r.* from ENTITY_RELATIONSHIP r where "
-			+ "r.COMPANY_ID in ('ALL',:company) "
-			+ "order by r.TABLE_FROM, r.RELATIONSHIP_ID, r.RELATIONSHIP_ORDER";
-
-	// New line
+	// String constants
 	private final String NEW_LINE = "\n";
-
-	// Tab
 	private final String TAB = "\t";
+	private final String UNION = "&";
 
 	// For building the creation script
 	private StringBuilder sbSql;
@@ -69,13 +72,6 @@ public class SqlGeneratorAllinOne {
 	// Map for data types
 	private Map<String, String> mDataType;
 
-	// Concatenate symbol
-	private final String UNION = "&";
-
-	// Sql for data type
-	private String DATA_TYPE_SQL = "Select d from DatabaseType d where "
-			+ "d.pk.databaseId = :databaseId ";
-
 	/**
 	 * Constructor
 	 * 
@@ -84,92 +80,31 @@ public class SqlGeneratorAllinOne {
 	 * @param outputFolder
 	 *            for the output file
 	 */
-	public SqlGeneratorAllinOne(String dbName, String outputFolder) {
-		this.dataBaseName = dbName;
+	public SqlGenerator(String outputFolder) {
 		this.outputFolder = outputFolder;
 
-		// Define company field
-		companyField = new EntityField();
-		EntityFieldPk cPk = new EntityFieldPk();
-		cPk.setFieldId("COMPANY_ID");
-		companyField.setPk(cPk);
-		companyField.setFieldOrder(0);
-		companyField.setDataTypeId("String");
-		companyField.setDataSize(4);
-		companyField.setDataScale(0);
-		companyField.setPrimaryKey(true);
-		companyField.setUniqueKey(false);
-		companyField.setNullable(false);
-		companyField.setDescription("Company id");
-		companyField.setLabel("company");
+		// Define special fields
+		SpecialField sf = new SpecialField();
+		companyField = sf.getCompanyField();
+		languageField = sf.getLanguageField();
+		expiredField = sf.getExpiredField();
+		createdField = sf.getCreatedField();
+		versionField = sf.getVersionField();
 
-		// Define language field
-		languageField = new EntityField();
-		EntityFieldPk lPk = new EntityFieldPk();
-		lPk.setFieldId("LANGUAGE_ID");
-		languageField.setPk(lPk);
-		languageField.setFieldOrder(0);
-		languageField.setDataTypeId("String");
-		languageField.setDataSize(2);
-		languageField.setDataScale(0);
-		languageField.setPrimaryKey(true);
-		languageField.setUniqueKey(false);
-		languageField.setNullable(false);
-		languageField.setDescription("Language id");
-		languageField.setLabel("language");
-
-		// Define expired field
-		expiredField = new EntityField();
-		EntityFieldPk ePk = new EntityFieldPk();
-		ePk.setFieldId("EXPIRED");
-		expiredField.setPk(ePk);
-		expiredField.setFieldOrder(0);
-		expiredField.setDataTypeId("Date");
-		expiredField.setDataSize(0);
-		expiredField.setDataScale(0);
-		expiredField.setPrimaryKey(true);
-		expiredField.setUniqueKey(false);
-		expiredField.setNullable(false);
-		expiredField.setDescription("Expiration date");
-		expiredField.setLabel("expired");
-
-		// Define created field
-		createdField = new EntityField();
-		EntityFieldPk dPk = new EntityFieldPk();
-		dPk.setFieldId("CREATED");
-		createdField.setPk(dPk);
-		createdField.setFieldOrder(0);
-		createdField.setDataTypeId("Date");
-		createdField.setDataSize(0);
-		createdField.setDataScale(0);
-		createdField.setPrimaryKey(false);
-		createdField.setUniqueKey(false);
-		createdField.setNullable(false);
-		createdField.setDescription("Creation date");
-		createdField.setLabel("created");
-
-		// Define created field
-		versionField = new EntityField();
-		EntityFieldPk vPk = new EntityFieldPk();
-		vPk.setFieldId("VERSION");
-		versionField.setPk(vPk);
-		versionField.setFieldOrder(0);
-		versionField.setDataTypeId("Long");
-		versionField.setDataSize(0);
-		versionField.setDataScale(0);
-		versionField.setPrimaryKey(false);
-		versionField.setUniqueKey(false);
-		versionField.setNullable(false);
-		versionField.setDescription("For optimistic locking");
-		versionField.setLabel("version");
-		versionField.setDefaultValue("0");
+		// Initialize builders
+		sbSql = new StringBuilder();
+		sbDropSql = new StringBuilder();
 
 		// Fill data type map
+		fillDataTypes();
+	}
+
+	private void fillDataTypes() {
 		// Query data types
 		List<DatabaseType> lTypes;
 		TypedQuery<DatabaseType> query = JPManager.getEntityManager()
 				.createQuery(DATA_TYPE_SQL, DatabaseType.class);
-		query.setParameter("databaseId", dataBaseName);
+		query.setParameter("databaseId", DATABASE_NAME);
 		lTypes = query.getResultList();
 
 		mDataType = new HashMap<String, String>();
@@ -182,20 +117,30 @@ public class SqlGeneratorAllinOne {
 
 	}
 
-	public void execute() throws Exception {
-		// Query packages
+	public void generateAllTables() throws Exception {
+		// Query all entities
+		TypedQuery<EntityTable> query = JPManager.getEntityManager()
+				.createQuery(ENTITY_QL, EntityTable.class);
+		query.setParameter("company", COMPANY);
+		List<EntityTable> lEntity = query.getResultList();
 
-		// Initialize builders
-		sbSql = new StringBuilder();
-		sbDropSql = new StringBuilder();
+		List<String> ltables = new ArrayList<String>();
+		for (EntityTable entity : lEntity) {
+			ltables.add(entity.getPk().getTableId());
+		}
 
+		// drop foreign keys
+		generate(ltables);
+	}
+
+	public void generate(List<String> ltables) throws Exception {
 		// Drop script
-		dropForeignKeys();
-		dropTables();
+		dropForeignKeys(ltables);
+		dropTables(ltables);
 
 		// Create script
-		createTables();
-		createRelationships();
+		createTables(ltables);
+		createForeignKeys(ltables);
 
 		// Write files
 		System.out.println("Writing file create.sql...");
@@ -204,33 +149,42 @@ public class SqlGeneratorAllinOne {
 		FileUtil.writeFile(outputFolder + "/drop.sql", sbDropSql.toString());
 	}
 
-	@SuppressWarnings("rawtypes")
-	public void dropForeignKeys() {
-		// Query relationship ids
-		List lRelationship;
-		String finalQuery = RELATIONSHIP_IDS_SQL.replaceAll(":company", "'"
-				+ COMPANY + "'");
-		Query query = JPManager.getEntityManager()
-				.createNativeQuery(finalQuery);
+	private void dropForeignKeys(List<String> ltables) {
+		// Query relationships
+		List<EntityRelationship> lRelationship;
+		TypedQuery<EntityRelationship> query = JPManager.getEntityManager()
+				.createQuery(RELATIONSHIP2_QL, EntityRelationship.class);
+		query.setParameter("company", COMPANY);
+		query.setParameter("tables", completeIdTables(ltables));
 		lRelationship = query.getResultList();
 
-		for (Iterator i = lRelationship.iterator(); i.hasNext();) {
-			Object[] values = (Object[]) i.next();
+		for (EntityRelationship rel : lRelationship) {
 			sbDropSql.append("ALTER TABLE ");
-			sbDropSql.append(values[1]);
+			sbDropSql.append(rel.getTableFrom());
 			sbDropSql.append(" DROP FOREIGN KEY ");
-			sbDropSql.append(values[0]);
+			sbDropSql.append(rel.getPk().getRelationshipId());
 			sbDropSql.append(";" + NEW_LINE);
 		}
 	}
 
-	public void dropTables() {
+	private List<String> completeIdTables(List<String> ltables) {
+		List<String> lIdTables = new ArrayList<String>();
+		for (String table : ltables) {
+			lIdTables.add(table+"_ID");
+		}
+		List<String> finalList = new ArrayList<String>();
+		finalList.addAll(ltables);
+		finalList.addAll(lIdTables);
+		return finalList;
+	}
+
+	private void dropTables(List<String> ltables) {
 		// Query entities
-		List<EntityTable> lEntity;
 		TypedQuery<EntityTable> query = JPManager.getEntityManager()
-				.createQuery(ENTITY_SQL, EntityTable.class);
+				.createQuery(ENTITY2_QL, EntityTable.class);
 		query.setParameter("company", COMPANY);
-		lEntity = query.getResultList();
+		query.setParameter("tables", ltables);
+		List<EntityTable> lEntity = query.getResultList();
 
 		sbDropSql.append(NEW_LINE);
 		for (EntityTable ent : lEntity) {
@@ -243,12 +197,13 @@ public class SqlGeneratorAllinOne {
 		}
 	}
 
-	public void createTables() throws Exception {
+	private void createTables(List<String> ltables) throws Exception {
 		// Query entities
 		List<EntityTable> lEntity;
 		TypedQuery<EntityTable> query = JPManager.getEntityManager()
-				.createQuery(ENTITY_SQL, EntityTable.class);
+				.createQuery(ENTITY2_QL, EntityTable.class);
 		query.setParameter("company", COMPANY);
+		query.setParameter("tables", ltables);
 		lEntity = query.getResultList();
 
 		for (EntityTable ent : lEntity) {
@@ -260,7 +215,7 @@ public class SqlGeneratorAllinOne {
 		// Query fields
 		List<EntityField> lFields;
 		TypedQuery<EntityField> query = JPManager.getEntityManager()
-				.createQuery(FIELD_SQL, EntityField.class);
+				.createQuery(FIELD_QL, EntityField.class);
 		query.setParameter("company", COMPANY);
 		query.setParameter("tableId", ent.getPk().getTableId());
 		lFields = query.getResultList();
@@ -442,17 +397,14 @@ public class SqlGeneratorAllinOne {
 		return sbPk;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void createRelationships() {
+	private void createForeignKeys(List<String> ltables) {
 		// Query relationships
 		List<EntityRelationship> lRelationship;
-		String finalQuery = RELATIONSHIP_SQL.replaceAll(":company", "'"
-				+ COMPANY + "'");
-		Query query = JPManager.getEntityManager().createNativeQuery(
-				finalQuery, EntityRelationship.class);
-		// query.setParameter("company", COMPANY);
-		// query.setParameter("packageName", packageName);
-		lRelationship = (List<EntityRelationship>) query.getResultList();
+		TypedQuery<EntityRelationship> query = JPManager.getEntityManager()
+				.createQuery(RELATIONSHIP2_QL, EntityRelationship.class);
+		query.setParameter("company", COMPANY);
+		query.setParameter("tables", completeIdTables(ltables));
+		lRelationship = query.getResultList();
 
 		sbSql.append(NEW_LINE);
 		for (int i = 0; i < lRelationship.size(); i++) {

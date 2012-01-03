@@ -1,8 +1,5 @@
 package mobile.core.generator;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +33,14 @@ public class EntityGenerator {
 	// Package of basic entity schema
 	private String PATH_ENTITY_SCHEMA = "mobile.entity.schema";
 
-	// JPQL to query entities
-	private String ENTITY_SQL = "Select e from EntityTable e where e.pk.companyId in ('ALL',:companyId)";
+	// QL to query entities
+	private String ENTITY_QL = "Select e from EntityTable e where e.pk.companyId in ('ALL',:companyId)";
 	
-	// JPQL to query fields
+	// QL to query some entities
+	private String ENTITY2_QL = "Select e from EntityTable e where e.pk.companyId in ('ALL',:companyId) " +
+			"and e.pk.tableId in :tables";
+	
+	// QL to query fields
 	private String FIELD_SQL = "Select f from EntityField f where "
 			+ "f.pk.companyId in ('ALL',:companyId) and f.pk.tableId=:tableId "
 			+ "order by f.fieldOrder";
@@ -67,16 +68,28 @@ public class EntityGenerator {
 		this.outputPackage = outputPackage;
 	}
 
-	public void execute() throws Exception {
-		generateEntities();
-		codeFormatting();
-	}
+	public void generateAllEntities() throws Exception {
+		// Query all entities
+		TypedQuery<EntityTable> queryEntities = JPManager.getEntityManager()
+				.createQuery(ENTITY_QL, EntityTable.class);
+		queryEntities.setParameter("companyId", COMPANY);
+		List<EntityTable> lEntity = queryEntities.getResultList();
 
-	public void generateEntities() throws Exception {
+		List<String> ltables = new ArrayList<String>();
+		for (EntityTable entityTable : lEntity) {
+			ltables.add(entityTable.getPk().getTableId());
+		}
+		
+		generate(ltables);
+
+	}
+	
+	public void generate(List<String> ltables) throws Exception{
 		// Query entities
 		TypedQuery<EntityTable> queryEntities = JPManager.getEntityManager()
-				.createQuery(ENTITY_SQL, EntityTable.class);
+				.createQuery(ENTITY2_QL, EntityTable.class);
 		queryEntities.setParameter("companyId", COMPANY);
+		queryEntities.setParameter("tables", ltables);
 		List<EntityTable> lEntity = queryEntities.getResultList();
 
 		if (lEntity.size() < 1) {
@@ -88,7 +101,7 @@ public class EntityGenerator {
 			generateEntity(entity);
 		}
 	}
-	
+
 	public void generateOneEntity(String tableId) throws Exception {
 		// Find the entity
 		EntityTablePk pk = new EntityTablePk(tableId);
@@ -912,35 +925,6 @@ public class EntityGenerator {
 			sb.append(s.substring(1).toLowerCase());
 		}
 		return sb.toString();
-	}
-
-	public void codeFormatting() throws Exception {
-		// ------------------------------------------------------------
-		// Code Formatting
-		// ------------------------------------------------------------
-		System.out.println("Code formating...");
-		// Jacobe
-		String resourcesPath = (new File("resources")).getPath();
-		String jacobePath = "";
-		if (System.getProperty("os.name").toUpperCase().indexOf("LINUX") != -1) {
-			jacobePath = resourcesPath + "/jacobe.linux/jacobe";
-		} else if (System.getProperty("os.name").toUpperCase()
-				.indexOf("WINDOWS") != -1) {
-			jacobePath = resourcesPath + "/jacobe.win32/jacobe.exe";
-		}
-		// Sources
-		// String sourceFiles = this.pathToSave + "/" + upperFolder + "/*";
-		String sourceFolder = this.pathToSave;
-
-		Process p = Runtime.getRuntime().exec(
-				jacobePath + " -nobackup -overwrite " + sourceFolder);
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				p.getInputStream()));
-		String aux = br.readLine();
-		while (aux != null) {
-			System.out.println(aux);
-			aux = br.readLine();
-		}
 	}
 
 }
