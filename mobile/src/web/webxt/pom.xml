@@ -82,7 +82,7 @@
 				<executions>
 					<execution>
 						<configuration>
-							<module>mobile.web.webxt_mvc.Mobile</module>
+							<module>mobile.web.webxt.Mobile</module>
 						</configuration>
 						<goals>
 							<goal>compile</goal>
