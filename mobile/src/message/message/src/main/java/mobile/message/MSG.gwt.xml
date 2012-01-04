@@ -3,5 +3,5 @@
 <module rename-to="MSG">
     <!-- Importamos el core de GWT -->
 	<inherits name='com.google.gwt.user.User'/>
-	<source path='wmessage' />
+	<source path='message'/>
 </module>

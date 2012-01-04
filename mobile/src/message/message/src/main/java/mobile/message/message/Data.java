@@ -1,17 +1,16 @@
-package mobile.message.cmessage;
+package mobile.message.message;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 public class Data {
+
+	public final static String READ_ONLY = "_readonly";
+	public final static String OFFSET_PAGE = "_offset_page";
+	public final static String LIMIT_PAGE = "_limit_page";
+	public final static String TOTAL_PAGE = "_total_page";
+	public final static String ORDER_BY = "_order_by";
+	public final static String ORDER_DIR = "_order_dir";
 
 	private String id;
 
@@ -19,59 +18,12 @@ public class Data {
 
 	private List<Item> itemList = new ArrayList<Item>();
 
-	public Data(String id) {
-		setId(id.trim());
-	}
-
 	public Data() {
+		setId(null);
 	}
 
-	public Data(Node node) throws Exception {
-		if (node.getNodeType() == Node.ELEMENT_NODE) {
-			Element element = (Element) node;
-			String id = element.getAttribute("id");
-			if (id != null && id.compareTo("") != 0) {
-				setId(id.trim());
-			}
-			NodeList nodeList = element.getChildNodes();
-			for (int i = 0; i < nodeList.getLength(); i++) {
-				Node n = nodeList.item(i);
-				if (n.getParentNode().getNodeName().compareTo("data") == 0 && n.getNodeType() == Node.ELEMENT_NODE) {
-					if (n.getNodeName().compareTo("item") != 0) {
-						Field field = new Field(n);
-						fieldList.add(field);
-					} else {
-						Item item = new Item(n);
-						itemList.add(item);
-					}
-				}
-			}
-		}
-	}
-
-	@SuppressWarnings("rawtypes")
-	public Data(JSONObject jsonObject) {
-		for (Iterator i = jsonObject.keys(); i.hasNext();) {
-			String key = (String) i.next();
-			if (key.compareTo("-id") == 0) {
-				String id = jsonObject.getString(key);
-				if (id != null && id.compareTo("") != 0) {
-					setId(id.trim());
-				}
-			} else {
-				if (key.compareTo("item") != 0) {
-					Field field = new Field(key, jsonObject.getString(key));
-					fieldList.add(field);
-				} else {
-					JSONArray jsonList = JSONArray.fromObject(jsonObject.get(key));
-					for (Iterator j = jsonList.iterator(); j.hasNext();) {
-						JSONObject json = (JSONObject) j.next();
-						Item item = new Item(json);
-						addItem(item);
-					}
-				}
-			}
-		}
+	public Data(String id) {
+		setId(id);
 	}
 
 	public String toXML() {
@@ -128,11 +80,21 @@ public class Data {
 	}
 
 	public void setId(String dataId) {
-		id = dataId;
+		id = "noname";
+		if (dataId != null) {
+			id = dataId.trim();
+		}
 	}
 
 	public String getId() {
 		return id;
+	}
+
+	public void addField(String name, String value) {
+		Field field = new Field(name, value);
+		if (getField(field.getName()) == null) {
+			fieldList.add(field);
+		}
 	}
 
 	public void addField(Field field) {
@@ -147,6 +109,7 @@ public class Data {
 				return field;
 			}
 		}
+		//return new Field(name, null);
 		return null;
 	}
 
@@ -187,5 +150,73 @@ public class Data {
 
 	public List<Item> getItemList() {
 		return itemList;
+	}
+
+	public void setReadOnly(Boolean readonly) {
+		setValue(Data.READ_ONLY, readonly);
+	}
+
+	public Boolean isReadonly() {
+		return (Boolean) getValue(Data.READ_ONLY);
+	}
+
+	public void setOffset(Integer offset) {
+		setValue(Data.OFFSET_PAGE, offset);
+	}
+
+	public Integer getOffset() {
+		return (Integer) getValue(Data.OFFSET_PAGE);
+	}
+
+	public void setLimit(Integer limit) {
+		setValue(Data.LIMIT_PAGE, limit);
+	}
+
+	public Integer getLimit() {
+		return (Integer) getValue(Data.LIMIT_PAGE);
+	}
+
+	public void setTotal(Integer total) {
+		setValue(Data.TOTAL_PAGE, total);
+	}
+
+	public Integer getTotal() {
+		return (Integer) getValue(Data.TOTAL_PAGE);
+	}
+
+	public void setOrderBy(String orderby) {
+		setValue(Data.ORDER_BY, orderby);
+	}
+
+	public String getOrderBy() {
+		return (String) getValue(Data.ORDER_BY);
+	}
+
+	public void setOrderDir(String orderdir) {
+		setValue(Data.ORDER_DIR, orderdir);
+	}
+
+	public String getOrderDir() {
+		return (String) getValue(Data.ORDER_DIR);
+	}
+
+	private void setValue(String name, Object object) {
+		Field parameter = new Field(name, object.toString());
+		for (Field field : fieldList) {
+			if ((field.getName().compareTo(parameter.getName())) == 0) {
+				field.setValue(parameter.getValue());
+			} else {
+				fieldList.add(parameter);
+			}
+		}
+	}
+
+	private Object getValue(String name) {
+		Field parameter = getField(name);
+		if (parameter != null) {
+			return parameter.getValue();
+		} else {
+			return null;
+		}
 	}
 }
