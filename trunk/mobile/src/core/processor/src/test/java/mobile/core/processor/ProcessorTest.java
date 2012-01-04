@@ -6,10 +6,10 @@ import javax.persistence.Query;
 
 import mobile.entity.manager.JPManager;
 import mobile.entity.manager.JPManagerFactory;
-import mobile.message.cmessage.Data;
-import mobile.message.cmessage.Field;
-import mobile.message.cmessage.Item;
-import mobile.message.cmessage.Message;
+import mobile.message.message.Data;
+import mobile.message.message.Field;
+import mobile.message.message.Item;
+import mobile.message.message.Message;
 import mobile.tools.common.Log;
 import mobile.tools.common.param.LocalParameter;
 import mobile.tools.common.param.ParameterEnum;

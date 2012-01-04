@@ -3,11 +3,11 @@ package mobile.web.webxt_mvc.client.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.message.wmessage.Data;
-import mobile.message.wmessage.Field;
-import mobile.message.wmessage.Item;
-import mobile.message.wmessage.Message;
-import mobile.message.wmessage.Parser;
+import mobile.message.message.Data;
+import mobile.message.message.Field;
+import mobile.message.message.Item;
+import mobile.message.message.Message;
+import mobile.web.webxt_mvc.client.parser.Parser;
 import mobile.web.webxt_mvc.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -18,9 +18,7 @@ import com.extjs.gxt.ui.client.data.PagingLoadResult;
 
 public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 
-	private final String MSG_TYPE = Parser.JSON;
-	
-	private Parser parser;
+	private final String MSG_TYPE = Message.JSON;
 	
 	private final String OFFSET = "_pag_offset";
 	
@@ -39,8 +37,8 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 		
 		try {
 			String strData = data.toString();
-			parser = new Parser(strData, MSG_TYPE);
-			Message msg = new Message(parser);
+			Parser parser = new Parser();
+			Message msg = parser.parseMsg(strData, MSG_TYPE);
 			System.out.println("entity: " + config.getEntity());
 			Data entityData = msg.getData(config.getEntity());
 
@@ -99,8 +97,8 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 				String strData = data.toString();
 				System.out.println("Parsing");
 				
-				parser = new Parser(strData, MSG_TYPE);
-				msg = new Message(parser);
+				Parser parser = new Parser();
+				msg = parser.parseMsg(strData, MSG_TYPE);
 				System.out.println("End parsing");
 			} catch (Exception e) {
 				new AlertDialog("MyReader", e.getMessage()).show();

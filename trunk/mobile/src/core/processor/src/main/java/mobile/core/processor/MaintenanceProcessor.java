@@ -3,9 +3,9 @@ package mobile.core.processor;
 import mobile.core.structure.processor.GeneralProcessor;
 import mobile.entity.manager.JPManager;
 import mobile.entity.schema.GeneralEntity;
-import mobile.message.cmessage.Data;
-import mobile.message.cmessage.Item;
-import mobile.message.cmessage.Message;
+import mobile.message.message.Data;
+import mobile.message.message.Item;
+import mobile.message.message.Message;
 import mobile.tools.common.Log;
 
 import org.apache.log4j.Logger;

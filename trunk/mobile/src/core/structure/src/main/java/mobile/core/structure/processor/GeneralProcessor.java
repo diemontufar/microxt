@@ -1,6 +1,6 @@
 package mobile.core.structure.processor;
 
-import mobile.message.cmessage.Message;
+import mobile.message.message.Message;
 
 public interface GeneralProcessor{
 

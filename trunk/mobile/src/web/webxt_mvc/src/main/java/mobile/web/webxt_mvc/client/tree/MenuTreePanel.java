@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import mobile.message.wmessage.Message;
+import mobile.message.message.Message;
 import mobile.web.webxt_mvc.client.data.MyHttpProxy;
 import mobile.web.webxt_mvc.client.data.MyMessageReader;
 import mobile.web.webxt_mvc.client.data.MyProcessConfig;
@@ -48,13 +48,10 @@ public class MenuTreePanel extends LayoutContainer {
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
 		
-		System.out.println("1");
-		
 		final TreeLoader<ModelData> loader = new BaseTreeLoader<ModelData>(
 				new TreeModelReader<List<ModelData>>()) {
 			@Override
 			public boolean load() {
-				System.out.println(BaseTreeLoader.class+".load");
 				AsyncCallback<Message> callback = new AsyncCallback<Message>() {
 					public void onFailure(Throwable caught) {
 						new AlertDialog("FilterTreePanel", caught.getMessage())
@@ -122,10 +119,8 @@ public class MenuTreePanel extends LayoutContainer {
 
 		};
 		
-		System.out.println("2");
 		TreeStore<ModelData> store = new TreeStore<ModelData>(loader);
 
-		System.out.println("3");
 		tree = new TreePanel<ModelData>(store);
 		tree.setAutoLoad(true);
 		tree.setLabelProvider(new ModelStringProvider<ModelData>() {
@@ -143,9 +138,6 @@ public class MenuTreePanel extends LayoutContainer {
 				return null;
 			}
 		});
-		
-		System.out.println("4");
-		System.out.println("5");
 		
 		filter.bind(store);
 
@@ -166,8 +158,6 @@ public class MenuTreePanel extends LayoutContainer {
 				});
 		
 		this.add(tree);
-
-		System.out.println("7");
 	}
 
 	public void selectProcess(ModelData process){
