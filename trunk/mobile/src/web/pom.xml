@@ -11,8 +11,7 @@
     <version>2.0</version>
     <name>MOBILE WEB</name>
     <modules>
-        <!--<module>webxt</module>-->
-    	<module>webxt_mvc</module>
+    	<module>webxt</module>
         <!--<module>console</module>-->
     </modules>
 </project>
