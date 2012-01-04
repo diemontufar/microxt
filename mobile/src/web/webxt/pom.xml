@@ -10,10 +10,10 @@
 		<version>2.0</version>
 	</parent>
 	<groupId>mobile.web</groupId>
-	<artifactId>mobile.web.webxt_mvc</artifactId>
+	<artifactId>mobile.web.webxt</artifactId>
 	<packaging>war</packaging>
 	<version>2.0</version>
-	<name>MOBILE WEB WEBXT (MVC)</name>
+	<name>MOBILE WEB WEBXT</name>
 
 	<properties>
 		<!-- Convenience property to set the GWT version -->
