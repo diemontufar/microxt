@@ -43,13 +43,19 @@ public class SqlGenerator {
 			+ "f.pk.companyId in ('ALL',:company) and f.pk.tableId=:tableId "
 			+ "order by f.fieldOrder";
 
-	// QL for relationships
-	private String RELATIONSHIP2_QL = "select r from EntityRelationship r where "
+	// QL for remove relationships
+	private String RELATIONSHIP1_QL = "select r from EntityRelationship r where "
 			+ "r.pk.companyId in ('ALL', :company) "
 			+ "and r.pk.relationshipOrder = 1 "
-			+ "and r.tableFrom in :tables "
-			+ "or r.tableTo in :tables "
+			+ "and ( r.tableFrom in :tables "
+			+ "or r.tableTo in :tables ) "
 			+ "order by r.tableFrom, r.pk.relationshipId";
+	
+	// QL for relationships
+	private String RELATIONSHIP_QL = "select r from EntityRelationship r where "
+				+ "r.pk.companyId in ('ALL', :company) "
+				+ "and r.tableFrom in :tables "
+				+ "order by r.tableFrom, r.pk.relationshipId, r.pk.relationshipOrder";
 
 	// String constants
 	private final String NEW_LINE = "\n";
@@ -153,7 +159,7 @@ public class SqlGenerator {
 		// Query relationships
 		List<EntityRelationship> lRelationship;
 		TypedQuery<EntityRelationship> query = JPManager.getEntityManager()
-				.createQuery(RELATIONSHIP2_QL, EntityRelationship.class);
+				.createQuery(RELATIONSHIP1_QL, EntityRelationship.class);
 		query.setParameter("company", COMPANY);
 		query.setParameter("tables", completeIdTables(ltables));
 		lRelationship = query.getResultList();
@@ -401,7 +407,7 @@ public class SqlGenerator {
 		// Query relationships
 		List<EntityRelationship> lRelationship;
 		TypedQuery<EntityRelationship> query = JPManager.getEntityManager()
-				.createQuery(RELATIONSHIP2_QL, EntityRelationship.class);
+				.createQuery(RELATIONSHIP_QL, EntityRelationship.class);
 		query.setParameter("company", COMPANY);
 		query.setParameter("tables", completeIdTables(ltables));
 		lRelationship = query.getResultList();
