@@ -27,9 +27,7 @@ public class FillGeneratingEntitiesFromCsv {
 	private final String CREATED = "CREATED";
 
 	private String entityFilePath = "/home/ronald/Escritorio/entity.csv";
-
 	private String fieldFilePath = "/home/ronald/Escritorio/field.csv";
-
 	private String relationshipFilePath = "/home/ronald/Escritorio/relationship.csv";
 
 	public FillGeneratingEntitiesFromCsv() {
@@ -92,22 +90,22 @@ public class FillGeneratingEntitiesFromCsv {
 				System.out.println(entity);
 			}
 
-			// Ids
-			System.out.println("-------Guardara tablas ID y campos ID-------");
+			// Ids and special fields
+			System.out.println("-------Guardar tablas ID y campos ID-------");
 			for (EntityTable entity : lentity) {
-				EntityTableId id = null;
+				EntityTableId tableId = null;
 				EntityTableId table = null;
 
 				if (entity.getHasTableId()) {
-					id = new EntityTableId(entity.getPk().getTableId() + "_ID");
+					tableId = new EntityTableId(entity.getPk().getTableId() + "_ID");
 				}
 
 				table = new EntityTableId(entity.getPk().getTableId());
 
-				System.out.println(id);
+				System.out.println(tableId);
 				System.out.println(table);
-				if (id != null) {
-					JPManager.persist(id);
+				if (tableId != null) {
+					JPManager.persist(tableId);
 				}
 				JPManager.persist(table);
 
@@ -285,21 +283,24 @@ public class FillGeneratingEntitiesFromCsv {
 			// Read fields
 			System.out.println("-------Campos-------");
 			List<EntityRelationship> lrelationship = new ArrayList<EntityRelationship>();
-			
+
 			while (csvReader.readRecord()) {
 				String companyId = csvReader.get("COMPANY_ID");
 				String relationshipId = csvReader.get("RELATIONSHIP_ID");
-				Integer relationshipOrder = Integer.parseInt(csvReader.get("RELATIONSHIP_ORDER"));
+				Integer relationshipOrder = Integer.parseInt(csvReader
+						.get("RELATIONSHIP_ORDER"));
 				String tableFrom = csvReader.get("TABLE_FROM");
 				String fieldFrom = csvReader.get("FIELD_FROM");
 				String tableTo = csvReader.get("TABLE_TO");
 				String fieldTo = csvReader.get("FIELD_TO");
 
-				EntityRelationshipPk pk = new EntityRelationshipPk(relationshipId,relationshipOrder);
+				EntityRelationshipPk pk = new EntityRelationshipPk(
+						relationshipId, relationshipOrder);
 				pk.setCompanyId(companyId);
 
-				EntityRelationship relationship = new EntityRelationship(pk, tableFrom, fieldFrom, tableTo, fieldTo);
-				
+				EntityRelationship relationship = new EntityRelationship(pk,
+						tableFrom, fieldFrom, tableTo, fieldTo);
+
 				lrelationship.add(relationship);
 
 				System.out.println(relationship);
@@ -312,7 +313,6 @@ public class FillGeneratingEntitiesFromCsv {
 				JPManager.persist(rel);
 			}
 
-			// Commit transaction
 			JPManager.commitTransaction();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -345,7 +345,7 @@ public class FillGeneratingEntitiesFromCsv {
 		return res;
 	}
 
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		FillGeneratingEntitiesFromCsv filler = new FillGeneratingEntitiesFromCsv();
 
 		try {

@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mobile.core.processor.CoreProcessor;
-import mobile.message.cmessage.Message;
-import mobile.message.cmessage.Parser;
+import mobile.message.message.Message;
 import mobile.tools.common.Log;
+import mobile.tools.common.msg.Parser;
 
 import org.apache.log4j.Logger;
 
@@ -44,8 +44,8 @@ public class Core extends HttpServlet {
 			}
 
 			// Get data from json
-			Parser parser = new Parser(message, Parser.JSON);
-			Message msg = new Message(parser);
+			Parser parser = new Parser();
+			Message msg = parser.parseMsg(message, Message.JSON);
 
 			// Process
 			CoreProcessor proc = new CoreProcessor();

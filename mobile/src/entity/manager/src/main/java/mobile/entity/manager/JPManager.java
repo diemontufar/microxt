@@ -18,7 +18,7 @@ import mobile.entity.schema.HistoricalKey;
 import mobile.entity.schema.MulticompanyKey;
 import mobile.entity.schema.MultilanguageKey;
 import mobile.entity.schema.OptimisticLocking;
-import mobile.message.cmessage.Item;
+import mobile.message.message.Item;
 import mobile.tools.common.Log;
 import mobile.tools.common.convertion.ConvertionManager;
 import mobile.tools.common.param.LocalParameter;
@@ -503,8 +503,8 @@ public class JPManager {
 			if (classField.getName().compareTo("pk") == 0) {
 				// Parse embedded pk
 				// Separate pk fields
-				List<mobile.message.cmessage.Field> pkFields = new ArrayList<mobile.message.cmessage.Field>();
-				for (mobile.message.cmessage.Field itemField : item.getFieldList()) {
+				List<mobile.message.message.Field> pkFields = new ArrayList<mobile.message.message.Field>();
+				for (mobile.message.message.Field itemField : item.getFieldList()) {
 					if (itemField.getName().startsWith("pk_")) {
 						pkFields.add(itemField);
 					}
@@ -577,7 +577,7 @@ public class JPManager {
 	}
 
 	private static GeneralEntityKey parsePk(Class<?> entityKeyClass,
-			List<mobile.message.cmessage.Field> pkFields) throws Exception {
+			List<mobile.message.message.Field> pkFields) throws Exception {
 		// Instantiate object
 		Object pk = entityKeyClass.newInstance();
 
@@ -587,7 +587,7 @@ public class JPManager {
 				continue;
 			}
 
-			mobile.message.cmessage.Field itemField = getField(field.getName(),
+			mobile.message.message.Field itemField = getField(field.getName(),
 					pkFields);
 			if (itemField != null) {
 				Method setterMethod = entityKeyClass.getMethod("set"
@@ -602,9 +602,9 @@ public class JPManager {
 		return (GeneralEntityKey) pk;
 	}
 
-	private static mobile.message.cmessage.Field getField(String name,
-			List<mobile.message.cmessage.Field> lField) {
-		for (mobile.message.cmessage.Field field : lField) {
+	private static mobile.message.message.Field getField(String name,
+			List<mobile.message.message.Field> lField) {
+		for (mobile.message.message.Field field : lField) {
 			if ((field.getName().compareTo("pk_"+name)) == 0) {
 				return field;
 			}

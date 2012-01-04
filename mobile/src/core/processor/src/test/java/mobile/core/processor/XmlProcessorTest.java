@@ -11,10 +11,10 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import mobile.entity.manager.JPManagerFactory;
-import mobile.message.cmessage.Message;
-import mobile.message.cmessage.Parser;
+import mobile.message.message.Message;
 import mobile.tools.common.FileUtil;
 import mobile.tools.common.Log;
+import mobile.tools.common.msg.Parser;
 import mobile.tools.common.param.LocalParameter;
 import mobile.tools.common.param.ParameterEnum;
 
@@ -47,8 +47,8 @@ public class XmlProcessorTest{
 		try {
 			// Message
 			String strMsg = FileUtil.readFile(input);
-			Parser parser = new Parser(strMsg, Parser.XML);
-			Message msg = new Message(parser);
+			Parser parser = new Parser();
+			Message msg = parser.parseMsg(strMsg, Message.XML);
 			
 			// Processor
 			CoreProcessor proc = new CoreProcessor();

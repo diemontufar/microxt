@@ -3,10 +3,10 @@ package mobile.web.webxt_mvc.client.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.message.wmessage.Data;
-import mobile.message.wmessage.Field;
-import mobile.message.wmessage.Item;
-import mobile.message.wmessage.Message;
+import mobile.message.message.Data;
+import mobile.message.message.Field;
+import mobile.message.message.Item;
+import mobile.message.message.Message;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;

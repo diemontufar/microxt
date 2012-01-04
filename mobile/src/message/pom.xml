@@ -11,7 +11,6 @@
     <version>2.0</version>
     <name>MOBILE MESSAGE</name>
     <modules>
-        <module>cmessage</module>
-	<module>wmessage</module>
+        <module>message</module>
     </modules>
 </project>

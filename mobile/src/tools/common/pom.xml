@@ -1,26 +1,40 @@
-<project xmlns = "http://maven.apache.org/POM/4.0.0" xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation = "http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>mobile</groupId>
-        <artifactId>tools</artifactId>
-        <version>2.0</version>
-    </parent>
-    <groupId>mobile.tools</groupId>
-    <artifactId>mobile.tools.common</artifactId>
-    <packaging>jar</packaging>
-    <version>2.0</version>
-    <name>MOBILE TOOLS COMMON</name>
-    <dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>mobile</groupId>
+		<artifactId>tools</artifactId>
+		<version>2.0</version>
+	</parent>
+	<groupId>mobile.tools</groupId>
+	<artifactId>mobile.tools.common</artifactId>
+	<packaging>jar</packaging>
+	<version>2.0</version>
+	<name>MOBILE TOOLS COMMON</name>
+	<dependencies>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>mobile.message</groupId>
+			<artifactId>mobile.message.message</artifactId>
+			<version>2.0</version>
+		</dependency>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <type>jar</type>
+            <classifier>jdk15</classifier>
+            <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+	</dependencies>
 </project>
