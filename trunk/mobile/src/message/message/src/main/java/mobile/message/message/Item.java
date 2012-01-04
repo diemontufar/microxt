@@ -1,57 +1,23 @@
-package mobile.message.cmessage;
+package mobile.message.message;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import net.sf.json.JSONObject;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 public class Item {
+
+	public final static String NEW_ITEM = "_new_item";
+	public final static String EXPIRE_ITEM = "_expire_item";
 
 	private Integer number;
 
 	private List<Field> fieldList = new ArrayList<Field>();
 
+	public Item() {
+		setNumber(null);
+	}
+
 	public Item(Integer number) {
 		setNumber(number);
-	}
-
-	public Item(Node node) {
-		if (node.getNodeType() == Node.ELEMENT_NODE) {
-			Element element = (Element) node;
-			String number = element.getAttribute("number");
-			if (number != null && number.compareTo("") != 0) {
-				setNumber(Integer.valueOf(number.trim()));
-			}
-			NodeList nodeList = element.getChildNodes();
-			for (int i = 0; i < nodeList.getLength(); i++) {
-				Node n = nodeList.item(i);
-				if (n.getParentNode().getNodeName().compareTo("item") == 0 && n.getNodeType() == Node.ELEMENT_NODE) {
-					Field field = new Field(n);
-					fieldList.add(field);
-				}
-			}
-		}
-	}
-
-	@SuppressWarnings("rawtypes")
-	public Item(JSONObject jsonObject) {
-		for (Iterator i = jsonObject.keys(); i.hasNext();) {
-			String key = (String) i.next();
-			if (key.compareTo("-number") == 0) {
-				String number = jsonObject.getString(key);
-				if (number != null && number.compareTo("") != 0) {
-					setNumber(Integer.valueOf(number.trim()));
-				}
-			} else {
-				Field field = new Field(key, jsonObject.getString(key));
-				fieldList.add(field);
-			}
-		}
 	}
 
 	public String toXML() {
@@ -88,11 +54,21 @@ public class Item {
 	}
 
 	public void setNumber(Integer itemNumber) {
-		number = itemNumber;
+		number = 0;
+		if (itemNumber != null) {
+			number = itemNumber;
+		}
 	}
 
 	public Integer getNumber() {
 		return number;
+	}
+
+	public void addField(String name, String value) {
+		Field field = new Field(name, value);
+		if (getField(field.getName()) == null) {
+			fieldList.add(field);
+		}
 	}
 
 	public void addField(Field field) {
@@ -107,6 +83,7 @@ public class Item {
 				return field;
 			}
 		}
+		//return new Field(name, null);
 		return null;
 	}
 
@@ -121,4 +98,41 @@ public class Item {
 	public List<Field> getFieldList() {
 		return fieldList;
 	}
+
+	public void setNewItem(Boolean newItem) {
+		setValue(Item.NEW_ITEM, newItem);
+	}
+
+	public Boolean isNewItem() {
+		return (Boolean) getValue(Item.NEW_ITEM);
+	}
+
+	public void setExpireItem(Boolean expireItem) {
+		setValue(Item.EXPIRE_ITEM, expireItem);
+	}
+
+	public Boolean isExpireItem() {
+		return (Boolean) getValue(Item.EXPIRE_ITEM);
+	}
+
+	private void setValue(String name, Object object) {
+		Field parameter = new Field(name, object.toString());
+		for (Field field : fieldList) {
+			if ((field.getName().compareTo(parameter.getName())) == 0) {
+				field.setValue(parameter.getValue());
+			} else {
+				fieldList.add(parameter);
+			}
+		}
+	}
+
+	private Object getValue(String name) {
+		Field parameter = getField(name);
+		if (parameter != null) {
+			return parameter.getValue();
+		} else {
+			return null;
+		}
+	}
+
 }
