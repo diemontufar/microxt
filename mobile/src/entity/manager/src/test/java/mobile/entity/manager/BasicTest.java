@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 import mobile.entity.microcredit.ProductMicrocredit;
+import mobile.entity.zonification.GeographicZone;
 
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
@@ -33,16 +34,16 @@ public class BasicTest {
 	@Test
 	public void testObject() {
 		try {
-			JPManagerFactory.createEntityManagerFactory("generator");
+			JPManagerFactory.createEntityManagerFactory("central");
 			JPManager.createEntityManager();
 
-			TypedQuery<ProductMicrocredit> query = JPManager.getEntityManager()
-					.createQuery("Select p from ProductMicrocredit p",
-							ProductMicrocredit.class);
+			TypedQuery<GeographicZone> query = JPManager.getEntityManager()
+					.createQuery("Select p from GeographicZone p",
+							GeographicZone.class);
 			query.setHint(QueryHints.READ_ONLY, HintValues.TRUE);
-			List<ProductMicrocredit> list = query.getResultList();
-			for (ProductMicrocredit product : list) {
-				System.out.println(product);
+			List<GeographicZone> list = query.getResultList();
+			for (GeographicZone ent : list) {
+				System.out.println(ent);
 			}
 
 		} catch (Exception e) {

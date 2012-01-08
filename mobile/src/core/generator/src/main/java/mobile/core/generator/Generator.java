@@ -12,7 +12,7 @@ public class Generator {
 	 * Generate two scripts (drop, create) for all tables
 	 **/
 	private static void generateSqlScriptsForAllTables() throws Exception {
-		SqlGenerator sqlGenerator = new SqlGenerator("/home/ronald/TesisOutput");
+		SqlGenerator sqlGenerator = new SqlGenerator("C:/Users/diogonal/Desktop/TesisOutput");
 		sqlGenerator.generateAllTables();
 	}
 
@@ -21,7 +21,7 @@ public class Generator {
 	 **/
 	private static void generateSqlScriptsForListOfTables(List<String> ltables)
 			throws Exception {
-		SqlGenerator sqlGenerator = new SqlGenerator("/home/ronald/TesisOutput");
+		SqlGenerator sqlGenerator = new SqlGenerator("C:/Users/diogonal/Desktop/TesisOutput");
 		sqlGenerator.generate(ltables);
 	}
 
@@ -47,7 +47,7 @@ public class Generator {
 	private static void generateClasesForListOfTables(List<String> lTables)
 			throws Exception {
 		// String outputFolder = "C:/Users/Ronald/Tesis";
-		String outputFolder = "/home/ronald/TesisOutput";
+		String outputFolder = "C:/Users/diogonal/Desktop/TesisOutput";
 		String outputUpperPackage = "mobile.entity";
 		EntityGenerator entityGenerator = new EntityGenerator(outputFolder,
 				outputUpperPackage);
@@ -68,16 +68,18 @@ public class Generator {
 			//************************************************
 			// Generators for all tables
 			//************************************************
-			generateSqlScriptsForAllTables();
+			//generateSqlScriptsForAllTables();
 			//generateClasesForAllEntities();
 
 			//************************************************
 			// Generators for a list of tables
 			//************************************************
-//			List<String> ltables = new ArrayList<String>();
-//			ltables.add("ENTITY_FIELD");
-//			generateSqlScriptsForListOfTables(ltables);
-//			generateClasesForListOfTables(ltables);
+			List<String> ltables = new ArrayList<String>();
+			ltables.add("GEOGRAPHIC_ZONE");
+			ltables.add("ASESSOR");
+			ltables.add("ZONE_ASESSOR");
+			generateSqlScriptsForListOfTables(ltables);
+			generateClasesForListOfTables(ltables);
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -26,9 +26,9 @@ public class FillGeneratingEntitiesFromCsv {
 	private final String EXPIRED = "EXPIRED";
 	private final String CREATED = "CREATED";
 
-	private String entityFilePath = "/home/ronald/Escritorio/entity.csv";
-	private String fieldFilePath = "/home/ronald/Escritorio/field.csv";
-	private String relationshipFilePath = "/home/ronald/Escritorio/relationship.csv";
+	private String entityFilePath = "C:/Users/diogonal/Desktop/entity.csv";
+	private String fieldFilePath = "C:/Users/diogonal/Desktop/field.csv";
+	private String relationshipFilePath = "C:/Users/diogonal/Desktop/relationship.csv";
 
 	public FillGeneratingEntitiesFromCsv() {
 		System.out.println("Load persistence...");
