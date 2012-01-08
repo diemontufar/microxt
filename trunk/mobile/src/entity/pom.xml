@@ -19,7 +19,8 @@
         <module>person</module>
         <module>security</module>
         <module>microxt</module>
-		<module>microcredit</module>
-		<module>zonification</module>
+	<module>microcredit</module>
+	<module>zonification</module>
+	<module>comercialization</module>
     </modules>
 </project>
