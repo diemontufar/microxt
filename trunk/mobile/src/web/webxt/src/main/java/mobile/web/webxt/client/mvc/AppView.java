@@ -98,6 +98,6 @@ public class AppView extends View {
 	}
 
 	private void onUIReady(AppEvent event) {
-		RootPanel.get().add(viewport);
+				RootPanel.get().add(viewport);
 	}
 }

@@ -11,6 +11,7 @@
 	
 	<!-- Mobile inherits -->
 	<inherits name="mobile.message.MSG" />
+	<inherits name='com.google.gwt.maps.GoogleMaps' />
 
 	<!-- Specify the app entry point class. -->
 	<entry-point class='mobile.web.webxt.client.Mobile' />

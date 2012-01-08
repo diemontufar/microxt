@@ -2,6 +2,7 @@ package mobile.web.webxt.client.components;
 
 import mobile.web.webxt.client.MobileConfig;
 import mobile.web.webxt.client.devform.A205;
+import mobile.web.webxt.client.devform.C102;
 import mobile.web.webxt.client.resources.Resources;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -24,11 +25,7 @@ public class FormPanel extends ContentPanel {
 			add(tabPanel);			
 		}else{
 			// Add here the tested form
-			LayoutContainer lc=new LayoutContainer();
-			lc.setLayout(new CenterLayout());
-			lc.getAriaSupport().setPresentation(true);
-			lc.add(new A205());
-			add(lc);
+			add(new C102());
 			//add(new G101());
 		}
 
