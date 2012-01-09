@@ -15,30 +15,22 @@ public class ZoneAsessorPk extends AbstractCompanyLanguageKey implements
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Geographic zone id
-	 */
-	@Column(name = "GEOGRAPHIC_ZONE_ID", nullable = false)
-	private String geographicZoneId;
-
-	/**
 	 * Assessor
 	 */
 	@Column(name = "ASESSOR_ID", nullable = false)
 	private String asessorId;
 
+	/**
+	 * Geographic zone id
+	 */
+	@Column(name = "GEOGRAPHIC_ZONE_ID", nullable = false)
+	private String geographicZoneId;
+
 	public ZoneAsessorPk() {
 	}
 
-	public ZoneAsessorPk(String geographicZoneId, String asessorId) {
-		this.geographicZoneId = geographicZoneId;
+	public ZoneAsessorPk(String asessorId, String geographicZoneId) {
 		this.asessorId = asessorId;
-	}
-
-	public String getGeographicZoneId() {
-		return this.geographicZoneId;
-	}
-
-	public void setGeographicZoneId(String geographicZoneId) {
 		this.geographicZoneId = geographicZoneId;
 	}
 
@@ -50,9 +42,17 @@ public class ZoneAsessorPk extends AbstractCompanyLanguageKey implements
 		this.asessorId = asessorId;
 	}
 
+	public String getGeographicZoneId() {
+		return this.geographicZoneId;
+	}
+
+	public void setGeographicZoneId(String geographicZoneId) {
+		this.geographicZoneId = geographicZoneId;
+	}
+
 	@Override
 	public String toString() {
 		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
-				+ this.getGeographicZoneId() + ", " + this.getAsessorId() + "]";
+				+ this.getAsessorId() + ", " + this.getGeographicZoneId() + "]";
 	}
 }
