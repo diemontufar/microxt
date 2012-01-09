@@ -18,6 +18,12 @@ public class ZoneAsessor extends AbstractEntity implements Multicompany,
 	@EmbeddedId
 	private ZoneAsessorPk pk;
 
+	/**
+	 * Observations
+	 */
+	@Column(name = "OBSERVATIONS", nullable = true)
+	private String observations;
+
 	public ZoneAsessor() {
 	}
 
@@ -31,6 +37,14 @@ public class ZoneAsessor extends AbstractEntity implements Multicompany,
 
 	public void setPk(ZoneAsessorPk pk) {
 		this.pk = pk;
+	}
+
+	public String getObservations() {
+		return this.observations;
+	}
+
+	public void setObservations(String observations) {
+		this.observations = observations;
 	}
 
 	@Override
@@ -47,6 +61,7 @@ public class ZoneAsessor extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "ZONE_ASESSOR:[" + this.getPk().toString() + "]";
+		return "ZONE_ASESSOR:[" + this.getPk().toString() + ", "
+				+ this.getObservations() + "]";
 	}
 }
