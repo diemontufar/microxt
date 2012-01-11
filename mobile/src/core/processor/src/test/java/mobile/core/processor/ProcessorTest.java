@@ -113,7 +113,7 @@ public class ProcessorTest{
 		}
 	}
 
-	//@Ignore
+	@Ignore
 	@Test
 	public void testQuery1() {
 		try {
