@@ -9,6 +9,7 @@ import mobile.message.message.Field;
 import mobile.message.message.Item;
 import mobile.message.message.Message;
 import mobile.web.webxt.client.data.MyProcessConfig.ProcessType;
+import mobile.web.webxt.client.util.ConvertionManager;
 import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.data.DataProxy;
@@ -208,7 +209,6 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		System.out.println("MyHttpProxy.commit");
 
 		final MyProcessConfig config = (MyProcessConfig) commitConfig;
-		System.out.println(config);
 
 		try {
 			// Header
@@ -225,6 +225,30 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			Data entityData = new Data(config.getEntity());
 			entityData.addField(new Field(F_PROCESS_TYPE,
 					ProcessType.MAINTENANCE.getProcessType()));
+			
+			// Filters
+			// Entity.filtering
+			List<FilterConfig> filters = config.getFilterConfigs();
+			if (filters != null && filters.size() > 0) {
+				String strFilters = "";
+				int filtersCounter = 0;
+				for (FilterConfig filter : filters) {
+					String strFilter = filter.getField()
+							+ ":"
+							+ (filter.getComparison() == null ? "" : filter
+									.getComparison()) + ":" + filter.getValue();
+					if (filtersCounter > 0) {
+						strFilters = strFilters + ";";
+					}
+					strFilters = strFilters + strFilter;
+					filtersCounter++;
+				}
+				entityData.addField(new Field(F_FILTERS, strFilters));
+			}
+
+			msg.addData(entityData);
+
+			
 
 			int counter = 1;
 			for (ModelData modelData : lModified) {
@@ -241,11 +265,13 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					}
 					item.addField(field);
 				}
-				if(modelData.get("_expire")!=null){
+				if(modelData.get("_expire")!=null 
+						&& ConvertionManager.parseBoolean(modelData.get("_expire"))){
 					item.addField(new Field("_expire", "1"));
 				}
 				if(modelData.get("_isNew")!=null){
-					item.addField(new Field("_isNew", String.valueOf(modelData.get("_isNew"))));
+					Boolean isNew = ConvertionManager.parseBoolean(modelData.get("_isNew"));
+					item.addField(new Field("_isNew", ConvertionManager.booleanToString(isNew)));
 				}
 				entityData.addItem(item);
 			}

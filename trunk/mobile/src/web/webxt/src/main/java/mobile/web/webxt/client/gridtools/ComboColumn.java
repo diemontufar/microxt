@@ -64,9 +64,6 @@ public class ComboColumn extends ColumnConfig {
 					return value;
 				}
 				
-				System.out.println(combo.getModel());
-				System.out.println(combo.findModel(cdata.getIdFields().get(0), value.toString()));
-				
 				return combo.getModel();
 			}
 
