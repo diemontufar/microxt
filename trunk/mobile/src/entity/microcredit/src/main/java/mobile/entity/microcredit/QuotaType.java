@@ -7,17 +7,16 @@ import mobile.entity.schema.Multicompany;
 import mobile.entity.schema.Multilanguage;
 
 /**
- * The persistent class for the FUNDS_DESTINATION database table. Destination of
- * funds
+ * The persistent class for the QUOTA_TYPE database table. Quota type
  */
 @Entity
-@Table(name = "FUNDS_DESTINATION")
-public class FundsDestination extends AbstractEntity implements Multicompany,
+@Table(name = "QUOTA_TYPE")
+public class QuotaType extends AbstractEntity implements Multicompany,
 		Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private FundsDestinationPk pk;
+	private QuotaTypePk pk;
 
 	/**
 	 * Description
@@ -25,23 +24,23 @@ public class FundsDestination extends AbstractEntity implements Multicompany,
 	@Column(name = "DESCRIPTION", nullable = false)
 	private String description;
 
-	public FundsDestination() {
+	public QuotaType() {
 	}
 
-	public FundsDestination(FundsDestinationPk pk) {
+	public QuotaType(QuotaTypePk pk) {
 		this.pk = pk;
 	}
 
-	public FundsDestination(FundsDestinationPk pk, String description) {
+	public QuotaType(QuotaTypePk pk, String description) {
 		this.pk = pk;
 		this.description = description;
 	}
 
-	public FundsDestinationPk getPk() {
+	public QuotaTypePk getPk() {
 		return this.pk;
 	}
 
-	public void setPk(FundsDestinationPk pk) {
+	public void setPk(QuotaTypePk pk) {
 		this.pk = pk;
 	}
 
@@ -55,19 +54,19 @@ public class FundsDestination extends AbstractEntity implements Multicompany,
 
 	@Override
 	public void setPk(Object pk) {
-		this.pk = (FundsDestinationPk) pk;
+		this.pk = (QuotaTypePk) pk;
 	}
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		FundsDestination copy = (FundsDestination) super.clone();
-		copy.setPk((FundsDestinationPk) this.pk.clone());
+		QuotaType copy = (QuotaType) super.clone();
+		copy.setPk((QuotaTypePk) this.pk.clone());
 		return copy;
 	}
 
 	@Override
 	public String toString() {
-		return "FUNDS_DESTINATION:[" + this.getPk().toString() + ", "
+		return "QUOTA_TYPE:[" + this.getPk().toString() + ", "
 				+ this.getDescription() + "]";
 	}
 }
