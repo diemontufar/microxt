@@ -1,6 +1,6 @@
 package mobile.web.webxt.client.devform;
 
-import mobile.web.webxt.client.form.MyFormPanel;
+import mobile.web.webxt.client.formtools.MyFormPanel;
 import mobile.web.webxt.client.validations.Validate;
 import mobile.web.webxt.client.widgets.InputBox;
 import mobile.web.webxt.client.windows.AlertDialog;

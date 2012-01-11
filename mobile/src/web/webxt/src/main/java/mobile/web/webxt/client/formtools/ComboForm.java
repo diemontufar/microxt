@@ -1,5 +1,8 @@
 package mobile.web.webxt.client.formtools;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
@@ -7,6 +10,8 @@ import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.gridtools.ArrayColumnData;
 import mobile.web.webxt.client.gridtools.ColumnDataInterface;
 import mobile.web.webxt.client.gridtools.MyComboBox;
+
+import com.extjs.gxt.ui.client.data.FilterConfig;
 
 public class ComboForm extends MyComboBox {
 
@@ -47,6 +52,30 @@ public class ComboForm extends MyComboBox {
 		setItemSelector("tr.search-item");
 		setEditable(false);
 		setForceSelection(true);
+	}
+
+	public void addFilter(FilterConfig filter) {
+    	MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) this
+				.getStore().getLoader()).getConfig();
+    	
+    	List<FilterConfig> filters = config.getFilterConfigs(); 
+    	if(filters==null){
+    		filters  = new ArrayList<FilterConfig>();
+    	}
+    	
+    	boolean exists = false;
+    	for (FilterConfig fil : filters) {
+			if (fil.getField().compareTo(filter.getField())==0){
+				exists = true;
+				fil.setValue(filter.getValue());
+			}
+		}
+    	
+    	if(!exists){
+        	filters.add(filter);
+    	}
+    	
+    	config.setFilterConfigs(filters);
 	}
 
 	private String getTemplateCombo(ArrayColumnData cdata) {

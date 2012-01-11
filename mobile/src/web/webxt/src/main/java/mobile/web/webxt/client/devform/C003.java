@@ -8,7 +8,6 @@ import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.gridtools.ArrayColumnData;
-import mobile.web.webxt.client.gridtools.ComboColumn;
 import mobile.web.webxt.client.gridtools.EntityContentPanel;
 import mobile.web.webxt.client.gridtools.EntityEditorGrid;
 import mobile.web.webxt.client.gridtools.ExpireColumnConfig;
@@ -24,16 +23,16 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
-import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
-import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
 import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.google.gwt.user.client.Element;
 
-public class G101 extends LayoutContainer {
+public class C003 extends LayoutContainer {
 
-	private final Integer PAGE_SIZE = 10;
-	
-	private final String process = "G101";
+	private final String PROCESS = "C003";
+
+	private final String ENTITY = "QuotaType";
+
+	private final Integer PAGE_SIZE = 5;
 
 	@Override
 	protected void onRender(Element parent, int index) {
@@ -41,65 +40,35 @@ public class G101 extends LayoutContainer {
 		setLayout(new CenterLayout());
 		getAriaSupport().setPresentation(true);
 
-		// Config
-		String entity = "Parameter";
-
+		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_parameterId", "Parametro", 100, 40,
-				false));
-		cdata.add(new MyColumnData("subsystemId", "Sub", 40, 2, false));
-		cdata.add(new MyColumnData("dataTypeId", "Tipo", 70, 10, false));
-		cdata.add(new MyColumnData("parameterValue", "Valor", 100, 50, false));
-		cdata.add(new MyColumnData("description", "Descripcion", 200, 150,false));
-		cdata.add(new MyColumnData("description", "Descripcion", 200, 150,false));
+		cdata.add(new MyColumnData("pk_quotaTypeId", "Tipo Cuota", 100, 3, false));
+		cdata.add(new MyColumnData("description", "Descripcion", 150, 50, false));
 
-		MyProcessConfig config = new MyProcessConfig(process, entity,
+		MyProcessConfig config = new MyProcessConfig(PROCESS, ENTITY,
 				cdata.getIdFields());
 
 		// Proxy - loader - store
 		MyHttpProxy proxy = new MyHttpProxy();
 		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
 		final MyListStore store = new MyListStore(loader);
-		
-		// Column model
+
+		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
 		configs.add(new NormalColumn(cdata.get(0)));
-
-		ComboColumn comboCol = new ComboColumn(cdata.get(1));
-		ArrayColumnData cdataCombo = new ArrayColumnData();
-		cdataCombo.add(new MyColumnData("pk_subsystemId", "Sub", 40));
-		cdataCombo.add(new MyColumnData("name", "Nombre", 150));
-		comboCol.setRqData("Subsystem", cdataCombo);
-		configs.add(comboCol);
-		
-		comboCol = new ComboColumn(cdata.get(2));
-		cdataCombo = new ArrayColumnData();
-		cdataCombo.add(new MyColumnData("dataTypeId", "Tipo", 70));
-		cdataCombo.add(new MyColumnData("description", "Descripcion", 200));
-		comboCol.setRqData("DataType", cdataCombo);
-		configs.add(comboCol);
-
-		configs.add(new NormalColumn(cdata.get(3)));
-		configs.add(new NormalColumn(cdata.get(4)));
+		configs.add(new NormalColumn(cdata.get(1)));
 		configs.add(new ExpireColumnConfig());
 
 		ColumnModel cm = new ColumnModel(configs);
 
-		// Filters
-		GridFilters filters = new GridFilters();
-		StringFilter parameterIdFilter = new StringFilter(cdata.getIdFields().get(0));
-		StringFilter subsystemFilter = new StringFilter(cdata.getIdFields().get(1));
-		filters.addFilter(parameterIdFilter);
-		filters.addFilter(subsystemFilter);
-
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Parámetros",600,340);
+		EntityContentPanel cp = new EntityContentPanel("Tipos de Cuota",
+				400, 230);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(store, cm);
 		grid.setAutoExpandColumn("description");
-		grid.addPlugin(filters);
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
@@ -118,5 +87,4 @@ public class G101 extends LayoutContainer {
 
 		add(cp);
 	}
-
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.windows.AlertDialog;
 
-import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
@@ -31,10 +31,10 @@ public class MyListStore extends ListStore<ModelData> {
 		List<ModelData> lModified = new ArrayList<ModelData>();
 		for (Record r : getModifiedRecords()) {
 			lModified.add(r.getModel());
-			for (String prop : r.getModel().getPropertyNames()) {
-				System.out.print(prop+":"+r.getModel().get(prop)+";");
-			}
-			System.out.println();
+//			for (String prop : r.getModel().getPropertyNames()) {
+//				System.out.print(prop+":"+r.getModel().get(prop)+";");
+//			}
+//			System.out.println();
 		}
 		
 		AsyncCallback<PagingLoadResult<ModelData>> callback = new AsyncCallback<PagingLoadResult<ModelData>>() {
@@ -53,26 +53,17 @@ public class MyListStore extends ListStore<ModelData> {
 		};
 
 		myloader.commitChanges(lModified, callback);
-		
-		//((MyPagingLoader) loader).commitChanges(lModified, callback);
-	}
-	
-	@Override
-	public void sort(String field, SortDir sortDir) {
-		System.out.println("MyListStore. start sorting");
-		super.sort(field, sortDir);
-		System.out.println("MyListStore. end sorting");
 	}
 	
 	@Override
 	public void rejectChanges() {
-		for (ModelData model : this.getModels()) {
-			if (model.get("_isNew") != null
-					&& ((Boolean) model.get("_isNew")) == true) {
-				this.getModels().remove(model);
-			}
-		}
 		super.rejectChanges();
+//		for (ModelData model : this.getModels()) {
+//			if (model.get("_isNew") != null
+//					&& parseBoolean(model.get("_isNew").toString()) == true ) {
+//				this.getModels().remove(model);
+//			}
+//		}
 	}
 	
 	@Override
@@ -80,4 +71,36 @@ public class MyListStore extends ListStore<ModelData> {
 		super.onLoad(le);
 		Dispatcher.forwardEvent(AppEvents.UserNotification,"Consulta exitosa");
 	}
+	
+	public void addFilter(FilterConfig filter){
+    	MyProcessConfig config = ((MyPagingLoader) getLoader()).getConfig();
+    	
+    	List<FilterConfig> filters = config.getFilterConfigs(); 
+    	if(filters==null){
+    		filters  = new ArrayList<FilterConfig>();
+    	}
+    	
+    	boolean exists = false;
+    	for (FilterConfig fil : filters) {
+			if (fil.getField().compareTo(filter.getField())==0){
+				exists = true;
+				fil.setValue(filter.getValue());
+			}
+		}
+    	
+    	if(!exists){
+        	filters.add(filter);
+    	}
+    	
+    	config.setFilterConfigs(filters);
+	}
+	
+//	private Boolean parseBoolean(String input){
+//		boolean result = false;
+//		if(input.compareToIgnoreCase("true")==0
+//				|| input.compareTo("1")==0){
+//			result = true;
+//		}
+//		return result;
+//	}
 }
