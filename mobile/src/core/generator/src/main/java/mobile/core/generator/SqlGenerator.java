@@ -54,7 +54,8 @@ public class SqlGenerator {
 	// QL for relationships
 	private String RELATIONSHIP_QL = "select r from EntityRelationship r where "
 				+ "r.pk.companyId in ('ALL', :company) "
-				+ "and r.tableFrom in :tables "
+				+ "and ( r.tableFrom in :tables "
+				+ "or r.tableTo in :tables ) "
 				+ "order by r.tableFrom, r.pk.relationshipId, r.pk.relationshipOrder";
 
 	// String constants
