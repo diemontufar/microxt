@@ -10,25 +10,16 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 
 public class InputBox extends TextField<String> implements PersistentField {
 
-	public CustomFormPanel frmPanel;
-
-	String label;
-	
 	String fieldInfo;
-	
-	int minLenght;
-	int maxLenght;
-	int width;
-	int posY;
 	Validate type;
 	
-	public InputBox(String lbl, String fieldInfo, int width, Validate type) {
+	public InputBox(String lbl, String fieldInfo, int width,int maxLenght, Validate type) {
+		
 		this.setFieldInfo(fieldInfo);
-		
-		this.label = lbl.trim();
+		this.setFieldLabel(lbl.trim());
+		this.setWidth(width);
+		this.setMaxLength(maxLenght);
 		this.type = type;
-		this.width = width;
-		
 		createInput();
 	}
 
@@ -55,10 +46,6 @@ public class InputBox extends TextField<String> implements PersistentField {
 		if (type == Validate.EMAIL) {
 			setValidator(new ValidationTypesValidator(ValidationTypes.EMAIL));
 		}
-		
-		setFieldLabel(label);
-		setMinLength(4);
-		setWidth(width);
 	}
 
 	public String getFieldInfo() {
