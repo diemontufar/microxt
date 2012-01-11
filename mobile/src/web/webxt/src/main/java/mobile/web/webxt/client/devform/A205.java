@@ -21,20 +21,16 @@ public class A205 extends MyFormPanel {
 		super("A205", "Ingreso de contraseña", 350);
 
 		// Fields
-		InputBox isNew = new InputBox("", "UserAccess:_isNew:1", 50,
-				Validate.TEXT);
+		InputBox isNew = new InputBox("", "UserAccess:_isNew:1", 50,5,Validate.TEXT);
 		isNew.setMinLength(1);
 		isNew.setValue("1");
 		isNew.setVisible(false);
 
-		user = new InputBox("Usuario", "UserAccess:pk_userId:1", 50, Validate.TEXT);
-		newPassword = new InputBox("Contraseña nueva", "UserAccess:userKey:1",
-				50, Validate.PASSWORD);
-		retypePassword = new InputBox("Repita Contraseña", "", 50,
-				Validate.PASSWORD);
+		user = new InputBox("Usuario", "UserAccess:pk_userId:1", 50,10, Validate.TEXT);
+		newPassword = new InputBox("Contraseña nueva", "UserAccess:userKey:1",50,20, Validate.PASSWORD);
+		retypePassword = new InputBox("Repita Contraseña", "", 50,20,Validate.PASSWORD);
 
-		InputBox lastChange = new InputBox("", "UserAccess:lastChange:1", 50,
-				Validate.TEXT);
+		InputBox lastChange = new InputBox("", "UserAccess:lastChange:1", 50,20,Validate.TEXT);
 		lastChange.setValue("2011-10-11");
 		lastChange.setVisible(false);
 

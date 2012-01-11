@@ -9,7 +9,9 @@ import mobile.web.webxt.client.devform.A203;
 import mobile.web.webxt.client.devform.A204;
 import mobile.web.webxt.client.devform.A205;
 import mobile.web.webxt.client.devform.A206;
+import mobile.web.webxt.client.devform.C101;
 import mobile.web.webxt.client.devform.C102;
+import mobile.web.webxt.client.devform.C103;
 import mobile.web.webxt.client.devform.G101;
 import mobile.web.webxt.client.form.MyFormPanel;
 
@@ -74,8 +76,12 @@ public class FormView extends View {
 			tabItem.add(centerForm(new A205()));
 		} else if (processId.compareTo("A206") == 0) {
 			tabItem.add(new A206());
+		} else if (processId.compareTo("C101") == 0) {
+			tabItem.add(new C101());
 		} else if (processId.compareTo("C102") == 0) {
 				tabItem.add(new C102());
+		} else if (processId.compareTo("C103") == 0) {
+			tabItem.add(new C103());
 		} else if (processId.compareTo("G101") == 0) {
 			tabItem.add(new G101());
 		}
