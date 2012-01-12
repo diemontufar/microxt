@@ -8,7 +8,7 @@ import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.gridtools.ArrayColumnData;
-import mobile.web.webxt.client.gridtools.ColumnDataInterface;
+import mobile.web.webxt.client.gridtools.MyColumnData;
 import mobile.web.webxt.client.gridtools.MyComboBox;
 
 import com.extjs.gxt.ui.client.data.FilterConfig;
@@ -87,7 +87,7 @@ public class ComboForm extends MyComboBox {
 		sb.append("<tr class=\"x-grid3-hd-row\" role=\"presentation\">");
 		listWidth = 0;
 		for (int i = 0; i < cdata.size(); i++) {
-			ColumnDataInterface columnData = cdata.get(i);
+			MyColumnData columnData = cdata.get(i);
 			sb.append("<td class=\"x-grid3-header x-grid3-hd x-grid3-cell x-grid3-td-name \" role=\"presentation\" align=\"left\" style=\"\">");
 			sb.append("<div role=\"columnheader\" aria-haspopup=\"false\" class=\"x-grid3-hd-inner x-component\" style=\"width: "
 					+ columnData.getWidth()

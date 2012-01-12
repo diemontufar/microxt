@@ -9,7 +9,7 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 
 public class NormalColumn extends ColumnConfig {
 	
-	public NormalColumn(ColumnDataInterface columnData) {
+	public NormalColumn(MyColumnData columnData) {
 		super();
 		setId(columnData.getId());
 		setHeader(columnData.getName());
@@ -24,7 +24,7 @@ public class NormalColumn extends ColumnConfig {
 		
 	}
 	
-	private void setHidden(ColumnDataInterface columnData) {
+	private void setHidden(MyColumnData columnData) {
 		if(columnData.getColumnType()==ColumnType.HIDDEN){
 			setHidden(true);
 		}

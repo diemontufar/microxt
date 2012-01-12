@@ -17,7 +17,7 @@ public class ComboColumn extends ColumnConfig {
 
 	private int width = 0; // Calculated from cdata
 
-	public ComboColumn(ColumnDataInterface columnData) {
+	public ComboColumn(MyColumnData columnData) {
 		super(columnData.getId(),columnData.getName(),columnData.getWidth());
 	}
 
@@ -88,7 +88,7 @@ public class ComboColumn extends ColumnConfig {
 		sb.append("<tr class=\"x-grid3-hd-row\" role=\"presentation\">");
 		width = 0;
 		for (int i = 0; i < cdata.size(); i++) {
-			ColumnDataInterface columnData = cdata.get(i);
+			MyColumnData columnData = cdata.get(i);
 			sb.append("<td class=\"x-grid3-header x-grid3-hd x-grid3-cell x-grid3-td-name \" role=\"presentation\" align=\"left\" style=\"\">");
 			sb.append("<div role=\"columnheader\" aria-haspopup=\"false\" class=\"x-grid3-hd-inner x-component\" style=\"width: "
 					+ columnData.getWidth()

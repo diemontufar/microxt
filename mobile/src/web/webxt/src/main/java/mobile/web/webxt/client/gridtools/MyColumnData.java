@@ -4,11 +4,16 @@ package mobile.web.webxt.client.gridtools;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 
 
-public class MyColumnData extends ColumnData implements ColumnDataInterface{
+public class MyColumnData extends ColumnData{
 	
 	public enum ColumnType{
 		DESC,		// for description columns: not persistent, visible 
 		HIDDEN		// for hidden columns: persistent, hidden 	
+	}
+	
+	public enum NumberType{
+		INTEGER,	// for integer numbers 
+		DECIMAL		// for decimal numbers 	
 	}
 	
 	private int width;
@@ -26,6 +31,8 @@ public class MyColumnData extends ColumnData implements ColumnDataInterface{
 	private String descCriterion;
 	
 	private String associatedField;
+	
+	private NumberType numberType;
 	
 	public MyColumnData(String id) {
 		this.id = id;
@@ -56,6 +63,11 @@ public class MyColumnData extends ColumnData implements ColumnDataInterface{
 	public MyColumnData(String id, String header, int width, int maxLength, boolean allowBlank, ColumnType type) {
 		this(id, header, width, maxLength, allowBlank);
 		this.columnType = type;
+	}
+	
+	public MyColumnData(String id, String header, int width, int maxLength, boolean allowBlank, NumberType type) {
+		this(id, header, width, maxLength, allowBlank);
+		this.numberType = type;
 	}
 	
 	public void setDescriptionFields(String entity, String field, String criterion){
@@ -131,7 +143,14 @@ public class MyColumnData extends ColumnData implements ColumnDataInterface{
 	public void setAssociatedField(String associatedField) {
 		this.associatedField = associatedField;
 	}
-	
+
+	public NumberType getNumberType() {
+		return numberType;
+	}
+
+	public void setNumberType(NumberType numberType) {
+		this.numberType = numberType;
+	}
 	
 
 }
