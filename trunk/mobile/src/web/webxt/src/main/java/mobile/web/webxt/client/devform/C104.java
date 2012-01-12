@@ -8,13 +8,16 @@ import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.gridtools.ArrayColumnData;
+import mobile.web.webxt.client.gridtools.ComboColumn;
 import mobile.web.webxt.client.gridtools.EntityContentPanel;
 import mobile.web.webxt.client.gridtools.EntityEditorGrid;
 import mobile.web.webxt.client.gridtools.ExpireColumnConfig;
 import mobile.web.webxt.client.gridtools.GridPagingToolBar;
 import mobile.web.webxt.client.gridtools.GridToolBar;
 import mobile.web.webxt.client.gridtools.MyColumnData;
+import mobile.web.webxt.client.gridtools.MyColumnData.NumberType;
 import mobile.web.webxt.client.gridtools.NormalColumn;
+import mobile.web.webxt.client.gridtools.NumericColumn;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -42,14 +45,14 @@ public class C104 extends LayoutContainer {
 
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_productId", "Codigo", 50, 3, false));
+		cdata.add(new MyColumnData("pk_productId", "Cod", 50, 3, false));
 		cdata.add(new MyColumnData("description", "Descripcion", 150, 50, false));
 		cdata.add(new MyColumnData("currencyId", "Moneda", 50, 3, false));
-		cdata.add(new MyColumnData("minAmount", "Monto Min.", 80, 20, false));
-		cdata.add(new MyColumnData("maxAmount", "Monto Max.", 80, 20, false));
-		cdata.add(new MyColumnData("minPeriod", "Periodo Min.", 80, 20, false));
-		cdata.add(new MyColumnData("maxPeriod", "Periodo Max.", 80, 20, false));
-		cdata.add(new MyColumnData("rate", "Tasa", 80, 20, false));
+		cdata.add(new MyColumnData("minAmount", "Monto Min.", 80, 20, false, NumberType.DECIMAL));
+		cdata.add(new MyColumnData("maxAmount", "Monto Max.", 80, 20, false, NumberType.DECIMAL));
+		cdata.add(new MyColumnData("minPeriod", "Per Min.", 80, 20, false, NumberType.INTEGER));
+		cdata.add(new MyColumnData("maxPeriod", "Per Max.", 80, 20, false, NumberType.INTEGER));
+		cdata.add(new MyColumnData("rate", "Tasa", 80, 20, false, NumberType.DECIMAL));
 		
 		MyProcessConfig config = new MyProcessConfig(PROCESS, ENTITY,
 				cdata.getIdFields());
@@ -64,12 +67,20 @@ public class C104 extends LayoutContainer {
 
 		configs.add(new NormalColumn(cdata.get(0)));
 		configs.add(new NormalColumn(cdata.get(1)));
-		configs.add(new NormalColumn(cdata.get(2)));
-		configs.add(new NormalColumn(cdata.get(3)));
-		configs.add(new NormalColumn(cdata.get(4)));
-		configs.add(new NormalColumn(cdata.get(5)));
-		configs.add(new NormalColumn(cdata.get(6)));
-		configs.add(new NormalColumn(cdata.get(7)));
+		
+		// Currency combo
+		ComboColumn currencyComboCol = new ComboColumn(cdata.get(2));
+		ArrayColumnData cdataCombo = new ArrayColumnData();
+		cdataCombo.add(new MyColumnData("pk_currencyId", "Moneda", 70));
+		cdataCombo.add(new MyColumnData("description", "Descripcion", 200));
+		currencyComboCol.setRqData("Currency", cdataCombo);
+		configs.add(currencyComboCol);
+		
+		configs.add(new NumericColumn(cdata.get(3)));
+		configs.add(new NumericColumn(cdata.get(4)));
+		configs.add(new NumericColumn(cdata.get(5)));
+		configs.add(new NumericColumn(cdata.get(6)));
+		configs.add(new NumericColumn(cdata.get(7)));
 		configs.add(new ExpireColumnConfig());
 
 		ColumnModel cm = new ColumnModel(configs);

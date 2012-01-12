@@ -26,7 +26,7 @@ public class SpecialComboColumn extends ColumnConfig {
 
 	private MyComboBox combo;
 
-	public SpecialComboColumn(ColumnDataInterface columnData) {
+	public SpecialComboColumn(MyColumnData columnData) {
 		super(columnData.getId(), columnData.getName(), columnData.getWidth());
 	}
 
@@ -82,7 +82,7 @@ public class SpecialComboColumn extends ColumnConfig {
 				ModelData model = (ModelData) value;
 
 				boolean isFirst = true;
-				for (ColumnDataInterface cd : cdata) {
+				for (MyColumnData cd : cdata) {
 					if (isFirst) {
 						returnValue = model.get(cdata.getIdFields().get(0));
 						isFirst = false;
@@ -128,7 +128,7 @@ public class SpecialComboColumn extends ColumnConfig {
 		sb.append("<tr class=\"x-grid3-hd-row\" role=\"presentation\">");
 		width = 0;
 		for (int i = 0; i < cdata.size(); i++) {
-			ColumnDataInterface columnData = cdata.get(i);
+			MyColumnData columnData = cdata.get(i);
 
 			if (columnData.getColumnType() != null
 					&& columnData.getColumnType() == ColumnType.HIDDEN) {

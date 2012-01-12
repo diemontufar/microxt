@@ -5,7 +5,7 @@ import java.util.List;
 
 import mobile.web.webxt.client.gridtools.MyColumnData.ColumnType;
 
-public class ArrayColumnData extends ArrayList<ColumnDataInterface> {
+public class ArrayColumnData extends ArrayList<MyColumnData> {
 	public ArrayColumnData() {
 		super();
 	}
@@ -23,7 +23,7 @@ public class ArrayColumnData extends ArrayList<ColumnDataInterface> {
 	public List<String> getRqFields() {
 		List<String> lQryFields = new ArrayList<String>();
 		for (int i = 0; i < this.size(); i++) {
-			ColumnDataInterface column = get(i);
+			MyColumnData column = get(i);
 
 			if (column.getColumnType() == null
 					|| (column.getColumnType() != null && column
