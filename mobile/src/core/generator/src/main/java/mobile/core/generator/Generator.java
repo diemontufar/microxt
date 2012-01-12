@@ -1,10 +1,14 @@
 package mobile.core.generator;
 
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import mobile.entity.manager.JPManager;
 import mobile.entity.manager.JPManagerFactory;
+
+import com.csvreader.CsvReader;
 
 public class Generator {
 
@@ -73,9 +77,18 @@ public class Generator {
 			// ************************************************
 			// Generators for a list of tables
 			// ************************************************
+//			List<String> ltables = new ArrayList<String>();
+//			ltables.add("QUOTA_TYPE");
+//			ltables.add("SOLICITUDE");
+//			generateSqlScriptsForListOfTables(ltables);
+//			generateClasesForListOfTables(ltables);
+			
+			// ************************************************
+			// Generators for a list of tables taken from entity.csv
+			// ************************************************
+			final String CSV_FILE = "/home/ronald/Escritorio/entity.csv";
 			List<String> ltables = new ArrayList<String>();
-			ltables.add("QUOTA_TYPE");
-			ltables.add("SOLICITUDE");
+			ltables = readTablesFromCsv(CSV_FILE);
 			generateSqlScriptsForListOfTables(ltables);
 			generateClasesForListOfTables(ltables);
 		} catch (Exception e) {
@@ -84,5 +97,41 @@ public class Generator {
 			JPManager.close();
 			JPManagerFactory.close();
 		}
+	}
+
+	private static List<String> readTablesFromCsv(String csvFile) {
+		CsvReader csvReader = null;
+		List<String> ltable = new ArrayList<String>();
+
+		try {
+			// CSV reader
+			File fichero = new File(csvFile);
+			FileReader freader = new FileReader(fichero);
+			csvReader = new CsvReader(freader);
+
+			// Header
+			System.out.println("-------Cabecera-------");
+			csvReader.readHeaders();
+			for (String header : csvReader.getHeaders()) {
+				System.out.print(header + " ");
+			}
+			System.out.println();
+
+			// Read entities
+			System.out.println("-------Entidades-------");
+			while (csvReader.readRecord()) {
+				String tableId = csvReader.get("TABLE_ID");
+				System.out.println(tableId);
+				ltable.add(tableId);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (csvReader != null) {
+				csvReader.close();
+			}
+		}
+		return ltable;
 	}
 }
