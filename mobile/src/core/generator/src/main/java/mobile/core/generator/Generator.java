@@ -110,12 +110,7 @@ public class Generator {
 			csvReader = new CsvReader(freader);
 
 			// Header
-			System.out.println("-------Cabecera-------");
 			csvReader.readHeaders();
-			for (String header : csvReader.getHeaders()) {
-				System.out.print(header + " ");
-			}
-			System.out.println();
 
 			// Read entities
 			System.out.println("-------Entidades-------");
