@@ -19,14 +19,15 @@ public class NavView extends View {
 	@Override
 	protected void handleEvent(AppEvent event) {
 		if(MobileConfig.FORM_DEVELOPMENT){
-			return;
-		}
-		EventType eventType = event.getType();
-		if (eventType.equals(AppEvents.Init)) {
-			Dispatcher.forwardEvent(new AppEvent(AppEvents.NavPanelReady,
-					navPanel));
-		} else if (eventType.equals(AppEvents.TabSelected)) {
-			onTabSelected(event);
+			
+		}else{
+			EventType eventType = event.getType();
+			if (eventType.equals(AppEvents.Init)) {
+				Dispatcher.forwardEvent(new AppEvent(AppEvents.NavPanelReady,
+						navPanel));
+			} else if (eventType.equals(AppEvents.TabSelected)) {
+				onTabSelected(event);
+			}
 		}
 	}
 

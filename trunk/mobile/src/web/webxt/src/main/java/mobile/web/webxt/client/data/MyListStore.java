@@ -94,13 +94,4 @@ public class MyListStore extends ListStore<ModelData> {
     	
     	config.setFilterConfigs(filters);
 	}
-	
-//	private Boolean parseBoolean(String input){
-//		boolean result = false;
-//		if(input.compareToIgnoreCase("true")==0
-//				|| input.compareTo("1")==0){
-//			result = true;
-//		}
-//		return result;
-//	}
 }

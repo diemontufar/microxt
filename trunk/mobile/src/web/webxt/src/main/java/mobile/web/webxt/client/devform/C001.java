@@ -30,7 +30,7 @@ public class C001 extends LayoutContainer {
 
 	private final String PROCESS = "C001";
 	
-	private final String ENTITY = "UserStatus";
+	private final String ENTITY = "Currency";
 	
 	private final Integer PAGE_SIZE = 5;
 

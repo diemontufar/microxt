@@ -29,6 +29,7 @@ import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.form.StoreFilterField;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -36,6 +37,8 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 public class MenuTreePanel extends LayoutContainer {
 
+	private final String PROCESS = "G001";
+	
 	private TreePanel<ModelData> tree;
 	
 	StoreFilterField<ModelData> filter;
@@ -47,11 +50,13 @@ public class MenuTreePanel extends LayoutContainer {
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
+		setLayout(new FitLayout());
 		
 		final TreeLoader<ModelData> loader = new BaseTreeLoader<ModelData>(
 				new TreeModelReader<List<ModelData>>()) {
 			@Override
 			public boolean load() {
+				Dispatcher.forwardEvent(AppEvents.UserNotification,"Cargando menu");
 				AsyncCallback<Message> callback = new AsyncCallback<Message>() {
 					public void onFailure(Throwable caught) {
 						new AlertDialog("FilterTreePanel", caught.getMessage())
@@ -62,7 +67,7 @@ public class MenuTreePanel extends LayoutContainer {
 						onLoadSuccess(null, result);
 					}
 				};
-				MyProcessConfig config = new MyProcessConfig("G001");
+				MyProcessConfig config = new MyProcessConfig(PROCESS);
 				MyHttpProxy proxy = new MyHttpProxy();
 				proxy.requestMsg(config, callback);
 				return true;
@@ -115,6 +120,7 @@ public class MenuTreePanel extends LayoutContainer {
 					root.add(f);
 				}
 				this.load(root);
+				Dispatcher.forwardEvent(AppEvents.UserNotification,"Listo");
 			}
 
 		};
@@ -128,7 +134,7 @@ public class MenuTreePanel extends LayoutContainer {
 				return model.get("id")+". "+model.get("name");
 			}
 		});
-		tree.setWidth(250);
+		tree.setWidth("100%");
 		
 		tree.setIconProvider(new ModelIconProvider<ModelData>() {
 			public AbstractImagePrototype getIcon(ModelData model) {
