@@ -1,4 +1,4 @@
-package mobile.web.webxt.client.gridtools;
+package mobile.web.webxt.client.form.widgetsgrid;
 
 import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.resources.Resources;

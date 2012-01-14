@@ -1,4 +1,4 @@
-package mobile.web.webxt.client.formtools;
+package mobile.web.webxt.client.form.widgets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,51 +7,60 @@ import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
-import mobile.web.webxt.client.gridtools.ArrayColumnData;
-import mobile.web.webxt.client.gridtools.MyColumnData;
-import mobile.web.webxt.client.gridtools.MyComboBox;
+import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
+import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 
 import com.extjs.gxt.ui.client.data.FilterConfig;
 
 public class ComboForm extends MyComboBox {
 
-	private int pageSize = 0;
-
 	private String process = "G201";
-
+	private int pageSize = 0;
 	private int listWidth = 0;
 	
-	private String fieldLabel = "";
-	
-	private String displayField = "";
-
-	public ComboForm(String filedLabel, String displayField) {
+	public ComboForm(int width) {
 		super();
-		this.fieldLabel=filedLabel;
-		this.displayField=displayField;
+		this.setWidth(width);
+		
+		setForceSelection(true);
+		setTriggerAction(TriggerAction.ALL);
+		setItemSelector("tr.search-item");
+		setPageSize(pageSize);
+		setEditable(false);
 	}
-
+	
+	public ComboForm(String label) {
+		super();
+		this.setFieldLabel(label);
+		
+		setForceSelection(true);
+		setTriggerAction(TriggerAction.ALL);
+		setItemSelector("tr.search-item");
+		setPageSize(pageSize);
+		setEditable(false);
+	}
+	
+	public ComboForm(int width, String displayField) {
+		this(width);
+		setDisplayField(displayField);
+	}
+	
+	public ComboForm(String label, String displayField) {
+		this(label);
+		setDisplayField(displayField);
+	}
+	
 	public void setRqData(String entity, ArrayColumnData cdata) {
 		// Proxy - Loader - Store
 		final MyProcessConfig config = new MyProcessConfig(process, entity,cdata.getIdFields());
 		final MyHttpProxy proxy = new MyHttpProxy();
-		final MyPagingLoader loader = new MyPagingLoader(proxy, config);//loader.load(offset, limit)
+		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
 		final MyListStore store = new MyListStore(loader);
 
 		// Combo
-		setForceSelection(true);
-		setTriggerAction(TriggerAction.ALL);
-		setDisplayField(cdata.getIdFields().get(0));
 		setStore(store);
 		setTemplate(getTemplateCombo(cdata));
 		setMinListWidth(listWidth);
-		setPageSize(pageSize);
-		setFieldLabel(fieldLabel);  
-	    setDisplayField(displayField); 
-
-		setItemSelector("tr.search-item");
-		setEditable(false);
-		setForceSelection(true);
 	}
 
 	public void addFilter(FilterConfig filter) {

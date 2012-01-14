@@ -1,8 +1,8 @@
 package mobile.web.webxt.client.devform;
 
-import mobile.web.webxt.client.formtools.MyFormPanel;
-import mobile.web.webxt.client.validations.Validate;
-import mobile.web.webxt.client.widgets.InputBox;
+import mobile.web.webxt.client.form.MyFormPanel;
+import mobile.web.webxt.client.form.validations.Validate;
+import mobile.web.webxt.client.form.widgets.InputBox;
 import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;

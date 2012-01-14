@@ -1,4 +1,4 @@
-package mobile.web.webxt.client.validations;
+package mobile.web.webxt.client.form.validations;
 
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.extjs.gxt.ui.client.widget.form.Validator;

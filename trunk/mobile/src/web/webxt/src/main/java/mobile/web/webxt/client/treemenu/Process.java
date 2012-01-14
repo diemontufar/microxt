@@ -5,7 +5,7 @@
  * 
  * http://extjs.com/license
  */
-package mobile.web.webxt.client.tree;
+package mobile.web.webxt.client.treemenu;
 
 import com.extjs.gxt.ui.client.data.BaseTreeModel;
 

@@ -1,7 +1,7 @@
-package mobile.web.webxt.client.gridtools;
+package mobile.web.webxt.client.form.widgetsgrid;
 
 
-import mobile.web.webxt.client.gridtools.MyColumnData.ColumnType;
+import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;

@@ -3,6 +3,9 @@ package mobile.web.webxt.client.mvc;
 import mobile.web.webxt.client.components.FormPanel;
 import mobile.web.webxt.client.devform.A101;
 import mobile.web.webxt.client.devform.A102;
+import mobile.web.webxt.client.devform.A103;
+import mobile.web.webxt.client.devform.A104;
+import mobile.web.webxt.client.devform.A105;
 import mobile.web.webxt.client.devform.A201;
 import mobile.web.webxt.client.devform.A202;
 import mobile.web.webxt.client.devform.A203;
@@ -64,6 +67,12 @@ public class FormView extends View {
 			tabItem.add(new A101());
 		} else if (processId.compareTo("A102") == 0) {
 			tabItem.add(new A102());
+		} else if (processId.compareTo("A103") == 0) {
+			tabItem.add(new A103());
+		} else if (processId.compareTo("A104") == 0) {
+			tabItem.add(new A104());
+		} else if (processId.compareTo("A105") == 0) {
+			tabItem.add(new A105());
 		} else if (processId.compareTo("A201") == 0) {
 			tabItem.add(new A201());
 		} else if (processId.compareTo("A202") == 0) {
@@ -73,7 +82,8 @@ public class FormView extends View {
 		} else if (processId.compareTo("A204") == 0) {
 			tabItem.add(new A204());
 		} else if (processId.compareTo("A205") == 0) {
-			tabItem.add(centerForm(new A205()));
+			//tabItem.add(centerForm(new A205()));
+			tabItem.add(new A205());
 		} else if (processId.compareTo("A206") == 0) {
 			tabItem.add(new A206());
 		} else if (processId.compareTo("C101") == 0) {
@@ -94,13 +104,5 @@ public class FormView extends View {
 		});
 
 		formPanel.addTab(tabItem);
-	}
-
-	private LayoutContainer centerForm(MyFormPanel form) {
-		LayoutContainer container = new LayoutContainer();
-		container.setLayout(new CenterLayout());
-		container.getAriaSupport().setPresentation(true);
-		container.add(form);
-		return container;
 	}
 }

@@ -1,9 +1,10 @@
-package mobile.web.webxt.client.gridtools;
+package mobile.web.webxt.client.form.widgetsgrid;
 
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
+import mobile.web.webxt.client.form.widgets.MyComboBox;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyProcessConfig;
-import mobile.web.webxt.client.formtools.PersistentField;
+import mobile.web.webxt.client.form.widgets.PersistentField;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.windows.AlertDialog;
 
@@ -18,11 +18,15 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class MyFormPanel extends FormPanel {
 
 	private MyProcessConfig config;
-
 	private Map<String, String> mfield = new HashMap<String, String>();
-
 	private MyHttpProxy proxy = new MyHttpProxy();
 
+	public MyFormPanel(String title, int width) {
+		setHeading(title);
+		setFrame(true);
+		setWidth(width);
+	}
+	
 	public MyFormPanel(String process, String title, int width) {
 		setHeading(title);
 		setWidth(width);

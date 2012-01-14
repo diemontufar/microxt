@@ -1,4 +1,4 @@
-package mobile.web.webxt.client.gridtools;
+package mobile.web.webxt.client.form.widgetsgrid;
 
 
 import com.extjs.gxt.ui.client.data.ModelData;

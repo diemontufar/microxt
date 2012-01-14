@@ -1,4 +1,4 @@
-package mobile.web.webxt.client.validations;
+package mobile.web.webxt.client.form.validations;
 
 public enum ValidationTypes {
 	ALPHABET("^[a-zA-Z_]+$", "TEXTO"), ALPHANUMERIC("^[a-zA-Z0-9_]+$",
