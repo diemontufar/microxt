@@ -8,6 +8,7 @@ import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.form.EntityContentPanel;
+import mobile.web.webxt.client.form.MyGeneralPanel;
 import mobile.web.webxt.client.form.widgets.ComboForm;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.CheckColumn;
@@ -30,14 +31,12 @@ import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.store.Record;
 import com.extjs.gxt.ui.client.widget.Info;
-import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
-import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.google.gwt.user.client.Element;
 
-public class A105 extends LayoutContainer {
+public class A105 extends MyGeneralPanel {
 
 	private final String PROCESS = "A105";
 
@@ -48,9 +47,7 @@ public class A105 extends LayoutContainer {
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-		setLayout(new CenterLayout());
-		getAriaSupport().setPresentation(true);
-
+		
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
 		cdata.add(new MyColumnData("pk_processId", "Proc", 70, 2, false));
@@ -87,11 +84,6 @@ public class A105 extends LayoutContainer {
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(store, cm);
 		grid.setAutoExpandColumn("name");
-		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
-			public void handleEvent(BaseEvent be) {
-				// store.sort(cdata.getIdFields().get(0), SortDir.ASC);
-			}
-		});
 		gridPanel.add(grid);
 
 		// Top tool bar
@@ -116,21 +108,21 @@ public class A105 extends LayoutContainer {
 		EntityContentPanel panel = new EntityContentPanel("Procesos", 440, 360);
 
 		// Subsystem combo
-		final ComboForm combo = new ComboForm("Subsistema", "name");
+		final ComboForm subCombo = new ComboForm("Subsistema", "name");
 		final ArrayColumnData combodata = new ArrayColumnData();
 		combodata.add(new MyColumnData("pk_subsystemId", "Sub", 70));
 		combodata.add(new MyColumnData("name", "Nombre", 150));
-		combo.setRqData("Subsystem", combodata);
+		subCombo.setRqData("Subsystem", combodata);
 
 		// Module combo
-		final ComboForm combo2 = new ComboForm("Modulo", "name");
+		final ComboForm modCombo = new ComboForm("Modulo", "name");
 		final ArrayColumnData combodata2 = new ArrayColumnData();
 		combodata2.add(new MyColumnData("pk_moduleId", "Mod", 70));
 		combodata2.add(new MyColumnData("name", "Nombre", 150));
-		combo2.setRqData("Module", combodata2);
+		modCombo.setRqData("Module", combodata2);
 
 		// Combo boxes and table interaction
-		combo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+		subCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
 				String filterField = "pk_subsystemId";
@@ -138,18 +130,18 @@ public class A105 extends LayoutContainer {
 				FilterConfig filter = new BaseStringFilterConfig();
 				filter.setField(filterField);
 				filter.setComparison("=");
-				filter.setValue(combo.getValue().get(filterField).toString());
+				filter.setValue(subCombo.getValue().get(filterField).toString());
 
-				combo2.addFilter(filter);
-				combo2.setLoaded(false);
-				combo2.setValue(null);
+				modCombo.addFilter(filter);
+				modCombo.setLoaded(false);
+				modCombo.setValue(null);
 
 				store.addFilter(filter);
 			}
 		});
-		combo2.addListener(Events.BeforeQuery, new Listener<BaseEvent>() {
+		modCombo.addListener(Events.BeforeQuery, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
-				MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) combo2
+				MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) modCombo
 						.getStore().getLoader()).getConfig();
 				if (config.getFilterConfigs() == null) {
 					be.setCancelled(true);
@@ -157,10 +149,10 @@ public class A105 extends LayoutContainer {
 				}
 			}
 		});
-		combo2.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+		modCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-				if (combo2.getValue() == null) {
+				if (modCombo.getValue() == null) {
 					return;
 				}
 
@@ -169,7 +161,7 @@ public class A105 extends LayoutContainer {
 				FilterConfig filter = new BaseStringFilterConfig();
 				filter.setField(filterField);
 				filter.setComparison("=");
-				filter.setValue(combo2.getValue().get(filterField).toString());
+				filter.setValue(modCombo.getValue().get(filterField).toString());
 				store.addFilter(filter);
 
 				pagingToolBar.setWaitingFilter(false);
@@ -185,8 +177,8 @@ public class A105 extends LayoutContainer {
 				String val = (String) ge.getValue();
 				System.out.println(rec + " " + prop + " " + val);
 				if (prop.compareTo("pk_processId") == 0) {
-					String sub = combo.getValue().get("pk_subsystemId");
-					String mod = combo2.getValue().get("pk_moduleId");
+					String sub = subCombo.getValue().get("pk_subsystemId");
+					String mod = modCombo.getValue().get("pk_moduleId");
 					rec.set("url", sub + mod + val);
 				}
 			}
@@ -197,8 +189,8 @@ public class A105 extends LayoutContainer {
 		headerPanel.setHeaderVisible(false);
 		headerPanel.setBodyBorder(true);
 		headerPanel.setFieldWidth(150);
-		headerPanel.add(combo);
-		headerPanel.add(combo2);
+		headerPanel.add(subCombo);
+		headerPanel.add(modCombo);
 
 		panel.setTopComponent(headerPanel);
 		panel.add(gridPanel);

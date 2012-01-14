@@ -1,6 +1,7 @@
 package mobile.web.webxt.client.devform;
 
 import mobile.web.webxt.client.form.MyFormPanel;
+import mobile.web.webxt.client.form.MyGeneralPanel;
 import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgets.InputBox;
 import mobile.web.webxt.client.windows.AlertDialog;
@@ -9,17 +10,33 @@ import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.layout.FormLayout;
+import com.google.gwt.user.client.Element;
 
-public class A205 extends MyFormPanel {
+public class A205 extends MyGeneralPanel {
 
 	// fields:
 	private InputBox user;
 	private InputBox retypePassword;
 	private InputBox newPassword;
 
-	public A205() {
-		super("A205", "Ingreso de contraseña", 350);
+	
+	@Override
+	protected void onRender(Element parent, int index) {
+		super.onRender(parent, index);
+		createForm();
+	}
 
+
+	private void createForm() {
+		// Constants
+		final int FORM_WIDTH = 350;
+		
+		// Form panel
+		final MyFormPanel form = new MyFormPanel("Ingreso de contraseña",
+				FORM_WIDTH);
+		form.setLayout(new FormLayout());
+				
 		// Fields
 		InputBox isNew = new InputBox("", "UserAccess:_isNew:1", 50,5,Validate.TEXT);
 		isNew.setMinLength(1);
@@ -34,14 +51,14 @@ public class A205 extends MyFormPanel {
 		lastChange.setValue("2011-10-11");
 		lastChange.setVisible(false);
 
-		add(isNew);
-		add(user);
-		add(newPassword);
-		add(retypePassword);
-		add(lastChange);
+		form.add(isNew);
+		form.add(user);
+		form.add(newPassword);
+		form.add(retypePassword);
+		form.add(lastChange);
 
-		setButtonAlign(HorizontalAlignment.CENTER);
-		addButton(new Button("Limpiar", new SelectionListener<ButtonEvent>() {
+		form.setButtonAlign(HorizontalAlignment.CENTER);
+		form.addButton(new Button("Limpiar", new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
 				user.clear();
@@ -50,13 +67,14 @@ public class A205 extends MyFormPanel {
 			}
 		}));
 
-		addButton(new Button("Guardar", new SelectionListener<ButtonEvent>() {
+		form.addButton(new Button("Guardar", new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				commitForm();
+				form.commitForm();
 			}
 		}));
 
+		add(form);
 	}
 
 	public boolean validateForm() {

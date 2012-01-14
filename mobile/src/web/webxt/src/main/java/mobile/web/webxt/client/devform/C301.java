@@ -57,7 +57,7 @@ public class C301 extends LayoutContainer {
 		
 		final ComboForm solicitudeId = new ComboForm(100);
 		solicitudeId.setDisplayField("pk_solicitudeId");
-		solicitudeId.setEditable(true);
+		solicitudeId.setEditable(false);
 		final ArrayColumnData solCdata = new ArrayColumnData();
 		solCdata.add(new MyColumnData("pk_solicitudeId", "Id", 100));
 		solicitudeId.setRqData("Solicitude", solCdata);
