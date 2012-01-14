@@ -6,11 +6,26 @@ import mobile.web.webxt.client.form.validations.ValidationTypes;
 import mobile.web.webxt.client.form.validations.ValidationTypesValidator;
 
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.google.gwt.user.client.Element;
 
 public class InputBox extends TextField<String> implements PersistentField {
 
 	String fieldInfo;
 	Validate type;
+	
+	@Override
+	public void setMaxLength(int m) {
+		super.setMaxLength(m);
+		if (rendered) {
+			getInputEl().setElementAttribute("maxLength", m);
+		}
+	}
+
+	@Override
+	protected void onRender(Element target, int index) {
+		super.onRender(target, index);
+		getInputEl().setElementAttribute("maxLength", getMaxLength());
+	}
 	
 	public InputBox(int width) {
 		this.setWidth(width);

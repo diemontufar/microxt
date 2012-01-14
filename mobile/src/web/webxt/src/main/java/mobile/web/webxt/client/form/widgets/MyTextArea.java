@@ -2,10 +2,25 @@ package mobile.web.webxt.client.form.widgets;
 
 
 import com.extjs.gxt.ui.client.widget.form.TextArea;
+import com.google.gwt.user.client.Element;
 
 public class MyTextArea extends TextArea implements PersistentField{
 
 	String fieldInfo;
+	
+	@Override
+	public void setMaxLength(int m) {
+		super.setMaxLength(m);
+		if (rendered) {
+			getInputEl().setElementAttribute("maxLength", m);
+		}
+	}
+
+	@Override
+	protected void onRender(Element target, int index) {
+		super.onRender(target, index);
+		getInputEl().setElementAttribute("maxLength", getMaxLength());
+	}
 	
 	public MyTextArea(int width, int maxLength){
 		this.setWidth(width);
