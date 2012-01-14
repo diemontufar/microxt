@@ -1,4 +1,4 @@
-package mobile.web.webxt.client.gridtools;
+package mobile.web.webxt.client.form.widgetsgrid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,8 @@ import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
-import mobile.web.webxt.client.gridtools.MyColumnData.ColumnType;
+import mobile.web.webxt.client.form.widgets.MyComboBox;
+import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
 
 import com.extjs.gxt.ui.client.data.BaseFilterConfig;
 import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;

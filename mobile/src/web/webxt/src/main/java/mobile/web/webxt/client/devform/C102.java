@@ -5,10 +5,10 @@ import java.util.Map;
 
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyProcessConfig;
+import mobile.web.webxt.client.form.validations.Validate;
+import mobile.web.webxt.client.form.widgets.InputBox;
+import mobile.web.webxt.client.form.widgets.MyTextArea;
 import mobile.web.webxt.client.mvc.AppEvents;
-import mobile.web.webxt.client.validations.Validate;
-import mobile.web.webxt.client.widgets.InputBox;
-import mobile.web.webxt.client.widgets.TextBox;
 import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
@@ -90,7 +90,7 @@ public class C102 extends LayoutContainer {
 
 	FormPanel fpCodDesc; 
 	InputBox code; 
-	TextBox description;
+	MyTextArea description;
 
 	private MapWidget map = new MapWidget(LatLng.newInstance(INITIAL_LATITUDE,
 			INITIAL_LONGITUDE), ZOOM_LEVEL_NORMAL);
@@ -182,7 +182,7 @@ public class C102 extends LayoutContainer {
 
 		fpCodDesc = new FormPanel();
 		code = new InputBox("", "GeographicZone:pk_geographicZoneId:1", 90,6,Validate.ALFANUMERICO);
-		description = new TextBox("", "GeographicZone:description:1",90,100);
+		description = new MyTextArea("", "GeographicZone:description:1",90,100);
 		
 		final FormPanel panel = new FormPanel();
 		panel.setHeaderVisible(false);

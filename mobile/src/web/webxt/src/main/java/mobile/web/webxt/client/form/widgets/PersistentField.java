@@ -1,4 +1,4 @@
-package mobile.web.webxt.client.formtools;
+package mobile.web.webxt.client.form.widgets;
 
 public interface PersistentField {
 	

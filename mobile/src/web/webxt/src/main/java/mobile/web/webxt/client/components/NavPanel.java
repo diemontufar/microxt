@@ -1,7 +1,7 @@
 package mobile.web.webxt.client.components;
 
-import mobile.web.webxt.client.tree.Folder;
-import mobile.web.webxt.client.tree.MenuTreePanel;
+import mobile.web.webxt.client.treemenu.Folder;
+import mobile.web.webxt.client.treemenu.MenuTreePanel;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.Store;

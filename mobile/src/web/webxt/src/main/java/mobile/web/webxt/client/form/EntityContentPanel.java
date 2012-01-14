@@ -11,6 +11,7 @@ import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 // 10 records	340
 
 public class EntityContentPanel extends ContentPanel {
+	
 	public EntityContentPanel(String title, int width, int height) {
 		super();
 		setHeading(title);
@@ -20,4 +21,14 @@ public class EntityContentPanel extends ContentPanel {
 		setLayout(new FitLayout());
 		setSize(width, height);
 	}
+	
+	public EntityContentPanel(int width, int height) {
+		super();
+		setHeaderVisible(false);
+		setBodyBorder(false);
+		setButtonAlign(HorizontalAlignment.CENTER);
+		setLayout(new FitLayout());
+		setSize(width, height);
+	}
+	
 }
