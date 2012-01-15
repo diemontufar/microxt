@@ -88,7 +88,7 @@ public class C201 extends LayoutContainer {
 			}
 		});
 		
-		cancelar = new Button("Guardar", new SelectionListener<ButtonEvent>() {
+		cancelar = new Button("Cancelar", new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
 				clearFields();
