@@ -1,10 +1,11 @@
 package mobile.web.webxt.client.devform;
 
 import mobile.web.webxt.client.form.MyFormPanel;
+import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.widgets.ComboForm;
+import mobile.web.webxt.client.form.widgets.InputBox;
 import mobile.web.webxt.client.form.widgets.MyLabel;
 import mobile.web.webxt.client.form.widgets.MyTextArea;
-import mobile.web.webxt.client.form.widgets.InputBox;
 import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
@@ -14,7 +15,6 @@ import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
-import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.extjs.gxt.ui.client.widget.TabPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -22,19 +22,16 @@ import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
-import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.layout.HBoxLayoutData;
 import com.google.gwt.user.client.Element;
 
-public class C301 extends LayoutContainer {
+public class C301 extends MyGeneralForm {
+	private final String PROCESS = "C301";
 
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-		setLayout(new CenterLayout());
-		getAriaSupport().setPresentation(true);
-
 		createForm();
 	}
 
@@ -45,7 +42,8 @@ public class C301 extends LayoutContainer {
 		final int LABEL_WIDTH = 65;
 		
 		// Form panel
-		MyFormPanel form = new MyFormPanel("Solicitud de Microcrédito", FORM_WIDTH);
+		MyFormPanel form = new MyFormPanel(PROCESS, "Solicitud de Microcrédito", FORM_WIDTH);
+		
 		form.setLayout(new FlowLayout());
 
 		// Header

@@ -1,7 +1,7 @@
 package mobile.web.webxt.client.devform;
 
 import mobile.web.webxt.client.form.MyFormPanel;
-import mobile.web.webxt.client.form.MyGeneralPanel;
+import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgets.InputBox;
 import mobile.web.webxt.client.windows.AlertDialog;
@@ -13,20 +13,18 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FormLayout;
 import com.google.gwt.user.client.Element;
 
-public class A205 extends MyGeneralPanel {
+public class A205 extends MyGeneralForm {
 
 	// fields:
 	private InputBox user;
 	private InputBox retypePassword;
 	private InputBox newPassword;
-
 	
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
 		createForm();
 	}
-
 
 	private void createForm() {
 		// Constants
