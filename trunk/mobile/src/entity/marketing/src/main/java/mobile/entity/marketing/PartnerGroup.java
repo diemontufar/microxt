@@ -10,130 +10,143 @@ import mobile.entity.schema.Multilanguage;
 import mobile.entity.schema.Historical;
 
 /**
-* The persistent class for the PARTNER_GROUP database table.
-* Partner groups
-*/
+ * The persistent class for the PARTNER_GROUP database table. Partner groups
+ */
 @Entity
-@Table(name="PARTNER_GROUP")
-public class PartnerGroup extends AbstractHistorical implements Multicompany, Multilanguage, Historical{
-private static final long serialVersionUID = 1L;
+@Table(name = "PARTNER_GROUP")
+public class PartnerGroup extends AbstractHistorical implements Multicompany,
+		Multilanguage, Historical {
+	private static final long serialVersionUID = 1L;
 
-@EmbeddedId
-private PartnerGroupPk pk;
+	@EmbeddedId
+	private PartnerGroupPk pk;
 
-/**
-* Group description
-*/
-@Column(name="GROUP_DESCRIPTION", nullable=false)
-private String groupDescription;
+	/**
+	 * Group description
+	 */
+	@Column(name = "GROUP_DESCRIPTION", nullable = false)
+	private String groupDescription;
 
-/**
-* Creation date
-*/
-@Column(name="CREATION_DATE", nullable=false)
-private Date creationDate;
+	/**
+	 * Creation date
+	 */
+	@Column(name = "CREATION_DATE", nullable = false)
+	private Date creationDate;
 
-/**
-* Activity
-*/
-@Column(name="ACTIVITY", nullable=true)
-private String activity;
+	/**
+	 * Activity
+	 */
+	@Column(name = "ACTIVITY", nullable = true)
+	private String activity;
 
-/**
-* Assessor
-*/
-@Column(name="ASESSOR_ID", nullable=false)
-private String asessorId;
+	/**
+	 * Assessor
+	 */
+	@Column(name = "ASESSOR_ID", nullable = false)
+	private String asessorId;
 
-/**
-* Meeting Frequency id
-*/
-@Column(name="MEETING_FREQUENCY_ID", nullable=false)
-private String meetingFrequencyId;
+	/**
+	 * Meeting Frequency id
+	 */
+	@Column(name = "MEETING_FREQUENCY_ID", nullable = false)
+	private String meetingFrequencyId;
 
-/**
-* Meeting day
-*/
-@Column(name="MEETING_DAY", nullable=true)
-private Integer meetingDay;
+	/**
+	 * Meeting day
+	 */
+	@Column(name = "MEETING_DAY", nullable = true)
+	private Integer meetingDay;
 
-public PartnerGroup() {
-}
-public PartnerGroup(PartnerGroupPk pk) {
-this.pk = pk;
-}
-public PartnerGroup(PartnerGroupPk pk,String groupDescription,Date creationDate,String asessorId,String meetingFrequencyId) {
-this.pk = pk;
-this.groupDescription = groupDescription;
-this.creationDate = creationDate;
-this.asessorId = asessorId;
-this.meetingFrequencyId = meetingFrequencyId;
-}
-public PartnerGroupPk getPk() {
-return this.pk;
-}
-public void setPk(PartnerGroupPk pk) {
-this.pk = pk;
-}
-public String getGroupDescription() {
-return this.groupDescription;
-}
-public void setGroupDescription(String groupDescription) {
-this.groupDescription = groupDescription;
-}
-public Date getCreationDate() {
-return this.creationDate;
-}
-public void setCreationDate(Date creationDate) {
-this.creationDate = creationDate;
-}
-public String getActivity() {
-return this.activity;
-}
-public void setActivity(String activity) {
-this.activity = activity;
-}
-public String getAsessorId() {
-return this.asessorId;
-}
-public void setAsessorId(String asessorId) {
-this.asessorId = asessorId;
-}
-public String getMeetingFrequencyId() {
-return this.meetingFrequencyId;
-}
-public void setMeetingFrequencyId(String meetingFrequencyId) {
-this.meetingFrequencyId = meetingFrequencyId;
-}
-public Integer getMeetingDay() {
-return this.meetingDay;
-}
-public void setMeetingDay(Integer meetingDay) {
-this.meetingDay = meetingDay;
-}
+	public PartnerGroup() {
+	}
 
-@Override
-public void setPk(Object pk) {
-this.pk=(PartnerGroupPk) pk;
-}
+	public PartnerGroup(PartnerGroupPk pk) {
+		this.pk = pk;
+	}
 
-@Override
-public Object clone() throws CloneNotSupportedException {
-PartnerGroup copy = (PartnerGroup) super.clone();
-copy.setPk((PartnerGroupPk) this.pk.clone());
-return copy;
-}
+	public PartnerGroup(PartnerGroupPk pk, String groupDescription,
+			Date creationDate, String asessorId, String meetingFrequencyId) {
+		this.pk = pk;
+		this.groupDescription = groupDescription;
+		this.creationDate = creationDate;
+		this.asessorId = asessorId;
+		this.meetingFrequencyId = meetingFrequencyId;
+	}
 
-@Override
-public String toString() {
-return "PARTNER_GROUP:[" +
-this.getPk().toString() + ", " +
-this.getCreated() + ", " +
-this.getGroupDescription() + ", " +
-this.getCreationDate() + ", " +
-this.getActivity() + ", " +
-this.getAsessorId() + ", " +
-this.getMeetingFrequencyId() + ", " +
-this.getMeetingDay() + "]";
-}
+	public PartnerGroupPk getPk() {
+		return this.pk;
+	}
+
+	public void setPk(PartnerGroupPk pk) {
+		this.pk = pk;
+	}
+
+	public String getGroupDescription() {
+		return this.groupDescription;
+	}
+
+	public void setGroupDescription(String groupDescription) {
+		this.groupDescription = groupDescription;
+	}
+
+	public Date getCreationDate() {
+		return this.creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public String getActivity() {
+		return this.activity;
+	}
+
+	public void setActivity(String activity) {
+		this.activity = activity;
+	}
+
+	public String getAsessorId() {
+		return this.asessorId;
+	}
+
+	public void setAsessorId(String asessorId) {
+		this.asessorId = asessorId;
+	}
+
+	public String getMeetingFrequencyId() {
+		return this.meetingFrequencyId;
+	}
+
+	public void setMeetingFrequencyId(String meetingFrequencyId) {
+		this.meetingFrequencyId = meetingFrequencyId;
+	}
+
+	public Integer getMeetingDay() {
+		return this.meetingDay;
+	}
+
+	public void setMeetingDay(Integer meetingDay) {
+		this.meetingDay = meetingDay;
+	}
+
+	@Override
+	public void setPk(Object pk) {
+		this.pk = (PartnerGroupPk) pk;
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		PartnerGroup copy = (PartnerGroup) super.clone();
+		copy.setPk((PartnerGroupPk) this.pk.clone());
+		return copy;
+	}
+
+	@Override
+	public String toString() {
+		return "PARTNER_GROUP:[" + this.getPk().toString() + ", "
+				+ this.getCreated() + ", " + this.getGroupDescription() + ", "
+				+ this.getCreationDate() + ", " + this.getActivity() + ", "
+				+ this.getAsessorId() + ", " + this.getMeetingFrequencyId()
+				+ ", " + this.getMeetingDay() + "]";
+	}
 }
