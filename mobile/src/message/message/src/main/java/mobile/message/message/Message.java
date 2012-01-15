@@ -10,10 +10,6 @@ public class Message {
 	public final static String XML = "XML";
 	public final static String JSON = "JSON";
 
-	public final static String REQUEST = "request";
-	public final static String RESPONSE = "response";
-	public final static String PARAMETERS = "parameters";
-
 	private List<Data> dataList = new ArrayList<Data>();
 
 	public Message() {
@@ -103,29 +99,41 @@ public class Message {
 		return dataList;
 	}
 
-	public Data getRequest() {
-		return getValue(Message.REQUEST);
-	}
-
-	public Data getResponse() {
-		return getValue(Message.RESPONSE);
-	}
-
-	public Data getParameters() {
-		return getValue(Message.PARAMETERS);
-	}
-
-	private Data getValue(String id) {
-		Data value = null;
-		for (Data data : dataList) {
-			if ((data.getId().compareTo(id)) == 0) {
-				value = data;
-			}
+	public RequestData getRequest() {
+		RequestData requestData = null;
+		Data rd = getData(RequestData.REQUEST); 
+		
+		if(rd==null){
+			requestData = new RequestData();
+			addData(requestData);
+		}else{
+			requestData = new RequestData(rd); 
 		}
-		if (value == null) {
-			value = new Data(id);
-			addData(value);
-		}
-		return value;
+		
+		return requestData;
 	}
+
+	public ResponseData getResponse() {
+		ResponseData responseData = null;
+		Data rd = getData(ResponseData.RESPONSE);
+		if(rd==null){
+			responseData = new ResponseData();
+			addData(responseData);
+		}else{
+			responseData = new ResponseData(rd); 
+		}
+		
+		return responseData;
+	}
+
+//	private Data getCreateData(String id) {
+//		Data data = getData(id);
+//
+//		if(data == null){
+//			data = new Data(id);
+//			addData(data);
+//		}
+//		
+//		return data;
+//	}
 }

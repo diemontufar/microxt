@@ -83,7 +83,7 @@ public class Item {
 				return field;
 			}
 		}
-		//return new Field(name, null);
+		// return new Field(name, null);
 		return null;
 	}
 
@@ -99,40 +99,69 @@ public class Item {
 		return fieldList;
 	}
 
-	public void setNewItem(Boolean newItem) {
-		setValue(Item.NEW_ITEM, newItem);
-	}
-
-	public Boolean isNewItem() {
-		return (Boolean) getValue(Item.NEW_ITEM);
-	}
-
-	public void setExpireItem(Boolean expireItem) {
-		setValue(Item.EXPIRE_ITEM, expireItem);
-	}
-
-	public Boolean isExpireItem() {
-		return (Boolean) getValue(Item.EXPIRE_ITEM);
-	}
-
-	private void setValue(String name, Object object) {
-		Field parameter = new Field(name, object.toString());
-		for (Field field : fieldList) {
-			if ((field.getName().compareTo(parameter.getName())) == 0) {
-				field.setValue(parameter.getValue());
-			} else {
-				fieldList.add(parameter);
-			}
+	public Field getCreateField(String name) {
+		Field field = getField(name);
+		if (field != null) {
+			return field;
+		} else {
+			field = new Field(name);
+			addField(field);
+			return field;
 		}
 	}
-
-	private Object getValue(String name) {
-		Field parameter = getField(name);
-		if (parameter != null) {
-			return parameter.getValue();
+	
+	public void setFieldValue(String name, String value) {
+		Field field = getCreateField(name);
+		field.setValue(value);
+	}
+	
+	public String getFieldValue(String name) {
+		Field field = getField(name);
+		if (field != null) {
+			return field.getValue();
 		} else {
 			return null;
 		}
+	}
+
+	public void setNewItem(Boolean newItem) {
+		String value = "0";
+		if (newItem) {
+			value = "1";
+		}
+		setFieldValue(Item.NEW_ITEM, value);
+	}
+
+	public Boolean isNewItem() {
+		if (getFieldValue(Item.NEW_ITEM) != null) {
+			return parseBoolean((String) getFieldValue(Item.NEW_ITEM));
+		}else{
+			return false;
+		}
+	}
+
+	public void setExpireItem(Boolean expireItem) {
+		String value = "0";
+		if (expireItem) {
+			value = "1";
+		}
+		setFieldValue(Item.EXPIRE_ITEM, value);
+	}
+
+	public Boolean isExpireItem() {
+		if (getFieldValue(Item.EXPIRE_ITEM) != null) {
+			return parseBoolean(getFieldValue(Item.EXPIRE_ITEM));
+		}else{
+			return false;
+		}
+	}
+
+	private Boolean parseBoolean(String input) {
+		Boolean result = false;
+		if (input.compareToIgnoreCase("true") == 0 || input.compareTo("1") == 0 ) {
+			result = true;
+		}
+		return result;
 	}
 
 }
