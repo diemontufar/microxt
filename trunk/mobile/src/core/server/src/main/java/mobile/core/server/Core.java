@@ -17,10 +17,8 @@ import org.apache.log4j.Logger;
 
 public class Core extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	Logger log = Log.getInstance();
-
 	private static final String CONTENT_TYPE = "text/plain; charset=UTF-8";
+	private Logger log = Log.getInstance();
 
 	public void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

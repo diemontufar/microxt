@@ -16,8 +16,6 @@ import javax.xml.transform.stream.StreamSource;
 import mobile.core.structure.processor.GeneralProcessor;
 import mobile.entity.manager.JPManager;
 import mobile.entity.security.ProcessComponent;
-import mobile.message.message.Data;
-import mobile.message.message.Field;
 import mobile.message.message.Message;
 import mobile.tools.common.Log;
 import mobile.tools.common.convertion.FormatDates;
@@ -56,10 +54,9 @@ public class CoreProcessor {
 			JPManager.commitTransaction();
 
 			// Set response
-			Data response = new Data("response");
-			response.addField(new Field("code", "000"));
-			response.addField(new Field("message", "OK"));
-			msg.addData(response);
+			msg.getResponse().setCode("000");
+			msg.getResponse().setMessage("OK");
+
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -67,13 +64,10 @@ public class CoreProcessor {
 			JPManager.rollbackTransaction();
 
 			// Set error response
-			Data response = new Data("response");
-			response.addField(new Field("code", "001"));
+			msg.getResponse().setCode("001");
 			String errorMessage = e.getMessage().replaceAll("(\t|\r)","");
 			errorMessage = errorMessage.replaceAll("\n","^NL");
-			response.addField(new Field("message", errorMessage));
-			//response.addField(new Field("message", stackToString(e)));
-			msg.addData(response);
+			msg.getResponse().setMessage(errorMessage);
 		} finally {
 			JPManager.close();
 		}
@@ -85,7 +79,8 @@ public class CoreProcessor {
 	}
 
 	private void executeProcesses(Message msg) throws Exception {
-		String strProcess = msg.getData("header").getField("proc").getValue();
+		String strProcess = msg.getRequest().getProcess();
+		
 		log.info("Process: " + strProcess);
 		String subsystem = strProcess.substring(0, 1);
 		String module = strProcess.substring(1, 2);

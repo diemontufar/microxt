@@ -76,5 +76,4 @@ public class XmlProcessorTest{
 	        throw new RuntimeException(e); // simple exception handling, please review it
 	    }
 	}	
-
 }
