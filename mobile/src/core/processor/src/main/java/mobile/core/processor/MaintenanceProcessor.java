@@ -22,18 +22,17 @@ public class MaintenanceProcessor implements GeneralProcessor {
 	public Message process(Message msg) throws Exception {
 		// Complete items with filters
 		for (Data data : msg.getDataList()) {
-			if (data.getField("_type") != null
-					&& data.getField("_type").getValue().compareTo("MNT") == 0
-					&& data.getField("_filters") != null
-					&& data.getField("_filters").getValue()!= null) {
+			if (data.getProcessType() != null
+					&& data.getProcessType().compareTo("MNT") == 0
+					&& data.getFilters() != null) {
 				completeItemsWithFilters(data);
 			}
 		}
 		
 		// Process maintenance
 		for (Data data : msg.getDataList()) {
-			if (data.getField("_type") != null
-					&& data.getField("_type").getValue().compareTo("MNT") == 0) {
+			if (data.getProcessType() != null
+					&& data.getProcessType().compareTo("MNT") == 0) {
 				persistOrUpdateOrDelete(data);
 			}
 		}
@@ -43,13 +42,9 @@ public class MaintenanceProcessor implements GeneralProcessor {
 
 	private void persistOrUpdateOrDelete(Data data) throws Exception {
 		for (Item item : data.getItemList()) {
-			if (item.getField("_expire") != null
-					&& item.getField("_expire").getValue() != null
-					&& parseBoolean(item.getField("_expire").getValue())==true) {
+			if (item.isExpireItem()) {
 				expireEntity(data.getId(), item);
-			}else if (item.getField("_isNew") != null
-					&& item.getField("_isNew").getValue() != null
-					&& parseBoolean(item.getField("_isNew").getValue())==true) {
+			}else if (item.isNewItem()) {
 				persistEntity(data.getId(), item);
 			}else{
 				updateEntity(data.getId(), item);
@@ -78,7 +73,7 @@ public class MaintenanceProcessor implements GeneralProcessor {
 	private void completeItemsWithFilters(Data data) {
 		// Get completed fields
 		List<Field> lfields = new ArrayList<Field>();
-		String strFilters = data.getField("_filters").getValue();
+		String strFilters = data.getFilters();
 		String[] lFilters = strFilters.split(";");
 		for (String filter : lFilters) {
 			String[] part = filter.split(":");
@@ -92,12 +87,4 @@ public class MaintenanceProcessor implements GeneralProcessor {
 		}
 	}
 	
-	private Boolean parseBoolean(String input) {
-		Boolean result = false;
-		if (input.compareToIgnoreCase("true") == 0 || input.compareTo("1") == 0) {
-			result = true;
-		}
-		return result;
-	}
-
 }
