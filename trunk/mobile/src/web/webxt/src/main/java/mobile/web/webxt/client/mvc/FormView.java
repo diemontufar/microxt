@@ -24,6 +24,7 @@ import mobile.web.webxt.client.devform.C104;
 import mobile.web.webxt.client.devform.C105;
 import mobile.web.webxt.client.devform.C201;
 import mobile.web.webxt.client.devform.C301;
+import mobile.web.webxt.client.devform.C302;
 import mobile.web.webxt.client.devform.G101;
 
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -111,10 +112,6 @@ public class FormView extends View {
 			tabItem.add(new C104());
 		} else if (processId.compareTo("C105") == 0) {
 			tabItem.add(new C105());
-		} else if (processId.compareTo("C104") == 0) {
-			tabItem.add(new C104());
-		} else if (processId.compareTo("C105") == 0) {
-			tabItem.add(new C105());
 		} else if (processId.compareTo("C201") == 0) {
 			tabItem.add(new C201());
 		} else if (processId.compareTo("C202") == 0) {
@@ -122,18 +119,18 @@ public class FormView extends View {
 		} else if (processId.compareTo("C301") == 0) {
 			tabItem.add(new C301());
 		} else if (processId.compareTo("C302") == 0) {
-			//tabItem.add(new C302());
+			tabItem.add(new C302());
 		} else if (processId.compareTo("G101") == 0) {
 			tabItem.add(new G101());
 		}
 
+		formPanel.addTab(tabItem);
+		
 		tabItem.addListener(Events.Select, new Listener<TabPanelEvent>() {
 			public void handleEvent(TabPanelEvent be) {
 				Dispatcher.forwardEvent(new AppEvent(AppEvents.TabSelected,
 						process));
 			}
 		});
-
-		formPanel.addTab(tabItem);
 	}
 }
