@@ -12,11 +12,12 @@ import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 
 import com.extjs.gxt.ui.client.data.FilterConfig;
 
-public class ComboForm extends MyComboBox {
+public class ComboForm extends MyComboBox implements PersistentField {
 
 	private String process = "G201";
 	private int pageSize = 0;
 	private int listWidth = 0;
+	private String persistentInfo;
 	
 	public ComboForm(int width) {
 		super();
@@ -144,6 +145,14 @@ public class ComboForm extends MyComboBox {
 
 	public void setProcess(String process) {
 		this.process = process;
+	}
+
+	public String getPersistentInfo() {
+		return persistentInfo;
+	}
+
+	public void setPersistentInfo(String persistentInfo) {
+		this.persistentInfo = persistentInfo;
 	}
 
 }

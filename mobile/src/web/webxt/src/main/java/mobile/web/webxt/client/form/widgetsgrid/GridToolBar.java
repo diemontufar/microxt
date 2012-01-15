@@ -1,5 +1,6 @@
 package mobile.web.webxt.client.form.widgetsgrid;
 
+import mobile.message.message.Item;
 import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.resources.Resources;
 
@@ -65,7 +66,7 @@ public class GridToolBar extends ToolBar {
 
 	private void addAction() {
 		ModelData newModel = new BaseModelData(initModel.getProperties());
-		newModel.set("_isNew", "1");
+		newModel.set(Item.NEW_ITEM, "1");
 
 		grid.stopEditing();
 		store.insert(newModel, store.getCount());

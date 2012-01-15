@@ -34,25 +34,25 @@ public class MyTextArea extends TextArea implements PersistentField{
 	}
 
 	public MyTextArea(String fieldLabel, String fieldInfo, int width, int maxLength){
-		this.setFieldInfo(fieldInfo);
+		this.setPersistentInfo(fieldInfo);
 		this.setFieldLabel(fieldLabel);
 		this.setWidth(width);
 		this.setMaxLength(maxLength);
 	}
 
 	public MyTextArea(String fieldLabel, String fieldInfo, int width, int height, int maxLength){
-		this.setFieldInfo(fieldInfo);
+		this.setPersistentInfo(fieldInfo);
 		this.setFieldLabel(fieldLabel);
 		this.setWidth(width);
 		this.setHeight(height);
 		this.setMaxLength(maxLength);
 	}
 
-	public String getFieldInfo() {
+	public String getPersistentInfo() {
 		return fieldInfo;
 	}
 
-	public void setFieldInfo(String field) {
+	public void setPersistentInfo(String field) {
 		this.fieldInfo=field;
 	}
 

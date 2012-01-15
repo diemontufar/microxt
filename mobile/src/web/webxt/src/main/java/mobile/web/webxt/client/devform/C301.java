@@ -5,6 +5,7 @@ import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.widgets.ComboForm;
 import mobile.web.webxt.client.form.widgets.InputBox;
 import mobile.web.webxt.client.form.widgets.MyLabel;
+import mobile.web.webxt.client.form.widgets.MyNumberField;
 import mobile.web.webxt.client.form.widgets.MyTextArea;
 import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
@@ -13,13 +14,14 @@ import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
+import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.extjs.gxt.ui.client.widget.TabPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
-import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
@@ -42,33 +44,31 @@ public class C301 extends MyGeneralForm {
 		final int LABEL_WIDTH = 65;
 		
 		// Form panel
-		MyFormPanel form = new MyFormPanel(PROCESS, "Solicitud de Microcrédito", FORM_WIDTH);
-		
+		final MyFormPanel form = new MyFormPanel(PROCESS, "Solicitud de Microcrédito", FORM_WIDTH);
 		form.setLayout(new FlowLayout());
 
-		// Header
-		RowContainer row = new RowContainer();
-		
+		// Header 
 		// Solicitude id
+		RowContainer row = new RowContainer();
 		MyLabel label = new MyLabel("Solicitud:", LABEL_WIDTH);
 		row.add(label);
 		
 		final ComboForm solicitudeId = new ComboForm(100);
+		solicitudeId.setPersistentInfo("Solicitude:pk_solicitudeId:1");
 		solicitudeId.setDisplayField("pk_solicitudeId");
-		solicitudeId.setEditable(false);
 		final ArrayColumnData solCdata = new ArrayColumnData();
 		solCdata.add(new MyColumnData("pk_solicitudeId", "Id", 100));
 		solicitudeId.setRqData("Solicitude", solCdata);
 		row.add(solicitudeId);
 		
 		// Generated account
-		label = new MyLabel("Cuenta:", LABEL_WIDTH);
-		row.add(label, new HBoxLayoutData(0, 10, 0, 30));
-		
-		InputBox cuenta = new InputBox(100, 20);
-		cuenta.setReadOnly(true);
-		row.add(cuenta);
-		
+//		label = new MyLabel("Cuenta:", LABEL_WIDTH);
+//		row.add(label, new HBoxLayoutData(0, 10, 0, 30));
+//		
+//		InputBox cuenta = new InputBox(100, 20);
+//		cuenta.setReadOnly(true);
+//		row.add(cuenta);
+//		
 		form.add(row);
 		
 		// Tab panel
@@ -113,14 +113,23 @@ public class C301 extends MyGeneralForm {
 		label = new MyLabel("Deudor:", LABEL_WIDTH);
 		row.add(label);
 		
-//		InputBox clientId = new InputBox(80, 20);
-//		clientId.setAllowBlank(false);
 		final ComboForm clientId = new ComboForm(80);
+		clientId.setPersistentInfo("Solicitude:partnerClient:1");
 		clientId.setDisplayField("pk_partnerId");
 		final ArrayColumnData combodata = new ArrayColumnData();
 		combodata.add(new MyColumnData("pk_partnerId", "Id", 70));
-		combodata.add(new MyColumnData("name", "Nombre", 150));
+		combodata.add(new MyColumnData("personId", "Nombre", 150));
 		clientId.setRqData("Partner", combodata);
+		clientId.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+				System.out.println("Prueba::::::::::::::");
+				System.out.println("valueField");
+				System.out.println(clientId.getValueField());
+				System.out.println("Model data");
+				System.out.println(clientId.getValue().get("pk_solicitudeId"));
+			}
+		});
 		row.add(clientId);
 		
 		InputBox clientDescription = new InputBox(280);
@@ -145,6 +154,7 @@ public class C301 extends MyGeneralForm {
 		
 		// Product combo
 		final ComboForm productCombo = new ComboForm(80, "pk_productId");
+		productCombo.setPersistentInfo("Solicitude:productId:1");
 		final ArrayColumnData pcdata = new ArrayColumnData();
 		pcdata.add(new MyColumnData("pk_productId", "Id", 70));
 		pcdata.add(new MyColumnData("description", "Descripcion", 150));
@@ -236,8 +246,9 @@ public class C301 extends MyGeneralForm {
 		label = new MyLabel("Monto:", LABEL_WIDTH);
 		row.add(label);
 		
-		NumberField amount = new NumberField();
+		MyNumberField amount = new MyNumberField();
 		amount.setWidth(80);
+		amount.setPersistentInfo("Solicitude:amount:1");
 		row.add(amount);
 		
 		label = new MyLabel("Tipo cuota:", LABEL_WIDTH);
@@ -245,6 +256,7 @@ public class C301 extends MyGeneralForm {
 		
 		// Quota type combo
 		final ComboForm quotaTypeCombo = new ComboForm(80, "pk_quotaTypeId");
+		quotaTypeCombo.setPersistentInfo("Solicitude:quotaTypeId:1");
 		final ArrayColumnData qtCdata = new ArrayColumnData();
 		qtCdata.add(new MyColumnData("pk_quotaTypeId", "Id", 50));
 		qtCdata.add(new MyColumnData("description", "Descripcion", 200));
@@ -259,16 +271,20 @@ public class C301 extends MyGeneralForm {
 		label = new MyLabel("Plazo:", LABEL_WIDTH);
 		row.add(label);
 		
-		NumberField period = new NumberField();
+		MyNumberField period = new MyNumberField();
 		period.setWidth(80);
+		period.setPersistentInfo("Solicitude:term:1");
 		period.setPropertyEditorType(Integer.class);
 		row.add(period);
 		
 		label = new MyLabel("Nro cuotas:", LABEL_WIDTH);
 		row.add(label, new HBoxLayoutData(0, 10, 0, 30));
 		
-		InputBox input = new InputBox(80);
-		row.add(input);
+		MyNumberField numberFees = new MyNumberField();
+		numberFees.setWidth(80);
+		numberFees.setPersistentInfo("Solicitude:numberFees:1");
+		period.setPropertyEditorType(Integer.class);
+		row.add(numberFees);
 		
 		fieldSet.add(row);
 
@@ -288,6 +304,7 @@ public class C301 extends MyGeneralForm {
 		
 		// Funds destination combo
 		final ComboForm fundsDestinationCombo = new ComboForm(80, "pk_fundsDestinationId");
+		fundsDestinationCombo.setPersistentInfo("Solicitude:fundsDestinationId:1");
 		final ArrayColumnData fdCdata = new ArrayColumnData();
 		fdCdata.add(new MyColumnData("pk_fundsDestinationId", "Id", 50));
 		fdCdata.add(new MyColumnData("description", "Descripcion", 200));
@@ -303,6 +320,7 @@ public class C301 extends MyGeneralForm {
 		row.add(label);
 		
 		MyTextArea description = new MyTextArea(375, 44, 250);
+		description.setPersistentInfo("Solicitude:destinationDescription:1"); 
 		row.add(description);
 		
 		fieldSet.add(row);
@@ -315,7 +333,13 @@ public class C301 extends MyGeneralForm {
 		form.add(tabPanel);
 		
 		form.setButtonAlign(HorizontalAlignment.CENTER);
-		form.addButton(new Button("Guardar"));
+		form.addButton(new Button("Guardar",new SelectionListener<ButtonEvent>() {
+			
+			@Override
+			public void componentSelected(ButtonEvent ce) {
+				form.commitForm();
+			}
+		}));
 
 		add(form);
 	}

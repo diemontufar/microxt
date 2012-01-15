@@ -1,7 +1,7 @@
 package mobile.web.webxt.client.components;
 
 import mobile.web.webxt.client.MobileConfig;
-import mobile.web.webxt.client.devform.C201;
+import mobile.web.webxt.client.devform.C301;
 import mobile.web.webxt.client.resources.Resources;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -23,7 +23,7 @@ public class FormPanel extends ContentPanel {
 		}else{
 			// Add here the tested form
 
-			add(new C201());
+			add(new C301());
 			//add(new G101());
 		}
 

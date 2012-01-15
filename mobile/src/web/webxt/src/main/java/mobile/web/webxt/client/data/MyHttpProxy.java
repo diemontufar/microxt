@@ -9,6 +9,7 @@ import mobile.message.message.Field;
 import mobile.message.message.Item;
 import mobile.message.message.Message;
 import mobile.web.webxt.client.data.MyProcessConfig.ProcessType;
+import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.ConvertionManager;
 import mobile.web.webxt.client.windows.AlertDialog;
 
@@ -18,6 +19,7 @@ import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -28,35 +30,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 	protected RequestBuilder builder;
-
 	protected String initUrl;
-
 	private final String url = "http://127.0.0.1:9090/mobile/Core";
-
-	private final String F_HEADER = "header";
-
-	private final String F_RESPONSE = "response";
-
-	private final String F_RESPONSE_CODE = "code";
-
-	private final String F_RESPONSE_MSG = "message";
-
-	private final String F_PROCESS_ID = "proc";
-
-	private final String F_PROCESS_TYPE = "_type";
-
-	private final String F_QRY_FIELDS = "_qry_fields";
-
-	private final String F_OFFSET = "_pag_offset";
-
-	private final String F_LIMIT = "_pag_limit";
-
-	private final String F_ORDER = "_ord_field";
-
-	private final String F_ORDER_DIR = "_ord_dir";
-
-	private final String F_FILTERS = "_filters";
-
 	private final MyReader reader;
 
 	public MyHttpProxy() {
@@ -71,20 +46,20 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	public void load(final DataReader<PagingLoadResult<ModelData>> readerNull, final Object loadConfig,
 			final AsyncCallback<PagingLoadResult<ModelData>> callback) {
 		System.out.println("MyHttpProxy.load: " + loadConfig.toString());
+		
+		Dispatcher.forwardEvent(AppEvents.UserNotification,"Procesando consulta");
 
 		// Config
 		final MyProcessConfig config = (MyProcessConfig) loadConfig;
 
 		try {
-			// Header
+			// Request
 			Message msg = new Message();
-			Data header = new Data(F_HEADER);
-			header.addField(new Field(F_PROCESS_ID, config.getProcess()));
-			msg.addData(header);
-
+			msg.getRequest().setProcess(config.getProcess());
+			
 			// Entity
 			Data entityData = new Data(config.getEntity());
-			entityData.addField(new Field(F_PROCESS_TYPE, ProcessType.QUERY
+			entityData.addField(new Field(Data.PROCESS_TYPE, ProcessType.QUERY
 					.getProcessType()));
 			String queryFields = "";
 			int queryFieldsCounter = 0;
@@ -95,26 +70,21 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 				queryFields = queryFields + strField;
 				queryFieldsCounter++;
 			}
-			Field queryField = new Field(F_QRY_FIELDS, queryFields);
-			entityData.addField(queryField);
+			entityData.setQueryFields(queryFields);
 
 			// Entity.pagination
 			FilterPagingLoadConfig paginationConfig = (FilterPagingLoadConfig) loadConfig;
 			System.out.println("Limit:" + paginationConfig.getLimit());
 			System.out.println("Offset:" + paginationConfig.getOffset());
-			entityData.addField(new Field(F_OFFSET, String
-					.valueOf(paginationConfig.getOffset())));
-			entityData.addField(new Field(F_LIMIT, String
-					.valueOf(paginationConfig.getLimit())));
+			entityData.setOffset(paginationConfig.getOffset());
+			entityData.setLimit(paginationConfig.getLimit());
 
 			// Entity.ordering
 			System.out.println("Order:" + paginationConfig.getSortField() + ":"
 					+ paginationConfig.getSortDir());
 			if (paginationConfig.getSortField() != null) {
-				entityData.addField(new Field(F_ORDER, paginationConfig
-						.getSortField()));
-				entityData.addField(new Field(F_ORDER_DIR, paginationConfig
-						.getSortDir().toString()));
+				entityData.setOrderBy(paginationConfig.getSortField());
+				entityData.setOrderDir(paginationConfig.getSortDir().toString());
 			}
 
 			// Entity.filtering
@@ -136,7 +106,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					strFilters = strFilters + strFilter;
 					filtersCounter++;
 				}
-				entityData.addField(new Field(F_FILTERS, strFilters));
+				entityData.setFilter(strFilters);
 			}
 
 			msg.addData(entityData);
@@ -171,11 +141,10 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		System.out.println("MyHttpProxy.requestMsg: " + config.toString());
 
 		try {
-			// Header
+			// Request
 			Message msg = new Message();
-			Data header = new Data(F_HEADER);
-			header.addField(new Field(F_PROCESS_ID, config.getProcess()));
-			msg.addData(header);
+			msg.getRequest().setProcess(config.getProcess());
+			
 			
 			String data = "message=" + msg.toJSON();
 			
@@ -208,14 +177,12 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			List<ModelData> lModified, final AsyncCallback<PagingLoadResult<ModelData>> callback) {
 		System.out.println("MyHttpProxy.commit");
 
-		final MyProcessConfig config = (MyProcessConfig) commitConfig;
+		final MyProcessConfig config = commitConfig;
 
 		try {
-			// Header
+			// Request
 			Message msg = new Message();
-			Data header = new Data(F_HEADER);
-			header.addField(new Field(F_PROCESS_ID, config.getProcess()));
-			msg.addData(header);
+			msg.getRequest().setProcess(config.getProcess());
 
 			if (lModified.size() <= 0) {
 				return;
@@ -223,8 +190,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 			// Entity changes
 			Data entityData = new Data(config.getEntity());
-			entityData.addField(new Field(F_PROCESS_TYPE,
-					ProcessType.MAINTENANCE.getProcessType()));
+			entityData.setProcessType(ProcessType.MAINTENANCE.getProcessType());
 			
 			// Filters
 			// Entity.filtering
@@ -243,13 +209,12 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					strFilters = strFilters + strFilter;
 					filtersCounter++;
 				}
-				entityData.addField(new Field(F_FILTERS, strFilters));
+				entityData.setFilter(strFilters);
 			}
 
 			msg.addData(entityData);
 
 			
-
 			int counter = 1;
 			for (ModelData modelData : lModified) {
 				Item item = new Item(counter++);
@@ -265,13 +230,13 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					}
 					item.addField(field);
 				}
-				if(modelData.get("_expire")!=null 
-						&& ConvertionManager.parseBoolean(modelData.get("_expire"))){
-					item.addField(new Field("_expire", "1"));
+				if(modelData.get(Item.EXPIRE_ITEM) != null 
+						&& ConvertionManager.parseBoolean(modelData.get(Item.EXPIRE_ITEM))){
+					item.setExpireItem(true);
 				}
-				if(modelData.get("_isNew")!=null){
-					Boolean isNew = ConvertionManager.parseBoolean(modelData.get("_isNew"));
-					item.addField(new Field("_isNew", ConvertionManager.booleanToString(isNew)));
+				if(modelData.get(Item.NEW_ITEM) != null
+						&& ConvertionManager.parseBoolean(modelData.get(Item.NEW_ITEM))){
+					item.setNewItem(true);
 				}
 				entityData.addItem(item);
 			}
@@ -313,11 +278,9 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		System.out.println("MyHttpProxy.commitForm");
 
 		try {
-			// Header
+			// Request
 			Message msg = new Message();
-			Data header = new Data(F_HEADER);
-			header.addField(new Field(F_PROCESS_ID, config.getProcess()));
-			msg.addData(header);
+			msg.getRequest().setProcess(config.getProcess());
 
 			// Data map
 			Map<String, Data> mdata = new HashMap<String, Data>();
@@ -336,8 +299,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 				Data data = mdata.get(entityName);
 				if(data == null){
 					data = new Data(entityName);
-					data.addField(new Field(F_PROCESS_TYPE,
-							ProcessType.MAINTENANCE.getProcessType()));
+					data.setProcessType(ProcessType.MAINTENANCE.getProcessType());
 					mdata.put(entityName, data);
 				}
 				Item item = data.getItem(register);
@@ -410,24 +372,19 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		// Evaluate process result
 		Message msg = reader.readMessage(config, text);
 
-		if (msg.getData(F_RESPONSE) != null
-				&& msg.getData(F_RESPONSE).getField(F_RESPONSE_CODE) != null
-				&& msg.getData(F_RESPONSE).getField(F_RESPONSE_CODE).getValue()
-						.compareTo("000") != 0) {
-
-			String error = msg.getData(F_RESPONSE).getField(F_RESPONSE_CODE)
-					.getValue();
-
-			String errorMessage = null;
-			if (msg.getData(F_RESPONSE).getField(F_RESPONSE_MSG) != null) {
-				errorMessage = msg.getData(F_RESPONSE).getField(F_RESPONSE_MSG)
-						.getValue();
-			}
+		
+		if (msg.getResponse().getCode() != null
+				&& msg.getResponse().getCode().compareTo("000") != 0) {
+		
+			String errorCode = msg.getResponse().getCode();
+			
+			String errorMessage = msg.getResponse().getMessage();
+			
 			if (errorMessage == null) {
-				throw new RuntimeException("Processing Error: " + error);
+				throw new RuntimeException("Processing Error: " + errorCode);
 			} else {
 				errorMessage = errorMessage.replaceAll("\\^NL", "\n");
-				throw new RuntimeException("Processing Error: " + error
+				throw new RuntimeException("Processing Error: " + errorCode
 						+ ". \nMessage:\n" + errorMessage);
 			}
 
