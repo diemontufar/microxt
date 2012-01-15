@@ -12,7 +12,6 @@ import mobile.web.webxt.client.form.widgets.MyTextArea;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.mvc.AppEvents;
-
 import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
@@ -295,22 +294,22 @@ public class C201 extends LayoutContainer {
 
 		if (validateForm()){
 			
-			mfield.put(isNew.getFieldInfo(), isNew.getValue().toString());
-			mfield.put(codigo.getFieldInfo(), codigo.getValue().toString());
-			mfield.put(personAux.getFieldInfo(), personAux.getValue().toString());
+			mfield.put(isNew.getPersistentInfo(), isNew.getValue().toString());
+			mfield.put(codigo.getPersistentInfo(), codigo.getValue().toString());
+			mfield.put(personAux.getPersistentInfo(), personAux.getValue().toString());
 			
 			if (activity.getValue()!=null){
-				mfield.put(activity.getFieldInfo(), activity.getValue().toString());
+				mfield.put(activity.getPersistentInfo(), activity.getValue().toString());
 			}
 			
-			mfield.put(asessorAux.getFieldInfo(), asessorAux.getValue().toString());
+			mfield.put(asessorAux.getPersistentInfo(), asessorAux.getValue().toString());
 			
 			if (freqAux.getValue()!=null){
-				mfield.put(freqAux.getFieldInfo(), freqAux.getValue().toString());
+				mfield.put(freqAux.getPersistentInfo(), freqAux.getValue().toString());
 			}
 			
 			if (diaReunion.getValue()!=null){
-				mfield.put(diaReunion.getFieldInfo(), diaReunion.getValue().toString());
+				mfield.put(diaReunion.getPersistentInfo(), diaReunion.getValue().toString());
 			}
 			
 			System.out.println("MyForm.commitChanges");
