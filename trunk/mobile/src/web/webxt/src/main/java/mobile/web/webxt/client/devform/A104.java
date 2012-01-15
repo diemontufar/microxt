@@ -8,6 +8,7 @@ import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.form.EntityContentPanel;
+import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.widgets.ComboForm;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.EntityEditorGrid;
@@ -25,33 +26,27 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.LoadListener;
 import com.extjs.gxt.ui.client.widget.Info;
-import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
-import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.google.gwt.user.client.Element;
 
-public class A104 extends LayoutContainer {
+public class A104 extends MyGeneralForm {
 
-	private final String process = "A104";
-
+	private final String PROCESS = "A104";
+	private final String ENTITY = "Module";
 	private final Integer PAGE_SIZE = 5;
 
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-		setLayout(new CenterLayout());
-		getAriaSupport().setPresentation(true);
 	      
 	    // Configuration
-		String entity = "Module";
-
 		final ArrayColumnData cdata = new ArrayColumnData();
 		cdata.add(new MyColumnData("pk_moduleId", "Mod", 70, 2, false));
 		cdata.add(new MyColumnData("name", "Nombre", 150, 40, false));
 
-		MyProcessConfig config = new MyProcessConfig(process, entity, cdata.getIdFields());
+		MyProcessConfig config = new MyProcessConfig(PROCESS, ENTITY, cdata.getIdFields());
 		
 		// Proxy - loader - store
 		MyHttpProxy proxy = new MyHttpProxy();

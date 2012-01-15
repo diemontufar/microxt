@@ -8,6 +8,7 @@ import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.form.EntityContentPanel;
+import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.CheckColumn;
 import mobile.web.webxt.client.form.widgetsgrid.ComboColumn;
@@ -16,39 +17,31 @@ import mobile.web.webxt.client.form.widgetsgrid.ExpireColumnConfig;
 import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
+import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
 import mobile.web.webxt.client.form.widgetsgrid.SpecialComboColumn;
-import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.grid.CheckColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
-import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.google.gwt.user.client.Element;
 
 /**
- * 
  * Processes by role
- * 
  */
-public class A202 extends LayoutContainer {
+public class A202 extends MyGeneralForm {
 
+	private final String PROCESS = "A202";
+	private final String ENTITY = "Role";
 	private final Integer PAGE_SIZE = 10;
-
-	private final String process = "A202";
-
-	private final String entity = "Role";
 
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-		setLayout(new CenterLayout());
-		getAriaSupport().setPresentation(true);
 
 		// Process configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
@@ -69,7 +62,7 @@ public class A202 extends LayoutContainer {
 		cdata.add(new MyColumnData("hourTo", "Hora hasta", 100, 150, true));
 		cdata.add(new MyColumnData("editable", "Editable", 60, 10, false));
 
-		MyProcessConfig config = new MyProcessConfig(process, entity,
+		MyProcessConfig config = new MyProcessConfig(PROCESS, ENTITY,
 				cdata.getRqFields());
 
 		// Proxy - loader - store

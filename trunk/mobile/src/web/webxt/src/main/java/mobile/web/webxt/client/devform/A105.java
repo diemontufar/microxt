@@ -8,7 +8,7 @@ import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.form.EntityContentPanel;
-import mobile.web.webxt.client.form.MyGeneralPanel;
+import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.widgets.ComboForm;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.CheckColumn;
@@ -36,12 +36,10 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.google.gwt.user.client.Element;
 
-public class A105 extends MyGeneralPanel {
+public class A105 extends MyGeneralForm {
 
 	private final String PROCESS = "A105";
-
 	private final String ENTITY = "Process";
-
 	private final Integer PAGE_SIZE = 5;
 
 	@Override
