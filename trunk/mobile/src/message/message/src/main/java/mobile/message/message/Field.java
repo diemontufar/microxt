@@ -2,27 +2,17 @@ package mobile.message.message;
 
 public class Field {
 
-	public final static String REQUEST_USER = "user";
-	public final static String REQUEST_HOST = "host";
-	public final static String REQUEST_COMPANY = "company";
-	public final static String REQUEST_LANGUAGE = "language";
-	public final static String REQUEST_SESSION = "session";
-	public final static String REQUEST_PROCESS = "process";
-	public final static String REQUEST_CHANNEL = "channel";
-	public final static String REQUEST_PROFILE = "profile";
-	public final static String REQUEST_EDITABLE = "editable";
-
-	public final static String RESPONSE_CODE = "code";
-	public final static String RESPONSE_MESSAGE = "description";
-	public final static String RESPONSE_ERROR = "error";
-	public final static String RESPONSE_NOTES = "notes";
-
 	private String name;
 
 	private String value;
 
 	public Field() {
 		setName(null);
+		setValue(null);
+	}
+	
+	public Field(String name) {
+		setName(name);
 		setValue(null);
 	}
 

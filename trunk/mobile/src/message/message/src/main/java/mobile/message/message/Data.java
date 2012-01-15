@@ -5,12 +5,14 @@ import java.util.List;
 
 public class Data {
 
-	public final static String READ_ONLY = "_readonly";
+	public final static String PROCESS_TYPE = "_type";
+	public final static String QRY_FIELDS = "_qry_fields";
 	public final static String OFFSET_PAGE = "_offset_page";
 	public final static String LIMIT_PAGE = "_limit_page";
 	public final static String TOTAL_PAGE = "_total_page";
 	public final static String ORDER_BY = "_order_by";
 	public final static String ORDER_DIR = "_order_dir";
+	public final static String FILTERS = "_filters";
 
 	private String id;
 
@@ -92,9 +94,7 @@ public class Data {
 
 	public void addField(String name, String value) {
 		Field field = new Field(name, value);
-		if (getField(field.getName()) == null) {
-			fieldList.add(field);
-		}
+		addField(field);
 	}
 
 	public void addField(Field field) {
@@ -109,7 +109,7 @@ public class Data {
 				return field;
 			}
 		}
-		//return new Field(name, null);
+		
 		return null;
 	}
 
@@ -123,6 +123,10 @@ public class Data {
 
 	public List<Field> getFieldList() {
 		return fieldList;
+	}
+	
+	public void setFieldList(List<Field> fieldList) {
+		this.fieldList = fieldList;
 	}
 
 	public void addItem(Item item) {
@@ -152,71 +156,96 @@ public class Data {
 		return itemList;
 	}
 
-	public void setReadOnly(Boolean readonly) {
-		setValue(Data.READ_ONLY, readonly);
-	}
-
-	public Boolean isReadonly() {
-		return (Boolean) getValue(Data.READ_ONLY);
-	}
-
-	public void setOffset(Integer offset) {
-		setValue(Data.OFFSET_PAGE, offset);
-	}
-
-	public Integer getOffset() {
-		return (Integer) getValue(Data.OFFSET_PAGE);
-	}
-
-	public void setLimit(Integer limit) {
-		setValue(Data.LIMIT_PAGE, limit);
-	}
-
-	public Integer getLimit() {
-		return (Integer) getValue(Data.LIMIT_PAGE);
-	}
-
-	public void setTotal(Integer total) {
-		setValue(Data.TOTAL_PAGE, total);
-	}
-
-	public Integer getTotal() {
-		return (Integer) getValue(Data.TOTAL_PAGE);
-	}
-
-	public void setOrderBy(String orderby) {
-		setValue(Data.ORDER_BY, orderby);
-	}
-
-	public String getOrderBy() {
-		return (String) getValue(Data.ORDER_BY);
-	}
-
-	public void setOrderDir(String orderdir) {
-		setValue(Data.ORDER_DIR, orderdir);
-	}
-
-	public String getOrderDir() {
-		return (String) getValue(Data.ORDER_DIR);
-	}
-
-	private void setValue(String name, Object object) {
-		Field parameter = new Field(name, object.toString());
-		for (Field field : fieldList) {
-			if ((field.getName().compareTo(parameter.getName())) == 0) {
-				field.setValue(parameter.getValue());
-			} else {
-				fieldList.add(parameter);
-			}
+	public Field getCreateField(String name) {
+		Field field = getField(name);
+		if (field != null) {
+			return field;
+		} else {
+			field = new Field(name);
+			addField(field);
+			return field;
 		}
 	}
-
-	private Object getValue(String name) {
-		Field parameter = getField(name);
-		if (parameter != null) {
-			return parameter.getValue();
+	
+	public void setFieldValue(String name, String value) {
+		Field field = getCreateField(name);
+		field.setValue(value);
+	}
+	
+	public String getFieldValue(String name) {
+		Field field = getField(name);
+		if (field != null) {
+			return field.getValue();
 		} else {
 			return null;
 		}
+	}
+	
+	//----------------------------------------------------
+	// Special fields
+	//----------------------------------------------------
+
+	public void setProcessType(String processId) {
+		setFieldValue(Data.PROCESS_TYPE, processId);
+	}
+
+	public String getProcessType() {
+		return getFieldValue(Data.PROCESS_TYPE);
+	}
+
+	public void setQueryFields(String queryFields) {
+		setFieldValue(Data.QRY_FIELDS, queryFields);
+	}
+
+	public String getQueryFields() {
+		return getFieldValue(Data.QRY_FIELDS);
+	}
+
+	public void setOffset(Integer offset) {
+		setFieldValue(Data.OFFSET_PAGE, offset.toString());
+	}
+
+	public Integer getOffset() {
+		return Integer.parseInt(getFieldValue(Data.OFFSET_PAGE));
+	}
+
+	public void setLimit(Integer limit) {
+		setFieldValue(Data.LIMIT_PAGE, limit.toString());
+	}
+
+	public Integer getLimit() {
+		return Integer.parseInt(getFieldValue(Data.LIMIT_PAGE));
+	}
+
+	public void setTotal(Integer total) {
+		setFieldValue(Data.TOTAL_PAGE, total.toString());
+	}
+
+	public Integer getTotal() {
+		return Integer.parseInt(getFieldValue(Data.TOTAL_PAGE));
+	}
+	
+	public void setOrderBy(String order) {
+		setFieldValue(Data.ORDER_BY, order);
+	}
+
+	public String getOrderBy() {
+		return getFieldValue(Data.ORDER_BY);
+	}
+	
+	public void setOrderDir(String orderDir) {
+		setFieldValue(Data.ORDER_DIR, orderDir);
+	}
+
+	public String getOrderDir() {
+		return getFieldValue(Data.ORDER_DIR);
+	}
+	
+	public void setFilter(String filters) {
+		setFieldValue(Data.FILTERS, filters);
+	}
+
+	public String getFilters() {
+		return getFieldValue(Data.FILTERS);
 	}
 }
