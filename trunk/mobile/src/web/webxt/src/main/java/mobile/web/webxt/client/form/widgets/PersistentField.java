@@ -1,8 +1,11 @@
 package mobile.web.webxt.client.form.widgets;
 
 public interface PersistentField {
+
+	// Entity:Field:RegNum
+	// private String persistentInfo;
 	
-	public String getFieldInfo();
-	public void setFieldInfo(String field);
-	
+	public String getPersistentInfo();
+
+	public void setPersistentInfo(String persistentInfo);
 }

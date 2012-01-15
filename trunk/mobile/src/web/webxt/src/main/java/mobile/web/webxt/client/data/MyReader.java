@@ -21,10 +21,6 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 
 	private final String MSG_TYPE = Message.JSON;
 
-	private final String OFFSET = "_pag_offset";
-
-	private final String TOTAL_LENGTH = "_pag_total_length";
-
 	public MyReader() {
 	}
 
@@ -73,13 +69,11 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 
 			// Pagination
 			System.out.println("reading pagination");
-			if (entityData.getField(OFFSET) != null) {
-				paginatedModels.setOffset(Integer.valueOf(entityData.getField(
-						OFFSET).getValue()));
+			if (entityData.getOffset() != null) {
+				paginatedModels.setOffset(entityData.getOffset());
 			}
-			if (entityData.getField(TOTAL_LENGTH) != null) {
-				paginatedModels.setTotalLength(Integer.valueOf(entityData
-						.getField(TOTAL_LENGTH).getValue()));
+			if (entityData.getTotal()!= null) {
+				paginatedModels.setTotalLength(entityData.getTotal());
 			}
 
 		} catch (Exception e) {

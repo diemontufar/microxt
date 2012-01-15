@@ -31,10 +31,10 @@ public class MyListStore extends ListStore<ModelData> {
 		List<ModelData> lModified = new ArrayList<ModelData>();
 		for (Record r : getModifiedRecords()) {
 			lModified.add(r.getModel());
-//			for (String prop : r.getModel().getPropertyNames()) {
-//				System.out.print(prop+":"+r.getModel().get(prop)+";");
-//			}
-//			System.out.println();
+			for (String prop : r.getModel().getPropertyNames()) {
+				System.out.print(prop+":"+r.getModel().get(prop)+";");
+			}
+			System.out.println();
 		}
 		
 		AsyncCallback<PagingLoadResult<ModelData>> callback = new AsyncCallback<PagingLoadResult<ModelData>>() {
@@ -49,6 +49,7 @@ public class MyListStore extends ListStore<ModelData> {
 
 			public void onFailure(Throwable caught) {
 				new AlertDialog("MyListStore", caught.getMessage()).show();
+				caught.printStackTrace();
 			}
 		};
 

@@ -9,7 +9,7 @@ public class ConvertionManager {
 	
 	public static Boolean parseBoolean(String input) {
 		Boolean result = false;
-		if (input.compareToIgnoreCase("true") == 0 || input.compareTo("1") == 0) {
+		if (input!= null && input.compareToIgnoreCase("true") == 0 || input.compareTo("1") == 0) {
 			result = true;
 		}
 		return result;

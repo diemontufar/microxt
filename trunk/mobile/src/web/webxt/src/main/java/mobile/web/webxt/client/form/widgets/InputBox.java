@@ -46,7 +46,7 @@ public class InputBox extends TextField<String> implements PersistentField {
 
 	public InputBox(String lbl, String fieldInfo, int width,int maxLenght, Validate type) {
 		
-		this.setFieldInfo(fieldInfo);
+		this.setPersistentInfo(fieldInfo);
 		this.setFieldLabel(lbl.trim());
 		this.setWidth(width);
 		this.setMaxLength(maxLenght);
@@ -79,11 +79,11 @@ public class InputBox extends TextField<String> implements PersistentField {
 		}
 	}
 
-	public String getFieldInfo() {
+	public String getPersistentInfo() {
 		return fieldInfo;
 	}
 
-	public void setFieldInfo(String field) {
+	public void setPersistentInfo(String field) {
 		this.fieldInfo=field;
 	}
 

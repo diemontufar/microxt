@@ -497,7 +497,7 @@ public class C102 extends LayoutContainer {
 			isOK=true;
 		}
 	
-		mfield.put(isNew.getFieldInfo(), isNew.getValue().toString());
+		mfield.put(isNew.getPersistentInfo(), isNew.getValue().toString());
 		mfield.put("GeographicZone:pk_geographicZoneId:1", code.getValue().toString());
 		mfield.put("GeographicZone:description:1", description.getValue());
 		
