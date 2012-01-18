@@ -26,10 +26,10 @@ public class StatusView extends View {
 			setStatus("Listo");
 		} else if (eventType.equals(AppEvents.ProcessSelected)) {
 			ModelData model = event.getData();
-			setStatus("Process selected - (" + model.get("id") + ")");
+			setStatus("Proceso seleccionado - (" + model.get("id") + ")");
 		} else if (eventType.equals(AppEvents.TabSelected)) {
 			ModelData model = event.getData();
-			setStatus("Process selected - (" + model.get("id") + ")");
+			setStatus("Proceso seleccionado - (" + model.get("id") + ")");
 		} else if (eventType.equals(AppEvents.UserNotification)) {
 			String message = event.getData();
 			setStatus(message);

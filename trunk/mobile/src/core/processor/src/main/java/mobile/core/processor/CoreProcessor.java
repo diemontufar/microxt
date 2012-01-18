@@ -1,10 +1,12 @@
 package mobile.core.processor;
 
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
@@ -17,12 +19,14 @@ import mobile.core.structure.processor.GeneralProcessor;
 import mobile.entity.manager.JPManager;
 import mobile.entity.security.ProcessComponent;
 import mobile.message.message.Message;
+import mobile.message.message.ResponseData;
 import mobile.tools.common.Log;
 import mobile.tools.common.convertion.FormatDates;
 import mobile.tools.common.param.LocalParameter;
 import mobile.tools.common.param.ParameterEnum;
 
 import org.apache.log4j.Logger;
+import org.eclipse.persistence.exceptions.DatabaseException;
 
 
 public class CoreProcessor {
@@ -37,7 +41,6 @@ public class CoreProcessor {
 			+ "order by p.pk.processSequence";
 
 	public Message process(Message msg) {
-
 		log.info("Input message: \n"
 				+ formatXml(msg.toXML(), 2));
 
@@ -46,28 +49,18 @@ public class CoreProcessor {
 			JPManager.createEntityManager();
 			// Begin transaction
 			JPManager.beginTransaction();
-
 			// Execute associated processes
 			executeProcesses(msg);
-
 			// Commit
 			JPManager.commitTransaction();
-
 			// Set response
-			msg.getResponse().setCode("000");
-			msg.getResponse().setMessage("OK");
-
+			setOkResponseInfo(msg);
 		} catch (Exception e) {
-			e.printStackTrace();
-
+			log.error(e.getMessage(), e);
 			// Rollback
 			JPManager.rollbackTransaction();
-
 			// Set error response
-			msg.getResponse().setCode("001");
-			String errorMessage = e.getMessage().replaceAll("(\t|\r)","");
-			errorMessage = errorMessage.replaceAll("\n","^NL");
-			msg.getResponse().setMessage(errorMessage);
+			setErrorResponseInfo(e, msg);
 		} finally {
 			JPManager.close();
 		}
@@ -129,20 +122,20 @@ public class CoreProcessor {
 		}
 	}
 
-//	private String stackToString(Exception e) {
-//		if (e != null) {
-//			try {
-//				StringWriter sw = new StringWriter();
-//				PrintWriter pw = new PrintWriter(sw);
-//				e.printStackTrace(pw);
-//				return sw.toString();
-//			} catch (Exception ex) {
-//				return "Could not show the stackTrace in String\n"
-//						+ ex.getMessage();
-//			}
-//		}
-//		return "";
-//	}
+	private String stackToString(Exception e) {
+		if (e != null) {
+			try {
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				e.printStackTrace(pw);
+				return sw.toString();
+			} catch (Exception ex) {
+				return "Could not show the stackTrace in String\n"
+						+ ex.getMessage();
+			}
+		}
+		return "";
+	}
 	
 	private String formatXml(String input, int indent) {
 	    try {
@@ -156,7 +149,35 @@ public class CoreProcessor {
 	        transformer.transform(xmlInput, xmlOutput);
 	        return xmlOutput.getWriter().toString();
 	    } catch (Exception e) {
-	        throw new RuntimeException(e); // simple exception handling, please review it
+	        throw new RuntimeException(e);
 	    }
-	}	
+	}
+
+	private void setOkResponseInfo(Message msg) {
+		msg.getResponse().setCode(ResponseData.RESPONSE_CODE_OK);
+		msg.getResponse().setMessage("OK");	
+	}
+
+	private void setErrorResponseInfo(Exception e, Message msg) {
+		msg.getResponse().setCode(ResponseData.RESPONSE_CODE_ERROR);
+		
+		if(e instanceof NullPointerException){
+			msg.getResponse().setMessage("ENVIO DE VALORES NULOS");
+		}else if(e instanceof PersistenceException){
+			DatabaseException dbe = (DatabaseException) e.getCause();
+			String desc = "CÓDIGO: " + dbe.getDatabaseErrorCode() + "<br/>";
+			desc = desc +  dbe.getMessage();
+			desc = desc.replaceAll("(\t|\r)",">");
+			desc = desc.replaceAll("\n","<br/>");
+			msg.getResponse().setMessage(desc);
+		}else if(e.getMessage() != null){
+			String errorMessage = e.getMessage().replaceAll("(\t|\r)",">");
+			errorMessage = errorMessage.replaceAll("\n","<br/>");
+			msg.getResponse().setMessage(errorMessage);
+		}else if (e.getCause() != null){
+			msg.getResponse().setMessage(e.getCause().toString());
+		}else{
+			msg.getResponse().setMessage(stackToString(e));
+		}	
+	}
 }

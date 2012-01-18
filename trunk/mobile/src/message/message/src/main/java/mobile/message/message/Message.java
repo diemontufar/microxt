@@ -98,7 +98,38 @@ public class Message {
 	public List<Data> getDataList() {
 		return dataList;
 	}
-
+	
+	public EntityData getEntityData(String entity) {
+		return toEntityData(getData(entity)); 
+	}
+	
+	public List<EntityData> getEntityDataList() {
+		List<Data> specialDatas = new ArrayList<Data>();
+		List<Data> datas = getDataList();
+		
+		specialDatas.add(getRequest());
+		specialDatas.add(getResponse());
+		
+		datas.removeAll(specialDatas);
+		return toEntityData(datas); 
+	}
+	
+	private List<EntityData> toEntityData(List<Data> ldatas){
+		List<EntityData> lentities = new ArrayList<EntityData>();
+		for (Data data : ldatas) {
+			lentities.add(toEntityData(data));
+		}
+		
+		return lentities;
+	}
+	
+	private EntityData toEntityData(Data data){
+		EntityData entityData = new EntityData(data.getId());
+		entityData.setFieldList(data.getFieldList());
+		entityData.setItemList(data.getItemList());
+		return entityData;
+	}
+	
 	public RequestData getRequest() {
 		RequestData requestData = null;
 		Data rd = getData(RequestData.REQUEST); 

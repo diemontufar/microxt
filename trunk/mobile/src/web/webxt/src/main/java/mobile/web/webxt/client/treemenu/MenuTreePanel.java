@@ -74,10 +74,12 @@ public class MenuTreePanel extends LayoutContainer {
 			}
 
 			protected void onLoadSuccess(Object loadConfig, Message result) {
-				MyMessageReader msgReader = new MyMessageReader(result);
-				List<ModelData> subsystemModels = msgReader.getModels("Subsystem");
-				List<ModelData> moduleModels = msgReader.getModels("Module");
-				List<ModelData> processModels = msgReader.getModels("Process");
+				List<ModelData> subsystemModels = MyMessageReader.getModels(
+						result, "Subsystem");
+				List<ModelData> moduleModels = MyMessageReader.getModels(
+						result, "Module");
+				List<ModelData> processModels = MyMessageReader.getModels(
+						result, "Process");
 
 				Map<String, Folder> mN1 = new HashMap<String, Folder>();
 				Map<String, Folder> mN2 = new HashMap<String, Folder>();

@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mobile.message.message.Data;
+import mobile.message.message.EntityData;
 import mobile.message.message.Field;
 import mobile.message.message.Item;
 import mobile.message.message.Message;
+import mobile.message.message.ResponseData;
 import mobile.web.webxt.client.data.MyProcessConfig.ProcessType;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.ConvertionManager;
@@ -49,7 +50,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		
 		Dispatcher.forwardEvent(AppEvents.UserNotification,"Procesando consulta");
 
-		// Config
+		// Configuration
 		final MyProcessConfig config = (MyProcessConfig) loadConfig;
 
 		try {
@@ -58,9 +59,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			msg.getRequest().setProcess(config.getProcess());
 			
 			// Entity
-			Data entityData = new Data(config.getEntity());
-			entityData.addField(new Field(Data.PROCESS_TYPE, ProcessType.QUERY
-					.getProcessType()));
+			EntityData entityData = new EntityData(config.getEntity());
+			entityData.setProcessType(ProcessType.QUERY.getProcessType());
 			String queryFields = "";
 			int queryFieldsCounter = 0;
 			for (String strField : config.getlFields()) {
@@ -134,6 +134,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			});
 		} catch (Exception e) {
 			callback.onFailure(e);
+			e.printStackTrace();
 		}
 	}
 	
@@ -166,7 +167,99 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		} catch (Exception e) {
 			showError(e);
 		}
+	}
+	
+	public void queryForm(final MyProcessConfig config,
+			Map<String,String> mfields, final AsyncCallback<Map<String,String>> callback) {
+		System.out.println("MyHttpProxy.queryForm: " + config.toString());
+		
+		try {
+			// Request
+			Message msg = new Message();
+			msg.getRequest().setProcess(config.getProcess());
 
+			// Data map
+			Map<String, EntityData> mdata = new HashMap<String, EntityData>();
+			
+			// Fill datas
+			for (String key : mfields.keySet()) {
+				System.out.println(key);
+				String value = mfields.get(key);
+				System.out.println(value);
+				
+				String[] kp = key.split(":");
+				String entityName = kp[0];
+				String fieldName = kp[1];
+				int register = Integer.parseInt(kp[2]);
+				String property = null;
+				if(kp.length>3){
+					property = kp[3];
+				}
+				
+				// Data
+				EntityData data = mdata.get(entityName);
+				if(data == null){
+					data = new EntityData(entityName);
+					data.setProcessType(ProcessType.QUERY.getProcessType());
+					mdata.put(entityName, data);
+				}
+				// Filters
+				if (property != null && property.trim().length() > 0) {
+					String filter = fieldName + ":=:" + value;
+					if (data.getFilters() == null){
+						data.setFilter("");
+					}else{
+						data.setFilter(data.getFilters() + ";");
+					}
+					data.setFilter(data.getFilters() + filter);
+				}
+				// Items
+				Item item = data.getItem(register);
+				if(item == null){
+					item = new Item(register);
+					data.addItem(item);
+				}
+				// Fields
+				Field field = new Field(fieldName, null);
+				if (value != null && value.trim().length() > 0) {
+					field.setValue(value);
+				}
+				item.addField(field);
+			}
+			
+			for (String entity : mdata.keySet()) {
+				msg.addData(mdata.get(entity));
+			}
+			
+			// Send message
+			System.out.println("Set message in json format...");
+			String data = "";
+			try {
+				data = "message=" + msg.toJSON();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			System.out.println("Send request...");
+			builder.sendRequest(data, new RequestCallback() {
+				public void onError(Request request, Throwable exception) {
+					callback.onFailure(exception);
+				}
+
+				public void onResponseReceived(Request request,
+						Response response) {
+					try {
+						Message rspMsg = evaluateResponse(response, config);
+						Map<String,String> mrfields = MyMessageReader.toMap(rspMsg);;
+						callback.onSuccess(mrfields);
+					} catch (Exception e) {
+						callback.onFailure(e);
+					}
+				}
+			});
+		} catch (Exception e) {
+			callback.onFailure(e);
+		}
 	}
 	
 	private void showError(Throwable e){
@@ -189,7 +282,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			}
 
 			// Entity changes
-			Data entityData = new Data(config.getEntity());
+			EntityData entityData = new EntityData(config.getEntity());
 			entityData.setProcessType(ProcessType.MAINTENANCE.getProcessType());
 			
 			// Filters
@@ -222,7 +315,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					if(strField.startsWith("d:")){
 						continue;
 					}
-					Field field = new Field(strField, null);
+					Field field = new Field(strField);
 					if (modelData.get(strField) != null
 							&& modelData.get(strField).toString().trim()
 									.length() > 0) {
@@ -283,7 +376,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			msg.getRequest().setProcess(config.getProcess());
 
 			// Data map
-			Map<String, Data> mdata = new HashMap<String, Data>();
+			Map<String, EntityData> mdata = new HashMap<String, EntityData>();
 			
 			// Fill datas
 			for (String key : mfields.keySet()) {
@@ -296,9 +389,9 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 				String fieldName = kp[1];
 				int register = Integer.parseInt(kp[2]);
 			
-				Data data = mdata.get(entityName);
+				EntityData data = mdata.get(entityName);
 				if(data == null){
-					data = new Data(entityName);
+					data = new EntityData(entityName);
 					data.setProcessType(ProcessType.MAINTENANCE.getProcessType());
 					mdata.put(entityName, data);
 				}
@@ -356,38 +449,35 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		if (response.getStatusCode() != Response.SC_OK) {
 			if (response.getStatusCode() == 0) {
 				throw new RuntimeException(
-						"HttpProxy: Comunication error. StatusCode="
+						"HttpProxy: ERROR DE COMUNICACION. CÓDIGO = "
 								+ response.getStatusCode());
 			}
-			throw new RuntimeException("HttpProxy: Invalid status code "
+			throw new RuntimeException("HttpProxy: CÓDIGO DE ESTATUS NO VÁLIDO = "
 					+ response.getStatusCode());
 		}
 
 		String text = response.getText();
 		if (text.startsWith("No message received")) {
 			throw new RuntimeException(
-					"HttpProxy: Core response: No message received");
+					"HttpProxy: CORE: NO MESSAGE RECEIVED");
 		}
 
 		// Evaluate process result
 		Message msg = reader.readMessage(config, text);
 
-		
 		if (msg.getResponse().getCode() != null
-				&& msg.getResponse().getCode().compareTo("000") != 0) {
+				&& msg.getResponse().getCode().compareTo(ResponseData.RESPONSE_CODE_OK) != 0) {
 		
 			String errorCode = msg.getResponse().getCode();
 			
 			String errorMessage = msg.getResponse().getMessage();
 			
 			if (errorMessage == null) {
-				throw new RuntimeException("Processing Error: " + errorCode);
+				throw new RuntimeException("ERROR DE PROCESAMIENTO: " + errorCode);
 			} else {
-				errorMessage = errorMessage.replaceAll("\\^NL", "\n");
-				throw new RuntimeException("Processing Error: " + errorCode
-						+ ". \nMessage:\n" + errorMessage);
+				throw new RuntimeException("ERROR DE PROCESAMIENTO: " + errorCode
+						+ ".<br/>MENSAJE:<BR/>" + errorMessage);
 			}
-
 		}
 		
 		return msg;
