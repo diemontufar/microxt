@@ -9,7 +9,7 @@ import mobile.core.structure.processor.GeneralProcessor;
 import mobile.entity.manager.JPManager;
 import mobile.entity.security.Module;
 import mobile.entity.security.Subsystem;
-import mobile.message.message.Data;
+import mobile.message.message.EntityData;
 import mobile.message.message.Field;
 import mobile.message.message.Item;
 import mobile.message.message.Message;
@@ -66,7 +66,7 @@ public class QueryMainMenuItems implements GeneralProcessor {
 
 		List<Subsystem> lSubsystems = query.getResultList();
 
-		Data subsystemData = new Data("Subsystem");
+		EntityData subsystemData = new EntityData("Subsystem");
 		int counter = 1;
 		for (Subsystem subsystem : lSubsystems) {
 			Item item = new Item(counter++);
@@ -95,7 +95,7 @@ public class QueryMainMenuItems implements GeneralProcessor {
 
 		List<Module> lModules = query.getResultList();
 
-		Data moduleData = new Data("Module");
+		EntityData moduleData = new EntityData("Module");
 		int counter = 1;
 		for (Module module : lModules) {
 			Item item = new Item(counter++);
@@ -120,7 +120,7 @@ public class QueryMainMenuItems implements GeneralProcessor {
 
 		List<mobile.entity.security.Process> lProcesses = query.getResultList();
 
-		Data processData = new Data("Process");
+		EntityData processData = new EntityData("Process");
 		int counter = 1;
 		for (mobile.entity.security.Process process : lProcesses) {
 			Item item = new Item(counter++);

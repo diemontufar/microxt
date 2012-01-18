@@ -19,7 +19,7 @@ public class RequestData extends Data {
 	}
 
 	public RequestData(Data data) {
-		this.setId(data.getId());
+		super();
 		this.setFieldList(data.getFieldList());
 	}
 

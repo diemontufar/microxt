@@ -8,14 +8,17 @@ public class ResponseData extends Data{
 	public final static String RESPONSE_MESSAGE = "message";
 	public final static String RESPONSE_ERROR = "error";
 	public final static String RESPONSE_NOTES = "notes";
+	
+	public final static String RESPONSE_CODE_OK = "000";
+	public final static String RESPONSE_CODE_ERROR = "001";
 
 	public ResponseData() {
 		super(RESPONSE);
 	}
 	
 	public ResponseData(Data data) {
-		super(RESPONSE);
-		this.getFieldList().addAll(data.getFieldList());
+		super();
+		this.setFieldList(data.getFieldList());
 	}
 
 	public String getCode(){
@@ -33,5 +36,4 @@ public class ResponseData extends Data{
 	public void setMessage(String message){
 		setFieldValue(RESPONSE_MESSAGE, message);
 	}
-
 }

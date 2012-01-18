@@ -12,7 +12,7 @@ import mobile.core.structure.processor.GeneralProcessor;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityTable;
 import mobile.entity.manager.JPManager;
-import mobile.message.message.Data;
+import mobile.message.message.EntityData;
 import mobile.message.message.Field;
 import mobile.message.message.Item;
 import mobile.message.message.Message;
@@ -32,7 +32,7 @@ public class QueryProcessor implements GeneralProcessor {
 
 	@Override
 	public Message process(Message msg) throws Exception {
-		for (Data data : msg.getDataList()) {
+		for (EntityData data : msg.getEntityDataList()) {
 			if (data.getProcessType() != null 
 					&& data.getProcessType().compareTo("QRY") == 0) {
 				if(decideProcessor(data)==0){
@@ -47,7 +47,7 @@ public class QueryProcessor implements GeneralProcessor {
 		return msg;
 	}
 		
-	private int decideProcessor(Data data) {
+	private int decideProcessor(EntityData data) {
 		if(data.getQueryFields()!=null
 				&& data.getQueryFields().indexOf("d:")>0){
 			return 1;
@@ -56,7 +56,7 @@ public class QueryProcessor implements GeneralProcessor {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private void processQuery(Data data) throws Exception {
+	private void processQuery(EntityData data) throws Exception {
 		StringBuilder sql = new StringBuilder();
 
 		// Build query
@@ -198,11 +198,13 @@ public class QueryProcessor implements GeneralProcessor {
 				fieldCounter = 0;
 				for (String qryField : queryFields) {
 					Object resField = result[fieldCounter++];
-					Field field = null;
-					if(resField.getClass().getSimpleName().compareTo("Boolean")==0){
-						field = new Field(qryField, "((Boolean))" + resField.toString());
-					}else{
-						field = new Field(qryField, resField.toString());
+					Field field = new Field(qryField);
+					if(resField!=null) {
+						if(	resField.getClass().getSimpleName().compareTo("Boolean")==0 ){
+							field.setValue("((Boolean))" + resField.toString());
+						}else{
+							field.setValue(resField.toString());
+						}
 					}
 					item.addField(field);
 				}

@@ -54,7 +54,7 @@ public class C301 extends MyGeneralForm {
 		row.add(label);
 		
 		final ComboForm solicitudeId = new ComboForm(100);
-		solicitudeId.setPersistentInfo("Solicitude:pk_solicitudeId:1");
+		solicitudeId.setPersistentInfo("Solicitude:pk_solicitudeId:1:C");
 		solicitudeId.setDisplayField("pk_solicitudeId");
 		final ArrayColumnData solCdata = new ArrayColumnData();
 		solCdata.add(new MyColumnData("pk_solicitudeId", "Id", 100));

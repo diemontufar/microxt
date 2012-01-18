@@ -6,7 +6,7 @@ import mobile.entity.security.UserAccess;
 import mobile.entity.security.UserAccessPk;
 import mobile.entity.security.UserAccount;
 import mobile.entity.security.UserAccountPk;
-import mobile.message.message.Data;
+import mobile.message.message.EntityData;
 import mobile.message.message.Field;
 import mobile.message.message.Message;
 import mobile.tools.common.Log;
@@ -21,7 +21,7 @@ public class Loggin implements GeneralProcessor{
 	
 	@Override
 	public Message process(Message msg) throws Exception {
-		Data logginData = msg.getData(LOGGIN_DATA);
+		EntityData logginData = msg.getEntityData(LOGGIN_DATA);
 		
 		String user = logginData.getField("user").getValue();
 		String password = logginData.getField("password").getValue();

@@ -3,7 +3,7 @@ package mobile.web.webxt.client.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.message.message.Data;
+import mobile.message.message.EntityData;
 import mobile.message.message.Field;
 import mobile.message.message.Item;
 import mobile.message.message.Message;
@@ -38,7 +38,7 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 			Parser parser = new Parser();
 			Message msg = parser.parseMsg(strData, MSG_TYPE);
 			System.out.println("entity: " + config.getEntity());
-			Data entityData = msg.getData(config.getEntity());
+			EntityData entityData = msg.getEntityData(config.getEntity());
 
 			System.out.println("reading items");
 			for (Item item : entityData.getItemList()) {
@@ -92,8 +92,8 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 		if (!data.toString().startsWith("No message received")) {
 			try {
 				String strData = data.toString();
+				
 				System.out.println("Parsing");
-
 				Parser parser = new Parser();
 				msg = parser.parseMsg(strData, MSG_TYPE);
 				System.out.println("End parsing");

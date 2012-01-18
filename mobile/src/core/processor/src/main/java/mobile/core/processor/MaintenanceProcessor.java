@@ -6,7 +6,7 @@ import java.util.List;
 import mobile.core.structure.processor.GeneralProcessor;
 import mobile.entity.manager.JPManager;
 import mobile.entity.schema.GeneralEntity;
-import mobile.message.message.Data;
+import mobile.message.message.EntityData;
 import mobile.message.message.Field;
 import mobile.message.message.Item;
 import mobile.message.message.Message;
@@ -21,7 +21,7 @@ public class MaintenanceProcessor implements GeneralProcessor {
 	@Override
 	public Message process(Message msg) throws Exception {
 		// Complete items with filters
-		for (Data data : msg.getDataList()) {
+		for (EntityData data : msg.getEntityDataList()) {
 			if (data.getProcessType() != null
 					&& data.getProcessType().compareTo("MNT") == 0
 					&& data.getFilters() != null) {
@@ -30,7 +30,7 @@ public class MaintenanceProcessor implements GeneralProcessor {
 		}
 		
 		// Process maintenance
-		for (Data data : msg.getDataList()) {
+		for (EntityData data : msg.getEntityDataList()) {
 			if (data.getProcessType() != null
 					&& data.getProcessType().compareTo("MNT") == 0) {
 				persistOrUpdateOrDelete(data);
@@ -40,7 +40,7 @@ public class MaintenanceProcessor implements GeneralProcessor {
 		return msg;
 	}
 
-	private void persistOrUpdateOrDelete(Data data) throws Exception {
+	private void persistOrUpdateOrDelete(EntityData data) throws Exception {
 		for (Item item : data.getItemList()) {
 			if (item.isExpireItem()) {
 				expireEntity(data.getId(), item);
@@ -70,7 +70,7 @@ public class MaintenanceProcessor implements GeneralProcessor {
 		JPManager.update(entity);
 	}
 	
-	private void completeItemsWithFilters(Data data) {
+	private void completeItemsWithFilters(EntityData data) {
 		// Get completed fields
 		List<Field> lfields = new ArrayList<Field>();
 		String strFilters = data.getFilters();

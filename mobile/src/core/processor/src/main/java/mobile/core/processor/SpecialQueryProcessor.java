@@ -12,7 +12,7 @@ import mobile.core.structure.processor.GeneralProcessor;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityTable;
 import mobile.entity.manager.JPManager;
-import mobile.message.message.Data;
+import mobile.message.message.EntityData;
 import mobile.message.message.Field;
 import mobile.message.message.Item;
 import mobile.message.message.Message;
@@ -31,7 +31,7 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 
 	@Override
 	public Message process(Message msg) throws Exception {
-		for (Data data : msg.getDataList()) {
+		for (EntityData data : msg.getEntityDataList()) {
 			if (data.getField("_type") != null
 					&& data.getField("_type").getValue().compareTo("QRY") == 0) {
 				processQuery(data);
@@ -42,7 +42,7 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 	}
 		
 	@SuppressWarnings("rawtypes")
-	public void processQuery(Data data) throws Exception {
+	public void processQuery(EntityData data) throws Exception {
 		StringBuilder sql = new StringBuilder();
 
 		// Build query
@@ -195,17 +195,19 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 			fieldCounter = 0;
 			for (String qryField : queryFields) {
 				Object resField = result[fieldCounter++];
-				Field field = null;
+				Field field = new Field(qryField);
 				
-				if(mtypes.get(qryField)!=null && mtypes.get(qryField).compareTo("Boolean")==0){
-					field = new Field(qryField, "((Boolean))" + parseBoolean(resField.toString()));
-				}else{
-					field = new Field(qryField, resField.toString());
+				if(mtypes.get(qryField)!=null){
+					if(mtypes.get(qryField).compareTo("Boolean")==0){
+						field.setValue("((Boolean))" + parseBoolean(resField.toString()));
+					}else{
+						field.setValue(resField.toString());
+					}
 				}
 				item.addField(field);
 			}
 			if (hasExpire) {
-				item.addField(new Field("_expire", "((Boolean))false"));
+				item.addField(new Field(Item.EXPIRE_ITEM, "((Boolean))false"));
 			}
 			data.addItem(item);
 		}

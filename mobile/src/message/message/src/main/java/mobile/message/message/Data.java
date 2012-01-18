@@ -5,15 +5,6 @@ import java.util.List;
 
 public class Data {
 
-	public final static String PROCESS_TYPE = "_type";
-	public final static String QRY_FIELDS = "_qry_fields";
-	public final static String OFFSET_PAGE = "_offset_page";
-	public final static String LIMIT_PAGE = "_limit_page";
-	public final static String TOTAL_PAGE = "_total_page";
-	public final static String ORDER_BY = "_order_by";
-	public final static String ORDER_DIR = "_order_dir";
-	public final static String FILTERS = "_filters";
-
 	private String id;
 
 	private List<Field> fieldList = new ArrayList<Field>();
@@ -28,7 +19,7 @@ public class Data {
 		setId(id);
 	}
 
-	public String toXML() {
+	protected String toXML() {
 		String data = "<" + "data";
 		if (getId() != null && getId().compareTo("") != 0) {
 			data += " id=\"" + getId() + "\"";
@@ -44,7 +35,7 @@ public class Data {
 		return data;
 	}
 
-	public String toJSON() {
+	protected String toJSON() {
 		String data = "{";
 		if (getId() != null && getId().compareTo("") != 0) {
 			data += "\"-id\":\"" + getId() + "\"";
@@ -88,22 +79,22 @@ public class Data {
 		}
 	}
 
-	public String getId() {
+	protected String getId() {
 		return id;
 	}
 
-	public void addField(String name, String value) {
+	protected void addField(String name, String value) {
 		Field field = new Field(name, value);
 		addField(field);
 	}
 
-	public void addField(Field field) {
+	protected void addField(Field field) {
 		if (getField(field.getName()) == null) {
 			fieldList.add(field);
 		}
 	}
 
-	public Field getField(String name) {
+	protected Field getField(String name) {
 		for (Field field : fieldList) {
 			if ((field.getName().compareTo(name)) == 0) {
 				return field;
@@ -113,7 +104,7 @@ public class Data {
 		return null;
 	}
 
-	public void removeField(String name) {
+	protected void removeField(String name) {
 		for (Field field : fieldList) {
 			if ((field.getName().compareTo(name)) == 0) {
 				fieldList.remove(field);
@@ -125,7 +116,7 @@ public class Data {
 		return fieldList;
 	}
 	
-	public void setFieldList(List<Field> fieldList) {
+	protected void setFieldList(List<Field> fieldList) {
 		this.fieldList = fieldList;
 	}
 
@@ -135,7 +126,7 @@ public class Data {
 		}
 	}
 
-	public Item getItem(Integer number) {
+	protected Item getItem(Integer number) {
 		for (Item item : itemList) {
 			if ((item.getNumber().compareTo(number)) == 0) {
 				return item;
@@ -144,7 +135,7 @@ public class Data {
 		return null;
 	}
 
-	public void removeItem(Integer number) {
+	protected void removeItem(Integer number) {
 		for (Item item : itemList) {
 			if ((item.getNumber().compareTo(number)) == 0) {
 				itemList.remove(item);
@@ -152,11 +143,15 @@ public class Data {
 		}
 	}
 
+	protected void setItemList(List<Item> itemList) {
+		this.itemList = itemList;
+	}
+	
 	public List<Item> getItemList() {
 		return itemList;
 	}
 
-	public Field getCreateField(String name) {
+	protected Field getCreateField(String name) {
 		Field field = getField(name);
 		if (field != null) {
 			return field;
@@ -167,85 +162,17 @@ public class Data {
 		}
 	}
 	
-	public void setFieldValue(String name, String value) {
+	protected void setFieldValue(String name, String value) {
 		Field field = getCreateField(name);
 		field.setValue(value);
 	}
 	
-	public String getFieldValue(String name) {
+	protected String getFieldValue(String name) {
 		Field field = getField(name);
 		if (field != null) {
 			return field.getValue();
 		} else {
 			return null;
 		}
-	}
-	
-	//----------------------------------------------------
-	// Special fields
-	//----------------------------------------------------
-
-	public void setProcessType(String processId) {
-		setFieldValue(Data.PROCESS_TYPE, processId);
-	}
-
-	public String getProcessType() {
-		return getFieldValue(Data.PROCESS_TYPE);
-	}
-
-	public void setQueryFields(String queryFields) {
-		setFieldValue(Data.QRY_FIELDS, queryFields);
-	}
-
-	public String getQueryFields() {
-		return getFieldValue(Data.QRY_FIELDS);
-	}
-
-	public void setOffset(Integer offset) {
-		setFieldValue(Data.OFFSET_PAGE, offset.toString());
-	}
-
-	public Integer getOffset() {
-		return Integer.parseInt(getFieldValue(Data.OFFSET_PAGE));
-	}
-
-	public void setLimit(Integer limit) {
-		setFieldValue(Data.LIMIT_PAGE, limit.toString());
-	}
-
-	public Integer getLimit() {
-		return Integer.parseInt(getFieldValue(Data.LIMIT_PAGE));
-	}
-
-	public void setTotal(Integer total) {
-		setFieldValue(Data.TOTAL_PAGE, total.toString());
-	}
-
-	public Integer getTotal() {
-		return Integer.parseInt(getFieldValue(Data.TOTAL_PAGE));
-	}
-	
-	public void setOrderBy(String order) {
-		setFieldValue(Data.ORDER_BY, order);
-	}
-
-	public String getOrderBy() {
-		return getFieldValue(Data.ORDER_BY);
-	}
-	
-	public void setOrderDir(String orderDir) {
-		setFieldValue(Data.ORDER_DIR, orderDir);
-	}
-
-	public String getOrderDir() {
-		return getFieldValue(Data.ORDER_DIR);
-	}
-	
-	public void setFilter(String filters) {
-		setFieldValue(Data.FILTERS, filters);
-	}
-
-	public String getFilters() {
-		return getFieldValue(Data.FILTERS);
 	}
 }
