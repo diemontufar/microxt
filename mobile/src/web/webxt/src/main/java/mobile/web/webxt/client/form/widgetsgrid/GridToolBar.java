@@ -19,7 +19,9 @@ public class GridToolBar extends ToolBar {
 	private Button resetButton;
 	private Button saveButton;
 	private ModelData initModel;
-
+	
+	public int initColumnIndex=0;
+		
 	public GridToolBar(EditorGrid<ModelData> grid, MyListStore store) {
 		this(grid, store, new BaseModelData());
 	}
@@ -70,7 +72,7 @@ public class GridToolBar extends ToolBar {
 
 		grid.stopEditing();
 		store.insert(newModel, store.getCount());
-		grid.startEditing(store.indexOf(newModel), 0);
+		grid.startEditing(store.indexOf(newModel), initColumnIndex);
 
 	}
 
@@ -82,5 +84,17 @@ public class GridToolBar extends ToolBar {
 		System.out.println("GridToolBar.saveAction");
 		store.commitChanges();
 	}
-
+	
+	public void enableAddButton(boolean enabled){
+		this.addButton.setEnabled(enabled);
+	}
+	
+	public void enableResetButton(boolean enabled){
+		this.resetButton.setEnabled(enabled);
+	}
+	
+	public void enableSaveButton(boolean enabled){
+		this.saveButton.setEnabled(enabled);
+	}
+	
 }
