@@ -1,0 +1,49 @@
+COMPANY_ID,TABLE_ID,HAS_TABLE_ID,PACKAGE_NAME,MULTI_COMPANY,MULTI_LANGUAGE,HISTORICAL_DATA,OPTIMISTIC_LOCKING,ENUMERATED_TYPES,CACHE_MEMORY,DESCRIPTION
+ALL,COMPANY,0,common,0,0,0,0,0,0,Values of companies
+ALL,DATABASE_TYPE,0,common,0,0,0,0,0,0,Values of database types
+ALL,DATA_TYPE,0,common,0,0,0,0,1,0,Values of data types
+ALL,ENTITY_FIELD,1,common,1,0,0,0,0,0,Values of entity fields
+ALL,ENTITY_RELATIONSHIP,0,common,1,0,0,0,0,0,Values of entity relationships
+ALL,ENTITY_TABLE,1,common,1,0,0,0,0,0,Values of entity tables
+ALL,LANGUAGE,0,common,0,0,0,0,1,0,Values of languages
+ALL,SEQUENTIAL,1,common,1,0,0,1,1,0,Values of sequences
+
+ALL,CITY,1,parameter,1,1,0,0,0,0,Values of cities
+ALL,COUNTRY,1,parameter,1,1,0,0,0,0,Values of countries
+ALL,DATAFILE,1,parameter,1,0,1,1,0,0,Values of datafiles
+ALL,DATAFILE_TYPE,0,parameter,0,0,0,0,1,0,Values of datafile types
+ALL,DISTRICT,1,parameter,1,1,0,0,0,0,Values of districts
+ALL,PARAMETER,1,parameter,1,0,1,0,1,1,Values of parameters
+ALL,PROVINCE,1,parameter,1,1,0,0,0,0,Values of provinces
+ALL,RESPONSE,1,parameter,1,1,0,0,1,1,Values of responses
+
+ALL,ADDRESS_TYPE,1,person,1,1,0,0,0,0,Values of address types
+ALL,CIVIL_STATUS,1,person,1,1,0,0,0,0,Values of civil statuses
+ALL,DOCUMENT_TYPE,1,person,1,1,0,0,0,0,Values of document types
+ALL,GENDER_TYPE,1,person,0,1,0,0,1,0,Values of gender types
+ALL,IDENTIFICATION_TYPE,1,person,1,1,0,0,0,0,Values of identification types
+ALL,PERSON,1,person,1,0,1,1,0,0,Values of person
+ALL,PERSON_ADDRESS,0,person,1,0,1,1,0,0,Values of person address
+ALL,PERSON_DOCUMENT,0,person,1,0,1,1,0,0,Values of person documents
+ALL,PERSON_PHONE,0,person,1,0,1,1,0,0,Values of person phones
+ALL,PERSON_TYPE,1,person,1,1,0,0,0,0,Values of person types
+ALL,PHONE_TYPE,1,person,1,1,0,0,0,0,Values of phone types
+ALL,PROFESSION_TYPE,1,person,1,1,0,0,0,0,Values of profession types
+
+ALL,COMPONENT,1,security,1,0,0,0,0,1,Values of components
+ALL,HOST,1,security,1,0,1,0,0,0,Values of hosts
+ALL,MODULE,1,security,1,1,0,0,0,0,Values of modules
+ALL,PROCESS,1,security,1,1,1,0,0,1,Values of processes
+ALL,PROCESS_COMPONENT,0,security,1,0,0,0,0,1,Values of process components
+ALL,PROFILE,1,security,1,1,0,0,0,0,Values of profiles
+ALL,ROLE,0,security,1,0,1,0,0,0,Values of roles
+ALL,SUBSYSTEM,1,security,1,1,0,0,1,0,Values of subsystems
+ALL,USER_ACCESS,0,security,1,0,1,0,0,0,Values of user access
+ALL,USER_ACCOUNT,1,security,1,0,1,1,0,0,Values of user accounts
+ALL,USER_AUTHORIZATION,0,security,1,0,1,0,0,0,Values of user authorizations
+ALL,USER_NOTIFICATION,0,security,1,0,1,0,0,0,Values of user notification
+ALL,USER_NOTIFICATION_TYPE,1,security,0,1,0,0,1,0,Values of user notification types
+ALL,USER_PROFILE,0,security,1,0,1,0,0,0,Values of user profiles
+ALL,USER_SESSION,0,security,1,0,1,1,0,0,Values of user sessions
+ALL,USER_STATUS,1,security,1,1,0,0,1,0,Values of user status
+ALL,USER_TYPE,1,security,1,1,0,0,1,0,Values of user types
