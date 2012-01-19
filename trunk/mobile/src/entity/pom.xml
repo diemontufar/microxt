@@ -18,7 +18,6 @@
         <module>parameter</module>
         <module>person</module>
         <module>security</module>
-        <module>microxt</module>
 	<module>microcredit</module>
 	<module>zonification</module>
 	<module>marketing</module>
