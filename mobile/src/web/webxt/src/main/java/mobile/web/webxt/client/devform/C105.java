@@ -9,13 +9,13 @@ import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.form.EntityContentPanel;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
+import mobile.web.webxt.client.form.widgetsgrid.ComboColumn;
 import mobile.web.webxt.client.form.widgetsgrid.EntityEditorGrid;
 import mobile.web.webxt.client.form.widgetsgrid.ExpireColumnConfig;
 import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
-import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
-
+import mobile.web.webxt.client.form.widgetsgrid.NumericColumn;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -29,9 +29,9 @@ import com.google.gwt.user.client.Element;
 
 public class C105 extends LayoutContainer {
 
-	private final String PROCESS = "C104";
+	private final String PROCESS = "C105";
 
-	private final String ENTITY = "ProductMicrocredit";
+	private final String ENTITY = "ProductAsessor";
 
 	private final Integer PAGE_SIZE = 5;
 
@@ -43,14 +43,9 @@ public class C105 extends LayoutContainer {
 
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_productId", "Codigo", 50, 3, false));
-		cdata.add(new MyColumnData("description", "Descripcion", 150, 50, false));
-		cdata.add(new MyColumnData("currencyId", "Moneda", 50, 3, false));
-		cdata.add(new MyColumnData("minAmount", "Monto Min.", 80, 20, false));
-		cdata.add(new MyColumnData("maxAmount", "Monto Max.", 80, 20, false));
-		cdata.add(new MyColumnData("minPeriod", "Periodo Min.", 80, 20, false));
-		cdata.add(new MyColumnData("maxPeriod", "Periodo Max.", 80, 20, false));
-		cdata.add(new MyColumnData("rate", "Tasa", 80, 20, false));
+		cdata.add(new MyColumnData("pk_asessorId", "Asesor", 50, 3, false));
+		cdata.add(new MyColumnData("pk_productId", "Producto", 50, 50, false));
+		cdata.add(new MyColumnData("observations", "Observaciones", 150, 50, true));
 		
 		MyProcessConfig config = new MyProcessConfig(PROCESS, ENTITY,
 				cdata.getIdFields());
@@ -63,25 +58,35 @@ public class C105 extends LayoutContainer {
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		configs.add(new NormalColumn(cdata.get(0)));
-		configs.add(new NormalColumn(cdata.get(1)));
-		configs.add(new NormalColumn(cdata.get(2)));
-		configs.add(new NormalColumn(cdata.get(3)));
-		configs.add(new NormalColumn(cdata.get(4)));
-		configs.add(new NormalColumn(cdata.get(5)));
-		configs.add(new NormalColumn(cdata.get(6)));
-		configs.add(new NormalColumn(cdata.get(7)));
+		ComboColumn profileComboColumn = new ComboColumn(cdata.get(0));
+		ArrayColumnData cdataComboProfile = new ArrayColumnData();
+		cdataComboProfile.add(new MyColumnData("pk_personId", "Persona", 40));
+		cdataComboProfile.add(new MyColumnData("identificationNumber", "Identificacion", 100));
+		cdataComboProfile.add(new MyColumnData("name", "Nombre", 110));
+		cdataComboProfile.add(new MyColumnData("lastName", "Apellido", 120));
+		profileComboColumn.setRqData("Person", cdataComboProfile);
+		configs.add(profileComboColumn);
+		
+		ComboColumn productComboColumn = new ComboColumn(cdata.get(1));
+		ArrayColumnData cdataComboPrduct = new ArrayColumnData();
+		cdataComboPrduct.add(new MyColumnData("pk_productId", "Producto", 40));
+		cdataComboPrduct.add(new MyColumnData("description", "Descripcion", 100));
+		productComboColumn.setRqData("Person", cdataComboPrduct);
+		configs.add(productComboColumn);
+		
+		configs.add(new NumericColumn(cdata.get(2)));
+		
 		configs.add(new ExpireColumnConfig());
 
 		ColumnModel cm = new ColumnModel(configs);
 
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Productos de Microcredito",
-				700, 230);
+		EntityContentPanel cp = new EntityContentPanel("Productos por Asesor",
+				500, 230);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(store, cm);
-		grid.setAutoExpandColumn("description");
+		grid.setAutoExpandColumn("pk_asessorId");
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {

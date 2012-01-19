@@ -81,6 +81,7 @@ public class InputBox extends TextField<String> implements PersistentField {
 		if (type == Validate.EMAIL) {
 			setValidator(new ValidationTypesValidator(ValidationTypes.EMAIL));
 		}
+		
 	}
 
 	public String getPersistentInfo() {

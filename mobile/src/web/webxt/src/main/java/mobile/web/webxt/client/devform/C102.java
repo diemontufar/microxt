@@ -68,7 +68,7 @@ public class C102 extends LayoutContainer {
 	// Fields for coordinates:
 	NumberField longitude = new NumberField();
 	NumberField latitude = new NumberField();
-	InputBox isNew = new InputBox("", "GeographicZone:_isNew:1", 50,2,Validate.ALFANUMERICO);
+	InputBox isNew = new InputBox("", "GeographicZone:_new_item:1", 50,2,Validate.ALFANUMERICO);
 
 	private int MAX_POINTS = 3; // 4 points
 	private int MAX_DOWNPANEL_HEIGHT = 420; // pixels

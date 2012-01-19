@@ -8,29 +8,33 @@ import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgets.ComboForm;
 import mobile.web.webxt.client.form.widgets.InputBox;
+import mobile.web.webxt.client.form.widgets.MyLabel;
 import mobile.web.webxt.client.form.widgets.MyTextArea;
+import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
+import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
 import mobile.web.webxt.client.mvc.AppEvents;
+import mobile.web.webxt.client.util.DatesManager;
 import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Orientation;
-import com.extjs.gxt.ui.client.binding.FieldBinding;
-import com.extjs.gxt.ui.client.binding.FormBinding;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.Label;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
-import com.extjs.gxt.ui.client.widget.form.FormPanel.LabelAlign;
+import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
-import com.extjs.gxt.ui.client.widget.layout.FormLayout;
-import com.extjs.gxt.ui.client.widget.layout.RowData;
+import com.extjs.gxt.ui.client.widget.layout.ColumnData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -49,10 +53,15 @@ public class C201 extends LayoutContainer {
 	FormPanel formPerson = new FormPanel();
 	FormPanel formPartner = new FormPanel();
 	
+	RowContainer row;
+	MyLabel label;
+	
 	//Partner Fields
-	InputBox isNew,codigo,asessorAux,freqAux,diaReunion, personAux;
+	InputBox isNew,codigo,asessorAux,freqAux, personAux,freqDescription;
 	MyTextArea activity;
 	ComboForm asessorCombo,freqCombo,personCombo;
+	SimpleComboBox<Integer> diaReunion;
+	final int LABEL_WIDTH = 60;
 	
 	//Person Fields:
 	InputBox identificacion,nombre,apellido,edad,sexo,ecivil;
@@ -74,10 +83,19 @@ public class C201 extends LayoutContainer {
 		panelPrincipal.setHeading("Clientes Individuales");  
 		panelPrincipal.setFrame(true);  
 		panelPrincipal.setSize(600, 410);  
-		panelPrincipal.setLayout(new RowLayout(Orientation.HORIZONTAL)); 
+		panelPrincipal.setLayout(new RowLayout(Orientation.VERTICAL));
 		
-		panelPrincipal.add(createPartnerForm(), new RowData(.4, 1));
-		panelPrincipal.add(createPersonForm(), new RowData(.55, 1));
+		panelPrincipal.add(createPartnerForm(), new ColumnData(0));
+			
+		FormPanel fp = new FormPanel();
+		fp.setHeaderVisible(false);
+		fp.setBorders(false);
+		fp.setWidth(400);
+		fp.setFieldWidth(300);
+		activity=new MyTextArea("Actividad","Partner:activity:1",300,300);
+		activity.setHeight(100);
+		fp.add(activity);
+		panelPrincipal.add(fp, new ColumnData(0));
 		
 		
 		guardar = new Button("Guardar", new SelectionListener<ButtonEvent>() {
@@ -101,42 +119,32 @@ public class C201 extends LayoutContainer {
 
 	}
 	
-	private FormPanel createPersonForm(){
+	private FieldSet createPersonForm(){
 		  
+		FieldSet fieldSet = new FieldSet();
+		fieldSet.setHeading("Datos Persona");
+		fieldSet.setCollapsible(false);
+		fieldSet.setWidth(280);
+		fieldSet.setHeight(220);
+		
 		formPerson.setFrame(false);
 		formPerson.setHeaderVisible(false);
-		formPerson.setWidth(50);
-				
-			
-		final ArrayColumnData cdataPerson = new ArrayColumnData();
-		cdataPerson.add(new MyColumnData("pk_personId", "Persona", 150, 20,false));
-		cdataPerson.add(new MyColumnData("name", "Nombre", 150, 20,false));
-		cdataPerson.add(new MyColumnData("lastName", "Apellido", 150, 20,false));
-		personCombo = new ComboForm("Persona","pk_personId");
-		personCombo.setRqData("Person", cdataPerson);
-		personCombo.setAllowBlank(false);
-		
-		personAux = new InputBox("", "Partner:personId:1", 50,100,Validate.ALFANUMERICO);
-		personAux.setVisible(false);
-		
-			
-		identificacion= new InputBox("Identificacion","",20,11,Validate.NUMERICO);
+		formPerson.setWidth(240);
+		formPerson.setFieldWidth(150);
+								
+		identificacion= new InputBox("Identificacion","",20,11,Validate.ALFANUMERICO);
 		identificacion.setName("identificacion");
 		nombre = new InputBox("Nombre","",20,40,Validate.ALFANUMERICO);
 		nombre.setName("nombre");
-		apellido= new InputBox("Apellido","",40,11,Validate.ALFANUMERICO);
+		apellido= new InputBox("Apellido","",40,40,Validate.ALFANUMERICO);
 		apellido.setName("apellido");
-		edad= new InputBox("Edad","",20,5,Validate.NUMERICO);
+		edad= new InputBox("Edad","",20,40,Validate.TEXT);
 		edad.setName("edad");
 		sexo= new InputBox("Sexo","",20,2,Validate.ALFANUMERICO);
 		sexo.setName("sexo");
 		ecivil= new InputBox("Estado Civil","",20,20,Validate.ALFANUMERICO);
 		ecivil.setName("ecivil");
 		
-		formPerson.add(new Html(
-				"<div style='font-size: 12px; width: 300px'><center>INFORMACION CLIENTE</center></span>"));
-		formPerson.add(new Label());
-		formPerson.add(personCombo);
 		formPerson.add(personAux);
 		formPerson.add(identificacion);
 		formPerson.add(nombre);
@@ -145,87 +153,174 @@ public class C201 extends LayoutContainer {
 		formPerson.add(sexo);
 		formPerson.add(ecivil);
 		
-		identificacion.setEnabled(false);
-		nombre.setEnabled(false);
-		apellido.setEnabled(false);
-		edad.setEnabled(false);
-		sexo.setEnabled(false);
-		ecivil.setEnabled(false);
-		
-		FormBinding binding = new FormBinding(formPerson);  
-	    // manually add bindings  
-	    binding.addFieldBinding(new FieldBinding(identificacion, "identificacion"));  
-	    binding.addFieldBinding(new FieldBinding(nombre, "nombre"));
-	    binding.addFieldBinding(new FieldBinding(apellido, "apellido"));
-	    binding.addFieldBinding(new FieldBinding(edad, "edad"));
-	    binding.addFieldBinding(new FieldBinding(sexo, "sexo"));
-	    binding.addFieldBinding(new FieldBinding(ecivil, "ecivil"));
-	    //binding.addFieldBinding(new SimpleComboBoxFieldBinding(scb, "name"));  
-	    
-	    
-	    System.out.println("Models: "+personCombo.getStore().getModels());
-	    System.out.println("Model: "+personCombo.getModel());
-	    System.out.println("Models: "+personCombo.getStore().getCount());
-	    //System.out.println("Models: "+personCombo.getStore().getModels());
-//	    binding.autoBind();  
-//	    binding.bind();
-		
-		
-		return formPerson;
-		
+		identificacion.setReadOnly(true);
+		nombre.setReadOnly(true);
+		apellido.setReadOnly(true);
+		edad.setReadOnly(true);
+		sexo.setReadOnly(true);
+		ecivil.setReadOnly(true);
+				
+		fieldSet.add(formPerson);
+
+		return fieldSet;
 	}
 	
-	private FormPanel createPartnerForm(){
+	private ContentPanel createPartnerForm(){
 				
-		FormLayout layoutForm = new FormLayout();
-		layoutForm.setLabelAlign(LabelAlign.TOP);
-		formPartner.setLayout(layoutForm);
+		ContentPanel cp = new ContentPanel();
+		cp.setFrame(false);  
+		cp.setSize(598, 225);
+		cp.setBorders(false);
+		cp.setHeaderVisible(false);
+		cp.setLayout(new RowLayout(Orientation.HORIZONTAL));
+		
+		FieldSet fieldSet = new FieldSet();
+		fieldSet.setHeading("Cliente");
+		fieldSet.setCollapsible(false);
+		fieldSet.setWidth(290);
+		fieldSet.setHeight(220);
+		
 		formPartner.setFrame(false);
 		formPartner.setHeaderVisible(false);
-		formPartner.setWidth(100);
-		
-		isNew = new InputBox("", "Partner:_isNew:1", 50,2,Validate.ALFANUMERICO);
+		formPartner.setWidth(300);
+						
+		row = new RowContainer();
+		label = new MyLabel("Codigo:", LABEL_WIDTH);
+		row.add(label);
+				
+		isNew = new InputBox("", "Partner:_new_item:1", 50,2,Validate.ALFANUMERICO);
 		isNew.setVisible(false);
 		isNew.setValue("1");
-		codigo= new InputBox("Codigo","Partner:pk_partnerId:1",10,10,Validate.ALFANUMERICO);
+		codigo= new InputBox("","Partner:pk_partnerId:1",80,10,Validate.ALFANUMERICO);
 		codigo.setAllowBlank(false);
 		codigo.setMaxLength(10);
+		
+		row.add(codigo);
+		row.add(isNew);
+		fieldSet.add(row);
 				
-		activity=new MyTextArea("Actividad","Partner:activity:1",50,300);
-		activity.setHeight(110);
+		row = new RowContainer();
+		label = new MyLabel("Persona:", LABEL_WIDTH);
+		row.add(label);
+		
+		final ArrayColumnData cdataPerson = new ArrayColumnData();
+		cdataPerson.add(new MyColumnData("pk_personId", "Persona", 80, 20,false));
+		cdataPerson.add(new MyColumnData("identificationNumber", "Identification", 80, 11,false));
+		cdataPerson.add(new MyColumnData("name", "Nombre", 80, 40,false));
+		cdataPerson.add(new MyColumnData("lastName", "Apellido", 150, 40,false));
+		cdataPerson.add(new MyColumnData("dateOfBirth", ColumnType.HIDDEN));
+		cdataPerson.add(new MyColumnData("genderTypeId", ColumnType.HIDDEN));
+		cdataPerson.add(new MyColumnData("civilStatusId", ColumnType.HIDDEN));
+		personCombo = new ComboForm(80,"pk_personId");
+		personCombo.setRqData("Person", cdataPerson);
+		personCombo.setAllowBlank(false);
+		
+		final DatesManager dm =new DatesManager();
+					
+		personCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			@SuppressWarnings("static-access")
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+				ModelData selected = se.getSelectedItem();
+				int age=0;
+				identificacion.setValue(selected.get("identificationNumber").toString());
+				nombre.setValue(selected.get("name").toString());
+				apellido.setValue(selected.get("lastName").toString());
+				age=dm.calculateAge(selected.get("dateOfBirth").toString());
 				
+				edad.setValue(String.valueOf(age));
+				sexo.setValue(selected.get("genderTypeId").toString());
+				ecivil.setValue(selected.get("civilStatusId").toString());
+			}
+		});
+		
+		personAux = new InputBox("", "Partner:personId:1", 50,100,Validate.ALFANUMERICO);
+		personAux.setVisible(false);
+		
+		row.add(personCombo);
+		row.add(personAux);
+		fieldSet.add(row);
+		
+					
+		row = new RowContainer();
+		label = new MyLabel("Asesor:", LABEL_WIDTH);
+		row.add(label);			
+		
 		final ArrayColumnData cdataAsessor = new ArrayColumnData();
 		cdataAsessor.add(new MyColumnData("pk_asessorId", "Asesor", 150, 20,false));
-		asessorCombo = new ComboForm("Asesor","pk_asessorId");
+		asessorCombo = new ComboForm(80,"pk_asessorId");
 		asessorCombo.setRqData("Asessor", cdataAsessor);
 		asessorAux = new InputBox("", "Partner:asessorId:1", 50,100,Validate.ALFANUMERICO);
 		asessorAux.setVisible(false);
 		asessorCombo.setAllowBlank(false);
 		
+		row.add(asessorCombo);
+		row.add(asessorAux);
+		fieldSet.add(row);
+		
+		row = new RowContainer();
+		label = new MyLabel("Frecuencia:", LABEL_WIDTH);
+		row.add(label);
+		
 		final ArrayColumnData cdataFrequency = new ArrayColumnData();
-		cdataFrequency.add(new MyColumnData("pk_meetingFrequencyId", "Codigo", 150, 20,false));
-		cdataFrequency.add(new MyColumnData("frequency", "Frecuencia", 150, 20,false));
-		freqCombo = new ComboForm("Frecuencia de Reunion","pk_meetingFrequencyId");
+		cdataFrequency.add(new MyColumnData("pk_meetingFrequencyId", "Codigo", 40, 20,false));
+		cdataFrequency.add(new MyColumnData("frequency", "Frecuencia", 120, 20,false));
+		freqCombo = new ComboForm(80,"pk_meetingFrequencyId");
 		freqCombo.setRqData("MeetingFrequency", cdataFrequency);
+		
+		freqDescription = new InputBox(100);
+		freqDescription.setReadOnly(true);
+				
+		freqCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+				ModelData selected = se.getSelectedItem();
+				freqDescription.setValue(selected.get("frequency").toString());
+			}
+		});
+		
 		freqAux = new InputBox("", "Partner:meetingFrequencyId:1", 50,100,Validate.ALFANUMERICO);
 		freqAux.setVisible(false);
 		
-		diaReunion= new InputBox("Dia Reunion","Partner:meetingFrequencyId:1",20,10,Validate.NUMERICO);
-		diaReunion.setAllowBlank(false);	
+		row.add(freqCombo);
+		row.add(freqDescription);
+		row.add(freqAux);
+		fieldSet.add(row);
 		
-		formPartner.add(isNew);
-		formPartner.add(codigo);
-		formPartner.add(activity);
-		formPartner.add(asessorCombo);
-		formPartner.add(asessorAux);
-		formPartner.add(freqCombo);
-		formPartner.add(freqAux);
-		formPartner.add(diaReunion);
-						
-		return formPartner;
+		row = new RowContainer();
+		label = new MyLabel("Dia reunion:", LABEL_WIDTH);
+		row.add(label);
+		
+		diaReunion=new SimpleComboBox<Integer>();
+		
+		for (int j=1;j<8;j++){
+			diaReunion.add(j);
+		}
+		
+		diaReunion.setAllowBlank(true);	
+		diaReunion.setWidth(50);
+		
+		row.add(diaReunion);
+		fieldSet.add(row);
+		
+		row = new RowContainer();
+		label = new MyLabel("Actividad:", LABEL_WIDTH);
+		row.add(label);
+		
+		fieldSet.add(formPartner);
+		cp.add(fieldSet);
+		cp.add(new Label(""));
+		cp.add(new Label(""));
+		cp.add(createPersonForm());
+		
+		return cp;
 	}
 	
+
 	private boolean validateForm(){
+				
+		//System.out.println("is valid: "+formPartner.isValid());
+		//formPerson.isValid(false);
 		boolean isOK=true;
 			
 		if (codigo.getValue() == null || asessorAux.getValue() == null
@@ -234,26 +329,14 @@ public class C201 extends LayoutContainer {
 			return isOK;
 		}
 
-		if (codigo.getValue().isEmpty() || asessorAux.getValue().isEmpty()
-				|| personAux.getValue().isEmpty()) {
-			isOK = false;
-			return isOK;
-		}
-
 		return isOK;
 	}
 	
 	private void clearFields(){
-		codigo.clear();
-		asessorAux.clear();
-		freqAux.clear();
-		diaReunion.clear();
-		activity.clear();
-		personAux.clear();
 		
-		asessorCombo.clear();
-		freqCombo.clear();
-		personCombo.clear();
+		asessorCombo.clearSelections();
+		freqCombo.clearSelections();
+		personCombo.clearSelections();
 		
 		identificacion.clear();
 		nombre.clear();
@@ -262,6 +345,14 @@ public class C201 extends LayoutContainer {
 		sexo.clear();
 		ecivil.clear();
 		
+		codigo.clear();
+		asessorAux.clear();
+		freqAux.clear();
+		diaReunion.clear();
+		activity.clear();
+		personAux.clear();
+		freqDescription.clear();
+				
 		codigo.setCursorPos(0);
 		
 	}
@@ -309,12 +400,7 @@ public class C201 extends LayoutContainer {
 			}
 			
 			if (diaReunion.getValue()!=null){
-				mfield.put(diaReunion.getPersistentInfo(), diaReunion.getValue().toString());
-			}
-			
-			System.out.println("MyForm.commitChanges");
-			for (String key : mfield.keySet()) {
-				System.out.println(key + ":" + mfield.get(key));
+				mfield.put("Partner:meetingDay:1", diaReunion.getRawValue().toString());
 			}
 			
 			proxy.commitForm(config, mfield, callback);

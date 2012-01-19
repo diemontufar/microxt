@@ -16,7 +16,8 @@ public class ValidationTypesValidator implements Validator {
 		if (!value.matches(type.regex)) {
 			res = value + " Es un valor:  " + type.name + " incorrecto";
 		}
+		
 		return res;
 	}
-
+	
 }
