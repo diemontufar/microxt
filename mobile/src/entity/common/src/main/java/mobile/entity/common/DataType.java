@@ -69,7 +69,6 @@ public class DataType extends AbstractEntity implements GeneralEntity {
 
 	@Override
 	public String toString() {
-		return "DATA_TYPE:[" + this.getPk().toString() + ", "
-				+ this.getDescription() + "]";
+		return "DATA_TYPE:[" + this.getPk().toString() + ", " + this.getDescription() + "]";
 	}
 }

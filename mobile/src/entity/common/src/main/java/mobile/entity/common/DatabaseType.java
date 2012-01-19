@@ -69,7 +69,6 @@ public class DatabaseType extends AbstractEntity implements GeneralEntity {
 
 	@Override
 	public String toString() {
-		return "DATABASE_TYPE:[" + this.getPk().toString() + ", "
-				+ this.getDatabaseType() + "]";
+		return "DATABASE_TYPE:[" + this.getPk().toString() + ", " + this.getDatabaseType() + "]";
 	}
 }

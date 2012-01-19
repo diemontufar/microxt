@@ -69,7 +69,6 @@ public class Language extends AbstractEntity implements GeneralEntity {
 
 	@Override
 	public String toString() {
-		return "LANGUAGE:[" + this.getPk().toString() + ", " + this.getName()
-				+ "]";
+		return "LANGUAGE:[" + this.getPk().toString() + ", " + this.getName() + "]";
 	}
 }

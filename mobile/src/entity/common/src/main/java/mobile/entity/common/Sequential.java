@@ -14,8 +14,7 @@ import mobile.entity.schema.OptimisticLocking;
  */
 @Entity
 @Table(name = "SEQUENTIAL")
-public class Sequential extends AbstractOptimisticLocking implements
-		Multicompany, OptimisticLocking {
+public class Sequential extends AbstractOptimisticLocking implements Multicompany, OptimisticLocking {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -70,7 +69,7 @@ public class Sequential extends AbstractOptimisticLocking implements
 
 	@Override
 	public String toString() {
-		return "SEQUENTIAL:[" + this.getPk().toString() + ", "
-				+ this.getSequentialValue() + ", " + this.getVersion() + "]";
+		return "SEQUENTIAL:[" + this.getPk().toString() + ", " + this.getSequentialValue() + ", " + this.getVersion()
+				+ "]";
 	}
 }

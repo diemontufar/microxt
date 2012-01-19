@@ -32,11 +32,9 @@ public final class JPManagerFactory {
 
 	public static void createEntityManagerFactory(final String persistenceUnit) {
 		Long start = System.currentTimeMillis(); // Start
-		getInstance().emf = Persistence
-				.createEntityManagerFactory(persistenceUnit);
-		log.info("Load time for persistence: " 
-				+ FormatDates.getInstance().getTimeCountFormat()
-                .format(new Date(System.currentTimeMillis() - start)) );
+		getInstance().emf = Persistence.createEntityManagerFactory(persistenceUnit);
+		log.info("Load time for persistence: "
+				+ FormatDates.getMinuteFormat().format(new Date(System.currentTimeMillis() - start)));
 	}
 
 	// creador sincronizado para protegerse de posibles problemas multi-hilo

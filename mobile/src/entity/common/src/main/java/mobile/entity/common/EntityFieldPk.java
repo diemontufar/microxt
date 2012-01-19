@@ -10,8 +10,7 @@ import mobile.entity.schema.MulticompanyKey;
  * The primary key class for the ENTITY_FIELD database table.
  */
 @Embeddable
-public class EntityFieldPk extends AbstractCompanyKey implements
-		MulticompanyKey {
+public class EntityFieldPk extends AbstractCompanyKey implements MulticompanyKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -52,7 +51,6 @@ public class EntityFieldPk extends AbstractCompanyKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getTableId() + ", "
-				+ this.getFieldId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getTableId() + ", " + this.getFieldId() + "]";
 	}
 }

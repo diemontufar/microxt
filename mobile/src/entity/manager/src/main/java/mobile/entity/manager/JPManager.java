@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 
+import mobile.common.message.Item;
 import mobile.entity.common.EntityTable;
 import mobile.entity.common.EntityTablePk;
 import mobile.entity.schema.GeneralEntity;
@@ -18,12 +19,11 @@ import mobile.entity.schema.HistoricalKey;
 import mobile.entity.schema.MulticompanyKey;
 import mobile.entity.schema.MultilanguageKey;
 import mobile.entity.schema.OptimisticLocking;
-import mobile.message.message.Item;
 import mobile.tools.common.Log;
-import mobile.tools.common.convertion.ConvertionManager;
+import mobile.tools.common.convertion.Converter;
 import mobile.tools.common.param.LocalParameter;
 import mobile.tools.common.param.ParameterEnum;
-import mobile.tools.common.param.PersistenceTime;
+import mobile.tools.common.param.Timer;
 
 import org.apache.log4j.Logger;
 
@@ -159,7 +159,7 @@ public class JPManager {
 			HistoricalKey historicalKey = (HistoricalKey) key;
 			if (historicalKey.getExpired() == null) {
 				log.info("Complete expired: " + key.getClass().getName());
-				historicalKey.setExpired(PersistenceTime.getExpiredTime());
+				historicalKey.setExpired(Timer.getExpiredTime());
 			}
 		}
 	}
@@ -169,7 +169,7 @@ public class JPManager {
 			Historical historical = (Historical) obj;
 			if (historical.getCreated() == null) {
 				log.info("Complete created: " + historical.getClass().getName());
-				historical.setCreated(PersistenceTime.getCurrentTime());
+				historical.setCreated(Timer.getCurrentTime());
 			}
 		}
 	}
@@ -503,8 +503,8 @@ public class JPManager {
 			if (classField.getName().compareTo("pk") == 0) {
 				// Parse embedded pk
 				// Separate pk fields
-				List<mobile.message.message.Field> pkFields = new ArrayList<mobile.message.message.Field>();
-				for (mobile.message.message.Field itemField : item.getFieldList()) {
+				List<mobile.common.message.Field> pkFields = new ArrayList<mobile.common.message.Field>();
+				for (mobile.common.message.Field itemField : item.getFieldList()) {
 					if (itemField.getName().startsWith("pk_")) {
 						pkFields.add(itemField);
 					}
@@ -533,7 +533,7 @@ public class JPManager {
 							+ classField.getName().substring(0, 1).toUpperCase()
 							+ classField.getName().substring(1),
 							classField.getType());
-					pk = ConvertionManager.convertObject(
+					pk = Converter.convertObject(
 							item.getField("pk_" + classField.getName()).getValue(),
 							classField.getType());
 					setterMethod.invoke(entity, pk);
@@ -562,7 +562,7 @@ public class JPManager {
 						+ classField.getName().substring(0, 1).toUpperCase()
 						+ classField.getName().substring(1),
 						classField.getType());
-				Object val = ConvertionManager.convertObject(
+				Object val = Converter.convertObject(
 						item.getField(classField.getName()).getValue(),
 						classField.getType());
 //				System.out.println("Seteando...");
@@ -577,7 +577,7 @@ public class JPManager {
 	}
 
 	private static GeneralEntityKey parsePk(Class<?> entityKeyClass,
-			List<mobile.message.message.Field> pkFields) throws Exception {
+			List<mobile.common.message.Field> pkFields) throws Exception {
 		// Instantiate object
 		Object pk = entityKeyClass.newInstance();
 
@@ -587,13 +587,13 @@ public class JPManager {
 				continue;
 			}
 
-			mobile.message.message.Field itemField = getField(field.getName(),
+			mobile.common.message.Field itemField = getField(field.getName(),
 					pkFields);
 			if (itemField != null) {
 				Method setterMethod = entityKeyClass.getMethod("set"
 						+ field.getName().substring(0, 1).toUpperCase()
 						+ field.getName().substring(1), field.getType());
-				Object val = ConvertionManager.convertObject(
+				Object val = Converter.convertObject(
 						itemField.getValue(), field.getType());
 				setterMethod.invoke(pk, val);
 			}
@@ -602,9 +602,9 @@ public class JPManager {
 		return (GeneralEntityKey) pk;
 	}
 
-	private static mobile.message.message.Field getField(String name,
-			List<mobile.message.message.Field> lField) {
-		for (mobile.message.message.Field field : lField) {
+	private static mobile.common.message.Field getField(String name,
+			List<mobile.common.message.Field> lField) {
+		for (mobile.common.message.Field field : lField) {
 			if ((field.getName().compareTo("pk_"+name)) == 0) {
 				return field;
 			}
@@ -667,7 +667,7 @@ public class JPManager {
 		// Inserta el registro caducado
 		HistoricalKey pk = (HistoricalKey) ((HistoricalKey) expired.getPk())
 				.clone();
-		pk.setExpired(PersistenceTime.getCurrentTime());
+		pk.setExpired(Timer.getCurrentTime());
 		expired.setPk(pk);
 		getEntityManager().persist(expired);
 	}
@@ -684,12 +684,12 @@ public class JPManager {
 		Historical expired = find(pEntity.getClass(), pEntity.getPk());
 		HistoricalKey pk = (HistoricalKey) ((HistoricalKey) expired.getPk())
 				.clone();
-		pk.setExpired(PersistenceTime.getCurrentTime());
+		pk.setExpired(Timer.getCurrentTime());
 		expired.setPk(pk);
 		persist(expired);
 		// Actualiza la entidad nueva
 		Historical nueva = (Historical) pEntity;
-		nueva.setCreated(PersistenceTime.getCurrentTime());
+		nueva.setCreated(Timer.getCurrentTime());
 		updateEntity(pEntity);
 	}
 
