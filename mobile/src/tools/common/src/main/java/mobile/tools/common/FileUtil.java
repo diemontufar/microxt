@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-/**
- * Manage read and write file
- */
 public class FileUtil {
+
+	private FileUtil() {
+		Log.getInstance().info("Create instace of FileUtil class");
+	}
+
 	public static String readFile(String path) throws Exception {
 		FileInputStream fileInputStream = new FileInputStream(path);
 		String data = "";
@@ -24,14 +26,11 @@ public class FileUtil {
 	}
 
 	public static void writeFile(String path, String data) throws Exception {
-//		FileOutputStream outputStream = new FileOutputStream(path);
-//		outputStream.write(data.getBytes());
-//		outputStream.close();
-	  	String file=path.substring(0,path.lastIndexOf('/'));
-	  	File f=new File(file);
-	  	f.mkdirs();
-	    FileOutputStream fos = new FileOutputStream(path);
-	    fos.write(data.getBytes());
-	    fos.close();
+		String dir = path.substring(0, path.lastIndexOf('/'));
+		File file = new File(dir);
+		file.mkdirs();
+		FileOutputStream outputStream = new FileOutputStream(path);
+		outputStream.write(data.getBytes());
+		outputStream.close();
 	}
 }

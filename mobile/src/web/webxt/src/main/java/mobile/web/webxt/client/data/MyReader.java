@@ -3,10 +3,10 @@ package mobile.web.webxt.client.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.message.message.EntityData;
-import mobile.message.message.Field;
-import mobile.message.message.Item;
-import mobile.message.message.Message;
+import mobile.common.message.EntityData;
+import mobile.common.message.Field;
+import mobile.common.message.Item;
+import mobile.common.message.Message;
 import mobile.web.webxt.client.parser.Parser;
 import mobile.web.webxt.client.util.ConvertionManager;
 import mobile.web.webxt.client.windows.AlertDialog;

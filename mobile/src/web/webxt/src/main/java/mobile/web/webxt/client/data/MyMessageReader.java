@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mobile.message.message.EntityData;
-import mobile.message.message.Field;
-import mobile.message.message.Item;
-import mobile.message.message.Message;
+import mobile.common.message.EntityData;
+import mobile.common.message.Field;
+import mobile.common.message.Item;
+import mobile.common.message.Message;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -44,7 +44,7 @@ public final class MyMessageReader {
 		for (EntityData data : msg.getEntityDataList()) {
 			for (Item item : data.getItemList()) {
 				for (Field field : item.getFieldList()) {
-					mrfields.put(data.getId() + FS 
+					mrfields.put(data.getDataId() + FS 
 							+ field.getName() + FS
 							+ item.getNumber(), field.getValue());
 				}

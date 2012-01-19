@@ -1,6 +1,11 @@
 package mobile.tools.common.convertion;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+
+import mobile.common.tools.Format;
+import mobile.tools.common.Log;
 
 /**
  * Clase que entrega los distintos formatos de fechas.
@@ -8,76 +13,43 @@ import java.text.SimpleDateFormat;
  */
 public final class FormatDates {
 
-	/**
-	 * Intancia Singleton
-	 */
-	private static FormatDates instance = null;
+	private static SimpleDateFormat formatDate = new SimpleDateFormat(Format.DATE);
+	private static SimpleDateFormat formatTime = new SimpleDateFormat(Format.TIME);
+	private static SimpleDateFormat formatTimestamp = new SimpleDateFormat(Format.TIMESTAMP);
+	private static SimpleDateFormat formatHour = new SimpleDateFormat(Format.HOUR);
+	private static SimpleDateFormat formatMinute = new SimpleDateFormat(Format.MINUTE);
+	private static NumberFormat formatCurrency = new DecimalFormat(Format.CURRENCY);
+	private static SimpleDateFormat formatFile = new SimpleDateFormat(Format.FILE);
 
-	/**
-	 * Obtiene el singleton
-	 * 
-	 * @return Referencia al singleton
-	 */
-	public static FormatDates getInstance() {
-		synchronized (FormatDates.class) {
-
-			if (instance == null) {
-				instance = new FormatDates();
-			}
-		}
-		return instance;
-	}
-
-	/**
-	 * Crea una Instancia de FormatDates
-	 */
 	private FormatDates() {
+		Log.getInstance().info("Create instace of Formatter class");
 	}
 
-	/**
-	 * Obtiene el formateador de un conteo de tiempo en String
-	 * 
-	 * @return Formateador.
-	 * @throws Exception
-	 */
-	public SimpleDateFormat getTimeCountFormat() {
-		return new SimpleDateFormat("mm:ss.SSS");
+	public static SimpleDateFormat getDateFormat() {
+		return formatDate;
 	}
 
-	/**
-	 * Obtiene el formateador de Horas para su transaporte en String
-	 * 
-	 */
-	public SimpleDateFormat getTimeFormat() throws Exception {
-		return new SimpleDateFormat("HH:mm:ss");
+	public static SimpleDateFormat getTimeFormat() {
+		return formatTime;
 	}
 
-	/**
-	 * Obtiene el Formateador para Date
-	 */
-	public SimpleDateFormat getDateFormat() {
-		return new SimpleDateFormat("yyyy-MM-dd");
+	public static SimpleDateFormat getTimestampFormat() {
+		return formatTimestamp;
 	}
 
-	/**
-	 * Obtiene el Formateador para DateTime
-	 */
-	public SimpleDateFormat getDatetimeFormat() throws Exception {
-		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+	public static SimpleDateFormat getHourFormat() {
+		return formatHour;
 	}
 
-	/**
-	 * Obtiene el formateador de Timestamps para su transaporte en String
-	 */
-	public SimpleDateFormat getTimestampFormat() throws Exception {
-		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	public static SimpleDateFormat getMinuteFormat() {
+		return formatMinute;
 	}
 
-	/**
-	 * Obtiene el formateador de un anio.
-	 */
-	public SimpleDateFormat getYearFormat() throws Exception {
-		return new SimpleDateFormat("yyyy");
+	public static NumberFormat getCurrencyFormat() {
+		return formatCurrency;
+	}
+
+	public static SimpleDateFormat getFileFormat() {
+		return formatFile;
 	}
 }

@@ -27,14 +27,10 @@ public final class Log {
 		
 	}
 
-	public static Logger getInstance() {
+	public synchronized static Logger getInstance() {
 		if (INSTANCE == null) {
 			new Log();
 		}
 		return INSTANCE;
-	}
-	
-	public static void main(String[] args) {
-		Log.getInstance().warn("prueba");
 	}
 }

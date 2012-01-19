@@ -1,6 +1,6 @@
 package mobile.web.webxt.client.form.widgetsgrid;
 
-import mobile.message.message.Item;
+import mobile.common.message.Item;
 
 import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;

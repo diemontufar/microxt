@@ -10,7 +10,8 @@
 	<inherits name='com.extjs.gxt.ui.GXT' />
 	
 	<!-- Mobile inherits -->
-	<inherits name="mobile.message.MSG" />
+	<inherits name="mobile.common.Message" />
+ 	<inherits name="mobile.common.Tools" />
 	<inherits name='com.google.gwt.maps.GoogleMaps' />
 
 	<!-- Specify the app entry point class. -->

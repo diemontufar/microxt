@@ -1,6 +1,6 @@
 package mobile.web.webxt.client.data;
 
-import mobile.message.message.Message;
+import mobile.common.message.Message;
 
 public class MyMessageWrapper {
 	private Message msg;

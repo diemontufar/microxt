@@ -8,8 +8,16 @@ import java.sql.Clob;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
-public class ConvertionManager {
+import mobile.common.tools.Format;
+import mobile.tools.common.Log;
+
+public class Converter {
+	
+	private Converter(){
+		Log.getInstance().info("Create instace of Converter class");
+	}
 
 	private static Date convertDate(String sValue) throws ParseException {
 		String value = sValue;
@@ -17,8 +25,8 @@ public class ConvertionManager {
 		if (d.length == 2) {
 			value = d[0];
 		}
-		return new Date(FormatDates.getInstance().getDateFormat()
-				.parse(value.replaceAll("\\/", "-")).getTime());
+		SimpleDateFormat format = new SimpleDateFormat(Format.DATE);
+		return new Date(format.parse(value.replaceAll("\\/", "-")).getTime());
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -31,7 +39,7 @@ public class ConvertionManager {
 	            c = String.class;
 	        }
 	        
-	        return (T) ConvertionManager.convertObject(value, c);
+	        return (T) Converter.convertObject(value, c);
 		} catch (Exception e) {
 			throw new Error(e);
 		}
@@ -49,7 +57,7 @@ public class ConvertionManager {
 	 */
 	public static <T> T convertObject(Object pValue, Class<T> pType) {
 		try {
-			return ConvertionManager.convertObject(pValue, pType, false);
+			return Converter.convertObject(pValue, pType, false);
 		} catch (Exception e) {
 			throw new Error(e);
 		}
@@ -91,7 +99,7 @@ public class ConvertionManager {
 		}
 		
 		try {
-			T oVal = ConvertionManager.convertValueByType(value, pType);
+			T oVal = Converter.convertValueByType(value, pType);
 			if (oVal != null) {
 				return oVal;
 			}
@@ -113,17 +121,16 @@ public class ConvertionManager {
 			val = d[0] + " " + d[1].replaceAll("-", ":");
 		}
 		try {
-			Timestamp times = new Timestamp(FormatDates.getInstance()
-					.getTimestampFormat().parse(val).getTime());
-			String sTimestamp = FormatDates.getInstance()
-					.getTimestampFormat().format(times);
+			SimpleDateFormat format = new SimpleDateFormat(Format.TIMESTAMP);
+			Timestamp times = new Timestamp(format.parse(val).getTime());
+			String sTimestamp = format.format(times);
 			if (sTimestamp.compareTo(val) == 0) {
 				return times;
 			}
 			return Timestamp.valueOf(val);
 		} catch (Exception e) {
-			return new Timestamp(FormatDates.getInstance()
-					.getDateFormat().parse(val).getTime());
+			SimpleDateFormat format = new SimpleDateFormat(Format.DATE);
+			return new Timestamp(format.parse(val).getTime());
 		}
 	}
 
@@ -146,19 +153,19 @@ public class ConvertionManager {
 		}
 		if ((pType.getName().compareTo(Blob.class.getName()) == 0)
 				|| (value instanceof byte[])) {
-			return (T) ConvertionManager.manageBlob(value);
+			return (T) Converter.manageBlob(value);
 		}
 		String sValue = value.toString();
-		sValue = ConvertionManager.correctNumberValue(sValue, pType);
-		T oVal = ConvertionManager.valFromConstructor(pType, sValue);
+		sValue = Converter.correctNumberValue(sValue, pType);
+		T oVal = Converter.valFromConstructor(pType, sValue);
 		if (oVal != null) {
 			return oVal;
 		}
 		if (pType.getName().compareTo(Timestamp.class.getName()) == 0) {
-			return (T) ConvertionManager.convertTimestamp(sValue);
+			return (T) Converter.convertTimestamp(sValue);
 		}
 		if (pType.getName().compareTo(Date.class.getName()) == 0) {
-			return (T) ConvertionManager.convertDate(sValue);
+			return (T) Converter.convertDate(sValue);
 		}
 
 		if (pType.getName().compareTo(Clob.class.getName()) == 0) {
