@@ -5,19 +5,19 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import mobile.core.structure.processor.GeneralProcessor;
+import mobile.common.message.EntityData;
+import mobile.common.message.Field;
+import mobile.common.message.Item;
+import mobile.common.message.Message;
 import mobile.entity.manager.JPManager;
 import mobile.entity.security.Module;
 import mobile.entity.security.Subsystem;
-import mobile.message.message.EntityData;
-import mobile.message.message.Field;
-import mobile.message.message.Item;
-import mobile.message.message.Message;
 import mobile.tools.common.param.LocalParameter;
 import mobile.tools.common.param.ParameterEnum;
-import mobile.tools.common.param.PersistenceTime;
+import mobile.tools.common.param.Timer;
+import mobile.tools.common.structure.GeneralProcessor;
 
-public class QueryMainMenuItems implements GeneralProcessor {
+public class MenuGenerator implements GeneralProcessor {
 
 	private final String QRY_SUBSYSTEMS = "Select s from Subsystem s where "
 			+ "s.pk.subsystemId in "
@@ -62,7 +62,7 @@ public class QueryMainMenuItems implements GeneralProcessor {
 				LocalParameter.get(ParameterEnum.COMPANY, String.class));
 		query.setParameter("languageId",
 				LocalParameter.get(ParameterEnum.LANGUAGE, String.class));
-		query.setParameter("expired", PersistenceTime.getExpiredTime());
+		query.setParameter("expired", Timer.getExpiredTime());
 
 		List<Subsystem> lSubsystems = query.getResultList();
 
@@ -116,7 +116,7 @@ public class QueryMainMenuItems implements GeneralProcessor {
 				LocalParameter.get(ParameterEnum.COMPANY, String.class));
 		query.setParameter("languageId",
 				LocalParameter.get(ParameterEnum.LANGUAGE, String.class));
-		query.setParameter("expired", PersistenceTime.getExpiredTime());
+		query.setParameter("expired", Timer.getExpiredTime());
 
 		List<mobile.entity.security.Process> lProcesses = query.getResultList();
 
