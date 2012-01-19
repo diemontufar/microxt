@@ -1,0 +1,15 @@
+1. Crear BD de generacion. 
+   Ejemplo microxt_0. 
+   La unidad de persistencia <generador> debe apuntar hacia esta BD.
+2. Sobre microxt_0 ejecutar 
+   /sql/model/create_common.sql (modelo del paquete common)
+   /sql/data/1.common.sql (parametrizacion del paquete common)
+3. Guardar los csv del modelo 
+   entity.csv, field.csv, relationship.csv
+4. Parametrizar la variable <OUTPUT_FOLDER> de la clase GeneratorFromCsv
+5. Ejecutar GeneratorFromCsv. 
+   Esto creara en la carpeta <OUTPUT_FOLDER> los sql de generacion create.sql y drop.sql, ademas de las persistencias
+6. Crear BD de desarrollo. Ejemplo microxt
+7. Ejecutar create.sql
+8. Ejecutar los scripts de parametrizacion /sql/data/
+
