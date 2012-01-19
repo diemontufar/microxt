@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mobile.message.message.EntityData;
-import mobile.message.message.Field;
-import mobile.message.message.Item;
-import mobile.message.message.Message;
-import mobile.message.message.ResponseData;
+import mobile.common.message.EntityData;
+import mobile.common.message.Field;
+import mobile.common.message.Item;
+import mobile.common.message.Message;
+import mobile.common.message.ResponseData;
 import mobile.web.webxt.client.data.MyProcessConfig.ProcessType;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.ConvertionManager;

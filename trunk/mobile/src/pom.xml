@@ -7,7 +7,7 @@
     <name>MOBILE</name>
     <modules>
         <module>tools</module>
-	<module>message</module>
+	<module>common</module>
         <module>core</module>
         <module>logic</module>
         <module>entity</module>

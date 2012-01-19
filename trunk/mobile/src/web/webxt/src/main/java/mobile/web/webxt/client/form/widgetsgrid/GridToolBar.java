@@ -1,6 +1,6 @@
 package mobile.web.webxt.client.form.widgetsgrid;
 
-import mobile.message.message.Item;
+import mobile.common.message.Item;
 import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.resources.Resources;
 

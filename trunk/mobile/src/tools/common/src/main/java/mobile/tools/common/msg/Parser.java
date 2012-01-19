@@ -6,10 +6,10 @@ import java.util.Iterator;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import mobile.message.message.Data;
-import mobile.message.message.Field;
-import mobile.message.message.Item;
-import mobile.message.message.Message;
+import mobile.common.message.Data;
+import mobile.common.message.Field;
+import mobile.common.message.Item;
+import mobile.common.message.Message;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
@@ -60,7 +60,7 @@ public class Parser {
 			Element element = (Element) node;
 			String id = element.getAttribute("id");
 			if (id != null && id.compareTo("") != 0) {
-				data.setId(id.trim());
+				data.setDataId(id.trim());
 			}
 			NodeList nodeList = element.getChildNodes();
 			for (int i = 0; i < nodeList.getLength(); i++) {
@@ -86,7 +86,7 @@ public class Parser {
 			if (key.compareTo("-id") == 0) {
 				String id = jsonObject.getString(key);
 				if (id != null && id.compareTo("") != 0) {
-					data.setId(id.trim());
+					data.setDataId(id.trim());
 				}
 			} else {
 				if (key.compareTo("item") != 0) {

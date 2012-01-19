@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mobile.message.message.Item;
+import mobile.common.message.Item;
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.form.widgets.ComboForm;

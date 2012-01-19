@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import mobile.message.message.Message;
+import mobile.common.message.Message;
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyMessageReader;
 import mobile.web.webxt.client.data.MyProcessConfig;

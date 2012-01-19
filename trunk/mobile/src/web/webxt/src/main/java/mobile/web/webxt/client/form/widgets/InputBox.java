@@ -27,6 +27,10 @@ public class InputBox extends TextField<String> implements PersistentField {
 		getInputEl().setElementAttribute("maxLength", getMaxLength());
 	}
 	
+	public InputBox(){
+		super();
+	}
+	
 	public InputBox(int width) {
 		this.setWidth(width);
 	}

@@ -1,5 +1,7 @@
 package mobile.web.webxt.client.devform;
 
+import java.util.Date;
+
 import mobile.web.webxt.client.form.MyFormPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.widgets.ComboForm;
@@ -341,6 +343,19 @@ public class C301 extends MyGeneralForm {
 			}
 		}));
 
+		// Hidden fields
+		InputBox assessor = new InputBox();
+		assessor.setVisible(false);
+		assessor.setPersistentInfo("Solicitude:assessor:1");
+		assessor.setValue("ADMIN");
+		
+		InputBox solicitudeDate = new InputBox();
+		solicitudeDate.setVisible(false);
+		solicitudeDate.setPersistentInfo("Solicitude:solicitudeDate:1");
+		solicitudeDate.setValue("ADMIN");
+		
+		
+		
 		add(form);
 	}
 }
