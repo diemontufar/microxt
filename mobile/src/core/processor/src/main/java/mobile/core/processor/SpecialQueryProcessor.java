@@ -8,19 +8,19 @@ import java.util.Map;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import mobile.core.structure.processor.GeneralProcessor;
+import mobile.common.message.EntityData;
+import mobile.common.message.Field;
+import mobile.common.message.Item;
+import mobile.common.message.Message;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityTable;
 import mobile.entity.manager.JPManager;
-import mobile.message.message.EntityData;
-import mobile.message.message.Field;
-import mobile.message.message.Item;
-import mobile.message.message.Message;
 import mobile.tools.common.Log;
-import mobile.tools.common.convertion.ConvertionManager;
+import mobile.tools.common.convertion.Converter;
 import mobile.tools.common.param.LocalParameter;
 import mobile.tools.common.param.ParameterEnum;
-import mobile.tools.common.param.PersistenceTime;
+import mobile.tools.common.param.Timer;
+import mobile.tools.common.structure.GeneralProcessor;
 
 import org.apache.log4j.Logger;
 
@@ -76,10 +76,10 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 		}
 
 		// From
-		sql.append(" from " + toSqlName(data.getId()) + " a");
+		sql.append(" from " + toSqlName(data.getDataId()) + " a");
 
 		//Get fields information
-		Map<String,String> mtypes = getMapTypeFields(data.getId());
+		Map<String,String> mtypes = getMapTypeFields(data.getDataId());
 				
 		// Filters
 		List<Object> lParameters = new ArrayList<Object>();
@@ -102,7 +102,7 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 					if(mtypes.get(part[0])!=null && mtypes.get(part[0]).compareTo("Boolean")==0){
 						sql.append("a." + part[0].replaceAll("pk_", "pk.")
 								+ part[1] + " ?" + (filtersCounter + 1));
-						lParameters.add(ConvertionManager.convertObject(part[2], Boolean.class));
+						lParameters.add(Converter.convertObject(part[2], Boolean.class));
 					}else{
 						sql.append("a." + part[0].replaceAll("pk_", "pk.")
 								+ part[1] + " ?" + (filtersCounter + 1));
@@ -114,7 +114,7 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 		}
 
 		// Automatic filters
-		EntityTable entityTable = JPManager.getEntityTable(data.getId());
+		EntityTable entityTable = JPManager.getEntityTable(data.getDataId());
 		if (entityTable.getHistoricalData()) {
 			if (filtersCounter == 0) {
 				sql.append(" where ");
@@ -123,7 +123,7 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 				sql.append(" and ");
 			}
 			sql.append("a.EXPIRED = ?" + (filtersCounter + 1));
-			lParameters.add(PersistenceTime.getExpiredTime());
+			lParameters.add(Timer.getExpiredTime());
 			filtersCounter++;
 		}
 		if (entityTable.getMultiCompany()) {

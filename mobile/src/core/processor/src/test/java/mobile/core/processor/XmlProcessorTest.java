@@ -10,8 +10,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import mobile.common.message.Message;
 import mobile.entity.manager.JPManagerFactory;
-import mobile.message.message.Message;
 import mobile.tools.common.FileUtil;
 import mobile.tools.common.Log;
 import mobile.tools.common.msg.Parser;
