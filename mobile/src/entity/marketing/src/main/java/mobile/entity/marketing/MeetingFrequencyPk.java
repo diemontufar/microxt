@@ -11,8 +11,8 @@ import mobile.entity.schema.HistoricalKey;
  * The primary key class for the MEETING_FREQUENCY database table.
  */
 @Embeddable
-public class MeetingFrequencyPk extends AbstractCompanyLanguageHistoricalKey
-		implements MulticompanyKey, MultilanguageKey, HistoricalKey {
+public class MeetingFrequencyPk extends AbstractCompanyLanguageHistoricalKey implements MulticompanyKey,
+		MultilanguageKey, HistoricalKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -38,7 +38,7 @@ public class MeetingFrequencyPk extends AbstractCompanyLanguageHistoricalKey
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
-				+ this.getExpired() + ", " + this.getMeetingFrequencyId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getExpired() + ", "
+				+ this.getMeetingFrequencyId() + "]";
 	}
 }

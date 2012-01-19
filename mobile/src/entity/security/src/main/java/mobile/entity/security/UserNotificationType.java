@@ -11,8 +11,7 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "USER_NOTIFICATION_TYPE")
-public class UserNotificationType extends AbstractEntity implements
-		Multilanguage {
+public class UserNotificationType extends AbstractEntity implements Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -66,7 +65,6 @@ public class UserNotificationType extends AbstractEntity implements
 
 	@Override
 	public String toString() {
-		return "USER_NOTIFICATION_TYPE:[" + this.getPk().toString() + ", "
-				+ this.getName() + "]";
+		return "USER_NOTIFICATION_TYPE:[" + this.getPk().toString() + ", " + this.getName() + "]";
 	}
 }

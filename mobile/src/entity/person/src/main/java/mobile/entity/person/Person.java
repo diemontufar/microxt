@@ -14,8 +14,7 @@ import mobile.entity.schema.OptimisticLocking;
  */
 @Entity
 @Table(name = "PERSON")
-public class Person extends AbstractHistoricalLocking implements Multicompany,
-		Historical, OptimisticLocking {
+public class Person extends AbstractHistoricalLocking implements Multicompany, Historical, OptimisticLocking {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -100,10 +99,8 @@ public class Person extends AbstractHistoricalLocking implements Multicompany,
 		this.pk = pk;
 	}
 
-	public Person(PersonPk pk, String name, String lastName,
-			String identificationTypeId, String identificationNumber,
-			Date dateOfBirth, String genderTypeId, String civilStatusId,
-			String countryId) {
+	public Person(PersonPk pk, String name, String lastName, String identificationTypeId, String identificationNumber,
+			Date dateOfBirth, String genderTypeId, String civilStatusId, String countryId) {
 		this.pk = pk;
 		this.name = name;
 		this.lastName = lastName;
@@ -233,14 +230,10 @@ public class Person extends AbstractHistoricalLocking implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "PERSON:[" + this.getPk().toString() + ", " + this.getCreated()
-				+ ", " + this.getName() + ", " + this.getLastName() + ", "
-				+ this.getSecondLastName() + ", "
-				+ this.getIdentificationTypeId() + ", "
-				+ this.getIdentificationNumber() + ", " + this.getDateOfBirth()
-				+ ", " + this.getGenderTypeId() + ", "
-				+ this.getCivilStatusId() + ", " + this.getCountryId() + ", "
-				+ this.getProvinceId() + ", " + this.getCityId() + ", "
-				+ this.getProfessionTypeId() + ", " + this.getVersion() + "]";
+		return "PERSON:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getName() + ", "
+				+ this.getLastName() + ", " + this.getSecondLastName() + ", " + this.getIdentificationTypeId() + ", "
+				+ this.getIdentificationNumber() + ", " + this.getDateOfBirth() + ", " + this.getGenderTypeId() + ", "
+				+ this.getCivilStatusId() + ", " + this.getCountryId() + ", " + this.getProvinceId() + ", "
+				+ this.getCityId() + ", " + this.getProfessionTypeId() + ", " + this.getVersion() + "]";
 	}
 }

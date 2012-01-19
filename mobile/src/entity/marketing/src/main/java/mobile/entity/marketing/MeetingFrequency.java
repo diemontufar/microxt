@@ -13,8 +13,7 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "MEETING_FREQUENCY")
-public class MeetingFrequency extends AbstractHistorical implements
-		Multicompany, Multilanguage, Historical {
+public class MeetingFrequency extends AbstractHistorical implements Multicompany, Multilanguage, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -82,8 +81,7 @@ public class MeetingFrequency extends AbstractHistorical implements
 
 	@Override
 	public String toString() {
-		return "MEETING_FREQUENCY:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + ", " + this.getFrequency() + ", "
-				+ this.getObservations() + "]";
+		return "MEETING_FREQUENCY:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getFrequency()
+				+ ", " + this.getObservations() + "]";
 	}
 }

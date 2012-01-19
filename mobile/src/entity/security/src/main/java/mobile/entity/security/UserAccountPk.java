@@ -10,8 +10,7 @@ import mobile.entity.schema.HistoricalKey;
  * The primary key class for the USER_ACCOUNT database table.
  */
 @Embeddable
-public class UserAccountPk extends AbstractCompanyHistoricalKey implements
-		MulticompanyKey, HistoricalKey {
+public class UserAccountPk extends AbstractCompanyHistoricalKey implements MulticompanyKey, HistoricalKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -37,7 +36,6 @@ public class UserAccountPk extends AbstractCompanyHistoricalKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getExpired() + ", "
-				+ this.getUserId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getExpired() + ", " + this.getUserId() + "]";
 	}
 }

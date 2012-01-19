@@ -39,8 +39,7 @@ public class DistrictIdPk extends AbstractEntityKey implements GeneralEntityKey 
 	public DistrictIdPk() {
 	}
 
-	public DistrictIdPk(String countryId, String provinceId, String cityId,
-			String districtId) {
+	public DistrictIdPk(String countryId, String provinceId, String cityId, String districtId) {
 		this.countryId = countryId;
 		this.provinceId = provinceId;
 		this.cityId = cityId;
@@ -81,7 +80,7 @@ public class DistrictIdPk extends AbstractEntityKey implements GeneralEntityKey 
 
 	@Override
 	public String toString() {
-		return "[" + this.getCountryId() + ", " + this.getProvinceId() + ", "
-				+ this.getCityId() + ", " + this.getDistrictId() + "]";
+		return "[" + this.getCountryId() + ", " + this.getProvinceId() + ", " + this.getCityId() + ", "
+				+ this.getDistrictId() + "]";
 	}
 }

@@ -11,8 +11,7 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "ZONE_ASESSOR")
-public class ZoneAsessor extends AbstractEntity implements Multicompany,
-		Multilanguage {
+public class ZoneAsessor extends AbstractEntity implements Multicompany, Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -61,7 +60,6 @@ public class ZoneAsessor extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "ZONE_ASESSOR:[" + this.getPk().toString() + ", "
-				+ this.getObservations() + "]";
+		return "ZONE_ASESSOR:[" + this.getPk().toString() + ", " + this.getObservations() + "]";
 	}
 }

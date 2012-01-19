@@ -12,8 +12,7 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "USER_AUTHORIZATION")
-public class UserAuthorization extends AbstractHistorical implements
-		Multicompany, Historical {
+public class UserAuthorization extends AbstractHistorical implements Multicompany, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -48,7 +47,6 @@ public class UserAuthorization extends AbstractHistorical implements
 
 	@Override
 	public String toString() {
-		return "USER_AUTHORIZATION:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + "]";
+		return "USER_AUTHORIZATION:[" + this.getPk().toString() + ", " + this.getCreated() + "]";
 	}
 }

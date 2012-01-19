@@ -11,8 +11,7 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "PROFILE")
-public class Profile extends AbstractEntity implements Multicompany,
-		Multilanguage {
+public class Profile extends AbstractEntity implements Multicompany, Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -80,7 +79,6 @@ public class Profile extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "PROFILE:[" + this.getPk().toString() + ", " + this.getName()
-				+ ", " + this.getDescription() + "]";
+		return "PROFILE:[" + this.getPk().toString() + ", " + this.getName() + ", " + this.getDescription() + "]";
 	}
 }

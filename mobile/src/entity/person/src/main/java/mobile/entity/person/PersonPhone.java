@@ -13,8 +13,7 @@ import mobile.entity.schema.OptimisticLocking;
  */
 @Entity
 @Table(name = "PERSON_PHONE")
-public class PersonPhone extends AbstractHistoricalLocking implements
-		Multicompany, Historical, OptimisticLocking {
+public class PersonPhone extends AbstractHistoricalLocking implements Multicompany, Historical, OptimisticLocking {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -45,8 +44,7 @@ public class PersonPhone extends AbstractHistoricalLocking implements
 		this.pk = pk;
 	}
 
-	public PersonPhone(PersonPhonePk pk, String phoneTypeId, String areaCode,
-			String phoneNumber) {
+	public PersonPhone(PersonPhonePk pk, String phoneTypeId, String areaCode, String phoneNumber) {
 		this.pk = pk;
 		this.phoneTypeId = phoneTypeId;
 		this.areaCode = areaCode;
@@ -99,9 +97,7 @@ public class PersonPhone extends AbstractHistoricalLocking implements
 
 	@Override
 	public String toString() {
-		return "PERSON_PHONE:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + ", " + this.getPhoneTypeId() + ", "
-				+ this.getAreaCode() + ", " + this.getPhoneNumber() + ", "
-				+ this.getVersion() + "]";
+		return "PERSON_PHONE:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getPhoneTypeId()
+				+ ", " + this.getAreaCode() + ", " + this.getPhoneNumber() + ", " + this.getVersion() + "]";
 	}
 }

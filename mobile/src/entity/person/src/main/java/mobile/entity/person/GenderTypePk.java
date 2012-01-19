@@ -9,8 +9,7 @@ import mobile.entity.schema.MultilanguageKey;
  * The primary key class for the GENDER_TYPE database table.
  */
 @Embeddable
-public class GenderTypePk extends AbstractLanguageKey implements
-		MultilanguageKey {
+public class GenderTypePk extends AbstractLanguageKey implements MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	/**

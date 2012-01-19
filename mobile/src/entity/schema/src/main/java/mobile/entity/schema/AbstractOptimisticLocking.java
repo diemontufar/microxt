@@ -5,8 +5,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
 @MappedSuperclass
-public abstract class AbstractOptimisticLocking extends AbstractEntity
-		implements OptimisticLocking {
+public abstract class AbstractOptimisticLocking extends AbstractEntity implements OptimisticLocking {
 	private static final long serialVersionUID = 1L;
 
 	@Version

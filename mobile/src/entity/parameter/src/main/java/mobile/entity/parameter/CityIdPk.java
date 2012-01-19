@@ -65,7 +65,6 @@ public class CityIdPk extends AbstractEntityKey implements GeneralEntityKey {
 
 	@Override
 	public String toString() {
-		return "[" + this.getCountryId() + ", " + this.getProvinceId() + ", "
-				+ this.getCityId() + "]";
+		return "[" + this.getCountryId() + ", " + this.getProvinceId() + ", " + this.getCityId() + "]";
 	}
 }

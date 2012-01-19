@@ -12,8 +12,7 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "PROCESS")
-public class Process extends AbstractHistorical implements Multicompany,
-		Multilanguage, Historical {
+public class Process extends AbstractHistorical implements Multicompany, Multilanguage, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -56,8 +55,7 @@ public class Process extends AbstractHistorical implements Multicompany,
 		this.pk = pk;
 	}
 
-	public Process(ProcessPk pk, String name, Boolean enable, Boolean menu,
-			String url) {
+	public Process(ProcessPk pk, String name, Boolean enable, Boolean menu, String url) {
 		this.pk = pk;
 		this.name = name;
 		this.enable = enable;
@@ -127,9 +125,7 @@ public class Process extends AbstractHistorical implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "PROCESS:[" + this.getPk().toString() + ", " + this.getCreated()
-				+ ", " + this.getName() + ", " + this.getEnable() + ", "
-				+ this.getMenu() + ", " + this.getUrl() + ", "
-				+ this.getDatafileId() + "]";
+		return "PROCESS:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getName() + ", "
+				+ this.getEnable() + ", " + this.getMenu() + ", " + this.getUrl() + ", " + this.getDatafileId() + "]";
 	}
 }

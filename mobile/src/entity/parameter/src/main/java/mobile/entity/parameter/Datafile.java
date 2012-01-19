@@ -15,8 +15,7 @@ import mobile.entity.schema.OptimisticLocking;
  */
 @Entity
 @Table(name = "DATAFILE")
-public class Datafile extends AbstractHistoricalLocking implements
-		Multicompany, Historical, OptimisticLocking {
+public class Datafile extends AbstractHistoricalLocking implements Multicompany, Historical, OptimisticLocking {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -127,10 +126,8 @@ public class Datafile extends AbstractHistoricalLocking implements
 
 	@Override
 	public String toString() {
-		return "DATAFILE:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + ", " + this.getDatafileTypeId() + ", "
-				+ this.getBinaryPath() + ", " + this.getBinaryBytes() + ", "
-				+ this.getBinaryObject() + ", " + this.getCharacterData()
-				+ ", " + this.getVersion() + "]";
+		return "DATAFILE:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getDatafileTypeId()
+				+ ", " + this.getBinaryPath() + ", " + this.getBinaryBytes() + ", " + this.getBinaryObject() + ", "
+				+ this.getCharacterData() + ", " + this.getVersion() + "]";
 	}
 }

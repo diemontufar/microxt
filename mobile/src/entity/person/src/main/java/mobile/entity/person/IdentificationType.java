@@ -12,8 +12,7 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "IDENTIFICATION_TYPE")
-public class IdentificationType extends AbstractEntity implements Multicompany,
-		Multilanguage {
+public class IdentificationType extends AbstractEntity implements Multicompany, Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -67,7 +66,6 @@ public class IdentificationType extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "IDENTIFICATION_TYPE:[" + this.getPk().toString() + ", "
-				+ this.getName() + "]";
+		return "IDENTIFICATION_TYPE:[" + this.getPk().toString() + ", " + this.getName() + "]";
 	}
 }

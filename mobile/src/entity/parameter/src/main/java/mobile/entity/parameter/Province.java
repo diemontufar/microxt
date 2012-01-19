@@ -11,8 +11,7 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "PROVINCE")
-public class Province extends AbstractEntity implements Multicompany,
-		Multilanguage {
+public class Province extends AbstractEntity implements Multicompany, Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -66,7 +65,6 @@ public class Province extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "PROVINCE:[" + this.getPk().toString() + ", " + this.getName()
-				+ "]";
+		return "PROVINCE:[" + this.getPk().toString() + ", " + this.getName() + "]";
 	}
 }

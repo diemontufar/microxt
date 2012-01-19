@@ -12,8 +12,7 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "USER_NOTIFICATION")
-public class UserNotification extends AbstractHistorical implements
-		Multicompany, Historical {
+public class UserNotification extends AbstractHistorical implements Multicompany, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -50,8 +49,7 @@ public class UserNotification extends AbstractHistorical implements
 		this.pk = pk;
 	}
 
-	public UserNotification(UserNotificationPk pk,
-			String userNotificationTypeId, String subject, String message,
+	public UserNotification(UserNotificationPk pk, String userNotificationTypeId, String subject, String message,
 			Boolean read) {
 		this.pk = pk;
 		this.userNotificationTypeId = userNotificationTypeId;
@@ -114,9 +112,8 @@ public class UserNotification extends AbstractHistorical implements
 
 	@Override
 	public String toString() {
-		return "USER_NOTIFICATION:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + ", " + this.getUserNotificationTypeId()
-				+ ", " + this.getSubject() + ", " + this.getMessage() + ", "
+		return "USER_NOTIFICATION:[" + this.getPk().toString() + ", " + this.getCreated() + ", "
+				+ this.getUserNotificationTypeId() + ", " + this.getSubject() + ", " + this.getMessage() + ", "
 				+ this.getRead() + "]";
 	}
 }

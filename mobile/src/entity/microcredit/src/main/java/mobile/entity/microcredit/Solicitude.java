@@ -20,8 +20,8 @@ import mobile.entity.schema.OptimisticLocking;
  */
 @Entity
 @Table(name = "SOLICITUDE")
-public class Solicitude extends AbstractHistoricalLocking implements
-		Multicompany, Multilanguage, Historical, OptimisticLocking {
+public class Solicitude extends AbstractHistoricalLocking implements Multicompany, Multilanguage, Historical,
+		OptimisticLocking {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -142,11 +142,9 @@ public class Solicitude extends AbstractHistoricalLocking implements
 		this.pk = pk;
 	}
 
-	public Solicitude(SolicitudePk pk, String assessor, Date solicitudeDate,
-			Date expirationDate, String productId, String statusId,
-			Integer numberRenewal, BigDecimal amount, Long term,
-			String quotaTypeId, Integer numberFees, String paymentFrequencyId,
-			String fundsDestinationId, String destinationDescription) {
+	public Solicitude(SolicitudePk pk, String assessor, Date solicitudeDate, Date expirationDate, String productId,
+			String statusId, Integer numberRenewal, BigDecimal amount, Long term, String quotaTypeId,
+			Integer numberFees, String paymentFrequencyId, String fundsDestinationId, String destinationDescription) {
 		this.pk = pk;
 		this.assessor = assessor;
 		this.solicitudeDate = solicitudeDate;
@@ -329,18 +327,13 @@ public class Solicitude extends AbstractHistoricalLocking implements
 
 	@Override
 	public String toString() {
-		return "SOLICITUDE:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + ", " + this.getAccount() + ", "
-				+ this.getAssessor() + ", " + this.getPartnerClient() + ", "
-				+ this.getGroupClient() + ", " + this.getSolicitudeDate()
-				+ ", " + this.getApprovalDate() + ", "
-				+ this.getDisbursementDate() + ", " + this.getExpirationDate()
-				+ ", " + this.getProductId() + ", " + this.getStatusId() + ", "
-				+ this.getNumberRenewal() + ", " + this.getAmount() + ", "
-				+ this.getTerm() + ", " + this.getQuotaTypeId() + ", "
-				+ this.getNumberFees() + ", " + this.getPaymentFrequencyId()
-				+ ", " + this.getFundsDestinationId() + ", "
-				+ this.getDestinationDescription() + ", " + this.getVersion()
+		return "SOLICITUDE:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getAccount() + ", "
+				+ this.getAssessor() + ", " + this.getPartnerClient() + ", " + this.getGroupClient() + ", "
+				+ this.getSolicitudeDate() + ", " + this.getApprovalDate() + ", " + this.getDisbursementDate() + ", "
+				+ this.getExpirationDate() + ", " + this.getProductId() + ", " + this.getStatusId() + ", "
+				+ this.getNumberRenewal() + ", " + this.getAmount() + ", " + this.getTerm() + ", "
+				+ this.getQuotaTypeId() + ", " + this.getNumberFees() + ", " + this.getPaymentFrequencyId() + ", "
+				+ this.getFundsDestinationId() + ", " + this.getDestinationDescription() + ", " + this.getVersion()
 				+ "]";
 	}
 }

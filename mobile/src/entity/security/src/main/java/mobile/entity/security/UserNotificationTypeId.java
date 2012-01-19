@@ -10,8 +10,7 @@ import mobile.entity.schema.GeneralEntityId;
  */
 @Entity
 @Table(name = "USER_NOTIFICATION_TYPE_ID")
-public class UserNotificationTypeId extends AbstractEntityId implements
-		GeneralEntityId {
+public class UserNotificationTypeId extends AbstractEntityId implements GeneralEntityId {
 	private static final long serialVersionUID = 1L;
 
 	/**

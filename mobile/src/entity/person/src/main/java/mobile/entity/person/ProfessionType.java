@@ -12,8 +12,7 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "PROFESSION_TYPE")
-public class ProfessionType extends AbstractEntity implements Multicompany,
-		Multilanguage {
+public class ProfessionType extends AbstractEntity implements Multicompany, Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -67,7 +66,6 @@ public class ProfessionType extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "PROFESSION_TYPE:[" + this.getPk().toString() + ", "
-				+ this.getName() + "]";
+		return "PROFESSION_TYPE:[" + this.getPk().toString() + ", " + this.getName() + "]";
 	}
 }

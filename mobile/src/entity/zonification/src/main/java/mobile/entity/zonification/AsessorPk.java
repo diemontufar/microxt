@@ -11,8 +11,8 @@ import mobile.entity.schema.HistoricalKey;
  * The primary key class for the ASESSOR database table.
  */
 @Embeddable
-public class AsessorPk extends AbstractCompanyLanguageHistoricalKey implements
-		MulticompanyKey, MultilanguageKey, HistoricalKey {
+public class AsessorPk extends AbstractCompanyLanguageHistoricalKey implements MulticompanyKey, MultilanguageKey,
+		HistoricalKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -38,7 +38,7 @@ public class AsessorPk extends AbstractCompanyLanguageHistoricalKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
-				+ this.getExpired() + ", " + this.getAsessorId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getExpired() + ", "
+				+ this.getAsessorId() + "]";
 	}
 }

@@ -9,8 +9,7 @@ import mobile.entity.schema.GeneralEntityKey;
  * The primary key class for the PRODUCT_ASESSOR_ID database table.
  */
 @Embeddable
-public class ProductAsessorIdPk extends AbstractEntityKey implements
-		GeneralEntityKey {
+public class ProductAsessorIdPk extends AbstractEntityKey implements GeneralEntityKey {
 	private static final long serialVersionUID = 1L;
 
 	/**

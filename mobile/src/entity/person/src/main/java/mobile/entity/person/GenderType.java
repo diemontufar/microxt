@@ -65,7 +65,6 @@ public class GenderType extends AbstractEntity implements Multilanguage {
 
 	@Override
 	public String toString() {
-		return "GENDER_TYPE:[" + this.getPk().toString() + ", "
-				+ this.getName() + "]";
+		return "GENDER_TYPE:[" + this.getPk().toString() + ", " + this.getName() + "]";
 	}
 }

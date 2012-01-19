@@ -6,8 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class AbstractCompanyHistoricalKey implements MulticompanyKey,
-		HistoricalKey {
+public abstract class AbstractCompanyHistoricalKey implements MulticompanyKey, HistoricalKey {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "COMPANY_ID", unique = true, nullable = false, length = 4)

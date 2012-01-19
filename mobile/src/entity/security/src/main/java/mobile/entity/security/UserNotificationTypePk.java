@@ -9,8 +9,7 @@ import mobile.entity.schema.MultilanguageKey;
  * The primary key class for the USER_NOTIFICATION_TYPE database table.
  */
 @Embeddable
-public class UserNotificationTypePk extends AbstractLanguageKey implements
-		MultilanguageKey {
+public class UserNotificationTypePk extends AbstractLanguageKey implements MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -36,7 +35,6 @@ public class UserNotificationTypePk extends AbstractLanguageKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getLanguageId() + ", "
-				+ this.getUserNotificationTypeId() + "]";
+		return "[" + this.getLanguageId() + ", " + this.getUserNotificationTypeId() + "]";
 	}
 }

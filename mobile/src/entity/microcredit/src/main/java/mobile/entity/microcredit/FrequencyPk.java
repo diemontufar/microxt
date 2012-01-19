@@ -10,8 +10,7 @@ import mobile.entity.schema.MultilanguageKey;
  * The primary key class for the FREQUENCY database table.
  */
 @Embeddable
-public class FrequencyPk extends AbstractCompanyLanguageKey implements
-		MulticompanyKey, MultilanguageKey {
+public class FrequencyPk extends AbstractCompanyLanguageKey implements MulticompanyKey, MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -37,7 +36,6 @@ public class FrequencyPk extends AbstractCompanyLanguageKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
-				+ this.getFrecuencyId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getFrecuencyId() + "]";
 	}
 }

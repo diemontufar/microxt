@@ -13,8 +13,7 @@ import mobile.entity.schema.OptimisticLocking;
  */
 @Entity
 @Table(name = "USER_ACCOUNT")
-public class UserAccount extends AbstractHistoricalLocking implements
-		Multicompany, Historical, OptimisticLocking {
+public class UserAccount extends AbstractHistoricalLocking implements Multicompany, Historical, OptimisticLocking {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -63,8 +62,8 @@ public class UserAccount extends AbstractHistoricalLocking implements
 		this.pk = pk;
 	}
 
-	public UserAccount(UserAccountPk pk, String name, String userTypeId,
-			String userStatusId, String languageId, String email) {
+	public UserAccount(UserAccountPk pk, String name, String userTypeId, String userStatusId, String languageId,
+			String email) {
 		this.pk = pk;
 		this.name = name;
 		this.userTypeId = userTypeId;
@@ -143,10 +142,8 @@ public class UserAccount extends AbstractHistoricalLocking implements
 
 	@Override
 	public String toString() {
-		return "USER_ACCOUNT:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + ", " + this.getName() + ", "
-				+ this.getUserTypeId() + ", " + this.getUserStatusId() + ", "
-				+ this.getLanguageId() + ", " + this.getEmail() + ", "
-				+ this.getPersonId() + ", " + this.getVersion() + "]";
+		return "USER_ACCOUNT:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getName() + ", "
+				+ this.getUserTypeId() + ", " + this.getUserStatusId() + ", " + this.getLanguageId() + ", "
+				+ this.getEmail() + ", " + this.getPersonId() + ", " + this.getVersion() + "]";
 	}
 }

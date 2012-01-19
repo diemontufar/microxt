@@ -10,8 +10,7 @@ import mobile.entity.schema.HistoricalKey;
  * The primary key class for the ROLE database table.
  */
 @Embeddable
-public class RolePk extends AbstractCompanyHistoricalKey implements
-		MulticompanyKey, HistoricalKey {
+public class RolePk extends AbstractCompanyHistoricalKey implements MulticompanyKey, HistoricalKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -47,8 +46,7 @@ public class RolePk extends AbstractCompanyHistoricalKey implements
 	public RolePk() {
 	}
 
-	public RolePk(String profileId, String subsystemId, String moduleId,
-			String processId, String dayId) {
+	public RolePk(String profileId, String subsystemId, String moduleId, String processId, String dayId) {
 		this.profileId = profileId;
 		this.subsystemId = subsystemId;
 		this.moduleId = moduleId;
@@ -98,9 +96,8 @@ public class RolePk extends AbstractCompanyHistoricalKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getExpired() + ", "
-				+ this.getProfileId() + ", " + this.getSubsystemId() + ", "
-				+ this.getModuleId() + ", " + this.getProcessId() + ", "
+		return "[" + this.getCompanyId() + ", " + this.getExpired() + ", " + this.getProfileId() + ", "
+				+ this.getSubsystemId() + ", " + this.getModuleId() + ", " + this.getProcessId() + ", "
 				+ this.getDayId() + "]";
 	}
 }

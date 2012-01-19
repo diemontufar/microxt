@@ -13,8 +13,7 @@ import mobile.entity.schema.OptimisticLocking;
  */
 @Entity
 @Table(name = "PERSON_DOCUMENT")
-public class PersonDocument extends AbstractHistoricalLocking implements
-		Multicompany, Historical, OptimisticLocking {
+public class PersonDocument extends AbstractHistoricalLocking implements Multicompany, Historical, OptimisticLocking {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -39,8 +38,7 @@ public class PersonDocument extends AbstractHistoricalLocking implements
 		this.pk = pk;
 	}
 
-	public PersonDocument(PersonDocumentPk pk, String documentTypeId,
-			Long datafileId) {
+	public PersonDocument(PersonDocumentPk pk, String documentTypeId, Long datafileId) {
 		this.pk = pk;
 		this.documentTypeId = documentTypeId;
 		this.datafileId = datafileId;
@@ -84,8 +82,7 @@ public class PersonDocument extends AbstractHistoricalLocking implements
 
 	@Override
 	public String toString() {
-		return "PERSON_DOCUMENT:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + ", " + this.getDocumentTypeId() + ", "
-				+ this.getDatafileId() + ", " + this.getVersion() + "]";
+		return "PERSON_DOCUMENT:[" + this.getPk().toString() + ", " + this.getCreated() + ", "
+				+ this.getDocumentTypeId() + ", " + this.getDatafileId() + ", " + this.getVersion() + "]";
 	}
 }
