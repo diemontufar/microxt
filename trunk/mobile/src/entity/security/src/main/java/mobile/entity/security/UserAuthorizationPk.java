@@ -10,8 +10,7 @@ import mobile.entity.schema.HistoricalKey;
  * The primary key class for the USER_AUTHORIZATION database table.
  */
 @Embeddable
-public class UserAuthorizationPk extends AbstractCompanyHistoricalKey implements
-		MulticompanyKey, HistoricalKey {
+public class UserAuthorizationPk extends AbstractCompanyHistoricalKey implements MulticompanyKey, HistoricalKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -47,8 +46,7 @@ public class UserAuthorizationPk extends AbstractCompanyHistoricalKey implements
 	public UserAuthorizationPk() {
 	}
 
-	public UserAuthorizationPk(String userId, String authorizerId,
-			String subsystemId, String moduleId, String processId) {
+	public UserAuthorizationPk(String userId, String authorizerId, String subsystemId, String moduleId, String processId) {
 		this.userId = userId;
 		this.authorizerId = authorizerId;
 		this.subsystemId = subsystemId;
@@ -98,9 +96,8 @@ public class UserAuthorizationPk extends AbstractCompanyHistoricalKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getExpired() + ", "
-				+ this.getUserId() + ", " + this.getAuthorizerId() + ", "
-				+ this.getSubsystemId() + ", " + this.getModuleId() + ", "
+		return "[" + this.getCompanyId() + ", " + this.getExpired() + ", " + this.getUserId() + ", "
+				+ this.getAuthorizerId() + ", " + this.getSubsystemId() + ", " + this.getModuleId() + ", "
 				+ this.getProcessId() + "]";
 	}
 }

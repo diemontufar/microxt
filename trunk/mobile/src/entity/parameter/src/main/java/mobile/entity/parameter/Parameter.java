@@ -11,8 +11,7 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "PARAMETER")
-public class Parameter extends AbstractHistorical implements Multicompany,
-		Historical {
+public class Parameter extends AbstractHistorical implements Multicompany, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -49,8 +48,7 @@ public class Parameter extends AbstractHistorical implements Multicompany,
 		this.pk = pk;
 	}
 
-	public Parameter(ParameterPk pk, String subsystemId, String dataTypeId,
-			String parameterValue, String description) {
+	public Parameter(ParameterPk pk, String subsystemId, String dataTypeId, String parameterValue, String description) {
 		this.pk = pk;
 		this.subsystemId = subsystemId;
 		this.dataTypeId = dataTypeId;
@@ -112,9 +110,7 @@ public class Parameter extends AbstractHistorical implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "PARAMETER:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + ", " + this.getSubsystemId() + ", "
-				+ this.getDataTypeId() + ", " + this.getParameterValue() + ", "
-				+ this.getDescription() + "]";
+		return "PARAMETER:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getSubsystemId() + ", "
+				+ this.getDataTypeId() + ", " + this.getParameterValue() + ", " + this.getDescription() + "]";
 	}
 }

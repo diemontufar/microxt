@@ -65,7 +65,6 @@ public class ProcessIdPk extends AbstractEntityKey implements GeneralEntityKey {
 
 	@Override
 	public String toString() {
-		return "[" + this.getSubsystemId() + ", " + this.getModuleId() + ", "
-				+ this.getProcessId() + "]";
+		return "[" + this.getSubsystemId() + ", " + this.getModuleId() + ", " + this.getProcessId() + "]";
 	}
 }

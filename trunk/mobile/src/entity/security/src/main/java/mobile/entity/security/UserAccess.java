@@ -14,8 +14,7 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "USER_ACCESS")
-public class UserAccess extends AbstractHistorical implements Multicompany,
-		Historical {
+public class UserAccess extends AbstractHistorical implements Multicompany, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -112,9 +111,7 @@ public class UserAccess extends AbstractHistorical implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "USER_ACCESS:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + ", " + this.getUserKey() + ", "
-				+ this.getLastChange() + ", " + this.getQuestion() + ", "
-				+ this.getAnswer() + "]";
+		return "USER_ACCESS:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getUserKey() + ", "
+				+ this.getLastChange() + ", " + this.getQuestion() + ", " + this.getAnswer() + "]";
 	}
 }

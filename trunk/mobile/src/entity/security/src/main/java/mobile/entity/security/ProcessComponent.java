@@ -42,8 +42,7 @@ public class ProcessComponent extends AbstractEntity implements Multicompany {
 		this.pk = pk;
 	}
 
-	public ProcessComponent(ProcessComponentPk pk, String componentId,
-			Boolean enable, Boolean authorize) {
+	public ProcessComponent(ProcessComponentPk pk, String componentId, Boolean enable, Boolean authorize) {
 		this.pk = pk;
 		this.componentId = componentId;
 		this.enable = enable;
@@ -96,8 +95,7 @@ public class ProcessComponent extends AbstractEntity implements Multicompany {
 
 	@Override
 	public String toString() {
-		return "PROCESS_COMPONENT:[" + this.getPk().toString() + ", "
-				+ this.getComponentId() + ", " + this.getEnable() + ", "
-				+ this.getAuthorize() + "]";
+		return "PROCESS_COMPONENT:[" + this.getPk().toString() + ", " + this.getComponentId() + ", " + this.getEnable()
+				+ ", " + this.getAuthorize() + "]";
 	}
 }

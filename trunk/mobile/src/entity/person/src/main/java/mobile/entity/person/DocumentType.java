@@ -12,8 +12,7 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "DOCUMENT_TYPE")
-public class DocumentType extends AbstractEntity implements Multicompany,
-		Multilanguage {
+public class DocumentType extends AbstractEntity implements Multicompany, Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -67,7 +66,6 @@ public class DocumentType extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "DOCUMENT_TYPE:[" + this.getPk().toString() + ", "
-				+ this.getName() + "]";
+		return "DOCUMENT_TYPE:[" + this.getPk().toString() + ", " + this.getName() + "]";
 	}
 }

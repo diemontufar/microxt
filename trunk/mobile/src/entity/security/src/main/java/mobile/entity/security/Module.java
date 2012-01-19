@@ -11,8 +11,7 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "MODULE")
-public class Module extends AbstractEntity implements Multicompany,
-		Multilanguage {
+public class Module extends AbstractEntity implements Multicompany, Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -66,7 +65,6 @@ public class Module extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "MODULE:[" + this.getPk().toString() + ", " + this.getName()
-				+ "]";
+		return "MODULE:[" + this.getPk().toString() + ", " + this.getName() + "]";
 	}
 }

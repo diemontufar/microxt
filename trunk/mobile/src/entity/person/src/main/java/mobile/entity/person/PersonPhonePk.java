@@ -10,8 +10,7 @@ import mobile.entity.schema.HistoricalKey;
  * The primary key class for the PERSON_PHONE database table.
  */
 @Embeddable
-public class PersonPhonePk extends AbstractCompanyHistoricalKey implements
-		MulticompanyKey, HistoricalKey {
+public class PersonPhonePk extends AbstractCompanyHistoricalKey implements MulticompanyKey, HistoricalKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -52,7 +51,7 @@ public class PersonPhonePk extends AbstractCompanyHistoricalKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getExpired() + ", "
-				+ this.getPersonId() + ", " + this.getPhoneSequence() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getExpired() + ", " + this.getPersonId() + ", "
+				+ this.getPhoneSequence() + "]";
 	}
 }

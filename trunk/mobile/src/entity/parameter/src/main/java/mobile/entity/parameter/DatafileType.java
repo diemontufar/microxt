@@ -67,7 +67,6 @@ public class DatafileType extends AbstractEntity implements GeneralEntity {
 
 	@Override
 	public String toString() {
-		return "DATAFILE_TYPE:[" + this.getPk().toString() + ", "
-				+ this.getName() + "]";
+		return "DATAFILE_TYPE:[" + this.getPk().toString() + ", " + this.getName() + "]";
 	}
 }

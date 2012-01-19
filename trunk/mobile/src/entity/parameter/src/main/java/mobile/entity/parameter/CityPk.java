@@ -10,8 +10,7 @@ import mobile.entity.schema.MultilanguageKey;
  * The primary key class for the CITY database table.
  */
 @Embeddable
-public class CityPk extends AbstractCompanyLanguageKey implements
-		MulticompanyKey, MultilanguageKey {
+public class CityPk extends AbstractCompanyLanguageKey implements MulticompanyKey, MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -67,8 +66,7 @@ public class CityPk extends AbstractCompanyLanguageKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
-				+ this.getCountryId() + ", " + this.getProvinceId() + ", "
-				+ this.getCityId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getCountryId() + ", "
+				+ this.getProvinceId() + ", " + this.getCityId() + "]";
 	}
 }

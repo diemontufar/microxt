@@ -4,8 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class AbstractCompanyLanguageKey extends AbstractEntityKey
-		implements MulticompanyKey, MultilanguageKey {
+public abstract class AbstractCompanyLanguageKey extends AbstractEntityKey implements MulticompanyKey, MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "COMPANY_ID", unique = true, nullable = false, length = 4)

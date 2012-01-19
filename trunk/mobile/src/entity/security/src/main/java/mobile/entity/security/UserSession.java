@@ -13,8 +13,7 @@ import mobile.entity.schema.OptimisticLocking;
  */
 @Entity
 @Table(name = "USER_SESSION")
-public class UserSession extends AbstractHistoricalLocking implements
-		Multicompany, Historical, OptimisticLocking {
+public class UserSession extends AbstractHistoricalLocking implements Multicompany, Historical, OptimisticLocking {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -68,8 +67,7 @@ public class UserSession extends AbstractHistoricalLocking implements
 
 	@Override
 	public String toString() {
-		return "USER_SESSION:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + ", " + this.getToken() + ", "
+		return "USER_SESSION:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getToken() + ", "
 				+ this.getVersion() + "]";
 	}
 }

@@ -13,8 +13,7 @@ import mobile.entity.schema.OptimisticLocking;
  */
 @Entity
 @Table(name = "PERSON_ADDRESS")
-public class PersonAddress extends AbstractHistoricalLocking implements
-		Multicompany, Historical, OptimisticLocking {
+public class PersonAddress extends AbstractHistoricalLocking implements Multicompany, Historical, OptimisticLocking {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -87,8 +86,7 @@ public class PersonAddress extends AbstractHistoricalLocking implements
 		this.pk = pk;
 	}
 
-	public PersonAddress(PersonAddressPk pk, String addressTypeId,
-			String firstStreet, String addressNumber) {
+	public PersonAddress(PersonAddressPk pk, String addressTypeId, String firstStreet, String addressNumber) {
 		this.pk = pk;
 		this.addressTypeId = addressTypeId;
 		this.firstStreet = firstStreet;
@@ -197,12 +195,10 @@ public class PersonAddress extends AbstractHistoricalLocking implements
 
 	@Override
 	public String toString() {
-		return "PERSON_ADDRESS:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + ", " + this.getAddressTypeId() + ", "
-				+ this.getFirstStreet() + ", " + this.getAddressNumber() + ", "
-				+ this.getSecondStreet() + ", " + this.getBuildingName() + ", "
-				+ this.getBuildingFloor() + ", " + this.getCountryId() + ", "
-				+ this.getProvinceId() + ", " + this.getCityId() + ", "
-				+ this.getAddressMap() + ", " + this.getVersion() + "]";
+		return "PERSON_ADDRESS:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getAddressTypeId()
+				+ ", " + this.getFirstStreet() + ", " + this.getAddressNumber() + ", " + this.getSecondStreet() + ", "
+				+ this.getBuildingName() + ", " + this.getBuildingFloor() + ", " + this.getCountryId() + ", "
+				+ this.getProvinceId() + ", " + this.getCityId() + ", " + this.getAddressMap() + ", "
+				+ this.getVersion() + "]";
 	}
 }

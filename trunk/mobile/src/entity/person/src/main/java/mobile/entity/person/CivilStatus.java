@@ -12,8 +12,7 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "CIVIL_STATUS")
-public class CivilStatus extends AbstractEntity implements Multicompany,
-		Multilanguage {
+public class CivilStatus extends AbstractEntity implements Multicompany, Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -67,7 +66,6 @@ public class CivilStatus extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "CIVIL_STATUS:[" + this.getPk().toString() + ", "
-				+ this.getName() + "]";
+		return "CIVIL_STATUS:[" + this.getPk().toString() + ", " + this.getName() + "]";
 	}
 }

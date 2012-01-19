@@ -4,8 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class AbstractLanguageKey extends AbstractEntityKey implements
-		Cloneable, MultilanguageKey {
+public abstract class AbstractLanguageKey extends AbstractEntityKey implements Cloneable, MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "LANGUAGE_ID", unique = true, nullable = false, length = 2)

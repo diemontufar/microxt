@@ -10,8 +10,7 @@ import mobile.entity.schema.MultilanguageKey;
  * The primary key class for the ADDRESS_TYPE database table.
  */
 @Embeddable
-public class AddressTypePk extends AbstractCompanyLanguageKey implements
-		MulticompanyKey, MultilanguageKey {
+public class AddressTypePk extends AbstractCompanyLanguageKey implements MulticompanyKey, MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -37,7 +36,6 @@ public class AddressTypePk extends AbstractCompanyLanguageKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
-				+ this.getAddressTypeId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getAddressTypeId() + "]";
 	}
 }

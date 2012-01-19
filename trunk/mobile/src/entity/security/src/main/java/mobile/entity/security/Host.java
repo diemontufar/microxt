@@ -11,8 +11,7 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "HOST")
-public class Host extends AbstractHistorical implements Multicompany,
-		Historical {
+public class Host extends AbstractHistorical implements Multicompany, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -80,7 +79,7 @@ public class Host extends AbstractHistorical implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "HOST:[" + this.getPk().toString() + ", " + this.getCreated()
-				+ ", " + this.getAddress() + ", " + this.getTimeZone() + "]";
+		return "HOST:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getAddress() + ", "
+				+ this.getTimeZone() + "]";
 	}
 }

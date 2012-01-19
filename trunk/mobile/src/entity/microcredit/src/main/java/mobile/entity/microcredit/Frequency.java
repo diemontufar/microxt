@@ -11,8 +11,7 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "FREQUENCY")
-public class Frequency extends AbstractEntity implements Multicompany,
-		Multilanguage {
+public class Frequency extends AbstractEntity implements Multicompany, Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -66,7 +65,6 @@ public class Frequency extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "FREQUENCY:[" + this.getPk().toString() + ", "
-				+ this.getDescription() + "]";
+		return "FREQUENCY:[" + this.getPk().toString() + ", " + this.getDescription() + "]";
 	}
 }

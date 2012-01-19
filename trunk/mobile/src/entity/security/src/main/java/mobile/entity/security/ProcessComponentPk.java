@@ -9,8 +9,7 @@ import mobile.entity.schema.MulticompanyKey;
  * The primary key class for the PROCESS_COMPONENT database table.
  */
 @Embeddable
-public class ProcessComponentPk extends AbstractCompanyKey implements
-		MulticompanyKey {
+public class ProcessComponentPk extends AbstractCompanyKey implements MulticompanyKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -40,8 +39,7 @@ public class ProcessComponentPk extends AbstractCompanyKey implements
 	public ProcessComponentPk() {
 	}
 
-	public ProcessComponentPk(String subsystemId, String moduleId,
-			String processId, Integer processSequence) {
+	public ProcessComponentPk(String subsystemId, String moduleId, String processId, Integer processSequence) {
 		this.subsystemId = subsystemId;
 		this.moduleId = moduleId;
 		this.processId = processId;
@@ -82,8 +80,7 @@ public class ProcessComponentPk extends AbstractCompanyKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getSubsystemId() + ", "
-				+ this.getModuleId() + ", " + this.getProcessId() + ", "
-				+ this.getProcessSequence() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getSubsystemId() + ", " + this.getModuleId() + ", "
+				+ this.getProcessId() + ", " + this.getProcessSequence() + "]";
 	}
 }

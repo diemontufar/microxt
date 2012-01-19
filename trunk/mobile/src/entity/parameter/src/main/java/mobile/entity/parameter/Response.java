@@ -11,8 +11,7 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "RESPONSE")
-public class Response extends AbstractEntity implements Multicompany,
-		Multilanguage {
+public class Response extends AbstractEntity implements Multicompany, Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -81,7 +80,7 @@ public class Response extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "RESPONSE:[" + this.getPk().toString() + ", "
-				+ this.getSubsystemId() + ", " + this.getDescription() + "]";
+		return "RESPONSE:[" + this.getPk().toString() + ", " + this.getSubsystemId() + ", " + this.getDescription()
+				+ "]";
 	}
 }

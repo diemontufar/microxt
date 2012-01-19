@@ -47,8 +47,7 @@ public class Component extends AbstractEntity implements Multicompany {
 		this.pk = pk;
 	}
 
-	public Component(ComponentPk pk, String subsystemId, String className,
-			String methodName, String description) {
+	public Component(ComponentPk pk, String subsystemId, String className, String methodName, String description) {
 		this.pk = pk;
 		this.subsystemId = subsystemId;
 		this.className = className;
@@ -110,8 +109,7 @@ public class Component extends AbstractEntity implements Multicompany {
 
 	@Override
 	public String toString() {
-		return "COMPONENT:[" + this.getPk().toString() + ", "
-				+ this.getSubsystemId() + ", " + this.getClassName() + ", "
-				+ this.getMethodName() + ", " + this.getDescription() + "]";
+		return "COMPONENT:[" + this.getPk().toString() + ", " + this.getSubsystemId() + ", " + this.getClassName()
+				+ ", " + this.getMethodName() + ", " + this.getDescription() + "]";
 	}
 }

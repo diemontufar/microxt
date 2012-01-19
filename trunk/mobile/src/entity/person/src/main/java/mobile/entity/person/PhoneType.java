@@ -11,8 +11,7 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "PHONE_TYPE")
-public class PhoneType extends AbstractEntity implements Multicompany,
-		Multilanguage {
+public class PhoneType extends AbstractEntity implements Multicompany, Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -66,7 +65,6 @@ public class PhoneType extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "PHONE_TYPE:[" + this.getPk().toString() + ", " + this.getName()
-				+ "]";
+		return "PHONE_TYPE:[" + this.getPk().toString() + ", " + this.getName() + "]";
 	}
 }

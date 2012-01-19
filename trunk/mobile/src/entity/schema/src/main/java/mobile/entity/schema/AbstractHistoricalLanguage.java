@@ -4,8 +4,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 
-public abstract class AbstractHistoricalLanguage extends AbstractEntity
-		implements Historical, Multilanguage {
+public abstract class AbstractHistoricalLanguage extends AbstractEntity implements Historical, Multilanguage {
 
 	private static final long serialVersionUID = 1L;
 

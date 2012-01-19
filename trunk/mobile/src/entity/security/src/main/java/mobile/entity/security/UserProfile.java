@@ -12,8 +12,7 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "USER_PROFILE")
-public class UserProfile extends AbstractHistorical implements Multicompany,
-		Historical {
+public class UserProfile extends AbstractHistorical implements Multicompany, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -48,7 +47,6 @@ public class UserProfile extends AbstractHistorical implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "USER_PROFILE:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + "]";
+		return "USER_PROFILE:[" + this.getPk().toString() + ", " + this.getCreated() + "]";
 	}
 }

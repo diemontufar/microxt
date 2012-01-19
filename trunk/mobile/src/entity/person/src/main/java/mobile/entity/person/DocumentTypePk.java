@@ -10,8 +10,7 @@ import mobile.entity.schema.MultilanguageKey;
  * The primary key class for the DOCUMENT_TYPE database table.
  */
 @Embeddable
-public class DocumentTypePk extends AbstractCompanyLanguageKey implements
-		MulticompanyKey, MultilanguageKey {
+public class DocumentTypePk extends AbstractCompanyLanguageKey implements MulticompanyKey, MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -37,7 +36,6 @@ public class DocumentTypePk extends AbstractCompanyLanguageKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
-				+ this.getDocumentTypeId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getDocumentTypeId() + "]";
 	}
 }

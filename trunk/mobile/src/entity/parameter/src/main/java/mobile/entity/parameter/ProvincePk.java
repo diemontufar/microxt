@@ -10,8 +10,7 @@ import mobile.entity.schema.MultilanguageKey;
  * The primary key class for the PROVINCE database table.
  */
 @Embeddable
-public class ProvincePk extends AbstractCompanyLanguageKey implements
-		MulticompanyKey, MultilanguageKey {
+public class ProvincePk extends AbstractCompanyLanguageKey implements MulticompanyKey, MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -52,7 +51,7 @@ public class ProvincePk extends AbstractCompanyLanguageKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
-				+ this.getCountryId() + ", " + this.getProvinceId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getCountryId() + ", "
+				+ this.getProvinceId() + "]";
 	}
 }

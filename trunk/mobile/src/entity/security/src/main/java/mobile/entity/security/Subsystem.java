@@ -11,8 +11,7 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "SUBSYSTEM")
-public class Subsystem extends AbstractEntity implements Multicompany,
-		Multilanguage {
+public class Subsystem extends AbstractEntity implements Multicompany, Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -66,7 +65,6 @@ public class Subsystem extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "SUBSYSTEM:[" + this.getPk().toString() + ", " + this.getName()
-				+ "]";
+		return "SUBSYSTEM:[" + this.getPk().toString() + ", " + this.getName() + "]";
 	}
 }

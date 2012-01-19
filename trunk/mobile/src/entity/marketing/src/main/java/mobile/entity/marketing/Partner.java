@@ -12,8 +12,7 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "PARTNER")
-public class Partner extends AbstractHistorical implements Multicompany,
-		Multilanguage, Historical {
+public class Partner extends AbstractHistorical implements Multicompany, Multilanguage, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -124,9 +123,8 @@ public class Partner extends AbstractHistorical implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "PARTNER:[" + this.getPk().toString() + ", " + this.getCreated()
-				+ ", " + this.getPersonId() + ", " + this.getActivity() + ", "
-				+ this.getAsessorId() + ", " + this.getMeetingFrequencyId()
-				+ ", " + this.getMeetingDay() + "]";
+		return "PARTNER:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getPersonId() + ", "
+				+ this.getActivity() + ", " + this.getAsessorId() + ", " + this.getMeetingFrequencyId() + ", "
+				+ this.getMeetingDay() + "]";
 	}
 }

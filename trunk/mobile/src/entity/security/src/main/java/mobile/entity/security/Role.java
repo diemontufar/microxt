@@ -11,8 +11,7 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "ROLE")
-public class Role extends AbstractHistorical implements Multicompany,
-		Historical {
+public class Role extends AbstractHistorical implements Multicompany, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -94,8 +93,7 @@ public class Role extends AbstractHistorical implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "ROLE:[" + this.getPk().toString() + ", " + this.getCreated()
-				+ ", " + this.getHourFrom() + ", " + this.getHourTo() + ", "
-				+ this.getEditable() + "]";
+		return "ROLE:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getHourFrom() + ", "
+				+ this.getHourTo() + ", " + this.getEditable() + "]";
 	}
 }

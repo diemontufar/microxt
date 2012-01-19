@@ -10,8 +10,7 @@ import mobile.entity.schema.MultilanguageKey;
  * The primary key class for the DISTRICT database table.
  */
 @Embeddable
-public class DistrictPk extends AbstractCompanyLanguageKey implements
-		MulticompanyKey, MultilanguageKey {
+public class DistrictPk extends AbstractCompanyLanguageKey implements MulticompanyKey, MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -41,8 +40,7 @@ public class DistrictPk extends AbstractCompanyLanguageKey implements
 	public DistrictPk() {
 	}
 
-	public DistrictPk(String countryId, String provinceId, String cityId,
-			String districtId) {
+	public DistrictPk(String countryId, String provinceId, String cityId, String districtId) {
 		this.countryId = countryId;
 		this.provinceId = provinceId;
 		this.cityId = cityId;
@@ -83,8 +81,7 @@ public class DistrictPk extends AbstractCompanyLanguageKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
-				+ this.getCountryId() + ", " + this.getProvinceId() + ", "
-				+ this.getCityId() + ", " + this.getDistrictId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getCountryId() + ", "
+				+ this.getProvinceId() + ", " + this.getCityId() + ", " + this.getDistrictId() + "]";
 	}
 }
