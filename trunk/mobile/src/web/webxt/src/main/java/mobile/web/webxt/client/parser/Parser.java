@@ -21,7 +21,7 @@ public class Parser {
 	public Message parseMsg(String messageData, String messageType)
 			throws Exception {
 
-		Message message = new Message(messageType);
+		Message message = new Message();
 		if (messageType.compareTo(Message.XML) == 0) {
 			Document document = XMLParser.parse(messageData);
 			Node node = document.getFirstChild();

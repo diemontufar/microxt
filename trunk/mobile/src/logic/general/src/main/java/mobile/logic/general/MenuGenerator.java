@@ -32,7 +32,7 @@ public class MenuGenerator implements GeneralProcessor {
 
 	private final String N_QRY_MODULES = "Select m.* from MODULE m where "
 			+ "CONCAT(m.SUBSYSTEM_ID,m.MODULE_ID) in "
-			+ "( Select distinct CONCAT(p.SUBSYSTEM_ID,p.MODULE_ID) from PROCESS p where p.ENABLE = :enable "
+			+ "( Select distinct CONCAT(p.SUBSYSTEM_ID,p.MODULE_ID) from PROCESS p where p.ENABLE = 1 "
 			+ "and p.menu = 1 "
 			+ "and p.COMPANY_ID = :companyId "
 			+ "and p.LANGUAGE_ID = :languageId "
@@ -85,7 +85,6 @@ public class MenuGenerator implements GeneralProcessor {
 		String LANGUAGE = LocalParameter.get(ParameterEnum.LANGUAGE,
 				String.class);
 		String finalQuery = N_QRY_MODULES
-				.replaceAll(":enable", "'1'")
 				.replaceAll(":companyId", "'" + COMPANY + "'")
 				.replaceAll(":languageId", "'" + LANGUAGE + "'")
 				.replaceAll(":expired", "'9999-12-31'");

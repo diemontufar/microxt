@@ -146,7 +146,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			Message msg = new Message();
 			msg.getRequest().setProcess(config.getProcess());
 			
-			
+			System.out.println("Conversion en json");
 			String data = "message=" + msg.toJSON();
 			
 			builder.sendRequest(data, new RequestCallback() {
