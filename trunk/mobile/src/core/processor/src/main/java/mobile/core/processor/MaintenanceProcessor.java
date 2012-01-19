@@ -3,14 +3,14 @@ package mobile.core.processor;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.core.structure.processor.GeneralProcessor;
+import mobile.common.message.EntityData;
+import mobile.common.message.Field;
+import mobile.common.message.Item;
+import mobile.common.message.Message;
 import mobile.entity.manager.JPManager;
 import mobile.entity.schema.GeneralEntity;
-import mobile.message.message.EntityData;
-import mobile.message.message.Field;
-import mobile.message.message.Item;
-import mobile.message.message.Message;
 import mobile.tools.common.Log;
+import mobile.tools.common.structure.GeneralProcessor;
 
 import org.apache.log4j.Logger;
 
@@ -43,11 +43,11 @@ public class MaintenanceProcessor implements GeneralProcessor {
 	private void persistOrUpdateOrDelete(EntityData data) throws Exception {
 		for (Item item : data.getItemList()) {
 			if (item.isExpireItem()) {
-				expireEntity(data.getId(), item);
+				expireEntity(data.getDataId(), item);
 			}else if (item.isNewItem()) {
-				persistEntity(data.getId(), item);
+				persistEntity(data.getDataId(), item);
 			}else{
-				updateEntity(data.getId(), item);
+				updateEntity(data.getDataId(), item);
 			}
 		}
 	}

@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mobile.common.message.Message;
 import mobile.core.processor.CoreProcessor;
-import mobile.message.message.Message;
 import mobile.tools.common.Log;
 import mobile.tools.common.msg.Parser;
 
