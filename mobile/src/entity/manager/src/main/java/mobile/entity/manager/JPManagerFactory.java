@@ -61,6 +61,7 @@ public final class JPManagerFactory {
 	}
 
 	public static void close() {
+		log.info("Close entity manager factory");
 		if (getInstance().emf != null) {
 			getInstance().emf.close();
 		}
