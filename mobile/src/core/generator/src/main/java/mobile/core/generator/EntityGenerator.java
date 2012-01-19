@@ -21,7 +21,7 @@ public class EntityGenerator {
 
 	// Company
 	private final String COMPANY = "MXT";
-	
+
 	private final String ALL_COMPANY = "ALL";
 
 	// Package for generated entities.
@@ -35,15 +35,14 @@ public class EntityGenerator {
 
 	// QL to query entities
 	private String ENTITY_QL = "Select e from EntityTable e where e.pk.companyId in ('ALL',:companyId)";
-	
+
 	// QL to query some entities
-	private String ENTITY2_QL = "Select e from EntityTable e where e.pk.companyId in ('ALL',:companyId) " +
-			"and e.pk.tableId in :tables";
-	
+	private String ENTITY2_QL = "Select e from EntityTable e where e.pk.companyId in ('ALL',:companyId) "
+			+ "and e.pk.tableId in :tables";
+
 	// QL to query fields
 	private String FIELD_SQL = "Select f from EntityField f where "
-			+ "f.pk.companyId in ('ALL',:companyId) and f.pk.tableId=:tableId "
-			+ "order by f.fieldOrder";
+			+ "f.pk.companyId in ('ALL',:companyId) and f.pk.tableId=:tableId " + "order by f.fieldOrder";
 
 	// Builder for entity
 	private StringBuilder entityBuilder;
@@ -70,8 +69,7 @@ public class EntityGenerator {
 
 	public void generateAllEntities() throws Exception {
 		// Query all entities
-		TypedQuery<EntityTable> queryEntities = JPManager.getEntityManager()
-				.createQuery(ENTITY_QL, EntityTable.class);
+		TypedQuery<EntityTable> queryEntities = JPManager.getEntityManager().createQuery(ENTITY_QL, EntityTable.class);
 		queryEntities.setParameter("companyId", COMPANY);
 		List<EntityTable> lEntity = queryEntities.getResultList();
 
@@ -79,15 +77,14 @@ public class EntityGenerator {
 		for (EntityTable entityTable : lEntity) {
 			ltables.add(entityTable.getPk().getTableId());
 		}
-		
+
 		generate(ltables);
 
 	}
-	
-	public void generate(List<String> ltables) throws Exception{
+
+	public void generate(List<String> ltables) throws Exception {
 		// Query entities
-		TypedQuery<EntityTable> queryEntities = JPManager.getEntityManager()
-				.createQuery(ENTITY2_QL, EntityTable.class);
+		TypedQuery<EntityTable> queryEntities = JPManager.getEntityManager().createQuery(ENTITY2_QL, EntityTable.class);
 		queryEntities.setParameter("companyId", COMPANY);
 		queryEntities.setParameter("tables", ltables);
 		List<EntityTable> lEntity = queryEntities.getResultList();
@@ -106,7 +103,7 @@ public class EntityGenerator {
 		// Find the entity
 		EntityTablePk pk = new EntityTablePk(tableId);
 		pk.setCompanyId(ALL_COMPANY);
-		
+
 		EntityTable entity = JPManager.find(EntityTable.class, pk);
 
 		if (entity == null) {
@@ -118,16 +115,14 @@ public class EntityGenerator {
 
 	private void generateEntity(EntityTable entity) throws Exception {
 		// Query fields
-		TypedQuery<EntityField> queryFields = JPManager.getEntityManager()
-				.createQuery(FIELD_SQL, EntityField.class);
+		TypedQuery<EntityField> queryFields = JPManager.getEntityManager().createQuery(FIELD_SQL, EntityField.class);
 		queryFields.setParameter("companyId", COMPANY);
 		queryFields.setParameter("tableId", entity.getPk().getTableId());
 		List<EntityField> lField = queryFields.getResultList();
 
 		// Check fields definition
 		if (lField.size() == 0) {
-			throw new Exception("ERROR. ENTITY: " + entity.getPk().getTableId()
-					+ ". NO FIELDS DEFINED");
+			throw new Exception("ERROR. ENTITY: " + entity.getPk().getTableId() + ". NO FIELDS DEFINED");
 		} else {
 			// Generate the builders
 			generateBuilders(entity, lField);
@@ -138,49 +133,41 @@ public class EntityGenerator {
 	private void writeFiles(EntityTable entity) throws Exception {
 		// Entity
 		String packageName = entity.getPackageName();
-		String strFile = pathToSave + "/" + packageName + "/"
-				+ this.outputPackage.replace(".", "/") + "/"
-				+ entity.getPackageName().replace(".", "/") + "/"
-				+ upperCamelCase(entity.getPk().getTableId()) + ".java";
+		String strFile = pathToSave + "/" + packageName + "/" + this.outputPackage.replace(".", "/") + "/"
+				+ entity.getPackageName().replace(".", "/") + "/" + upperCamelCase(entity.getPk().getTableId())
+				+ ".java";
 		System.out.println("Writing " + strFile + "...");
 		FileUtil.writeFile(strFile, entityBuilder.toString());
 
 		// Entity Pk
 		if (pkEntityBuilder != null) {
-			String strPkFile = pathToSave + "/" + packageName + "/"
-					+ this.outputPackage.replace(".", "/") + "/"
-					+ entity.getPackageName().replace(".", "/") + "/"
-					+ upperCamelCase(entity.getPk().getTableId()) + "Pk"
-					+ ".java";
+			String strPkFile = pathToSave + "/" + packageName + "/" + this.outputPackage.replace(".", "/") + "/"
+					+ entity.getPackageName().replace(".", "/") + "/" + upperCamelCase(entity.getPk().getTableId())
+					+ "Pk" + ".java";
 			System.out.println("Writing " + strPkFile + "...");
 			FileUtil.writeFile(strPkFile, pkEntityBuilder.toString());
 		}
 
 		// Entity Id
 		if (idEntityBuilder != null) {
-			String strIdFile = pathToSave + "/" + packageName + "/"
-					+ this.outputPackage.replace(".", "/") + "/"
-					+ entity.getPackageName().replace(".", "/") + "/"
-					+ upperCamelCase(entity.getPk().getTableId()) + "Id"
-					+ ".java";
+			String strIdFile = pathToSave + "/" + packageName + "/" + this.outputPackage.replace(".", "/") + "/"
+					+ entity.getPackageName().replace(".", "/") + "/" + upperCamelCase(entity.getPk().getTableId())
+					+ "Id" + ".java";
 			System.out.println("Writing " + strIdFile + "...");
 			FileUtil.writeFile(strIdFile, idEntityBuilder.toString());
 
 			// Entity Id Pk
 			if (pkIdEntityBuilder != null) {
-				String strIdPkFile = pathToSave + "/" + packageName + "/"
-						+ this.outputPackage.replace(".", "/") + "/"
-						+ entity.getPackageName().replace(".", "/") + "/"
-						+ upperCamelCase(entity.getPk().getTableId()) + "IdPk"
-						+ ".java";
+				String strIdPkFile = pathToSave + "/" + packageName + "/" + this.outputPackage.replace(".", "/") + "/"
+						+ entity.getPackageName().replace(".", "/") + "/" + upperCamelCase(entity.getPk().getTableId())
+						+ "IdPk" + ".java";
 				System.out.println("Writing " + strIdPkFile + "...");
 				FileUtil.writeFile(strIdPkFile, pkIdEntityBuilder.toString());
 			}
 		}
 	}
 
-	private void generateBuilders(EntityTable entity, List<EntityField> lField)
-			throws Exception {
+	private void generateBuilders(EntityTable entity, List<EntityField> lField) throws Exception {
 		// Initialize builders
 		entityBuilder = null;
 		pkEntityBuilder = null;
@@ -188,10 +175,8 @@ public class EntityGenerator {
 		pkIdEntityBuilder = null;
 
 		// Entity
-		EntityData entityData = generateEntityData(entity, lField,
-				EntityType.ENTITY);
-		entityBuilder = generateEntity(entity, lField, entityData,
-				EntityType.ENTITY);
+		EntityData entityData = generateEntityData(entity, lField, EntityType.ENTITY);
+		entityBuilder = generateEntity(entity, lField, entityData, EntityType.ENTITY);
 
 		// Generate entity id
 		if (entity.getHasTableId()) {
@@ -204,15 +189,13 @@ public class EntityGenerator {
 			idEntity.setOptimisticLocking(false);
 			idEntity.setDescription(null);
 
-			EntityData idEntityData = generateEntityData(idEntity, lField,
-					EntityType.ENTITY_ID);
-			idEntityBuilder = generateEntity(idEntity, lField, idEntityData,
-					EntityType.ENTITY_ID);
+			EntityData idEntityData = generateEntityData(idEntity, lField, EntityType.ENTITY_ID);
+			idEntityBuilder = generateEntity(idEntity, lField, idEntityData, EntityType.ENTITY_ID);
 		}
 	}
 
-	private EntityData generateEntityData(EntityTable entity,
-			List<EntityField> lField, EntityType type) throws Exception {
+	private EntityData generateEntityData(EntityTable entity, List<EntityField> lField, EntityType type)
+			throws Exception {
 		// --------------------------------
 		// Generate the entity class data
 		// --------------------------------
@@ -225,18 +208,13 @@ public class EntityGenerator {
 			if (entity.getHistoricalData() && !entity.getOptimisticLocking()) {
 				entityData.getlSchemaEntityImports().add("AbstractHistorical");
 				entityData.setStrExtends("AbstractHistorical");
-			} else if (!entity.getHistoricalData()
-					&& entity.getOptimisticLocking()) {
-				entityData.getlSchemaEntityImports().add(
-						"AbstractOptimisticLocking");
+			} else if (!entity.getHistoricalData() && entity.getOptimisticLocking()) {
+				entityData.getlSchemaEntityImports().add("AbstractOptimisticLocking");
 				entityData.setStrExtends("AbstractOptimisticLocking");
-			} else if (entity.getHistoricalData()
-					&& entity.getOptimisticLocking()) {
-				entityData.getlSchemaEntityImports().add(
-						"AbstractHistoricalLocking");
+			} else if (entity.getHistoricalData() && entity.getOptimisticLocking()) {
+				entityData.getlSchemaEntityImports().add("AbstractHistoricalLocking");
 				entityData.setStrExtends("AbstractHistoricalLocking");
-			} else if (!entity.getHistoricalData()
-					&& !entity.getOptimisticLocking()) {
+			} else if (!entity.getHistoricalData() && !entity.getOptimisticLocking()) {
 				entityData.getlSchemaEntityImports().add("AbstractEntity");
 				entityData.setStrExtends("AbstractEntity");
 			}
@@ -263,8 +241,7 @@ public class EntityGenerator {
 				entityData.getlSchemaEntityImports().add("OptimisticLocking");
 				entityData.getlImplements().add("OptimisticLocking");
 			}
-			if (!entity.getMultiCompany() && !entity.getMultiLanguage()
-					&& !entity.getHistoricalData()
+			if (!entity.getMultiCompany() && !entity.getMultiLanguage() && !entity.getHistoricalData()
 					&& !entity.getOptimisticLocking()) {
 				entityData.getlSchemaEntityImports().add("GeneralEntity");
 				entityData.getlImplements().add("GeneralEntity");
@@ -285,16 +262,13 @@ public class EntityGenerator {
 		case ENTITY:
 			if (lPks.size() == 0) {
 				// No pk defined
-				throw new Exception("NO PK DEFINED FOR TABLE: "
-						+ entity.getPk().getTableId());
-			} else if (lPks.size() == 1 && !entity.getMultiCompany()
-					&& !entity.getMultiLanguage()
+				throw new Exception("NO PK DEFINED FOR TABLE: " + entity.getPk().getTableId());
+			} else if (lPks.size() == 1 && !entity.getMultiCompany() && !entity.getMultiLanguage()
 					&& !entity.getHistoricalData()) {
 				// Single pk field
-				entityData.getlProperties().add(
-						createSinglePkProperty(lPks.get(0)));
-			} else if (lPks.size() > 1 || entity.getMultiCompany()
-					|| entity.getMultiLanguage() || entity.getHistoricalData()) {
+				entityData.getlProperties().add(createSinglePkProperty(lPks.get(0)));
+			} else if (lPks.size() > 1 || entity.getMultiCompany() || entity.getMultiLanguage()
+					|| entity.getHistoricalData()) {
 				// Embedded pk
 				entityData.setHasEmbeddedPk(true);
 				PropertyData pkData = createEmbeddedPkProperty(entityData);
@@ -306,16 +280,14 @@ public class EntityGenerator {
 		case ENTITY_ID:
 			if (lPks.size() == 1) {
 				// Single pk field
-				entityData.getlProperties().add(
-						createSinglePkProperty(lPks.get(0)));
+				entityData.getlProperties().add(createSinglePkProperty(lPks.get(0)));
 			} else if (lPks.size() > 1) {
 				entityData.setHasEmbeddedPk(true);
 				// Embedded pk
 				PropertyData pkData = createEmbeddedPkProperty(entityData);
 				entityData.getlProperties().add(pkData);
 				// Create pk class file
-				pkIdEntityBuilder = createPkClassFile(entity, pkData, lPks,
-						type);
+				pkIdEntityBuilder = createPkClassFile(entity, pkData, lPks, type);
 			}
 			break;
 		}
@@ -338,8 +310,8 @@ public class EntityGenerator {
 		return entityData;
 	}
 
-	private StringBuilder generateEntity(EntityTable entity,
-			List<EntityField> lField, EntityData entityData, EntityType type) {
+	private StringBuilder generateEntity(EntityTable entity, List<EntityField> lField, EntityData entityData,
+			EntityType type) {
 		StringBuilder builder;
 		builder = new StringBuilder();
 
@@ -347,8 +319,7 @@ public class EntityGenerator {
 		// Generate entity file
 		// -----------------------------------------------
 		// Package
-		builder.append("package " + this.outputPackage + "."
-				+ entity.getPackageName() + END_LINE);
+		builder.append("package " + this.outputPackage + "." + entity.getPackageName() + END_LINE);
 		builder.append(NEW_LINE);
 
 		// Imports
@@ -369,16 +340,14 @@ public class EntityGenerator {
 		// Common imports
 		if (entityData.getlSchemaEntityImports().size() > 0) {
 			for (String imp : entityData.getlSchemaEntityImports()) {
-				builder.append("import " + this.PATH_ENTITY_SCHEMA + "." + imp
-						+ END_LINE);
+				builder.append("import " + this.PATH_ENTITY_SCHEMA + "." + imp + END_LINE);
 			}
 			builder.append(NEW_LINE);
 		}
 
 		// General Java Doc
 		builder.append("/**" + NEW_LINE);
-		builder.append("* The persistent class for the "
-				+ entity.getPk().getTableId() + " database table." + NEW_LINE);
+		builder.append("* The persistent class for the " + entity.getPk().getTableId() + " database table." + NEW_LINE);
 		if (entity.getDescription() != null) {
 			builder.append("* " + entity.getDescription() + NEW_LINE);
 		}
@@ -386,49 +355,39 @@ public class EntityGenerator {
 
 		// Class annotations
 		builder.append("@Entity" + NEW_LINE);
-		builder.append("@Table(name=\"" + entity.getPk().getTableId() + "\")"
-				+ NEW_LINE);
+		builder.append("@Table(name=\"" + entity.getPk().getTableId() + "\")" + NEW_LINE);
 
 		// Class definition
 		builder.append("public class " + entityData.getClassName());
 		// Extends
 		builder.append(" extends " + entityData.getStrExtends());
 		// Implements
-		builder.append(" implements "
-				+ concatItems(entityData.getlImplements()));
+		builder.append(" implements " + concatItems(entityData.getlImplements()));
 		builder.append("{" + NEW_LINE);
 
 		// SerialVersionUID
-		builder.append("private static final long serialVersionUID = 1L"
-				+ END_LINE);
+		builder.append("private static final long serialVersionUID = 1L" + END_LINE);
 		builder.append(NEW_LINE);
 
 		// Properties
 		for (PropertyData property : entityData.getlProperties()) {
 			if (property.getDescription() != null) {
-				builder.append("/**" + NEW_LINE + "* "
-						+ property.getDescription() + NEW_LINE + "*/"
-						+ NEW_LINE);
+				builder.append("/**" + NEW_LINE + "* " + property.getDescription() + NEW_LINE + "*/" + NEW_LINE);
 			}
 			builder.append(property.getAnnotation());
-			builder.append("private " + property.getType() + " "
-					+ property.getName() + END_LINE);
+			builder.append("private " + property.getType() + " " + property.getName() + END_LINE);
 			builder.append(NEW_LINE);
 		}
 
 		// Constructor (Empty parameters)
-		builder.append("public " + entityData.getClassName() + "() {"
-				+ NEW_LINE + "}");
+		builder.append("public " + entityData.getClassName() + "() {" + NEW_LINE + "}");
 		builder.append(NEW_LINE);
 
 		// Constructor (pk)
-		builder.append("public " + entityData.getClassName() + "("
-				+ entityData.getlProperties().get(0).getType() + " "
-				+ entityData.getlProperties().get(0).getName() + ") {"
-				+ NEW_LINE);
-		builder.append("this." + entityData.getlProperties().get(0).getName()
-				+ " = " + entityData.getlProperties().get(0).getName()
-				+ END_LINE + "}" + NEW_LINE);
+		builder.append("public " + entityData.getClassName() + "(" + entityData.getlProperties().get(0).getType() + " "
+				+ entityData.getlProperties().get(0).getName() + ") {" + NEW_LINE);
+		builder.append("this." + entityData.getlProperties().get(0).getName() + " = "
+				+ entityData.getlProperties().get(0).getName() + END_LINE + "}" + NEW_LINE);
 
 		// Constructor (pk, mandatory fields)
 		if (type == EntityType.ENTITY) {
@@ -438,32 +397,23 @@ public class EntityGenerator {
 				String mandatoryParams = "";
 				String assigned = "";
 				for (EntityField field : lMandatories) {
-					mandatoryParams = mandatoryParams + ","
-							+ field.getDataTypeId() + " "
+					mandatoryParams = mandatoryParams + "," + field.getDataTypeId() + " "
 							+ lowerCamelCase(field.getPk().getFieldId());
-					assigned = assigned
-							+ "this."
-							+ lowerCamelCase(field.getPk().getFieldId())
-							+ " = "
-							+ lowerCamelCase(field.getPk().getFieldId()
-									+ END_LINE);
+					assigned = assigned + "this." + lowerCamelCase(field.getPk().getFieldId()) + " = "
+							+ lowerCamelCase(field.getPk().getFieldId() + END_LINE);
 				}
 				builder.append("public " + entityData.getClassName() + "("
 						+ entityData.getlProperties().get(0).getType() + " "
-						+ entityData.getlProperties().get(0).getName()
-						+ mandatoryParams + ") {" + NEW_LINE);
-				builder.append("this."
-						+ entityData.getlProperties().get(0).getName() + " = "
-						+ entityData.getlProperties().get(0).getName()
-						+ END_LINE + assigned + "}" + NEW_LINE);
+						+ entityData.getlProperties().get(0).getName() + mandatoryParams + ") {" + NEW_LINE);
+				builder.append("this." + entityData.getlProperties().get(0).getName() + " = "
+						+ entityData.getlProperties().get(0).getName() + END_LINE + assigned + "}" + NEW_LINE);
 			}
 		}
 
 		// Getters and setters
 		for (PropertyData property : entityData.getlProperties()) {
 			// Getter
-			builder.append("public " + property.getType() + " get"
-					+ property.getName().substring(0, 1).toUpperCase()
+			builder.append("public " + property.getType() + " get" + property.getName().substring(0, 1).toUpperCase()
 					+ property.getName().substring(1));
 			builder.append("() {" + NEW_LINE);
 			builder.append("return this." + property.getName() + END_LINE);
@@ -471,13 +421,10 @@ public class EntityGenerator {
 			builder.append(NEW_LINE);
 
 			// Setter
-			builder.append("public void set"
-					+ property.getName().substring(0, 1).toUpperCase()
+			builder.append("public void set" + property.getName().substring(0, 1).toUpperCase()
 					+ property.getName().substring(1));
-			builder.append("(" + property.getType() + " " + property.getName()
-					+ ") {" + NEW_LINE);
-			builder.append("this." + property.getName() + " = "
-					+ property.getName() + END_LINE);
+			builder.append("(" + property.getType() + " " + property.getName() + ") {" + NEW_LINE);
+			builder.append("this." + property.getName() + " = " + property.getName() + END_LINE);
 			builder.append("}");
 			builder.append(NEW_LINE);
 		}
@@ -488,8 +435,7 @@ public class EntityGenerator {
 			builder.append(NEW_LINE);
 			builder.append("@Override" + NEW_LINE);
 			builder.append("public Object getPk() {" + NEW_LINE);
-			builder.append("return this."
-					+ entityData.getlProperties().get(0).getName() + END_LINE);
+			builder.append("return this." + entityData.getlProperties().get(0).getName() + END_LINE);
 			builder.append("}" + NEW_LINE);
 		}
 
@@ -497,21 +443,18 @@ public class EntityGenerator {
 		builder.append(NEW_LINE);
 		builder.append("@Override" + NEW_LINE);
 		builder.append("public void setPk(Object pk) {" + NEW_LINE);
-		builder.append("this." + entityData.getlProperties().get(0).getName() + "="
-				+ "(" + entityData.getlProperties().get(0).getType() + ") pk"
-				+ END_LINE);
+		builder.append("this." + entityData.getlProperties().get(0).getName() + "=" + "("
+				+ entityData.getlProperties().get(0).getType() + ") pk" + END_LINE);
 		builder.append("}" + NEW_LINE);
 
 		// clone
 		if (entityData.getHasEmbeddedPk()) {
 			builder.append(NEW_LINE);
 			builder.append("@Override" + NEW_LINE);
-			builder.append("public Object clone() throws CloneNotSupportedException {"
-					+ NEW_LINE);
-			builder.append(entityData.getClassName() + " copy = ("
-					+ entityData.getClassName() + ") super.clone()" + END_LINE);
-			builder.append("copy.setPk((" + entityData.getClassName()
-					+ "Pk) this.pk.clone())" + END_LINE);
+			builder.append("public Object clone() throws CloneNotSupportedException {" + NEW_LINE);
+			builder.append(entityData.getClassName() + " copy = (" + entityData.getClassName() + ") super.clone()"
+					+ END_LINE);
+			builder.append("copy.setPk((" + entityData.getClassName() + "Pk) this.pk.clone())" + END_LINE);
 			builder.append("return copy" + END_LINE);
 			builder.append("}" + NEW_LINE);
 		}
@@ -520,8 +463,7 @@ public class EntityGenerator {
 		builder.append(NEW_LINE);
 		builder.append("@Override" + NEW_LINE);
 		builder.append("public String toString() {" + NEW_LINE);
-		builder.append("return \"" + entity.getPk().getTableId() + ":[\" +"
-				+ NEW_LINE);
+		builder.append("return \"" + entity.getPk().getTableId() + ":[\" +" + NEW_LINE);
 		builder.append("this.getPk().toString()");
 		// toString Method - ExpiredField
 		if (entity.getHistoricalData()) {
@@ -532,8 +474,7 @@ public class EntityGenerator {
 			builder.append(" + \", \" +" + NEW_LINE);
 			for (int i = 1; i < entityData.getlProperties().size(); i++) {
 				PropertyData property = entityData.getlProperties().get(i);
-				builder.append("this.get"
-						+ property.getName().substring(0, 1).toUpperCase()
+				builder.append("this.get" + property.getName().substring(0, 1).toUpperCase()
 						+ property.getName().substring(1) + "()");
 				if (i < entityData.getlProperties().size() - 1) {
 					builder.append(" + \", \" +" + NEW_LINE);
@@ -562,21 +503,33 @@ public class EntityGenerator {
 	 * @param entityData
 	 * @param entityField
 	 */
-	private void addGeneralImports(EntityData entityData,
-			EntityField entityField) {
+	private void addGeneralImports(EntityData entityData, EntityField entityField) {
 		if (entityField.getDataTypeId().compareTo("BigDecimal") == 0) {
-			entityData.getlGeneralImports().add("java.math.BigDecimal");
+			addItem(entityData.getlGeneralImports(), "java.math.BigDecimal");
 		} else if (entityField.getDataTypeId().compareTo("Date") == 0) {
-			entityData.getlGeneralImports().add("java.sql.Date");
+			addItem(entityData.getlGeneralImports(), "java.sql.Date");
 		} else if (entityField.getDataTypeId().compareTo("Blob") == 0) {
-			entityData.getlGeneralImports().add("java.sql.Blob");
+			addItem(entityData.getlGeneralImports(), "java.sql.Blob");
 		} else if (entityField.getDataTypeId().compareTo("Clob") == 0) {
-			entityData.getlGeneralImports().add("java.sql.Clob");
+			addItem(entityData.getlGeneralImports(), "java.sql.Clob");
 		}
 	}
 
-	private StringBuilder createPkClassFile(EntityTable fatherEntity,
-			PropertyData pkData, List<EntityField> lPks, EntityType type) {
+	private void addItem(List<String> list, String item) {
+		boolean exist = false;
+		for (String string : list) {
+			if (string.compareTo(item) == 0) {
+				exist = true;
+				break;
+			}
+		}
+		if (!exist) {
+			list.add(item);
+		}
+	}
+
+	private StringBuilder createPkClassFile(EntityTable fatherEntity, PropertyData pkData, List<EntityField> lPks,
+			EntityType type) {
 		// --------------------------------
 		// Generate the entity PK class data
 		// --------------------------------
@@ -621,20 +574,16 @@ public class EntityGenerator {
 			entityPkData.getlSchemaEntityImports().add("AbstractHistoricalKey");
 			entityPkData.setStrExtends("AbstractHistoricalKey");
 		} else if (extendCode.compareTo("110") == 0) {
-			entityPkData.getlSchemaEntityImports().add(
-					"AbstractCompanyLanguageKey");
+			entityPkData.getlSchemaEntityImports().add("AbstractCompanyLanguageKey");
 			entityPkData.setStrExtends("AbstractCompanyLanguageKey");
 		} else if (extendCode.compareTo("101") == 0) {
-			entityPkData.getlSchemaEntityImports().add(
-					"AbstractCompanyHistoricalKey");
+			entityPkData.getlSchemaEntityImports().add("AbstractCompanyHistoricalKey");
 			entityPkData.setStrExtends("AbstractCompanyHistoricalKey");
 		} else if (extendCode.compareTo("011") == 0) {
-			entityPkData.getlSchemaEntityImports().add(
-					"AbstractLanguageHistoricalKey");
+			entityPkData.getlSchemaEntityImports().add("AbstractLanguageHistoricalKey");
 			entityPkData.setStrExtends("AbstractLanguageHistoricalKey");
 		} else if (extendCode.compareTo("111") == 0) {
-			entityPkData.getlSchemaEntityImports().add(
-					"AbstractCompanyLanguageHistoricalKey");
+			entityPkData.getlSchemaEntityImports().add("AbstractCompanyLanguageHistoricalKey");
 			entityPkData.setStrExtends("AbstractCompanyLanguageHistoricalKey");
 		}
 
@@ -670,8 +619,7 @@ public class EntityGenerator {
 		StringBuilder pkClassFile = new StringBuilder();
 
 		// Package
-		pkClassFile.append("package " + this.outputPackage + "."
-				+ fatherEntity.getPackageName() + END_LINE);
+		pkClassFile.append("package " + this.outputPackage + "." + fatherEntity.getPackageName() + END_LINE);
 		pkClassFile.append(NEW_LINE);
 
 		// Imports
@@ -692,16 +640,14 @@ public class EntityGenerator {
 		// Common imports
 		if (entityPkData.getlSchemaEntityImports().size() > 0) {
 			for (String imp : entityPkData.getlSchemaEntityImports()) {
-				pkClassFile.append("import " + this.PATH_ENTITY_SCHEMA + "."
-						+ imp + END_LINE);
+				pkClassFile.append("import " + this.PATH_ENTITY_SCHEMA + "." + imp + END_LINE);
 			}
 			pkClassFile.append(NEW_LINE);
 		}
 
 		// General Java Doc
 		pkClassFile.append("/**" + NEW_LINE);
-		pkClassFile.append("* The primary key class for the "
-				+ fatherEntity.getPk().getTableId() + " database table."
+		pkClassFile.append("* The primary key class for the " + fatherEntity.getPk().getTableId() + " database table."
 				+ NEW_LINE);
 		pkClassFile.append("*/" + NEW_LINE);
 
@@ -713,31 +659,25 @@ public class EntityGenerator {
 		// Extends
 		pkClassFile.append(" extends " + entityPkData.getStrExtends());
 		// Implements
-		pkClassFile.append(" implements "
-				+ concatItems(entityPkData.getlImplements()));
+		pkClassFile.append(" implements " + concatItems(entityPkData.getlImplements()));
 		pkClassFile.append("{" + NEW_LINE);
 
 		// SerialVersionUID
-		pkClassFile.append("private static final long serialVersionUID = 1L"
-				+ END_LINE);
+		pkClassFile.append("private static final long serialVersionUID = 1L" + END_LINE);
 		pkClassFile.append(NEW_LINE);
 
 		// Properties
 		for (PropertyData property : entityPkData.getlProperties()) {
 			if (property.getDescription() != null) {
-				pkClassFile.append("/**" + NEW_LINE + "* "
-						+ property.getDescription() + NEW_LINE + "*/"
-						+ NEW_LINE);
+				pkClassFile.append("/**" + NEW_LINE + "* " + property.getDescription() + NEW_LINE + "*/" + NEW_LINE);
 			}
 			pkClassFile.append(property.getAnnotation());
-			pkClassFile.append("private " + property.getType() + " "
-					+ property.getName() + END_LINE);
+			pkClassFile.append("private " + property.getType() + " " + property.getName() + END_LINE);
 			pkClassFile.append(NEW_LINE);
 		}
 
 		// Constructor (empty)
-		pkClassFile.append("public " + entityPkData.getClassName() + "() {"
-				+ NEW_LINE + "}");
+		pkClassFile.append("public " + entityPkData.getClassName() + "() {" + NEW_LINE + "}");
 		pkClassFile.append(NEW_LINE);
 
 		// Constructor (fields)
@@ -747,35 +687,28 @@ public class EntityGenerator {
 			if (params.length() != 0) {
 				params = params + ",";
 			}
-			params = params + field.getDataTypeId() + " "
-					+ lowerCamelCase(field.getPk().getFieldId());
-			assigned = assigned + "this."
-					+ lowerCamelCase(field.getPk().getFieldId()) + " = "
+			params = params + field.getDataTypeId() + " " + lowerCamelCase(field.getPk().getFieldId());
+			assigned = assigned + "this." + lowerCamelCase(field.getPk().getFieldId()) + " = "
 					+ lowerCamelCase(field.getPk().getFieldId() + END_LINE);
 		}
-		pkClassFile.append("public " + entityPkData.getClassName() + "("
-				+ params + ") {" + NEW_LINE + assigned + "}");
+		pkClassFile.append("public " + entityPkData.getClassName() + "(" + params + ") {" + NEW_LINE + assigned + "}");
 		pkClassFile.append(NEW_LINE);
 
 		// Getters and setters
 		for (PropertyData property : entityPkData.getlProperties()) {
 			// Getter
 			pkClassFile.append("public " + property.getType() + " get"
-					+ property.getName().substring(0, 1).toUpperCase()
-					+ property.getName().substring(1));
+					+ property.getName().substring(0, 1).toUpperCase() + property.getName().substring(1));
 			pkClassFile.append("() {" + NEW_LINE);
 			pkClassFile.append("return this." + property.getName() + END_LINE);
 			pkClassFile.append("}");
 			pkClassFile.append(NEW_LINE);
 
 			// Setter
-			pkClassFile.append("public void set"
-					+ property.getName().substring(0, 1).toUpperCase()
+			pkClassFile.append("public void set" + property.getName().substring(0, 1).toUpperCase()
 					+ property.getName().substring(1));
-			pkClassFile.append("(" + property.getType() + " "
-					+ property.getName() + ") {" + NEW_LINE);
-			pkClassFile.append("this." + property.getName() + " = "
-					+ property.getName() + END_LINE);
+			pkClassFile.append("(" + property.getType() + " " + property.getName() + ") {" + NEW_LINE);
+			pkClassFile.append("this." + property.getName() + " = " + property.getName() + END_LINE);
 			pkClassFile.append("}");
 			pkClassFile.append(NEW_LINE);
 		}
@@ -800,8 +733,7 @@ public class EntityGenerator {
 		}
 		for (int i = 0; i < lPks.size(); i++) {
 			PropertyData property = entityPkData.getlProperties().get(i);
-			pkClassFile.append("this.get"
-					+ property.getName().substring(0, 1).toUpperCase()
+			pkClassFile.append("this.get" + property.getName().substring(0, 1).toUpperCase()
 					+ property.getName().substring(1) + "()");
 			if (i < entityPkData.getlProperties().size() - 1) {
 				pkClassFile.append(" + \", \" +" + NEW_LINE);
@@ -844,12 +776,9 @@ public class EntityGenerator {
 		// Define annotations
 		StringBuilder annotations = new StringBuilder();
 		annotations.append("@Id" + NEW_LINE);
-		annotations.append("@Column(name=\""
-				+ pkField.getPk().getFieldId()
-				+ "\""
+		annotations.append("@Column(name=\"" + pkField.getPk().getFieldId() + "\""
 				+ ((pkField.getUniqueKey()) ? ", unique=true" : "")
-				+ ((pkField.getNullable()) ? ", nullable=true"
-						: ", nullable=false") + ")" + NEW_LINE);
+				+ ((pkField.getNullable()) ? ", nullable=true" : ", nullable=false") + ")" + NEW_LINE);
 		pk.setAnnotation(annotations);
 		// Define data type
 		pk.setType(pkField.getDataTypeId());
@@ -877,12 +806,9 @@ public class EntityGenerator {
 		PropertyData property = new PropertyData();
 		// Define annotations
 		StringBuilder annotations = new StringBuilder();
-		annotations.append("@Column(name=\""
-				+ field.getPk().getFieldId()
-				+ "\""
+		annotations.append("@Column(name=\"" + field.getPk().getFieldId() + "\""
 				+ ((field.getUniqueKey()) ? ", unique=true" : "")
-				+ ((field.getNullable()) ? ", nullable=true"
-						: ", nullable=false") + ")" + NEW_LINE);
+				+ ((field.getNullable()) ? ", nullable=true" : ", nullable=false") + ")" + NEW_LINE);
 		property.setAnnotation(annotations);
 		// Define data type
 		property.setType(field.getDataTypeId());
