@@ -5,42 +5,16 @@ import java.util.List;
 
 public class Message {
 
-	private String messageType;
-
 	public final static String XML = "XML";
 	public final static String JSON = "JSON";
 
 	private List<Data> dataList = new ArrayList<Data>();
 
 	public Message() {
-		setMessageType(XML);
-	}
-
-	public Message(String meesageType) {
-		setMessageType(meesageType);
-	}
-
-	public String getMessageType() {
-		return messageType;
-	}
-
-	public void setMessageType(String type) {
-		messageType = XML;
-		if (type != null) {
-			messageType = type;
-		}
 	}
 
 	public String toString() {
-		String message = "";
-		if (getMessageType() != null) {
-			if (getMessageType().compareTo(Message.XML) == 0) {
-				message = this.toXML();
-			} else if (getMessageType().compareTo(Message.JSON) == 0) {
-				message = this.toJSON();
-			}
-		}
-		return message;
+		return this.toXML();
 	}
 
 	public String toXML() {

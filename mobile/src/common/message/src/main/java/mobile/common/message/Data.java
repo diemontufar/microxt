@@ -73,9 +73,8 @@ public class Data {
 	}
 
 	public void setDataId(String dataId) {
-		dataId = "noname";
 		if (dataId != null) {
-			dataId = dataId.trim();
+			this.dataId = dataId.trim();
 		}
 	}
 

@@ -5,15 +5,23 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import mobile.entity.manager.JPManager;
 import mobile.entity.manager.JPManagerFactory;
+import mobile.tools.common.Log;
 
 import com.csvreader.CsvReader;
 
 public class Generator {
 
 	private final static String OUTPUT_FOLDER = "/home/ronald/TesisOutput";
-	// private final static String OUTPUT_FOLDER = "C:/Users/diogonal/Desktop/TesisOutput";
+
+	// private final static String OUTPUT_FOLDER =
+	// "C:/Users/diogonal/Desktop/TesisOutput";
+	
+	// Logger
+	private final static Logger log = Log.getInstance();
 
 	/**
 	 * Generates two scripts (drop, create) for all tables
@@ -26,8 +34,7 @@ public class Generator {
 	/**
 	 * Generates two scripts (drop, create) for a list of tables
 	 **/
-	private static void generateSqlScriptsForListOfTables(List<String> ltables)
-			throws Exception {
+	private static void generateSqlScriptsForListOfTables(List<String> ltables) throws Exception {
 		SqlGenerator sqlGenerator = new SqlGenerator(OUTPUT_FOLDER);
 		sqlGenerator.generate(ltables);
 	}
@@ -38,9 +45,7 @@ public class Generator {
 	 * @throws Exception
 	 **/
 	private static void generateClasesForAllEntities() throws Exception {
-		String outputUpperPackage = "mobile.entity";
-		EntityGenerator entityGenerator = new EntityGenerator(OUTPUT_FOLDER,
-				outputUpperPackage);
+		EntityGenerator entityGenerator = new EntityGenerator(OUTPUT_FOLDER);
 		entityGenerator.generateAllEntities();
 	}
 
@@ -49,11 +54,8 @@ public class Generator {
 	 * 
 	 * @throws Exception
 	 */
-	private static void generateClasesForListOfTables(List<String> lTables)
-			throws Exception {
-		String outputUpperPackage = "mobile.entity";
-		EntityGenerator entityGenerator = new EntityGenerator(OUTPUT_FOLDER,
-				outputUpperPackage);
+	private static void generateClasesForListOfTables(List<String> lTables) throws Exception {
+		EntityGenerator entityGenerator = new EntityGenerator(OUTPUT_FOLDER);
 		for (String table : lTables) {
 			entityGenerator.generateOneEntity(table);
 		}
@@ -71,26 +73,26 @@ public class Generator {
 			// ************************************************
 			// Generators for all tables
 			// ************************************************
-//			 generateSqlScriptsForAllTables();
-//			 generateClasesForAllEntities();
+			// generateSqlScriptsForAllTables();
+			// generateClasesForAllEntities();
 
 			// ************************************************
 			// Generators for a list of tables
 			// ************************************************
-//			List<String> ltables = new ArrayList<String>();
-//			ltables.add("QUOTA_TYPE");
-//			ltables.add("SOLICITUDE");
-//			generateSqlScriptsForListOfTables(ltables);
-//			generateClasesForListOfTables(ltables);
-			
+			// List<String> ltables = new ArrayList<String>();
+			// ltables.add("QUOTA_TYPE");
+			// ltables.add("SOLICITUDE");
+			// generateSqlScriptsForListOfTables(ltables);
+			// generateClasesForListOfTables(ltables);
+
 			// ************************************************
 			// Generators for a list of tables taken from entity.csv
 			// ************************************************
-//			final String CSV_FILE = "/home/ronald/Escritorio/entity.csv";
-//			List<String> ltables = new ArrayList<String>();
-//			ltables = readTablesFromCsv(CSV_FILE);
-//			generateSqlScriptsForListOfTables(ltables);
-//			generateClasesForListOfTables(ltables);
+			// final String CSV_FILE = "/home/ronald/Escritorio/entity.csv";
+			// List<String> ltables = new ArrayList<String>();
+			// ltables = readTablesFromCsv(CSV_FILE);
+			// generateSqlScriptsForListOfTables(ltables);
+			// generateClasesForListOfTables(ltables);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -113,10 +115,10 @@ public class Generator {
 			csvReader.readHeaders();
 
 			// Read entities
-			System.out.println("-------Entidades-------");
+			log.info("Entidades");
 			while (csvReader.readRecord()) {
 				String tableId = csvReader.get("TABLE_ID");
-				System.out.println(tableId);
+				log.info(tableId);
 				ltable.add(tableId);
 			}
 

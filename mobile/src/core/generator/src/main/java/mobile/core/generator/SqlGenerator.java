@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.persistence.TypedQuery;
 
+import org.apache.log4j.Logger;
+
 import mobile.core.generator.util.SpecialField;
 import mobile.entity.common.DatabaseType;
 import mobile.entity.common.EntityField;
@@ -14,6 +16,7 @@ import mobile.entity.common.EntityRelationship;
 import mobile.entity.common.EntityTable;
 import mobile.entity.manager.JPManager;
 import mobile.tools.common.FileUtil;
+import mobile.tools.common.Log;
 
 public class SqlGenerator {
 
@@ -78,6 +81,9 @@ public class SqlGenerator {
 
 	// Map for data types
 	private Map<String, String> mDataType;
+	
+	// Logger
+	private final static Logger log = Log.getInstance();
 
 	/**
 	 * Constructor
@@ -136,7 +142,6 @@ public class SqlGenerator {
 			ltables.add(entity.getPk().getTableId());
 		}
 
-		// drop foreign keys
 		generate(ltables);
 	}
 
@@ -150,9 +155,9 @@ public class SqlGenerator {
 		createForeignKeys(ltables);
 
 		// Write files
-		System.out.println("Writing file create.sql...");
+		log.info("Writing file create.sql...");
 		FileUtil.writeFile(outputFolder + "/create.sql", sbSql.toString());
-		System.out.println("Writing file drop.sql...");
+		log.info("Writing file drop.sql...");
 		FileUtil.writeFile(outputFolder + "/drop.sql", sbDropSql.toString());
 	}
 

@@ -12,6 +12,9 @@ import mobile.entity.common.EntityTable;
 import mobile.entity.common.EntityTablePk;
 import mobile.entity.manager.JPManager;
 import mobile.tools.common.FileUtil;
+import mobile.tools.common.Log;
+
+import org.apache.log4j.Logger;
 
 enum EntityType {
 	ENTITY, ENTITY_ID
@@ -21,50 +24,42 @@ public class EntityGenerator {
 
 	// Company
 	private final String COMPANY = "MXT";
-
 	private final String ALL_COMPANY = "ALL";
-
 	// Package for generated entities.
-	private String outputPackage;
-
+	private final String OUTPUT_PACKAGE = "mobile.entity";
 	// Path to save the generated files and folders
 	private String pathToSave;
-
 	// Package of basic entity schema
 	private String PATH_ENTITY_SCHEMA = "mobile.entity.schema";
 
 	// QL to query entities
 	private String ENTITY_QL = "Select e from EntityTable e where e.pk.companyId in ('ALL',:companyId)";
-
 	// QL to query some entities
 	private String ENTITY2_QL = "Select e from EntityTable e where e.pk.companyId in ('ALL',:companyId) "
 			+ "and e.pk.tableId in :tables";
-
 	// QL to query fields
 	private String FIELD_SQL = "Select f from EntityField f where "
 			+ "f.pk.companyId in ('ALL',:companyId) and f.pk.tableId=:tableId " + "order by f.fieldOrder";
 
 	// Builder for entity
 	private StringBuilder entityBuilder;
-
 	// Builder for entity pk
 	private StringBuilder pkEntityBuilder;
-
 	// Builder for id
 	private StringBuilder idEntityBuilder;
-
 	// Builder for id pk
 	private StringBuilder pkIdEntityBuilder;
 
 	// New line
 	private final String NEW_LINE = "\n";
-
 	// Semicolon + new line
 	private final String END_LINE = ";\n";
+	
+	// Logger
+	Logger log = Log.getInstance();
 
-	public EntityGenerator(String path, String outputPackage) {
+	public EntityGenerator(String path) {
 		this.pathToSave = path;
-		this.outputPackage = outputPackage;
 	}
 
 	public void generateAllEntities() throws Exception {
@@ -133,35 +128,35 @@ public class EntityGenerator {
 	private void writeFiles(EntityTable entity) throws Exception {
 		// Entity
 		String packageName = entity.getPackageName();
-		String strFile = pathToSave + "/" + packageName + "/" + this.outputPackage.replace(".", "/") + "/"
+		String strFile = pathToSave + "/" + packageName + "/" + this.OUTPUT_PACKAGE.replace(".", "/") + "/"
 				+ entity.getPackageName().replace(".", "/") + "/" + upperCamelCase(entity.getPk().getTableId())
 				+ ".java";
-		System.out.println("Writing " + strFile + "...");
+		log.info("Writing " + strFile + "...");
 		FileUtil.writeFile(strFile, entityBuilder.toString());
 
 		// Entity Pk
 		if (pkEntityBuilder != null) {
-			String strPkFile = pathToSave + "/" + packageName + "/" + this.outputPackage.replace(".", "/") + "/"
+			String strPkFile = pathToSave + "/" + packageName + "/" + this.OUTPUT_PACKAGE.replace(".", "/") + "/"
 					+ entity.getPackageName().replace(".", "/") + "/" + upperCamelCase(entity.getPk().getTableId())
 					+ "Pk" + ".java";
-			System.out.println("Writing " + strPkFile + "...");
+			log.info("Writing " + strPkFile + "...");
 			FileUtil.writeFile(strPkFile, pkEntityBuilder.toString());
 		}
 
 		// Entity Id
 		if (idEntityBuilder != null) {
-			String strIdFile = pathToSave + "/" + packageName + "/" + this.outputPackage.replace(".", "/") + "/"
+			String strIdFile = pathToSave + "/" + packageName + "/" + this.OUTPUT_PACKAGE.replace(".", "/") + "/"
 					+ entity.getPackageName().replace(".", "/") + "/" + upperCamelCase(entity.getPk().getTableId())
 					+ "Id" + ".java";
-			System.out.println("Writing " + strIdFile + "...");
+			log.info("Writing " + strIdFile + "...");
 			FileUtil.writeFile(strIdFile, idEntityBuilder.toString());
 
 			// Entity Id Pk
 			if (pkIdEntityBuilder != null) {
-				String strIdPkFile = pathToSave + "/" + packageName + "/" + this.outputPackage.replace(".", "/") + "/"
+				String strIdPkFile = pathToSave + "/" + packageName + "/" + this.OUTPUT_PACKAGE.replace(".", "/") + "/"
 						+ entity.getPackageName().replace(".", "/") + "/" + upperCamelCase(entity.getPk().getTableId())
 						+ "IdPk" + ".java";
-				System.out.println("Writing " + strIdPkFile + "...");
+				log.info("Writing " + strIdPkFile + "...");
 				FileUtil.writeFile(strIdPkFile, pkIdEntityBuilder.toString());
 			}
 		}
@@ -319,7 +314,7 @@ public class EntityGenerator {
 		// Generate entity file
 		// -----------------------------------------------
 		// Package
-		builder.append("package " + this.outputPackage + "." + entity.getPackageName() + END_LINE);
+		builder.append("package " + this.OUTPUT_PACKAGE + "." + entity.getPackageName() + END_LINE);
 		builder.append(NEW_LINE);
 
 		// Imports
@@ -619,7 +614,7 @@ public class EntityGenerator {
 		StringBuilder pkClassFile = new StringBuilder();
 
 		// Package
-		pkClassFile.append("package " + this.outputPackage + "." + fatherEntity.getPackageName() + END_LINE);
+		pkClassFile.append("package " + this.OUTPUT_PACKAGE + "." + fatherEntity.getPackageName() + END_LINE);
 		pkClassFile.append(NEW_LINE);
 
 		// Imports

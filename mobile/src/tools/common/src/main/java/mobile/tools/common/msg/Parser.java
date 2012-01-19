@@ -25,7 +25,7 @@ public class Parser {
 	@SuppressWarnings("rawtypes")
 	public Message parseMsg(String messageData, String messageType)
 			throws Exception {
-		Message message = new Message(messageType);
+		Message message = new Message();
 		if (messageType.compareTo(Message.XML) == 0) {
 			DocumentBuilder documentBuilder = DocumentBuilderFactory
 					.newInstance().newDocumentBuilder();
