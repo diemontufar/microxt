@@ -10,8 +10,7 @@ import mobile.entity.schema.GeneralEntityKey;
  * The primary key class for the ENTITY_FIELD_ID database table.
  */
 @Embeddable
-public class EntityFieldIdPk extends AbstractEntityKey implements
-		GeneralEntityKey {
+public class EntityFieldIdPk extends AbstractEntityKey implements GeneralEntityKey {
 	private static final long serialVersionUID = 1L;
 
 	/**

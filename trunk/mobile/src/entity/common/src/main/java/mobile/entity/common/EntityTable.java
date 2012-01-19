@@ -81,10 +81,9 @@ public class EntityTable extends AbstractEntity implements Multicompany {
 		this.pk = pk;
 	}
 
-	public EntityTable(EntityTablePk pk, Boolean hasTableId,
-			String packageName, Boolean multiCompany, Boolean multiLanguage,
-			Boolean historicalData, Boolean optimisticLocking,
-			Boolean enumeratedTypes, Boolean cacheMemory, String description) {
+	public EntityTable(EntityTablePk pk, Boolean hasTableId, String packageName, Boolean multiCompany,
+			Boolean multiLanguage, Boolean historicalData, Boolean optimisticLocking, Boolean enumeratedTypes,
+			Boolean cacheMemory, String description) {
 		this.pk = pk;
 		this.hasTableId = hasTableId;
 		this.packageName = packageName;
@@ -192,12 +191,9 @@ public class EntityTable extends AbstractEntity implements Multicompany {
 
 	@Override
 	public String toString() {
-		return "ENTITY_TABLE:[" + this.getPk().toString() + ", "
-				+ this.getHasTableId() + ", " + this.getPackageName() + ", "
-				+ this.getMultiCompany() + ", " + this.getMultiLanguage()
-				+ ", " + this.getHistoricalData() + ", "
-				+ this.getOptimisticLocking() + ", "
-				+ this.getEnumeratedTypes() + ", " + this.getCacheMemory()
+		return "ENTITY_TABLE:[" + this.getPk().toString() + ", " + this.getHasTableId() + ", " + this.getPackageName()
+				+ ", " + this.getMultiCompany() + ", " + this.getMultiLanguage() + ", " + this.getHistoricalData()
+				+ ", " + this.getOptimisticLocking() + ", " + this.getEnumeratedTypes() + ", " + this.getCacheMemory()
 				+ ", " + this.getDescription() + "]";
 	}
 }

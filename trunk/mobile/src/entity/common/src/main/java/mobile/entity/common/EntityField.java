@@ -99,9 +99,8 @@ public class EntityField extends AbstractEntity implements Multicompany {
 		this.pk = pk;
 	}
 
-	public EntityField(EntityFieldPk pk, Integer fieldOrder, String dataTypeId,
-			Integer dataSize, Integer dataScale, Boolean primaryKey,
-			Boolean uniqueKey, Boolean nullable) {
+	public EntityField(EntityFieldPk pk, Integer fieldOrder, String dataTypeId, Integer dataSize, Integer dataScale,
+			Boolean primaryKey, Boolean uniqueKey, Boolean nullable) {
 		this.pk = pk;
 		this.fieldOrder = fieldOrder;
 		this.dataTypeId = dataTypeId;
@@ -231,12 +230,10 @@ public class EntityField extends AbstractEntity implements Multicompany {
 
 	@Override
 	public String toString() {
-		return "ENTITY_FIELD:[" + this.getPk().toString() + ", "
-				+ this.getFieldOrder() + ", " + this.getDataTypeId() + ", "
-				+ this.getDataSize() + ", " + this.getDataScale() + ", "
-				+ this.getPrimaryKey() + ", " + this.getUniqueKey() + ", "
-				+ this.getNullable() + ", " + this.getDefaultValue() + ", "
-				+ this.getSequentialId() + ", " + this.getMinimumValue() + ", "
-				+ this.getMaximumValue() + ", " + this.getDescription() + "]";
+		return "ENTITY_FIELD:[" + this.getPk().toString() + ", " + this.getFieldOrder() + ", " + this.getDataTypeId()
+				+ ", " + this.getDataSize() + ", " + this.getDataScale() + ", " + this.getPrimaryKey() + ", "
+				+ this.getUniqueKey() + ", " + this.getNullable() + ", " + this.getDefaultValue() + ", "
+				+ this.getSequentialId() + ", " + this.getMinimumValue() + ", " + this.getMaximumValue() + ", "
+				+ this.getDescription() + "]";
 	}
 }

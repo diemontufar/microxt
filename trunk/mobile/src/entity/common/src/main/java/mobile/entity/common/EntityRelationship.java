@@ -51,8 +51,8 @@ public class EntityRelationship extends AbstractEntity implements Multicompany {
 		this.pk = pk;
 	}
 
-	public EntityRelationship(EntityRelationshipPk pk, String tableFrom,
-			String fieldFrom, String tableTo, String fieldTo) {
+	public EntityRelationship(EntityRelationshipPk pk, String tableFrom, String fieldFrom, String tableTo,
+			String fieldTo) {
 		this.pk = pk;
 		this.tableFrom = tableFrom;
 		this.fieldFrom = fieldFrom;
@@ -115,8 +115,7 @@ public class EntityRelationship extends AbstractEntity implements Multicompany {
 
 	@Override
 	public String toString() {
-		return "ENTITY_RELATIONSHIP:[" + this.getPk().toString() + ", "
-				+ this.getTableFrom() + ", " + this.getFieldFrom() + ", "
-				+ this.getTableTo() + ", " + this.getFieldTo() + "]";
+		return "ENTITY_RELATIONSHIP:[" + this.getPk().toString() + ", " + this.getTableFrom() + ", "
+				+ this.getFieldFrom() + ", " + this.getTableTo() + ", " + this.getFieldTo() + "]";
 	}
 }

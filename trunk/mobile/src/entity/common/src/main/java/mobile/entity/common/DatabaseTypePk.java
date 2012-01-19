@@ -10,8 +10,7 @@ import mobile.entity.schema.GeneralEntityKey;
  * The primary key class for the DATABASE_TYPE database table.
  */
 @Embeddable
-public class DatabaseTypePk extends AbstractEntityKey implements
-		GeneralEntityKey {
+public class DatabaseTypePk extends AbstractEntityKey implements GeneralEntityKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -67,7 +66,6 @@ public class DatabaseTypePk extends AbstractEntityKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getDataTypeId() + ", " + this.getDatabaseId() + ", "
-				+ this.getDataSize() + "]";
+		return "[" + this.getDataTypeId() + ", " + this.getDatabaseId() + ", " + this.getDataSize() + "]";
 	}
 }

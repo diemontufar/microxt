@@ -10,8 +10,7 @@ import mobile.entity.schema.MulticompanyKey;
  * The primary key class for the ENTITY_TABLE database table.
  */
 @Embeddable
-public class EntityTablePk extends AbstractCompanyKey implements
-		MulticompanyKey {
+public class EntityTablePk extends AbstractCompanyKey implements MulticompanyKey {
 	private static final long serialVersionUID = 1L;
 
 	/**

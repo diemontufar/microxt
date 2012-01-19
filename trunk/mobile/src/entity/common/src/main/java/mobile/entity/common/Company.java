@@ -129,8 +129,7 @@ public class Company extends AbstractEntity implements GeneralEntity {
 
 	@Override
 	public String toString() {
-		return "COMPANY:[" + this.getPk().toString() + ", " + this.getName()
-				+ ", " + this.getDatafileId() + ", " + this.getUpgradeNumber()
-				+ ", " + this.getLicenseDate() + ", " + this.getEnable() + "]";
+		return "COMPANY:[" + this.getPk().toString() + ", " + this.getName() + ", " + this.getDatafileId() + ", "
+				+ this.getUpgradeNumber() + ", " + this.getLicenseDate() + ", " + this.getEnable() + "]";
 	}
 }
