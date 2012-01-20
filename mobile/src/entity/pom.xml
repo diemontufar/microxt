@@ -19,7 +19,5 @@
         <module>person</module>
         <module>security</module>
 	<module>microcredit</module>
-	<module>zonification</module>
-	<module>marketing</module>
     </modules>
 </project>

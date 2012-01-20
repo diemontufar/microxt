@@ -166,6 +166,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			
 		} catch (Exception e) {
 			showError(e);
+			e.printStackTrace();
 		}
 	}
 	

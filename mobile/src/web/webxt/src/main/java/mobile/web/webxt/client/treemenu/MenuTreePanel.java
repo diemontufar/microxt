@@ -81,6 +81,14 @@ public class MenuTreePanel extends LayoutContainer {
 				List<ModelData> processModels = MyMessageReader.getModels(
 						result, "Process");
 
+				if(subsystemModels.size()==0
+						&& moduleModels.size()==0
+						&& processModels.size()==0){
+					new AlertDialog("Menu Principal", "Error al consultar los elementos del menu.").show();
+					Dispatcher.forwardEvent(AppEvents.UserNotification,"Error al cargar el menu");
+					return;
+				}
+				
 				Map<String, Folder> mN1 = new HashMap<String, Folder>();
 				Map<String, Folder> mN2 = new HashMap<String, Folder>();
 				Map<String, Process> mN3 = new HashMap<String, Process>();
