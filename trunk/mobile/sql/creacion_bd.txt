@@ -13,7 +13,7 @@
 7. Ejecutar create.sql
 8. Ejecutar los scripts de parametrizacion que se encuentran dentro de /sql/data/*.sql
 9. Finalmente se debe llenar las tablas de generacion(EntityTable, EntityField, EntityRelationship)
-   Para esto primero hacer que la unidad de persistencia "central" apunte hacia la BD de desarrollo "microxt"
-   Cambiar la variable PERSISTENCE_UNIT = "central" en la clase FillGeneratingEntitiesFromCsv
+   Para esto primero hacer que la unidad de persistencia "generator" apunte hacia la BD de desarrollo "microxt"
    Ejecutar FillGeneratingEntitiesFromCsv
+10.Para que la applicacion funcione con la nueva bd que se acaba de crear "microxt" se debe cambiar central para que apunte hacia la misma.
 
