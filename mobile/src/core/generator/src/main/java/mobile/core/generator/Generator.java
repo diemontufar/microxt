@@ -73,7 +73,7 @@ public class Generator {
 			// ************************************************
 			// Generators for all tables
 			// ************************************************
-			// generateSqlScriptsForAllTables();
+			generateSqlScriptsForAllTables();
 			// generateClasesForAllEntities();
 
 			// ************************************************
