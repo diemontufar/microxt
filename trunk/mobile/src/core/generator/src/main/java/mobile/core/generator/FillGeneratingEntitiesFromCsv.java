@@ -3,7 +3,9 @@ package mobile.core.generator;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Query;
 
@@ -44,12 +46,20 @@ public class FillGeneratingEntitiesFromCsv {
 	// private String relationshipFilePath =
 	// "C:/Users/diogonal/Desktop/relationship.csv";
 
-	private final String COMPANY = "COMPANY_ID";
-	private final String LANGUAGE = "LANGUAGE_ID";
-	private final String EXPIRED = "EXPIRED";
-	private final String CREATED = "CREATED";
+	private final String COMPANY_TABLE = "COMPANY";
+	private final String LANGUAGE_TABLE = "LANGUAGE";
 
-	private List<EntityTable> lentity;
+	private final String COMPANY_FIELD = "COMPANY_ID";
+	private final String LANGUAGE_FIELD = "LANGUAGE_ID";
+	private final String EXPIRED_FIELD = "EXPIRED";
+	private final String CREATED_FIELD = "CREATED";
+
+	private final String COMPANY = "MXT";
+
+	private final String PERSISTENCE_UNIT = "generator";
+
+	private List<EntityTable> lentity = new ArrayList<EntityTable>();
+	private Map<String, List<EntityField>> mentityfields = new HashMap<String, List<EntityField>>();
 
 	// Logger
 	private final static Logger log = Log.getInstance();
@@ -59,14 +69,11 @@ public class FillGeneratingEntitiesFromCsv {
 
 	public void loadPersistence() {
 		log.info("Load persistence...");
-		JPManagerFactory.createEntityManagerFactory("generator");
+		JPManagerFactory.createEntityManagerFactory(PERSISTENCE_UNIT);
 		JPManager.createEntityManager();
-		JPManager.beginTransaction();
 	}
 
 	protected void closePersistence() throws Throwable {
-		log.info("Commit changes...");
-		JPManager.commitTransaction();
 		log.info("Close persistence...");
 		JPManager.close();
 		JPManagerFactory.close();
@@ -86,7 +93,6 @@ public class FillGeneratingEntitiesFromCsv {
 
 			// Read entities
 			log.info("Entidades");
-			lentity = new ArrayList<EntityTable>();
 			while (csvReader.readRecord()) {
 				String companyId = csvReader.get("COMPANY_ID");
 				String tableId = csvReader.get("TABLE_ID");
@@ -136,20 +142,20 @@ public class FillGeneratingEntitiesFromCsv {
 			log.info("Guardar campos especiales");
 			for (EntityTable entity : lentity) {
 				if (entity.getMultiCompany()) {
-					EntityFieldIdPk pk = new EntityFieldIdPk(entity.getPk().getTableId(), COMPANY);
+					EntityFieldIdPk pk = new EntityFieldIdPk(entity.getPk().getTableId(), COMPANY_FIELD);
 					EntityFieldId fieldId = new EntityFieldId(pk);
 					JPManager.persist(fieldId);
 				}
 				if (entity.getMultiLanguage()) {
-					EntityFieldIdPk pk = new EntityFieldIdPk(entity.getPk().getTableId(), LANGUAGE);
+					EntityFieldIdPk pk = new EntityFieldIdPk(entity.getPk().getTableId(), LANGUAGE_FIELD);
 					EntityFieldId fieldId = new EntityFieldId(pk);
 					JPManager.persist(fieldId);
 				}
 				if (entity.getHistoricalData()) {
-					EntityFieldIdPk pk = new EntityFieldIdPk(entity.getPk().getTableId(), EXPIRED);
+					EntityFieldIdPk pk = new EntityFieldIdPk(entity.getPk().getTableId(), EXPIRED_FIELD);
 					EntityFieldId fieldId = new EntityFieldId(pk);
 					JPManager.persist(fieldId);
-					pk = new EntityFieldIdPk(entity.getPk().getTableId(), CREATED);
+					pk = new EntityFieldIdPk(entity.getPk().getTableId(), CREATED_FIELD);
 					fieldId = new EntityFieldId(pk);
 					JPManager.persist(fieldId);
 				}
@@ -183,6 +189,32 @@ public class FillGeneratingEntitiesFromCsv {
 		}
 
 		return entity;
+	}
+	
+	private void setFieldToEntity(EntityField field) {
+		String entity = field.getPk().getTableId();
+		List<EntityField> lfields = mentityfields.get(entity);
+		if(lfields == null){
+			lfields = new ArrayList<EntityField>();
+			mentityfields.put(entity, lfields);
+		}
+		lfields.add(field);
+	}
+	
+	private List<EntityField> getPkFields(String entity) {
+		List<EntityField> lfields = mentityfields.get(entity);
+		List<EntityField> lpkfields = null;
+		
+		if(lfields != null){
+			lpkfields = new ArrayList<EntityField>();
+			for (EntityField field : lfields) {
+				if(field.getPrimaryKey()){
+					lpkfields.add(field);
+				}
+			}
+		}
+		
+		return lpkfields;
 	}
 
 	public void fillFields() throws Exception {
@@ -230,6 +262,8 @@ public class FillGeneratingEntitiesFromCsv {
 				field.setDescription(description);
 
 				lfield.add(field);
+				
+				setFieldToEntity(field);
 
 				log.info(field);
 			}
@@ -278,6 +312,44 @@ public class FillGeneratingEntitiesFromCsv {
 		CsvReader csvReader = null;
 
 		try {
+			// General relationships (Company, Language, Id)
+			for (EntityTable entity : lentity) {
+				if (entity.getMultiCompany()) {
+					String relationshipName = entity.getPk().getTableId() + "_COMPANY_FK";
+					if(relationshipName.length()>30){
+						relationshipName = entity.getPk().getTableId().substring(0, 5) + "_COMPANY_FK";
+					}
+					EntityRelationshipPk pk = new EntityRelationshipPk(relationshipName, 1);
+					pk.setCompanyId(COMPANY);
+					EntityRelationship relationship = new EntityRelationship(pk, entity.getPk().getTableId(),
+							COMPANY_FIELD, COMPANY_TABLE, COMPANY_FIELD);
+					JPManager.persist(relationship);
+				}
+				if (entity.getMultiLanguage()) {
+					String relationshipName = entity.getPk().getTableId() + "_LANGUAGE_FK";
+					if(relationshipName.length()>30){
+						relationshipName = entity.getPk().getTableId().substring(0, 5) + "_LANGUAGE_FK";
+					}
+					EntityRelationshipPk pk = new EntityRelationshipPk(relationshipName, 1);
+					pk.setCompanyId(COMPANY);
+					EntityRelationship relationship = new EntityRelationship(pk, entity.getPk().getTableId(),
+							LANGUAGE_FIELD, LANGUAGE_TABLE, LANGUAGE_FIELD);
+					JPManager.persist(relationship);
+				}
+				if (entity.getHasTableId()) {
+					int i = 1;
+					for (EntityField field : getPkFields(entity.getPk().getTableId())) {
+						String tableId = entity.getPk().getTableId() + "_ID";
+						EntityRelationshipPk pk = new EntityRelationshipPk(entity.getPk().getTableId() + "_ID_FK", i++);
+						pk.setCompanyId(COMPANY);
+						EntityRelationship relationship = new EntityRelationship(pk, entity.getPk().getTableId(),
+								field.getPk().getFieldId(), tableId, field.getPk().getFieldId());
+						JPManager.persist(relationship);
+					}
+				}
+			}
+
+			// Defined relationships
 			// CSV reader
 			File fichero = new File(relationshipFilePath);
 			FileReader freader = new FileReader(fichero);
@@ -288,7 +360,6 @@ public class FillGeneratingEntitiesFromCsv {
 			csvReader.readHeaders();
 
 			// Read fields
-			log.info("Campos");
 			List<EntityRelationship> lrelationship = new ArrayList<EntityRelationship>();
 
 			while (csvReader.readRecord()) {
@@ -344,18 +415,24 @@ public class FillGeneratingEntitiesFromCsv {
 		return res;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Throwable {
 		// Fill
+		FillGeneratingEntitiesFromCsv filler = new FillGeneratingEntitiesFromCsv();
+		
 		try {
-			FillGeneratingEntitiesFromCsv filler = new FillGeneratingEntitiesFromCsv();
 			filler.loadPersistence();
+			JPManager.beginTransaction();
+
 			filler.fillTables();
 			filler.fillFields();
 			filler.fillRelationships();
-			filler.closePersistence();
+			
+			JPManager.commitTransaction();
 		} catch (Throwable e) {
 			e.printStackTrace();
 			JPManager.rollbackTransaction();
+		} finally{
+			filler.closePersistence();
 		}
 
 		// Remove
