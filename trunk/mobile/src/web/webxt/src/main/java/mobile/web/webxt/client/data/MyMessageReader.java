@@ -27,12 +27,14 @@ public final class MyMessageReader {
 
 		EntityData entityData = msg.getEntityData(entityName);
 
-		for (Item item : entityData.getItemList()) {
-			ModelData model = new BaseModelData();
-			for (Field field : item.getFieldList()) {
-				model.set(field.getName(), field.getValue());
+		if(entityData != null){
+			for (Item item : entityData.getItemList()) {
+				ModelData model = new BaseModelData();
+				for (Field field : item.getFieldList()) {
+					model.set(field.getName(), field.getValue());
+				}
+				models.add(model);
 			}
-			models.add(model);
 		}
 
 		return models;
