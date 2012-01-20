@@ -11,5 +11,9 @@
    Esto creara en la carpeta <OUTPUT_FOLDER> los sql de generacion create.sql y drop.sql, ademas de las persistencias
 6. Crear BD de desarrollo. Ejemplo microxt
 7. Ejecutar create.sql
-8. Ejecutar los scripts de parametrizacion /sql/data/
+8. Ejecutar los scripts de parametrizacion que se encuentran dentro de /sql/data/*.sql
+9. Finalmente se debe llenar las tablas de generacion(EntityTable, EntityField, EntityRelationship)
+   Para esto primero hacer que la unidad de persistencia "central" apunte hacia la BD de desarrollo "microxt"
+   Cambiar la variable PERSISTENCE_UNIT = "central" en la clase FillGeneratingEntitiesFromCsv
+   Ejecutar FillGeneratingEntitiesFromCsv
 

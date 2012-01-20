@@ -19,12 +19,10 @@ ALL,RESPONSE,1,parameter,1,1,0,0,1,1,Values of responses
 
 ALL,ADDRESS_TYPE,1,person,1,1,0,0,0,0,Values of address types
 ALL,CIVIL_STATUS,1,person,1,1,0,0,0,0,Values of civil statuses
-ALL,DOCUMENT_TYPE,1,person,1,1,0,0,0,0,Values of document types
 ALL,GENDER_TYPE,1,person,0,1,0,0,1,0,Values of gender types
 ALL,IDENTIFICATION_TYPE,1,person,1,1,0,0,0,0,Values of identification types
 ALL,PERSON,1,person,1,0,1,1,0,0,Values of person
 ALL,PERSON_ADDRESS,0,person,1,0,1,1,0,0,Values of person address
-ALL,PERSON_DOCUMENT,0,person,1,0,1,1,0,0,Values of person documents
 ALL,PERSON_PHONE,0,person,1,0,1,1,0,0,Values of person phones
 ALL,PERSON_TYPE,1,person,1,1,0,0,0,0,Values of person types
 ALL,PHONE_TYPE,1,person,1,1,0,0,0,0,Values of phone types
