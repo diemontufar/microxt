@@ -10,38 +10,39 @@ import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.form.EntityContentPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
-import mobile.web.webxt.client.form.widgetsgrid.ComboColumn;
 import mobile.web.webxt.client.form.widgetsgrid.EntityEditorGrid;
 import mobile.web.webxt.client.form.widgetsgrid.ExpireColumnConfig;
 import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
-import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
+import com.extjs.gxt.ui.client.data.FilterConfig;
+import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.LoadListener;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
-import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
-import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
 import com.google.gwt.user.client.Element;
 
 public class C101 extends MyGeneralForm {
 
 	private final String PROCESS = "C101";
-	private final String ENTITY = "Asessor";
+	private final String ENTITY = "UserAccount";
 	private final Integer PAGE_SIZE = 5;
-
+	
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-				
+		
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_asessorId", "Asesor", 50, 20,false));
-		cdata.add(new MyColumnData("personId", "Persona", 70, 40, false));
+		cdata.add(new MyColumnData("pk_userId", "Asesor", 80, 20,false));
+		cdata.add(new MyColumnData("personId", "Persona", 80, 20, false));
+		cdata.add(new MyColumnData("userTypeId", "Tipo", 80, 4, false));
 		
 		MyProcessConfig config = new MyProcessConfig(PROCESS, ENTITY,cdata.getIdFields());
 		
@@ -54,50 +55,64 @@ public class C101 extends MyGeneralForm {
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
 		configs.add(new NormalColumn(cdata.get(0)));
+		configs.add(new NormalColumn(cdata.get(1)));
+		configs.add(new NormalColumn(cdata.get(2)));
 		
-		ComboColumn profileComboColumn = new ComboColumn(cdata.get(1));
-		ArrayColumnData cdataComboProfile = new ArrayColumnData();
-		cdataComboProfile.add(new MyColumnData("pk_personId", "ID", 40));
-		cdataComboProfile.add(new MyColumnData("identificationNumber", "Identificacion", 100));
-		cdataComboProfile.add(new MyColumnData("name", "Nombre", 110));
-		cdataComboProfile.add(new MyColumnData("lastName", "Apellido", 120));
-		profileComboColumn.setRqData("Person", cdataComboProfile);
-		configs.add(profileComboColumn);
-		
-
 		configs.add(new ExpireColumnConfig());
 		
 		ColumnModel cm = new ColumnModel(configs);
-		
-		// Filters
-		GridFilters filters = new GridFilters();
-		StringFilter parameterIdFilter = new StringFilter(cdata.getIdFields().get(0));
-		StringFilter subsystemFilter = new StringFilter(cdata.getIdFields().get(1));
-		filters.addFilter(parameterIdFilter);
-		filters.addFilter(subsystemFilter);
-		
+	
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Asesores de Microcredito",300,350);
+		EntityContentPanel cp = new EntityContentPanel("Asesores de Microcredito",400,300);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(store, cm);
-		grid.setAutoExpandColumn("pk_asessorId");
-		grid.addPlugin(filters);
+		grid.setAutoExpandColumn("pk_userId");
 		cp.add(grid);
+
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
 				store.sort(cdata.getIdFields().get(0), SortDir.ASC);
 			}
 		});
 		
-		// Top tool bar
-		GridToolBar toolBar = new GridToolBar(grid, store);
-		cp.setTopComponent(toolBar);
-
 		// Paging tool bar
 		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(
 				PAGE_SIZE, loader);
 		cp.setBottomComponent(pagingToolBar);
+				
+	    LoadListener filterListener = new LoadListener() {
+	        public void loaderBeforeLoad(LoadEvent le) {
+	        	
+	        	MyProcessConfig config = le.getConfig();
+	        	String ffield = "userTypeId";
+	        	
+	        	List<FilterConfig> filters = config.getFilterConfigs(); 
+	        	if(filters==null){
+	        		filters  = new ArrayList<FilterConfig>();
+	        	}
+	        	
+	        	boolean existe = false;
+	        	for (FilterConfig fil : filters) {
+					if (fil.getField().compareTo(ffield)==0){
+						existe = true;
+						fil.setValue("ASE");
+					}
+				}
+	        	
+	        	if(!existe){
+	        		FilterConfig filter = new BaseStringFilterConfig();
+		        	filter.setField(ffield);
+		        	filter.setComparison("=");
+		        	filter.setValue("ASE");
+		        	filters.add(filter);
+	        	}
+	        	
+	        	config.setFilterConfigs(filters);
+	        }
+	    };
+	        
+	    loader.addListener(MyPagingLoader.BeforeLoad, filterListener);
 
 		add(cp);
 	}

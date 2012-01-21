@@ -16,6 +16,8 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NumericColumn;
+import mobile.web.webxt.client.form.widgetsgrid.SpecialComboColumn;
+import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -43,9 +45,9 @@ public class C105 extends LayoutContainer {
 
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_asessorId", "Asesor", 50, 3, false));
-		cdata.add(new MyColumnData("pk_productId", "Producto", 50, 50, false));
-		cdata.add(new MyColumnData("observations", "Observaciones", 150, 50, true));
+		cdata.add(new MyColumnData("pk_userId", "Asesor", 70, 20, false));
+		cdata.add(new MyColumnData("pk_productId", "Producto", 70, 50, false));
+		cdata.add(new MyColumnData("observations", "Observaciones", 200, 50, true));
 		
 		MyProcessConfig config = new MyProcessConfig(PROCESS, ENTITY,
 				cdata.getIdFields());
@@ -58,20 +60,28 @@ public class C105 extends LayoutContainer {
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		ComboColumn profileComboColumn = new ComboColumn(cdata.get(0));
-		ArrayColumnData cdataComboProfile = new ArrayColumnData();
-		cdataComboProfile.add(new MyColumnData("pk_personId", "Persona", 40));
-		cdataComboProfile.add(new MyColumnData("identificationNumber", "Identificacion", 100));
-		cdataComboProfile.add(new MyColumnData("name", "Nombre", 110));
-		cdataComboProfile.add(new MyColumnData("lastName", "Apellido", 120));
-		profileComboColumn.setRqData("Person", cdataComboProfile);
-		configs.add(profileComboColumn);
+		// Combo Asessor
+		SpecialComboColumn spcComboCol = new SpecialComboColumn(cdata.get(0));
+		spcComboCol.setPageSize(10);
+		ArrayColumnData cdataCombo = new ArrayColumnData();
+		cdataCombo = new ArrayColumnData();
+		cdataCombo.add(new MyColumnData("pk_userId", "Asesor", 100));
+		cdataCombo.add(new MyColumnData("name", "Nombre	", 220));
+		
+		MyColumnData hidden = new MyColumnData("userTypeId",ColumnType.HIDDEN);
+		hidden.setAssociatedField("userTypeId");
+		cdataCombo.add(hidden);
+		
+		spcComboCol.setRqData("UserAccount", cdataCombo);
+		spcComboCol.setFilter("userTypeId", "ASE");
+		configs.add(spcComboCol);
+				
 		
 		ComboColumn productComboColumn = new ComboColumn(cdata.get(1));
 		ArrayColumnData cdataComboPrduct = new ArrayColumnData();
 		cdataComboPrduct.add(new MyColumnData("pk_productId", "Producto", 40));
 		cdataComboPrduct.add(new MyColumnData("description", "Descripcion", 100));
-		productComboColumn.setRqData("Person", cdataComboPrduct);
+		productComboColumn.setRqData("ProductMicrocredit", cdataComboPrduct);
 		configs.add(productComboColumn);
 		
 		configs.add(new NumericColumn(cdata.get(2)));
@@ -82,11 +92,11 @@ public class C105 extends LayoutContainer {
 
 		// Content panel
 		EntityContentPanel cp = new EntityContentPanel("Productos por Asesor",
-				500, 230);
+				400, 230);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(store, cm);
-		grid.setAutoExpandColumn("pk_asessorId");
+		grid.setAutoExpandColumn("pk_userId");
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
