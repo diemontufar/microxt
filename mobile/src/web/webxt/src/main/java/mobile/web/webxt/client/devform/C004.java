@@ -37,7 +37,7 @@ public class C004 extends MyGeneralForm {
 
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_frecuencyId", "Frecuencia", 100, 3, false));
+		cdata.add(new MyColumnData("pk_frequencyId", "Frecuencia", 100, 3, false));
 		cdata.add(new MyColumnData("description", "Descripcion", 150, 50, false));
 
 		MyProcessConfig config = new MyProcessConfig(PROCESS, ENTITY,
