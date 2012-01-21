@@ -42,16 +42,6 @@
             <artifactId>mobile.entity.microcredit</artifactId>
             <version>2.0</version>
         </dependency>
-        <dependency>
-            <groupId>mobile.entity</groupId>
-            <artifactId>mobile.entity.zonification</artifactId>
-            <version>2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>mobile.entity</groupId>
-            <artifactId>mobile.entity.marketing</artifactId>
-            <version>2.0</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
