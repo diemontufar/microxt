@@ -29,6 +29,8 @@ import mobile.web.webxt.client.util.DatesManager;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
+import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -310,9 +312,21 @@ public class C203 extends LayoutContainer {
 		row.add(label);
 
 		final ArrayColumnData cdataAsessor = new ArrayColumnData();
-		cdataAsessor.add(new MyColumnData("pk_asessorId", "Asesor", 150, 20, false));
-		asessorCombo = new ComboForm(80, "pk_asessorId");
-		asessorCombo.setRqData("Asessor", cdataAsessor);
+		cdataAsessor.add(new MyColumnData("pk_userId", "Asesor", 80, 20,false));
+		cdataAsessor.add(new MyColumnData("name", "Nombre", 150, 20,false));
+		asessorCombo = new ComboForm(80,"pk_userId");
+		asessorCombo.setRqData("UserAccount", cdataAsessor);
+		
+		String filterField = "userTypeId";
+
+		FilterConfig filter = new BaseStringFilterConfig();
+		filter.setField(filterField);
+		filter.setComparison("=");
+		filter.setValue("ASE");
+
+		asessorCombo.addFilter(filter);
+		asessorCombo.setLoaded(false);
+		
 		asessorAux = new InputBox("", "Partner:asessorId:1", 50, 100, Validate.ALFANUMERICO);
 		asessorAux.setVisible(false);
 		asessorCombo.setAllowBlank(false);

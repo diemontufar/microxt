@@ -109,6 +109,7 @@ public class C102 extends LayoutContainer {
 		super.onRender(parent, index);
 		setWidth(800);
 		final BorderLayout layout = new BorderLayout();
+		counter = 0;
 		config = new MyProcessConfig(process);
 		isNew.setValue("1");
 		isNew.hide();
@@ -398,6 +399,9 @@ public class C102 extends LayoutContainer {
 	
 	private void resetForm(){
 		map.clearOverlays();
+		//map = new MapWidget(LatLng.newInstance(INITIAL_LATITUDE,
+		//		INITIAL_LONGITUDE), ZOOM_LEVEL_NORMAL);
+		counter = 0;
 		initializePoints();
 		clearFields();
 		code.clear();

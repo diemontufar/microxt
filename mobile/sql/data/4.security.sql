@@ -6,8 +6,13 @@ insert into USER_STATUS (COMPANY_ID, LANGUAGE_ID, USER_STATUS_ID, NAME) values (
 insert into USER_STATUS (COMPANY_ID, LANGUAGE_ID, USER_STATUS_ID, NAME) values ('MXT', 'ES', 'BLO', 'BLOQUEADO');
 insert into USER_STATUS (COMPANY_ID, LANGUAGE_ID, USER_STATUS_ID, NAME) values ('MXT', 'ES', 'INA', 'INACTIVO');
 
+insert into USER_TYPE_ID (USER_TYPE_ID) values ('ADM');
+insert into USER_TYPE_ID (USER_TYPE_ID) values ('ASE');
 insert into USER_TYPE_ID (USER_TYPE_ID) values ('OPE');
 insert into USER_TYPE_ID (USER_TYPE_ID) values ('SYS');
+
+insert into USER_TYPE (COMPANY_ID, LANGUAGE_ID, USER_TYPE_ID, NAME) values ('MXT', 'ES', 'ADM', 'ADMINISTRADOR');
+insert into USER_TYPE (COMPANY_ID, LANGUAGE_ID, USER_TYPE_ID, NAME) values ('MXT', 'ES', 'ASE', 'ASESOR CREDITO');
 insert into USER_TYPE (COMPANY_ID, LANGUAGE_ID, USER_TYPE_ID, NAME) values ('MXT', 'ES', 'OPE', 'OPERADOR');
 insert into USER_TYPE (COMPANY_ID, LANGUAGE_ID, USER_TYPE_ID, NAME) values ('MXT', 'ES', 'SYS', 'SISTEMAS');
 

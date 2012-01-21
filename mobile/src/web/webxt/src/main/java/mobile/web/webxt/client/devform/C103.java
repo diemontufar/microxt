@@ -16,6 +16,8 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
+import mobile.web.webxt.client.form.widgetsgrid.SpecialComboColumn;
+import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -46,7 +48,7 @@ private final Integer PAGE_SIZE = 5;
 		String entity = "ZoneAsessor";
 
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_asessorId", "Asesor", 150, 20,false));
+		cdata.add(new MyColumnData("pk_userId", "Asesor", 150, 20,false));
 		cdata.add(new MyColumnData("pk_geographicZoneId", "Zona", 150, 6, false));
 		cdata.add(new MyColumnData("observations", "Observaciones", 200, 50, true));
 		
@@ -60,17 +62,26 @@ private final Integer PAGE_SIZE = 5;
 		// Column model
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		ComboColumn personComboColumn = new ComboColumn(cdata.get(0));
-		ArrayColumnData cdataComboPerson = new ArrayColumnData();
-		cdataComboPerson.add(new MyColumnData("pk_asessorId", "ID", 40));
-		cdataComboPerson.add(new MyColumnData("personId", "Persona", 40));
-		personComboColumn.setRqData("Asessor", cdataComboPerson);
-		configs.add(personComboColumn);
+		// Combo Asessor
+		SpecialComboColumn spcComboCol = new SpecialComboColumn(cdata.get(0));
+		spcComboCol.setPageSize(10);
+		ArrayColumnData cdataCombo = new ArrayColumnData();
+		cdataCombo = new ArrayColumnData();
+		cdataCombo.add(new MyColumnData("pk_userId", "Asesor", 100));
+		cdataCombo.add(new MyColumnData("name", "Nombre	", 220));
+		
+		MyColumnData hidden = new MyColumnData("userTypeId",ColumnType.HIDDEN);
+		hidden.setAssociatedField("userTypeId");
+		cdataCombo.add(hidden);
+		
+		spcComboCol.setRqData("UserAccount", cdataCombo);
+		spcComboCol.setFilter("userTypeId", "ASE");
+		configs.add(spcComboCol);
 		
 		ComboColumn profileComboColumn = new ComboColumn(cdata.get(1));
 		ArrayColumnData cdataComboProfile = new ArrayColumnData();
 		cdataComboProfile.add(new MyColumnData("pk_geographicZoneId", "ID", 40));
-		//cdataComboProfile.add(new MyColumnData("name", "Nombre", 150));
+		cdataComboProfile.add(new MyColumnData("description", "Descripcion", 150));
 		profileComboColumn.setRqData("GeographicZone", cdataComboProfile);
 		configs.add(profileComboColumn);
 		
@@ -94,7 +105,7 @@ private final Integer PAGE_SIZE = 5;
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(store, cm);
-		grid.setAutoExpandColumn("pk_asessorId");
+		grid.setAutoExpandColumn("pk_userId");
 		grid.addPlugin(filters);
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {

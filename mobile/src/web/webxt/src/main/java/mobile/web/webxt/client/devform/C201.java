@@ -13,6 +13,7 @@ import mobile.web.webxt.client.form.widgets.MyTextArea;
 import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
+import mobile.web.webxt.client.form.widgetsgrid.SpecialComboColumn;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.DatesManager;
@@ -20,6 +21,8 @@ import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Orientation;
+import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
+import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
@@ -94,6 +97,7 @@ public class C201 extends LayoutContainer {
 		fp.setFieldWidth(300);
 		activity=new MyTextArea("Actividad","Partner:activity:1",300,300);
 		activity.setHeight(100);
+		activity.setEmptyText("Describa las actividades a las que se dedica el cliente");
 		fp.add(activity);
 		panelPrincipal.add(fp, new ColumnData(0));
 		
@@ -247,9 +251,21 @@ public class C201 extends LayoutContainer {
 		row.add(label);			
 		
 		final ArrayColumnData cdataAsessor = new ArrayColumnData();
-		cdataAsessor.add(new MyColumnData("pk_asessorId", "Asesor", 150, 20,false));
-		asessorCombo = new ComboForm(80,"pk_asessorId");
-		asessorCombo.setRqData("Asessor", cdataAsessor);
+		cdataAsessor.add(new MyColumnData("pk_userId", "Asesor", 80, 20,false));
+		cdataAsessor.add(new MyColumnData("name", "Nombre", 150, 20,false));
+		asessorCombo = new ComboForm(80,"pk_userId");
+		asessorCombo.setRqData("UserAccount", cdataAsessor);
+		
+		String filterField = "userTypeId";
+
+		FilterConfig filter = new BaseStringFilterConfig();
+		filter.setField(filterField);
+		filter.setComparison("=");
+		filter.setValue("ASE");
+
+		asessorCombo.addFilter(filter);
+		asessorCombo.setLoaded(false);
+		
 		asessorAux = new InputBox("", "Partner:asessorId:1", 50,100,Validate.ALFANUMERICO);
 		asessorAux.setVisible(false);
 		asessorCombo.setAllowBlank(false);

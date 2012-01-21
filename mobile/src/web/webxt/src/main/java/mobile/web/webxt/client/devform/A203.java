@@ -40,13 +40,13 @@ public class A203 extends MyGeneralForm {
 				
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_userId", "ID Usuario", 70, 40,false));
-		cdata.add(new MyColumnData("name", "Nombre", 150, 40, false));
-		cdata.add(new MyColumnData("userTypeId", "Tipo", 80, 40, false));
-		cdata.add(new MyColumnData("userStatusId", "Estado", 70, 40, false));
-		cdata.add(new MyColumnData("languageId", "Idioma", 70, 40,false));
-		cdata.add(new MyColumnData("email", "Email", 70, 40,false));
-		cdata.add(new MyColumnData("personId", "ID persona", 70, 40,false));
+		cdata.add(new MyColumnData("pk_userId", "ID Usuario", 70, 20,false));
+		cdata.add(new MyColumnData("name", "Nombre", 120, 40, false));
+		cdata.add(new MyColumnData("userTypeId", "Tipo", 70, 4, false));
+		cdata.add(new MyColumnData("userStatusId", "Estado", 70, 4, false));
+		cdata.add(new MyColumnData("languageId", "Idioma", 70, 4,false));
+		cdata.add(new MyColumnData("email", "Email", 120, 100,false));
+		cdata.add(new MyColumnData("personId", "ID persona", 70, 10,true));
 
 		
 		MyProcessConfig config = new MyProcessConfig(PROCESS, ENTITY,cdata.getIdFields());
@@ -104,7 +104,7 @@ public class A203 extends MyGeneralForm {
 		filters.addFilter(subsystemFilter);
 		
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Usuarios",800,300);
+		EntityContentPanel cp = new EntityContentPanel("Usuarios",650,300);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(store, cm);
