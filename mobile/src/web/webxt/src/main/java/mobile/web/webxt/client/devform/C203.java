@@ -1,10 +1,10 @@
 package mobile.web.webxt.client.devform;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import mobile.common.tools.Format;
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
@@ -371,9 +371,7 @@ public class C203 extends LayoutContainer {
 		row.add(label);
 
 		formationDate = new InputBox("", "Partner:fomationDate:1", 80, 30, Validate.TEXT);
-		Date currentDate = new Date();
-		DatesManager dm = new DatesManager();
-		formationDate.setValue(dm.dateToString(currentDate));
+		formationDate.setValue(DatesManager.getStringCurrentDate(Format.DATE));
 		formationDate.setReadOnly(true);
 
 		row.add(formationDate);
@@ -406,9 +404,7 @@ public class C203 extends LayoutContainer {
 		description.clear();
 		formationDate.clear();
 
-		Date currentDate = new Date();
-		DatesManager dm = new DatesManager();
-		formationDate.setValue(dm.dateToString(currentDate));
+		formationDate.setValue(DatesManager.getStringCurrentDate(Format.DATE));
 
 		asessorCombo.clear();
 		freqCombo.clear();
