@@ -1,3 +1,19 @@
+
+insert into USER_STATUS_ID (USER_STATUS_ID) values ('ACT');
+insert into USER_STATUS_ID (USER_STATUS_ID) values ('BLO');
+insert into USER_STATUS_ID (USER_STATUS_ID) values ('INA');
+insert into USER_STATUS (COMPANY_ID, LANGUAGE_ID, USER_STATUS_ID, NAME) values ('MXT', 'ES', 'ACT', 'ACTIVO');
+insert into USER_STATUS (COMPANY_ID, LANGUAGE_ID, USER_STATUS_ID, NAME) values ('MXT', 'ES', 'BLO', 'BLOQUEADO');
+insert into USER_STATUS (COMPANY_ID, LANGUAGE_ID, USER_STATUS_ID, NAME) values ('MXT', 'ES', 'INA', 'INACTIVO');
+
+insert into USER_TYPE_ID (USER_TYPE_ID) values ('OPE');
+insert into USER_TYPE_ID (USER_TYPE_ID) values ('SYS');
+insert into USER_TYPE (COMPANY_ID, LANGUAGE_ID, USER_TYPE_ID, NAME) values ('MXT', 'ES', 'OPE', 'OPERADOR');
+insert into USER_TYPE (COMPANY_ID, LANGUAGE_ID, USER_TYPE_ID, NAME) values ('MXT', 'ES', 'SYS', 'SISTEMAS');
+
+insert into USER_ACCOUNT_ID (USER_ID) values ('ADM');
+insert into USER_ACCOUNT (COMPANY_ID, EXPIRED, USER_ID, CREATED, NAME, USER_TYPE_ID, USER_STATUS_ID, LANGUAGE_ID, EMAIL, PERSON_ID, VERSION) values ('MXT', '9999-12-31 00:00:00', 'ADM', '2012-01-20 20:46:12', 'ADMINISTRATOR', 'SYS', 'ACT', 'ES', 'admin@mobile.com', null, 1);
+
 insert into SUBSYSTEM_ID (SUBSYSTEM_ID) values ('A');
 insert into SUBSYSTEM_ID (SUBSYSTEM_ID) values ('B');
 insert into SUBSYSTEM_ID (SUBSYSTEM_ID) values ('C');
