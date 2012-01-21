@@ -1,8 +1,6 @@
 package mobile.web.webxt.client.util;
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import mobile.common.tools.Format;
 
@@ -12,25 +10,20 @@ import com.google.gwt.user.datepicker.client.CalendarUtil;
 public class DatesManager {
 
 	public static String dateToString(Date date, String format) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-		String convertedDate = dateFormat.format(date);
-		return convertedDate;
+		DateTimeFormat dateFormat = DateTimeFormat.getFormat(format);
+		String strDate = dateFormat.format(date);
+		return strDate;
 	}
 
 	public static Date stringToDate(String strDate, String format) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-		java.util.Date tmpDate = null;
-		try {
-			tmpDate = dateFormat.parse(strDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return new Date(tmpDate.getTime());
+		DateTimeFormat dateFormat = DateTimeFormat.getFormat(format);
+		Date date = dateFormat.parse(strDate);
+		return date;
 	}
 
 	public static Date getCurrentDate() {
-		java.util.Date date = new java.util.Date();
-		return new Date(date.getTime());
+		Date date = new Date();
+		return date;
 	}
 
 	public static String getStringCurrentDate(String format) {
