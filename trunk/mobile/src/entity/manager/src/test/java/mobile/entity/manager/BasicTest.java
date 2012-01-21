@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
-import mobile.entity.zonification.GeographicZone;
+import mobile.entity.microcredit.GeographicZone;
 
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
