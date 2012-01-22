@@ -368,7 +368,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	}
 
 	public void commitForm(final MyProcessConfig config,
-			Map<String, String> mfields, final AsyncCallback<Boolean> callback) {
+			Map<String, String> mfields, final AsyncCallback<Map<String, String>> callback) {
 		System.out.println("MyHttpProxy.commitForm");
 
 		try {
@@ -432,8 +432,9 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 				public void onResponseReceived(Request request,
 						Response response) {
 					try {
-						evaluateResponse(response, config);
-						callback.onSuccess(true);
+						Message rspMsg = evaluateResponse(response, config);
+						Map<String,String> mrfields = MyMessageReader.toMap(rspMsg);;
+						callback.onSuccess(mrfields);
 					} catch (Exception e) {
 						callback.onFailure(e);
 					}

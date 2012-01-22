@@ -8,6 +8,7 @@ import mobile.common.message.Item;
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.form.widgets.ComboForm;
+import mobile.web.webxt.client.form.widgets.InputBox;
 import mobile.web.webxt.client.form.widgets.PersistentField;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.windows.AlertDialog;
@@ -51,9 +52,8 @@ public class MyFormPanel extends FormPanel {
 		Dispatcher.forwardEvent(AppEvents.UserNotification,
 				"Procesando mantenimiento");
 		
-		mField = new HashMap<String, String>();
-		
 		// Set map of fields and values
+		mField = new HashMap<String, String>();
 		List<Field<?>> lfields = getFields();
 		for (Field<?> f : lfields) {
 			if (f instanceof PersistentField) {
@@ -65,8 +65,7 @@ public class MyFormPanel extends FormPanel {
 					}else if( !( f.getValue() instanceof ModelData) ){
 						mField.put(persistentInfo, f.getValue().toString());
 					}else{
-						ComboForm combo = (ComboForm) f;
-						mField.put(persistentInfo, combo.getValue().get(combo.getDisplayField()).toString());
+						mField.put(persistentInfo, f.getRawValue());
 					}
 				}
 			}
@@ -82,13 +81,40 @@ public class MyFormPanel extends FormPanel {
 			mField.putAll(mNewFields);
 		}
 
+		// Commit changes
 		System.out.println("MyFormPanel.commitChanges");
 		for (String key : mField.keySet()) {
 			System.out.println(key + ":" + mField.get(key));
 		}
-
-		AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>() {
-			public void onSuccess(Boolean result) {
+		
+		AsyncCallback<Map<String, String>> callback = new AsyncCallback<Map<String, String>>() {
+			public void onSuccess(Map<String, String> rmfields) {
+				System.out.println("MyFormPanel.response");
+				for (String key : rmfields.keySet()) {
+					System.out.println(key + ":" + rmfields.get(key));
+				}
+				
+				// Set response values
+				List<Field<?>> lfields = getFields();
+				for (Field<?> f : lfields) {
+					if (f instanceof PersistentField) {
+						PersistentField pf = (PersistentField) f;
+						String persistentInfo = pf.getPersistentInfo();
+						if (persistentInfo != null && persistentInfo.compareTo("") != 0) {
+							if(f.getValue() == null){
+								if(f instanceof InputBox){
+									InputBox input = (InputBox) f;
+									input.setValue(rmfields.get(persistentInfo));
+								}else if(f instanceof ComboForm){
+									ComboForm combo = (ComboForm) f;
+									combo.setRawValue(rmfields.get(persistentInfo));
+									combo.setLoaded(false);
+								}
+							}
+						}
+					}
+				}
+				
 				Dispatcher.forwardEvent(AppEvents.UserNotification,
 						"Mantenimiento exitoso");
 			}

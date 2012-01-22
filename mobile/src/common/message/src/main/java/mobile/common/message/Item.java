@@ -7,6 +7,7 @@ public class Item {
 
 	public final static String NEW_ITEM = "_new_item";
 	public final static String EXPIRE_ITEM = "_expire_item";
+	public final static String GENERATED_ID = "_generatedId";
 
 	private Integer number;
 

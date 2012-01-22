@@ -56,7 +56,7 @@ public class C301 extends MyGeneralForm {
 		row.add(label);
 
 		final ComboForm solicitudeId = new ComboForm(100);
-		solicitudeId.setPersistentInfo("Solicitude:pk_solicitudeId:1:C");
+		solicitudeId.setPersistentInfo("Solicitude:pk_solicitudeId:1");
 		solicitudeId.setDisplayField("pk_solicitudeId");
 		final ArrayColumnData solCdata = new ArrayColumnData();
 		solCdata.add(new MyColumnData("pk_solicitudeId", "Id", 100));
@@ -122,16 +122,6 @@ public class C301 extends MyGeneralForm {
 		combodata.add(new MyColumnData("pk_partnerId", "Id", 70));
 		combodata.add(new MyColumnData("personId", "Nombre", 150));
 		clientId.setRqData("Partner", combodata);
-		clientId.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-				System.out.println("Prueba::::::::::::::");
-				System.out.println("valueField");
-				System.out.println(clientId.getValueField());
-				System.out.println("Model data");
-				System.out.println(clientId.getValue().get("pk_solicitudeId"));
-			}
-		});
 		row.add(clientId);
 
 		InputBox clientDescription = new InputBox(280);

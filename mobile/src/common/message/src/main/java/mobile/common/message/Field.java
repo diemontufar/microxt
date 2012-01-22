@@ -54,7 +54,7 @@ public class Field {
 
 	public void setValue(String fieldValue) {
 		value = null;
-		if (fieldValue != null) {
+		if (fieldValue != null && fieldValue.trim().length()>0) {
 			value = fieldValue.trim();
 		}
 	}
