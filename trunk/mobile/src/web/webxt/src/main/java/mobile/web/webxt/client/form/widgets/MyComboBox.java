@@ -28,7 +28,7 @@ public class MyComboBox extends ComboBox<ModelData>{
 	}
 	
 	@Override
-	protected ModelData findModel(String property, String value) {
+	public ModelData findModel(String property, String value) {
 		return super.findModel(property, value);
 	}
 

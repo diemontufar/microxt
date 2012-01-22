@@ -7,10 +7,14 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
+import javax.persistence.TypedQuery;
 
 import mobile.common.message.Item;
+import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityTable;
 import mobile.entity.common.EntityTablePk;
+import mobile.entity.common.Sequential;
+import mobile.entity.common.SequentialPk;
 import mobile.entity.schema.GeneralEntity;
 import mobile.entity.schema.GeneralEntityId;
 import mobile.entity.schema.GeneralEntityKey;
@@ -19,6 +23,7 @@ import mobile.entity.schema.HistoricalKey;
 import mobile.entity.schema.MulticompanyKey;
 import mobile.entity.schema.MultilanguageKey;
 import mobile.entity.schema.OptimisticLocking;
+import mobile.entity.schema.SequentialKey;
 import mobile.tools.common.Log;
 import mobile.tools.common.convertion.Converter;
 import mobile.tools.common.param.LocalParameter;
@@ -26,6 +31,8 @@ import mobile.tools.common.param.ParameterEnum;
 import mobile.tools.common.param.Timer;
 
 import org.apache.log4j.Logger;
+import org.eclipse.persistence.config.HintValues;
+import org.eclipse.persistence.config.QueryHints;
 
 public class JPManager {
 
@@ -74,8 +81,7 @@ public class JPManager {
 	}
 
 	public static void rollbackTransaction() {
-		if ((getEntityManager().getTransaction() != null)
-				&& (getEntityManager().getTransaction().isActive())) {
+		if ((getEntityManager().getTransaction() != null) && (getEntityManager().getTransaction().isActive())) {
 			log.info("Rollback transaction");
 			getEntityManager().getTransaction().rollback();
 		}
@@ -91,6 +97,35 @@ public class JPManager {
 			getEntityManager().close();
 		}
 	}
+	
+	private static void setAutomaticSequential(GeneralEntity entity) throws Exception {
+		if(entity.getPk() instanceof SequentialKey){
+			SequentialKey key = (SequentialKey) entity.getPk();
+			if(key.getId() == null ){
+				// Get sequential name
+				String QL_FIELD_WITH_SEQ = "select f from EntityField f where f.pk.tableId=:tableId "
+						+ "and f.pk.companyId=:companyId " + "and f.primaryKey=1 and f.sequentialId is not null";
+				TypedQuery<EntityField> query = getEntityManager().createQuery(QL_FIELD_WITH_SEQ, EntityField.class);
+				query.setParameter("companyId", ALL_COMPANY);
+				query.setParameter("tableId",toSqlName(entity.getClass().getSimpleName()));
+				query.setHint(QueryHints.READ_ONLY, HintValues.TRUE);
+				EntityField fieldSeq = query.getSingleResult();
+				String seqName = fieldSeq.getSequentialId();
+				
+				// Get sequential number
+				SequentialPk seqPk = new SequentialPk(seqName);
+				Sequential seq = find(Sequential.class, seqPk);
+				if(seq == null){
+					throw new Exception("SEQUENCIAL NO DEFINIDO: " + seqName);
+				}
+				
+				// Set sequential number and increment it
+				key.setId(seq.getSequentialValue());
+				seq.setSequentialValue(seq.getSequentialValue()+1);
+				getEntityManager().merge(seq);
+			}
+		}
+	}
 
 	/**
 	 * @see javax.persistence.EntityManager.persist
@@ -100,10 +135,12 @@ public class JPManager {
 	 * @throws Exception
 	 */
 	public static void persist(GeneralEntity entity) throws Exception {
+		// Automatic id generation
+		setAutomaticSequential(entity);
+		
 		// Search Id
 		if (hasId(entity)) {
-			GeneralEntityId entityId = (GeneralEntityId) find(
-					getEntityIdClass(entity), getEntityIdPk(entity));
+			GeneralEntityId entityId = (GeneralEntityId) find(getEntityIdClass(entity), getEntityIdPk(entity));
 			// If not exists, create
 			if (entityId == null) {
 				getEntityManager().persist(getEntityId(entity));
@@ -128,8 +165,7 @@ public class JPManager {
 
 	}
 
-	private static void completeAbstractFields(GeneralEntity entity)
-			throws Exception {
+	private static void completeAbstractFields(GeneralEntity entity) throws Exception {
 		if (entity.getPk() instanceof GeneralEntityKey) {
 			GeneralEntityKey key = (GeneralEntityKey) entity.getPk();
 			completeAbstractFieldsForPk(key);
@@ -137,22 +173,19 @@ public class JPManager {
 		completeCreated(entity);
 	}
 
-	private static void completeAbstractFieldsForPk(GeneralEntityKey key)
-			throws Exception {
+	private static void completeAbstractFieldsForPk(GeneralEntityKey key) throws Exception {
 		if (key instanceof MulticompanyKey) {
 			MulticompanyKey multicompanyKey = (MulticompanyKey) key;
 			if (multicompanyKey.getCompanyId() == null) {
 				log.info("Complete companyId: " + key.getClass().getName());
-				multicompanyKey.setCompanyId(LocalParameter.get(
-						ParameterEnum.COMPANY, String.class));
+				multicompanyKey.setCompanyId(LocalParameter.get(ParameterEnum.COMPANY, String.class));
 			}
 		}
 		if (key instanceof MultilanguageKey) {
 			MultilanguageKey multilanguageKey = (MultilanguageKey) key;
 			if (multilanguageKey.getLanguageId() == null) {
 				log.info("Complete languageId: " + key.getClass().getName());
-				multilanguageKey.setLanguageId(LocalParameter.get(
-						ParameterEnum.LANGUAGE, String.class));
+				multilanguageKey.setLanguageId(LocalParameter.get(ParameterEnum.LANGUAGE, String.class));
 			}
 		}
 		if (key instanceof HistoricalKey) {
@@ -226,8 +259,7 @@ public class JPManager {
 		return find(type, pk, true);
 	}
 
-	public static <T> T find(Class<T> type, Object pk, boolean detachEntity)
-			throws Exception {
+	public static <T> T find(Class<T> type, Object pk, boolean detachEntity) throws Exception {
 		T entity;
 
 		// Complete general fields
@@ -260,17 +292,14 @@ public class JPManager {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T findActiveEntity(GeneralEntityId generalId)
-			throws Exception {
+	public static <T> T findActiveEntity(GeneralEntityId generalId) throws Exception {
 		Object obj;
 		// Aplicar locking, si la entidad posee version
-		if (implementsInterface(getEntityClass(generalId),
-				OptimisticLocking.class)) {
-			obj = getEntityManager().find(getEntityClass(generalId),
-					(Object) getEntityPk(generalId), LockModeType.OPTIMISTIC);
+		if (implementsInterface(getEntityClass(generalId), OptimisticLocking.class)) {
+			obj = getEntityManager().find(getEntityClass(generalId), (Object) getEntityPk(generalId),
+					LockModeType.OPTIMISTIC);
 		} else {
-			obj = getEntityManager().find(getEntityClass(generalId),
-					(Object) getEntityPk(generalId));
+			obj = getEntityManager().find(getEntityClass(generalId), (Object) getEntityPk(generalId));
 		}
 		// Detach of the actual persistent context
 		if (obj != null) {
@@ -280,29 +309,24 @@ public class JPManager {
 		return (T) obj;
 	}
 
-	private static Class<?> getEntityClass(GeneralEntityId entityId)
-			throws ClassNotFoundException {
+	private static Class<?> getEntityClass(GeneralEntityId entityId) throws ClassNotFoundException {
 		String strClass = entityId.getClass().getName();
 		return Class.forName(strClass.substring(0, strClass.length() - 2));
 	}
 
-	private static Class<?> getEntityPkClass(GeneralEntityId entityId)
-			throws ClassNotFoundException {
+	private static Class<?> getEntityPkClass(GeneralEntityId entityId) throws ClassNotFoundException {
 		String strClass = entityId.getClass().getName();
-		String strEntityPkClass = strClass.substring(0, strClass.length() - 2)
-				+ "Pk";
+		String strEntityPkClass = strClass.substring(0, strClass.length() - 2) + "Pk";
 		return Class.forName(strEntityPkClass);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private static GeneralEntityKey getEntityPk(GeneralEntityId generalId)
-			throws Exception {
+	private static GeneralEntityKey getEntityPk(GeneralEntityId generalId) throws Exception {
 		Object generalIdPk = generalId.getPk();
 		Object entityPk = null;
 
 		// Verify if the pk implements GeneralEntityKey
-		if (JPManager.implementsInterface(generalIdPk.getClass(),
-				GeneralEntityKey.class)) {
+		if (JPManager.implementsInterface(generalIdPk.getClass(), GeneralEntityKey.class)) {
 			// Check the fields
 			Class idPkClass = generalIdPk.getClass();
 			Field[] fields = idPkClass.getDeclaredFields();
@@ -317,13 +341,11 @@ public class JPManager {
 					}
 					// Set the data
 					String fieldName = field.getName();
-					Method getterMethod = idPkClass.getMethod("get"
-							+ fieldName.substring(0, 1).toUpperCase()
+					Method getterMethod = idPkClass.getMethod("get" + fieldName.substring(0, 1).toUpperCase()
 							+ fieldName.substring(1));
 					Object val = getterMethod.invoke(generalIdPk);
-					Method setterMethod = pkClass.getMethod("set"
-							+ fieldName.substring(0, 1).toUpperCase()
-							+ fieldName.substring(1), field.getType());
+					Method setterMethod = pkClass.getMethod(
+							"set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1), field.getType());
 					setterMethod.invoke(entityPk, val);
 				}
 				// Set the default active values
@@ -347,8 +369,7 @@ public class JPManager {
 			entityPk = pkClass.newInstance();
 			// Set the data
 			Method setterMethod = pkClass.getMethod(
-					"set" + fieldName.substring(0, 1).toUpperCase()
-							+ fieldName.substring(1), generalIdPk.getClass());
+					"set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1), generalIdPk.getClass());
 			setterMethod.invoke(entityPk, generalIdPk);
 			// Set the default active values
 			completeAbstractFieldsForPk((GeneralEntityKey) entityPk);
@@ -357,8 +378,7 @@ public class JPManager {
 		return (GeneralEntityKey) entityPk;
 	}
 
-	private static Class<?> getEntityIdClass(GeneralEntity entity)
-			throws Exception {
+	private static Class<?> getEntityIdClass(GeneralEntity entity) throws Exception {
 		try {
 			String strClass = entity.getClass().getName() + "Id";
 			return Class.forName(strClass);
@@ -368,8 +388,7 @@ public class JPManager {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private static Class<?> getEntityIdPkClass(GeneralEntity entity)
-			throws Exception {
+	private static Class<?> getEntityIdPkClass(GeneralEntity entity) throws Exception {
 		Class entityIdClass = getEntityIdClass(entity);
 		Class entityIdPkClass = null;
 		if (entityIdClass != null) {
@@ -400,8 +419,7 @@ public class JPManager {
 		Class entityIdPkClass = getEntityIdPkClass(entity);
 
 		// Verify if the pk implements GeneralEntityKey
-		if (JPManager.implementsInterface(entityIdPkClass,
-				GeneralEntityKey.class)) {
+		if (JPManager.implementsInterface(entityIdPkClass, GeneralEntityKey.class)) {
 			// Check the fields
 			Field[] fields = entityIdPkClass.getDeclaredFields();
 			if (fields != null && fields.length > 0) {
@@ -414,17 +432,10 @@ public class JPManager {
 					}
 					// Set the data
 					String fieldName = field.getName();
-					Method getterMethod = entity
-							.getPk()
-							.getClass()
-							.getMethod(
-									"get"
-											+ fieldName.substring(0, 1)
-													.toUpperCase()
-											+ fieldName.substring(1));
+					Method getterMethod = entity.getPk().getClass()
+							.getMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1));
 					Object val = getterMethod.invoke(entity.getPk());
-					Method setterMethod = entityIdPkClass.getMethod("set"
-							+ fieldName.substring(0, 1).toUpperCase()
+					Method setterMethod = entityIdPkClass.getMethod("set" + fieldName.substring(0, 1).toUpperCase()
 							+ fieldName.substring(1), field.getType());
 					setterMethod.invoke(entityIdPk, val);
 				}
@@ -443,10 +454,10 @@ public class JPManager {
 			}
 
 			// Instantiate pk
-			entityIdPk = entityIdPkClass.newInstance();
+			//entityIdPk = entityIdPkClass.newInstance();
+			
 			// Set the data
-			Method getterMethod = entityPkClass.getMethod("get"
-					+ uniqueField.getName().substring(0, 1).toUpperCase()
+			Method getterMethod = entityPkClass.getMethod("get" + uniqueField.getName().substring(0, 1).toUpperCase()
 					+ uniqueField.getName().substring(1));
 			Object val = getterMethod.invoke(entity.getPk());
 			entityIdPk = val;
@@ -455,43 +466,37 @@ public class JPManager {
 		return entityIdPk;
 	}
 
-	private static GeneralEntityId getEntityId(GeneralEntity entity)
-			throws Exception {
+	private static GeneralEntityId getEntityId(GeneralEntity entity) throws Exception {
 		Object pk = getEntityIdPk(entity);
-		GeneralEntityId entityId = (GeneralEntityId) getEntityIdClass(entity)
-				.newInstance();
+		GeneralEntityId entityId = (GeneralEntityId) getEntityIdClass(entity).newInstance();
 		entityId.setPk(pk);
 		return entityId;
 	}
-	
-	public static EntityTable getEntityTable(String entityName) throws Exception{
+
+	public static EntityTable getEntityTable(String entityName) throws Exception {
 		EntityTable entity = null;
-		
+
 		EntityTablePk entityPk = new EntityTablePk(toTableName(entityName));
 		entityPk.setCompanyId(ALL_COMPANY);
 		entity = find(EntityTable.class, entityPk);
 		if (entity == null) {
-			throw new Exception("ENTITY_TABLE NOT FOUND: "
-					+ toTableName(entityName));
+			throw new Exception("ENTITY_TABLE NOT FOUND: " + toTableName(entityName));
 		}
 		return entity;
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static GeneralEntity parseEntity(String entityName, Item item, boolean isNew)
-			throws Exception {
+	public static GeneralEntity parseEntity(String entityName, Item item, boolean isNew) throws Exception {
 		// Get entity class
 		EntityTablePk entityPk = new EntityTablePk(toTableName(entityName));
 		entityPk.setCompanyId(ALL_COMPANY);
 		EntityTable entityTable = JPManager.find(EntityTable.class, entityPk);
 		if (entityTable == null) {
-			throw new Exception("ENTITY_TABLE NOT FOUND: "
-					+ toTableName(entityName));
+			throw new Exception("ENTITY_TABLE NOT FOUND: " + toTableName(entityName));
 		}
 		String packageName = entityTable.getPackageName();
 
-		Class entityClass = Class.forName(ENTITY_PACKAGE + "." + packageName
-				+ "." + entityName);
+		Class entityClass = Class.forName(ENTITY_PACKAGE + "." + packageName + "." + entityName);
 
 		// Instantiate object
 		Object entity = entityClass.newInstance();
@@ -511,16 +516,15 @@ public class JPManager {
 				}
 				hasEmbeddePk = true;
 				pk = parsePk(classField.getType(), pkFields);
-				Method setterMethod = entityClass.getMethod("setPk",
-						classField.getType());
+				Method setterMethod = entityClass.getMethod("setPk", classField.getType());
 				setterMethod.invoke(entity, pk);
-				completeAbstractFieldsForPk((GeneralEntityKey)pk);
+				completeAbstractFieldsForPk((GeneralEntityKey) pk);
 				break;
 			}
 		}
 
 		// Set pk field (no embedded pk)
-		if(!hasEmbeddePk){
+		if (!hasEmbeddePk) {
 			for (Field classField : entityClass.getDeclaredFields()) {
 				if (classField.getName().compareTo("pk") == 0
 						|| classField.getName().compareTo("serialVersionUID") == 0) {
@@ -530,45 +534,39 @@ public class JPManager {
 				// Set pk
 				if (item.getField("pk_" + classField.getName()) != null) {
 					Method setterMethod = entityClass.getMethod("set"
-							+ classField.getName().substring(0, 1).toUpperCase()
-							+ classField.getName().substring(1),
+							+ classField.getName().substring(0, 1).toUpperCase() + classField.getName().substring(1),
 							classField.getType());
-					pk = Converter.convertObject(
-							item.getField("pk_" + classField.getName()).getValue(),
+					pk = Converter.convertObject(item.getField("pk_" + classField.getName()).getValue(),
 							classField.getType());
 					setterMethod.invoke(entity, pk);
 					break;
 				}
 			}
 		}
-		
-		//Find the entity
-		if(!isNew){
+
+		// Find the entity
+		if (!isNew) {
 			GeneralEntity findedEntity = (GeneralEntity) find(entity.getClass(), pk);
-			if( findedEntity != null ){
+			if (findedEntity != null) {
 				entity = findedEntity;
 			}
 		}
 
 		// Set fields
 		for (Field classField : entityClass.getDeclaredFields()) {
-			if (classField.getName().compareTo("pk") == 0
-					|| classField.getName().compareTo("serialVersionUID") == 0) {
+			if (classField.getName().compareTo("pk") == 0 || classField.getName().compareTo("serialVersionUID") == 0) {
 				continue;
 			}
 
 			if (item.getField(classField.getName()) != null) {
-				Method setterMethod = entityClass.getMethod("set"
-						+ classField.getName().substring(0, 1).toUpperCase()
-						+ classField.getName().substring(1),
+				Method setterMethod = entityClass.getMethod("set" + classField.getName().substring(0, 1).toUpperCase()
+						+ classField.getName().substring(1), classField.getType());
+				Object val = Converter.convertObject(item.getField(classField.getName()).getValue(),
 						classField.getType());
-				Object val = Converter.convertObject(
-						item.getField(classField.getName()).getValue(),
-						classField.getType());
-//				System.out.println("Seteando...");
-//				System.out.println(classField.getName());
-//				System.out.println(item.getField(classField.getName()).getValue());
-//				System.out.println(val);
+				// System.out.println("Seteando...");
+				// System.out.println(classField.getName());
+				// System.out.println(item.getField(classField.getName()).getValue());
+				// System.out.println(val);
 				setterMethod.invoke(entity, val);
 			}
 		}
@@ -576,8 +574,8 @@ public class JPManager {
 		return (GeneralEntity) entity;
 	}
 
-	private static GeneralEntityKey parsePk(Class<?> entityKeyClass,
-			List<mobile.common.message.Field> pkFields) throws Exception {
+	private static GeneralEntityKey parsePk(Class<?> entityKeyClass, List<mobile.common.message.Field> pkFields)
+			throws Exception {
 		// Instantiate object
 		Object pk = entityKeyClass.newInstance();
 
@@ -587,14 +585,11 @@ public class JPManager {
 				continue;
 			}
 
-			mobile.common.message.Field itemField = getField(field.getName(),
-					pkFields);
+			mobile.common.message.Field itemField = getField(field.getName(), pkFields);
 			if (itemField != null) {
-				Method setterMethod = entityKeyClass.getMethod("set"
-						+ field.getName().substring(0, 1).toUpperCase()
+				Method setterMethod = entityKeyClass.getMethod("set" + field.getName().substring(0, 1).toUpperCase()
 						+ field.getName().substring(1), field.getType());
-				Object val = Converter.convertObject(
-						itemField.getValue(), field.getType());
+				Object val = Converter.convertObject(itemField.getValue(), field.getType());
 				setterMethod.invoke(pk, val);
 			}
 		}
@@ -602,10 +597,9 @@ public class JPManager {
 		return (GeneralEntityKey) pk;
 	}
 
-	private static mobile.common.message.Field getField(String name,
-			List<mobile.common.message.Field> lField) {
+	private static mobile.common.message.Field getField(String name, List<mobile.common.message.Field> lField) {
 		for (mobile.common.message.Field field : lField) {
-			if ((field.getName().compareTo("pk_"+name)) == 0) {
+			if ((field.getName().compareTo("pk_" + name)) == 0) {
 				return field;
 			}
 		}
@@ -625,7 +619,7 @@ public class JPManager {
 
 		return tableName;
 	}
-	
+
 	public static String toSqlName(String name) {
 		String sqlName = "";
 
@@ -665,8 +659,7 @@ public class JPManager {
 		// Elimina el registro activo
 		deleteEntity(deleted);
 		// Inserta el registro caducado
-		HistoricalKey pk = (HistoricalKey) ((HistoricalKey) expired.getPk())
-				.clone();
+		HistoricalKey pk = (HistoricalKey) ((HistoricalKey) expired.getPk()).clone();
 		pk.setExpired(Timer.getCurrentTime());
 		expired.setPk(pk);
 		getEntityManager().persist(expired);
@@ -682,8 +675,7 @@ public class JPManager {
 	private static void manageHistory(Historical pEntity) throws Exception {
 		// Crear la entidad caducada
 		Historical expired = find(pEntity.getClass(), pEntity.getPk());
-		HistoricalKey pk = (HistoricalKey) ((HistoricalKey) expired.getPk())
-				.clone();
+		HistoricalKey pk = (HistoricalKey) ((HistoricalKey) expired.getPk()).clone();
 		pk.setExpired(Timer.getCurrentTime());
 		expired.setPk(pk);
 		persist(expired);
@@ -700,8 +692,8 @@ public class JPManager {
 			updateEntity(entity);
 		}
 	}
-	
-	public static void detachList(List<? extends GeneralEntity> lEntities){
+
+	public static void detachList(List<? extends GeneralEntity> lEntities) {
 		for (GeneralEntity generalEntity : lEntities) {
 			getEntityManager().detach(generalEntity);
 		}

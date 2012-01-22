@@ -9,6 +9,7 @@ import mobile.common.message.Item;
 import mobile.common.message.Message;
 import mobile.entity.manager.JPManager;
 import mobile.entity.schema.GeneralEntity;
+import mobile.entity.schema.SequentialKey;
 import mobile.tools.common.Log;
 import mobile.tools.common.structure.GeneralProcessor;
 
@@ -62,6 +63,7 @@ public class MaintenanceProcessor implements GeneralProcessor {
 		GeneralEntity entity = JPManager.parseEntity(entityId, item, true);
 		log.info("Persist " + entity.toString());
 		JPManager.persist(entity);
+		setGeneratedSequence(entity, item);
 	}
 
 	private void updateEntity(String entityId, Item item) throws Exception{
@@ -86,5 +88,13 @@ public class MaintenanceProcessor implements GeneralProcessor {
 			item.getFieldList().addAll(lfields);
 		}
 	}
+	
+	private void setGeneratedSequence(GeneralEntity entity, Item item) {
+		if(entity.getPk() instanceof SequentialKey){
+			SequentialKey key = (SequentialKey) entity.getPk();
+			item.addField("_generatedId", key.getId().toString());
+		}
+	}
+
 	
 }

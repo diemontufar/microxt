@@ -79,20 +79,20 @@ public class Generator {
 			// ************************************************
 			// Generators for a list of tables
 			// ************************************************
-			// List<String> ltables = new ArrayList<String>();
-			// ltables.add("QUOTA_TYPE");
-			// ltables.add("SOLICITUDE");
-			// generateSqlScriptsForListOfTables(ltables);
-			// generateClasesForListOfTables(ltables);
+			 List<String> ltables = new ArrayList<String>();
+			 ltables.add("SOLICITUDE");
+			 ltables.add("RECOMMENDATION");
+			 generateSqlScriptsForListOfTables(ltables);
+			 generateClasesForListOfTables(ltables);
 
 			// ************************************************
 			// Generators for a list of tables taken from entity.csv
 			// ************************************************
-			 final String CSV_FILE = "/home/ronald/Escritorio/entity.csv";
-			 List<String> ltables = new ArrayList<String>();
-			 ltables = readTablesFromCsv(CSV_FILE);
-			 //generateSqlScriptsForListOfTables(ltables);
-			 generateClasesForListOfTables(ltables);
+//			 final String CSV_FILE = "/home/ronald/Escritorio/entity.csv";
+//			 List<String> ltables = new ArrayList<String>();
+//			 ltables = readTablesFromCsv(CSV_FILE);
+//			 generateSqlScriptsForListOfTables(ltables);
+//			 generateClasesForListOfTables(ltables);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
