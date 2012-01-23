@@ -17,11 +17,12 @@ public class MicrocreditSolicitud implements GeneralProcessor {
 		EntityData solicitude = msg.getEntityData("Solicitude");
 		Item item = solicitude.getItem(1);
 
+		// Generated id
 		String generatedId = item.getFieldValue(Item.GENERATED_ID);
 		log.info("Generated id: " + generatedId);
 
 		item.setFieldValue("pk_solicitudeId", generatedId);
-
+		
 		return msg;
 	}
 
