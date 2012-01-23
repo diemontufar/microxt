@@ -24,7 +24,7 @@ public class Sequential extends AbstractOptimisticLocking implements Multicompan
 	 * Value of sequential
 	 */
 	@Column(name = "SEQUENTIAL_VALUE", nullable = false)
-	private Long sequentialValue;
+	private Integer sequentialValue;
 
 	public Sequential() {
 	}
@@ -33,7 +33,7 @@ public class Sequential extends AbstractOptimisticLocking implements Multicompan
 		this.pk = pk;
 	}
 
-	public Sequential(SequentialPk pk, Long sequentialValue) {
+	public Sequential(SequentialPk pk, Integer sequentialValue) {
 		this.pk = pk;
 		this.sequentialValue = sequentialValue;
 	}
@@ -46,11 +46,11 @@ public class Sequential extends AbstractOptimisticLocking implements Multicompan
 		this.pk = pk;
 	}
 
-	public Long getSequentialValue() {
+	public Integer getSequentialValue() {
 		return this.sequentialValue;
 	}
 
-	public void setSequentialValue(Long sequentialValue) {
+	public void setSequentialValue(Integer sequentialValue) {
 		this.sequentialValue = sequentialValue;
 	}
 
