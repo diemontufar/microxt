@@ -8,6 +8,7 @@ public class PropertyData {
 	String type;
 	String name;
 	String description;
+	boolean hasSequential = false;
 
 	public PropertyData() {
 	}
@@ -42,5 +43,13 @@ public class PropertyData {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public boolean hasSequential() {
+		return hasSequential;
+	}
+
+	public void setHasSequential(boolean hasSequential) {
+		this.hasSequential = hasSequential;
 	}
 }

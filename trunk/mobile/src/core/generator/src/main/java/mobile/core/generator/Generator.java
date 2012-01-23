@@ -81,8 +81,7 @@ public class Generator {
 			// ************************************************
 			 List<String> ltables = new ArrayList<String>();
 			 ltables.add("SOLICITUDE");
-			 ltables.add("RECOMMENDATION");
-			 generateSqlScriptsForListOfTables(ltables);
+			 //generateSqlScriptsForListOfTables(ltables);
 			 generateClasesForListOfTables(ltables);
 
 			// ************************************************
