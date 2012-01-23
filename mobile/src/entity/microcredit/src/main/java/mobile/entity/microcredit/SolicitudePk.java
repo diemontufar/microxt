@@ -6,34 +6,45 @@ import mobile.entity.schema.AbstractCompanyLanguageHistoricalKey;
 import mobile.entity.schema.MulticompanyKey;
 import mobile.entity.schema.MultilanguageKey;
 import mobile.entity.schema.HistoricalKey;
+import mobile.entity.schema.SequentialKey;
 
 /**
  * The primary key class for the SOLICITUDE database table.
  */
 @Embeddable
 public class SolicitudePk extends AbstractCompanyLanguageHistoricalKey implements MulticompanyKey, MultilanguageKey,
-		HistoricalKey {
+		HistoricalKey, SequentialKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Name
+	 * Solicitude id
 	 */
 	@Column(name = "SOLICITUDE_ID", nullable = false)
-	private String solicitudeId;
+	private Integer solicitudeId;
 
 	public SolicitudePk() {
 	}
 
-	public SolicitudePk(String solicitudeId) {
+	public SolicitudePk(Integer solicitudeId) {
 		this.solicitudeId = solicitudeId;
 	}
 
-	public String getSolicitudeId() {
+	public Integer getSolicitudeId() {
 		return this.solicitudeId;
 	}
 
-	public void setSolicitudeId(String solicitudeId) {
+	public void setSolicitudeId(Integer solicitudeId) {
 		this.solicitudeId = solicitudeId;
+	}
+
+	@Override
+	public Integer getId() {
+		return this.solicitudeId;
+	}
+
+	@Override
+	public void setId(Integer sequentialNumber) {
+		this.solicitudeId = sequentialNumber;
 	}
 
 	@Override

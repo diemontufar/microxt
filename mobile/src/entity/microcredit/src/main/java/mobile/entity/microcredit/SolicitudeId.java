@@ -14,24 +14,24 @@ public class SolicitudeId extends AbstractEntityId implements GeneralEntityId {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Name
+	 * Solicitude id
 	 */
 	@Id
 	@Column(name = "SOLICITUDE_ID", nullable = false)
-	private String solicitudeId;
+	private Integer solicitudeId;
 
 	public SolicitudeId() {
 	}
 
-	public SolicitudeId(String solicitudeId) {
+	public SolicitudeId(Integer solicitudeId) {
 		this.solicitudeId = solicitudeId;
 	}
 
-	public String getSolicitudeId() {
+	public Integer getSolicitudeId() {
 		return this.solicitudeId;
 	}
 
-	public void setSolicitudeId(String solicitudeId) {
+	public void setSolicitudeId(Integer solicitudeId) {
 		this.solicitudeId = solicitudeId;
 	}
 
@@ -42,7 +42,7 @@ public class SolicitudeId extends AbstractEntityId implements GeneralEntityId {
 
 	@Override
 	public void setPk(Object pk) {
-		this.solicitudeId = (String) pk;
+		this.solicitudeId = (Integer) pk;
 	}
 
 	@Override
