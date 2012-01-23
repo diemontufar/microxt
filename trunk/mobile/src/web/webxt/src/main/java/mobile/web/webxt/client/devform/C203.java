@@ -340,10 +340,10 @@ public class C203 extends LayoutContainer {
 		row.add(label);
 
 		final ArrayColumnData cdataFrequency = new ArrayColumnData();
-		cdataFrequency.add(new MyColumnData("pk_meetingFrequencyId", "Codigo", 40, 20, false));
-		cdataFrequency.add(new MyColumnData("frequency", "Frecuencia", 120, 20, false));
-		freqCombo = new ComboForm(80, "pk_meetingFrequencyId");
-		freqCombo.setRqData("MeetingFrequency", cdataFrequency);
+		cdataFrequency.add(new MyColumnData("pk_frequencyId", "Codigo", 40, 20,false));
+		cdataFrequency.add(new MyColumnData("description", "Descripcion", 120, 20,false));
+		freqCombo = new ComboForm(80,"pk_frequencyId");
+		freqCombo.setRqData("Frequency", cdataFrequency);
 
 		freqDescription = new InputBox(100);
 		freqDescription.setReadOnly(true);
