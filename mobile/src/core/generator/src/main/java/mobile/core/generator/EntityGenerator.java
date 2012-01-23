@@ -508,6 +508,11 @@ public class EntityGenerator {
 		} else if (entityField.getDataTypeId().compareTo("Clob") == 0) {
 			addItem(entityData.getlGeneralImports(), "java.sql.Clob");
 		}
+		
+		if(entityField.getPrimaryKey() && entityField.getSequentialId() != null){
+			addItem(entityData.getlImplements(), "SequentialKey");
+			addItem(entityData.getlSchemaEntityImports(), "SequentialKey");
+		}
 	}
 
 	private void addItem(List<String> list, String item) {
@@ -707,6 +712,34 @@ public class EntityGenerator {
 			pkClassFile.append("}");
 			pkClassFile.append(NEW_LINE);
 		}
+		
+		// Sequential methods
+		boolean hasSequential = false;
+		PropertyData sequentialProp = null;
+		
+		for (PropertyData prop : entityPkData.getlProperties()) {
+			if (prop.hasSequential()) {
+				hasSequential = true;
+				sequentialProp = prop;
+				break;
+			}
+		}
+		if(hasSequential){
+			// Getter
+			pkClassFile.append(NEW_LINE);
+			pkClassFile.append("@Override" + NEW_LINE);
+			pkClassFile.append("public Integer getId() {" + NEW_LINE);
+			pkClassFile.append("return this." + sequentialProp.getName() + END_LINE);
+			pkClassFile.append("}");
+			pkClassFile.append(NEW_LINE);
+
+			// Setter
+			pkClassFile.append("@Override" + NEW_LINE);
+			pkClassFile.append("public void setId(Integer sequentialNumber) {" + NEW_LINE);
+			pkClassFile.append("this." + sequentialProp.getName() + " = sequentialNumber"+ END_LINE);
+			pkClassFile.append("}");
+			pkClassFile.append(NEW_LINE);
+		}
 
 		// toString Method
 		pkClassFile.append(NEW_LINE);
@@ -810,6 +843,11 @@ public class EntityGenerator {
 		// Define name
 		property.setName(this.lowerCamelCase(field.getPk().getFieldId()));
 		property.setDescription(field.getDescription());
+		
+		if(field.getPrimaryKey() && field.getSequentialId() != null){
+			property.setHasSequential(true);
+		}
+		
 		return property;
 	}
 
