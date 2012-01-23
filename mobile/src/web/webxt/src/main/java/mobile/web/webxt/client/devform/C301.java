@@ -62,6 +62,9 @@ public class C301 extends MyGeneralForm {
 		solCdata.add(new MyColumnData("pk_solicitudeId", "Id", 100));
 		solicitudeId.setRqData("Solicitude", solCdata);
 		row.add(solicitudeId);
+		
+		form.setNewItem(false);
+		
 
 		// Generated account
 		// label = new MyLabel("Cuenta:", LABEL_WIDTH);
