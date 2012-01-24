@@ -28,8 +28,12 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+
 public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
+	private final String CONTENT_TYPE = "text/plain; charset=utf-8";
+	//private final String CONTENT_TYPE = "application/x-www-form-urlencoded";
+	
 	protected RequestBuilder builder;
 	protected String initUrl;
 	private final String url = "http://127.0.0.1:9090/mobile/Core";
@@ -37,18 +41,19 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 	public MyHttpProxy() {
 		builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
-		builder.setHeader("Content-Type", "application/x-www-form-urlencoded");
-
+		builder.setHeader("Content-Type", CONTENT_TYPE);
+		builder.setHeader("Accept", "application/json");
 		this.initUrl = builder.getUrl();
-
 		reader = new MyReader();
 	}
 
-	public void load(final DataReader<PagingLoadResult<ModelData>> readerNull, final Object loadConfig,
+	public void load(final DataReader<PagingLoadResult<ModelData>> readerNull,
+			final Object loadConfig,
 			final AsyncCallback<PagingLoadResult<ModelData>> callback) {
 		System.out.println("MyHttpProxy.load: " + loadConfig.toString());
-		
-		Dispatcher.forwardEvent(AppEvents.UserNotification,"Procesando consulta");
+
+		Dispatcher.forwardEvent(AppEvents.UserNotification,
+				"Procesando consulta");
 
 		// Configuration
 		final MyProcessConfig config = (MyProcessConfig) loadConfig;
@@ -57,7 +62,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			// Request
 			Message msg = new Message();
 			msg.getRequest().setProcess(config.getProcess());
-			
+
 			// Entity
 			EntityData entityData = new EntityData(config.getEntity());
 			entityData.setProcessType(ProcessType.QUERY.getProcessType());
@@ -84,7 +89,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					+ paginationConfig.getSortDir());
 			if (paginationConfig.getSortField() != null) {
 				entityData.setOrderBy(paginationConfig.getSortField());
-				entityData.setOrderDir(paginationConfig.getSortDir().toString());
+				entityData
+						.setOrderDir(paginationConfig.getSortDir().toString());
 			}
 
 			// Entity.filtering
@@ -111,7 +117,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 			msg.addData(entityData);
 
-			String data = "message=" + msg.toJSON();
+			//String data = "message=" + msg.toJSON();
+			String data = msg.toJSON();
 			// data = generateUrl(loadConfig);
 
 			System.out.println("Send request...");
@@ -125,7 +132,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					try {
 						evaluateResponse(response, config);
 						String text = response.getText();
-						PagingLoadResult<ModelData> data = reader.read(config, text);
+						PagingLoadResult<ModelData> data = reader.read(config,
+								text);
 						callback.onSuccess(data);
 					} catch (Exception e) {
 						callback.onFailure(e);
@@ -137,22 +145,25 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			e.printStackTrace();
 		}
 	}
-	
-	public void requestMsg(final MyProcessConfig config, final AsyncCallback<Message> callback) {
+
+	public void requestMsg(final MyProcessConfig config,
+			final AsyncCallback<Message> callback) {
 		System.out.println("MyHttpProxy.requestMsg: " + config.toString());
 
 		try {
 			// Request
 			Message msg = new Message();
 			msg.getRequest().setProcess(config.getProcess());
-			
+
 			System.out.println("Conversion en json");
-			String data = "message=" + msg.toJSON();
-			
+			//String data = "message=" + msg.toJSON();
+			String data = msg.toJSON();
+
 			builder.sendRequest(data, new RequestCallback() {
 				public void onError(Request request, Throwable e) {
 					callback.onFailure(e);
 				}
+
 				public void onResponseReceived(Request request,
 						Response response) {
 					try {
@@ -163,17 +174,18 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					}
 				}
 			});
-			
+
 		} catch (Exception e) {
 			showError(e);
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void queryForm(final MyProcessConfig config,
-			Map<String,String> mfields, final AsyncCallback<Map<String,String>> callback) {
+			Map<String, String> mfields,
+			final AsyncCallback<Map<String, String>> callback) {
 		System.out.println("MyHttpProxy.queryForm: " + config.toString());
-		
+
 		try {
 			// Request
 			Message msg = new Message();
@@ -181,25 +193,25 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 			// Data map
 			Map<String, EntityData> mdata = new HashMap<String, EntityData>();
-			
+
 			// Fill datas
 			for (String key : mfields.keySet()) {
 				System.out.println(key);
 				String value = mfields.get(key);
 				System.out.println(value);
-				
+
 				String[] kp = key.split(":");
 				String entityName = kp[0];
 				String fieldName = kp[1];
 				int register = Integer.parseInt(kp[2]);
 				String property = null;
-				if(kp.length>3){
+				if (kp.length > 3) {
 					property = kp[3];
 				}
-				
+
 				// Data
 				EntityData data = mdata.get(entityName);
-				if(data == null){
+				if (data == null) {
 					data = new EntityData(entityName);
 					data.setProcessType(ProcessType.QUERY.getProcessType());
 					mdata.put(entityName, data);
@@ -207,16 +219,16 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 				// Filters
 				if (property != null && property.trim().length() > 0) {
 					String filter = fieldName + ":=:" + value;
-					if (data.getFilters() == null){
+					if (data.getFilters() == null) {
 						data.setFilter("");
-					}else{
+					} else {
 						data.setFilter(data.getFilters() + ";");
 					}
 					data.setFilter(data.getFilters() + filter);
 				}
 				// Items
 				Item item = data.getItem(register);
-				if(item == null){
+				if (item == null) {
 					item = new Item(register);
 					data.addItem(item);
 				}
@@ -227,20 +239,21 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 				}
 				item.addField(field);
 			}
-			
+
 			for (String entity : mdata.keySet()) {
 				msg.addData(mdata.get(entity));
 			}
-			
+
 			// Send message
 			System.out.println("Set message in json format...");
 			String data = "";
 			try {
-				data = "message=" + msg.toJSON();
+				//data = "message=" + msg.toJSON();
+				data = msg.toJSON();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			System.out.println("Send request...");
 			builder.sendRequest(data, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
@@ -251,7 +264,9 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 						Response response) {
 					try {
 						Message rspMsg = evaluateResponse(response, config);
-						Map<String,String> mrfields = MyMessageReader.toMap(rspMsg);;
+						Map<String, String> mrfields = MyMessageReader
+								.toMap(rspMsg);
+						;
 						callback.onSuccess(mrfields);
 					} catch (Exception e) {
 						callback.onFailure(e);
@@ -262,13 +277,14 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			callback.onFailure(e);
 		}
 	}
-	
-	private void showError(Throwable e){
+
+	private void showError(Throwable e) {
 		new AlertDialog("MyHttpProxy", e.getMessage()).show();
 	}
 
 	public void commit(final MyProcessConfig commitConfig,
-			List<ModelData> lModified, final AsyncCallback<PagingLoadResult<ModelData>> callback) {
+			List<ModelData> lModified,
+			final AsyncCallback<PagingLoadResult<ModelData>> callback) {
 		System.out.println("MyHttpProxy.commit");
 
 		final MyProcessConfig config = commitConfig;
@@ -285,7 +301,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			// Entity changes
 			EntityData entityData = new EntityData(config.getEntity());
 			entityData.setProcessType(ProcessType.MAINTENANCE.getProcessType());
-			
+
 			// Filters
 			// Entity.filtering
 			List<FilterConfig> filters = config.getFilterConfigs();
@@ -308,12 +324,11 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 			msg.addData(entityData);
 
-			
 			int counter = 1;
 			for (ModelData modelData : lModified) {
 				Item item = new Item(counter++);
 				for (String strField : config.getlFields()) {
-					if(strField.startsWith("d:")){
+					if (strField.startsWith("d:")) {
 						continue;
 					}
 					Field field = new Field(strField);
@@ -324,12 +339,14 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					}
 					item.addField(field);
 				}
-				if(modelData.get(Item.EXPIRE_ITEM) != null 
-						&& ConvertionManager.parseBoolean(modelData.get(Item.EXPIRE_ITEM))){
+				if (modelData.get(Item.EXPIRE_ITEM) != null
+						&& ConvertionManager.parseBoolean(modelData
+								.get(Item.EXPIRE_ITEM))) {
 					item.setExpireItem(true);
 				}
-				if(modelData.get(Item.NEW_ITEM) != null
-						&& ConvertionManager.parseBoolean(modelData.get(Item.NEW_ITEM))){
+				if (modelData.get(Item.NEW_ITEM) != null
+						&& ConvertionManager.parseBoolean(modelData
+								.get(Item.NEW_ITEM))) {
 					item.setNewItem(true);
 				}
 				entityData.addItem(item);
@@ -340,11 +357,12 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			System.out.println("Set message in json format...");
 			String data = "";
 			try {
-				data = "message=" + msg.toJSON();
+				//data = "message=" + msg.toJSON();
+				data = msg.toJSON();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			System.out.println("Send request...");
 			builder.sendRequest(data, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
@@ -368,7 +386,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	}
 
 	public void commitForm(final MyProcessConfig config,
-			Map<String, String> mfields, final AsyncCallback<Map<String, String>> callback) {
+			Map<String, String> mfields,
+			final AsyncCallback<Map<String, String>> callback) {
 		System.out.println("MyHttpProxy.commitForm");
 
 		try {
@@ -378,51 +397,51 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 			// Data map
 			Map<String, EntityData> mdata = new HashMap<String, EntityData>();
-			
+
 			// Fill datas
 			for (String key : mfields.keySet()) {
 				System.out.println(key);
 				String value = mfields.get(key);
 				System.out.println(value);
-				
+
 				String[] kp = key.split(":");
 				String entityName = kp[0];
 				String fieldName = kp[1];
 				int register = Integer.parseInt(kp[2]);
-			
+
 				EntityData data = mdata.get(entityName);
-				if(data == null){
+				if (data == null) {
 					data = new EntityData(entityName);
-					data.setProcessType(ProcessType.MAINTENANCE.getProcessType());
+					data.setProcessType(ProcessType.MAINTENANCE
+							.getProcessType());
 					mdata.put(entityName, data);
 				}
 				Item item = data.getItem(register);
-				if(item == null){
+				if (item == null) {
 					item = new Item(register);
 					data.addItem(item);
 				}
 				Field field = new Field(fieldName, null);
-				if (value != null
-						&& value.trim()
-								.length() > 0) {
+				if (value != null && value.trim().length() > 0) {
 					field.setValue(value);
 				}
 				item.addField(field);
 			}
-			
+
 			for (String entity : mdata.keySet()) {
 				msg.addData(mdata.get(entity));
 			}
-			
+
 			// Send message
 			System.out.println("Set message in json format...");
 			String data = "";
 			try {
-				data = "message=" + msg.toJSON();
+				//data = "message=" + msg.toJSON();
+				data = msg.toJSON();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			System.out.println("Send request...");
 			builder.sendRequest(data, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
@@ -433,7 +452,9 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 						Response response) {
 					try {
 						Message rspMsg = evaluateResponse(response, config);
-						Map<String,String> mrfields = MyMessageReader.toMap(rspMsg);;
+						Map<String, String> mrfields = MyMessageReader
+								.toMap(rspMsg);
+						;
 						callback.onSuccess(mrfields);
 					} catch (Exception e) {
 						callback.onFailure(e);
@@ -454,34 +475,36 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 						"HttpProxy: ERROR DE COMUNICACION. CÓDIGO = "
 								+ response.getStatusCode());
 			}
-			throw new RuntimeException("HttpProxy: CÓDIGO DE ESTATUS NO VÁLIDO = "
-					+ response.getStatusCode());
+			throw new RuntimeException(
+					"HttpProxy: CÓDIGO DE ESTATUS NO VÁLIDO = "
+							+ response.getStatusCode());
 		}
 
 		String text = response.getText();
 		if (text.startsWith("No message received")) {
-			throw new RuntimeException(
-					"HttpProxy: CORE: NO MESSAGE RECEIVED");
+			throw new RuntimeException("HttpProxy: CORE: NO MESSAGE RECEIVED");
 		}
 
 		// Evaluate process result
 		Message msg = reader.readMessage(config, text);
 
 		if (msg.getResponse().getCode() != null
-				&& msg.getResponse().getCode().compareTo(ResponseData.RESPONSE_CODE_OK) != 0) {
-		
+				&& msg.getResponse().getCode()
+						.compareTo(ResponseData.RESPONSE_CODE_OK) != 0) {
+
 			String errorCode = msg.getResponse().getCode();
-			
+
 			String errorMessage = msg.getResponse().getMessage();
-			
+
 			if (errorMessage == null) {
-				throw new RuntimeException("ERROR DE PROCESAMIENTO: " + errorCode);
+				throw new RuntimeException("ERROR DE PROCESAMIENTO: "
+						+ errorCode);
 			} else {
-				throw new RuntimeException("ERROR DE PROCESAMIENTO: " + errorCode
-						+ ".<br/>MENSAJE:<BR/>" + errorMessage);
+				throw new RuntimeException("ERROR DE PROCESAMIENTO: "
+						+ errorCode + ".<br/>MENSAJE:<BR/>" + errorMessage);
 			}
 		}
-		
+
 		return msg;
 	}
 
@@ -500,7 +523,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	}
 
 	private native void setUrl(RequestBuilder rb, String url) /*-{
-		rb.@com.google.gwt.http.client.RequestBuilder::url = url;
-	}-*/;
+																rb.@com.google.gwt.http.client.RequestBuilder::url = url;
+																}-*/;
 
 }

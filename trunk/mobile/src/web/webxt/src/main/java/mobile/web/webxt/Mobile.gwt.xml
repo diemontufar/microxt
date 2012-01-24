@@ -2,6 +2,9 @@
 <module rename-to='webxt'>
 	<!-- Inherit the core Web Toolkit stuff. -->
 	<inherits name='com.google.gwt.user.User' />
+	<inherits name='com.google.gwt.http.HTTP' />
+	<!--<inherits name='com.google.gwt.json' /> -->
+	<inherits name='com.google.gwt.maps.GoogleMaps' />
 	<!--<inherits name="com.google.gwt.i18n.I18N"/>-->
 
 	<!-- Inherit the default GWT style sheet -->
@@ -17,7 +20,6 @@
 	<!-- Mobile inherits -->
 	<inherits name="mobile.common.Message" />
  	<inherits name="mobile.common.Tools" />
-	<inherits name='com.google.gwt.maps.GoogleMaps' />
 
 	<!-- Specify the app entry point class. -->
 	<entry-point class='mobile.web.webxt.client.Mobile' />
