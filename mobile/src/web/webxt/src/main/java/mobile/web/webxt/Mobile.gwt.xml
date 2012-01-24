@@ -2,12 +2,17 @@
 <module rename-to='webxt'>
 	<!-- Inherit the core Web Toolkit stuff. -->
 	<inherits name='com.google.gwt.user.User' />
+	<!--<inherits name="com.google.gwt.i18n.I18N"/>-->
 
 	<!-- Inherit the default GWT style sheet -->
 	<inherits name='com.google.gwt.user.theme.standard.Standard' />
 
 	<!-- GXT -->
 	<inherits name='com.extjs.gxt.ui.GXT' />
+
+	<!-- Locale -->
+	<!--<extend-property name="locale" values="es"/>
+	<set-property-fallback name="locale" value="es"/>-->
 	
 	<!-- Mobile inherits -->
 	<inherits name="mobile.common.Message" />
