@@ -1,5 +1,6 @@
 package mobile.core.server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -18,21 +19,26 @@ import org.apache.log4j.Logger;
 public class Core extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String CONTENT_TYPE = "text/plain; charset=UTF-8";
+	private static final String ACCESS_CONTROL = "http://127.0.0.1:8888";
 	private Logger log = Log.getInstance();
 
-	public void service(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String message = "";
+	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String message = null;
 		try {
-			log.info(request.getClass());
-			log.info(request);
-			message = request.getParameter("message");
+			// log.info("request: " + request);
+			log.info("content-type: " + request.getContentType());
+			log.info("content-length: " + request.getContentLength());
+			// log.info("locale: " + request.getLocale());
+
+			BufferedReader reader = request.getReader();
+			log.info("Message");
+			message = reader.readLine();
+			// message = request.getParameter("message");
 			log.info("Input message: " + message);
 
 			if (message == null) {
 				response.setContentType(CONTENT_TYPE);
-				response.setHeader("Access-Control-Allow-Origin",
-						"http://127.0.0.1:8888");
+				response.setHeader("Access-Control-Allow-Origin", ACCESS_CONTROL);
 				PrintWriter out = response.getWriter();
 
 				// Test message
@@ -51,8 +57,7 @@ public class Core extends HttpServlet {
 
 			// Return the changes in JSON format
 			response.setContentType(CONTENT_TYPE);
-			response.setHeader("Access-Control-Allow-Origin",
-					"http://127.0.0.1:8888");
+			response.setHeader("Access-Control-Allow-Origin", ACCESS_CONTROL);
 			PrintWriter out = response.getWriter();
 
 			out.println(msg.toJSON());
