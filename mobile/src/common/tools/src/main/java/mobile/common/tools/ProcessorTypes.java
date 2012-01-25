@@ -1,15 +1,22 @@
 package mobile.common.tools;
 
 public enum ProcessorTypes {
-	MNT("MAINTENANCE"), QRY("QUERY");
+	MNT("MNT", "MAINTENANCE"), QRY("QRY", "QUERY");
 
-	String parameter;
+	String shortName;
+	String name;
 
-	ProcessorTypes(String parameter) {
-		this.parameter = parameter;
+	ProcessorTypes(String shortName, String name) {
+		this.shortName = shortName;
+		this.name = name;
 	}
 
-	public String getParameter() {
-		return parameter;
+	public String getShortName() {
+		return shortName;
 	}
+	
+	public String getName() {
+		return name;
+	}
+
 }

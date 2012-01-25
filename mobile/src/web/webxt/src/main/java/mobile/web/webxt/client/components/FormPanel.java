@@ -24,7 +24,6 @@ public class FormPanel extends ContentPanel {
 			// Add here the tested form
 
 			add(new C301());
-			//add(new G101());
 		}
 
 	}

@@ -39,7 +39,7 @@ public class C301 extends MyGeneralForm {
 		createForm();
 	}
 
-	private void createForm(){
+	private void createForm() {
 		// Constants
 		final int FORM_WIDTH = 540;
 		final int TAB_HEIGHT = 290;
@@ -61,10 +61,15 @@ public class C301 extends MyGeneralForm {
 		final ArrayColumnData solCdata = new ArrayColumnData();
 		solCdata.add(new MyColumnData("pk_solicitudeId", "Id", 100));
 		solicitudeId.setRqData("Solicitude", solCdata);
+		solicitudeId.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+				form.queryForm();
+			}
+		});
 		row.add(solicitudeId);
-		
+
 		form.setNewItem(false);
-		
 
 		// Generated account
 		// label = new MyLabel("Cuenta:", LABEL_WIDTH);
@@ -119,7 +124,7 @@ public class C301 extends MyGeneralForm {
 		row.add(label);
 
 		final ComboForm clientId = new ComboForm(80);
-		clientId.setPersistentInfo("Solicitude:partnerClient:1");
+		clientId.setPersistentInfo("Solicitude:partnerClientId	:1");
 		clientId.setDisplayField("pk_partnerId");
 		final ArrayColumnData combodata = new ArrayColumnData();
 		combodata.add(new MyColumnData("pk_partnerId", "Id", 70));
@@ -207,18 +212,18 @@ public class C301 extends MyGeneralForm {
 		maxPeriod.setReadOnly(true);
 		row.add(maxPeriod);
 
-		productCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-				ModelData selected = se.getSelectedItem();
-				productDescription.setValue(selected.get("description").toString());
-				productCurrency.setValue(selected.get("currencyId").toString());
-				minAmount.setValue(selected.get("minAmount").toString());
-				maxAmount.setValue(selected.get("maxAmount").toString());
-				minPeriod.setValue(selected.get("minPeriod").toString());
-				maxPeriod.setValue(selected.get("maxPeriod").toString());
-			}
-		});
+//		productCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+//			@Override
+//			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+//				ModelData selected = se.getSelectedItem();
+//				productDescription.setValue(selected.get("description").toString());
+//				productCurrency.setValue(selected.get("currencyId").toString());
+//				minAmount.setValue(selected.get("minAmount").toString());
+//				maxAmount.setValue(selected.get("maxAmount").toString());
+//				minPeriod.setValue(selected.get("minPeriod").toString());
+//				maxPeriod.setValue(selected.get("maxPeriod").toString());
+//			}
+//		});
 
 		fieldSet.add(row);
 
@@ -356,7 +361,7 @@ public class C301 extends MyGeneralForm {
 		paymentFrequency.setPersistentInfo("Solicitude:paymentFrequencyId:1");
 		paymentFrequency.setValue("4");
 		form.add(paymentFrequency);
-		
+
 		InputBox status = new InputBox();
 		status.setVisible(false);
 		status.setPersistentInfo("Solicitude:statusId:1");
@@ -369,6 +374,14 @@ public class C301 extends MyGeneralForm {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
 				form.commitForm();
+			}
+		}));
+		form.addButton(new Button("Resetear", new SelectionListener<ButtonEvent>() {
+
+			@Override
+			public void componentSelected(ButtonEvent ce) {
+				//form.reset();
+				form.clear();
 			}
 		}));
 

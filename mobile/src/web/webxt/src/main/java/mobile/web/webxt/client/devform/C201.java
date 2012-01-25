@@ -419,7 +419,7 @@ public class C201 extends LayoutContainer {
 				mfield.put("Partner:meetingDay:1", diaReunion.getRawValue().toString());
 			}
 			
-			proxy.commitForm(config, mfield, callback);
+			//proxy.commitForm(config, mfield, callback);
 			clearFields();
 		}else{
 			alertEmpty.show();

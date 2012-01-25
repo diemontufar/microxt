@@ -555,7 +555,7 @@ public class C102 extends LayoutContainer {
 		};
 
 		if (isOK){
-			proxy.commitForm(config, mfield, callback);
+			//proxy.commitForm(config, mfield, callback);
 			resetForm();
 			map.setCenter(LatLng.newInstance(INITIAL_LATITUDE,INITIAL_LONGITUDE), ZOOM_LEVEL_NORMAL);
 		}
