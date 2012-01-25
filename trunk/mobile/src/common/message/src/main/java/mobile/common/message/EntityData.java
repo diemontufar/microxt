@@ -2,8 +2,7 @@ package mobile.common.message;
 
 import java.util.List;
 
-
-public class EntityData extends Data{
+public class EntityData extends Data {
 
 	public final static String PROCESS_TYPE = "_type";
 	public final static String QRY_FIELDS = "_qry_fields";
@@ -48,7 +47,7 @@ public class EntityData extends Data{
 	public List<Field> getFieldList() {
 		return super.getFieldList();
 	}
-	
+
 	public void setFieldList(List<Field> fieldList) {
 		super.setFieldList(fieldList);
 	}
@@ -68,7 +67,7 @@ public class EntityData extends Data{
 	public void setItemList(List<Item> itemList) {
 		super.setItemList(itemList);
 	}
-	
+
 	public List<Item> getItemList() {
 		return super.getItemList();
 	}
@@ -76,18 +75,18 @@ public class EntityData extends Data{
 	public Field getCreateField(String name) {
 		return super.getCreateField(name);
 	}
-	
+
 	public void setFieldValue(String name, String value) {
 		super.setFieldValue(name, value);
 	}
-	
+
 	public String getFieldValue(String name) {
 		return super.getFieldValue(name);
 	}
-	
-	//-------------------------------------------
+
+	// -------------------------------------------
 	// Special fields
-	//-------------------------------------------
+	// -------------------------------------------
 	public void setProcessType(String processId) {
 		setFieldValue(EntityData.PROCESS_TYPE, processId);
 	}
@@ -109,7 +108,11 @@ public class EntityData extends Data{
 	}
 
 	public Integer getOffset() {
-		return Integer.parseInt(getFieldValue(EntityData.OFFSET_PAGE));
+		Integer number = null;
+		if (getFieldValue(EntityData.OFFSET_PAGE) != null) {
+			number = Integer.parseInt(getFieldValue(EntityData.OFFSET_PAGE));
+		}
+		return number;
 	}
 
 	public void setLimit(Integer limit) {
@@ -117,7 +120,11 @@ public class EntityData extends Data{
 	}
 
 	public Integer getLimit() {
-		return Integer.parseInt(getFieldValue(EntityData.LIMIT_PAGE));
+		Integer number = null;
+		if (getFieldValue(EntityData.LIMIT_PAGE) != null) {
+			number = Integer.parseInt(getFieldValue(EntityData.LIMIT_PAGE));
+		}
+		return number;
 	}
 
 	public void setTotal(Integer total) {
@@ -125,9 +132,13 @@ public class EntityData extends Data{
 	}
 
 	public Integer getTotal() {
-		return Integer.parseInt(getFieldValue(EntityData.TOTAL_PAGE));
+		Integer number = null;
+		if (getFieldValue(EntityData.TOTAL_PAGE) != null) {
+			number = Integer.parseInt(getFieldValue(EntityData.TOTAL_PAGE));
+		}
+		return number;
 	}
-	
+
 	public void setOrderBy(String order) {
 		setFieldValue(EntityData.ORDER_BY, order);
 	}
@@ -135,7 +146,7 @@ public class EntityData extends Data{
 	public String getOrderBy() {
 		return getFieldValue(EntityData.ORDER_BY);
 	}
-	
+
 	public void setOrderDir(String orderDir) {
 		setFieldValue(EntityData.ORDER_DIR, orderDir);
 	}
@@ -143,7 +154,7 @@ public class EntityData extends Data{
 	public String getOrderDir() {
 		return getFieldValue(EntityData.ORDER_DIR);
 	}
-	
+
 	public void setFilter(String filters) {
 		setFieldValue(EntityData.FILTERS, filters);
 	}

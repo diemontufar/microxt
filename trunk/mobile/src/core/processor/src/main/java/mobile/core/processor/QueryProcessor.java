@@ -12,6 +12,7 @@ import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
 import mobile.common.message.Message;
+import mobile.common.tools.ProcessorTypes;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityTable;
 import mobile.entity.manager.JPManager;
@@ -34,7 +35,7 @@ public class QueryProcessor implements GeneralProcessor {
 	public Message process(Message msg) throws Exception {
 		for (EntityData data : msg.getEntityDataList()) {
 			if (data.getProcessType() != null 
-					&& data.getProcessType().compareTo("QRY") == 0) {
+					&& data.getProcessType().compareTo(ProcessorTypes.QRY.getShortName()) == 0) {
 				if(decideProcessor(data)==0){
 					processQuery(data);
 				}else{

@@ -27,8 +27,7 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 	public PagingLoadResult<ModelData> read(Object loadConfig, Object data) {
 		System.out.println("MyReader.read: " + data.toString());
 		ArrayList<ModelData> models = new ArrayList<ModelData>();
-		PagingLoadResult<ModelData> paginatedModels = new BasePagingLoadResult<ModelData>(
-				models);
+		PagingLoadResult<ModelData> paginatedModels = new BasePagingLoadResult<ModelData>(models);
 
 		// Configuration
 		MyProcessConfig config = (MyProcessConfig) loadConfig;
@@ -51,28 +50,31 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 					} else {
 						field = item.getField(strField);
 					}
-					if (field.getValue().startsWith("((Boolean))")) {
-						model.set(field.getName(), ConvertionManager.parseBoolean(field
-								.getValue().toString().substring(11)));
-					} else {
-						model.set(field.getName(), field.getValue());
+					if (field != null) {
+						if (field.getValue() != null && field.getValue().startsWith("((Boolean))")) {
+							model.set(field.getName(),
+									ConvertionManager.parseBoolean(field.getValue().toString().substring(11)));
+						} else {
+							model.set(field.getName(), field.getValue());
+						}
 					}
+
 				}
 				models.add(model);
 			}
-//			System.out.println("Modelos");
-//			for (ModelData model : models) {
-//				for (String prop : model.getPropertyNames()) {
-//					System.out.println(prop + ":" + model.get(prop));
-//				}
-//			}
+			// System.out.println("Modelos");
+			// for (ModelData model : models) {
+			// for (String prop : model.getPropertyNames()) {
+			// System.out.println(prop + ":" + model.get(prop));
+			// }
+			// }
 
 			// Pagination
 			System.out.println("reading pagination");
 			if (entityData.getOffset() != null) {
 				paginatedModels.setOffset(entityData.getOffset());
 			}
-			if (entityData.getTotal()!= null) {
+			if (entityData.getTotal() != null) {
 				paginatedModels.setTotalLength(entityData.getTotal());
 			}
 
@@ -92,7 +94,7 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 		if (!data.toString().startsWith("No message received")) {
 			try {
 				String strData = data.toString();
-				
+
 				System.out.println("Parsing");
 				Parser parser = new Parser();
 				msg = parser.parseMsg(strData, MSG_TYPE);
@@ -106,8 +108,7 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Object createReturnData(Object loadConfig,
-			List<ModelData> records, int totalCount) {
+	protected Object createReturnData(Object loadConfig, List<ModelData> records, int totalCount) {
 		return (PagingLoadResult<ModelData>) records;
 	}
 }
