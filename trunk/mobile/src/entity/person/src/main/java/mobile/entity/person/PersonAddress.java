@@ -28,32 +28,8 @@ public class PersonAddress extends AbstractHistoricalLocking implements Multicom
 	/**
 	 * First street
 	 */
-	@Column(name = "FIRST_STREET", nullable = false)
-	private String firstStreet;
-
-	/**
-	 * Address number
-	 */
-	@Column(name = "ADDRESS_NUMBER", nullable = false)
-	private String addressNumber;
-
-	/**
-	 * Second street
-	 */
-	@Column(name = "SECOND_STREET", nullable = true)
-	private String secondStreet;
-
-	/**
-	 * Building name
-	 */
-	@Column(name = "BUILDING_NAME", nullable = true)
-	private String buildingName;
-
-	/**
-	 * Building number
-	 */
-	@Column(name = "BUILDING_FLOOR", nullable = true)
-	private String buildingFloor;
+	@Column(name = "ADDRESS_DESCRIPTION", nullable = false)
+	private String addressDescription;
 
 	/**
 	 * Country Id
@@ -62,22 +38,22 @@ public class PersonAddress extends AbstractHistoricalLocking implements Multicom
 	private String countryId;
 
 	/**
-	 * Province Id
-	 */
-	@Column(name = "PROVINCE_ID", nullable = true)
-	private String provinceId;
-
-	/**
 	 * City Id
 	 */
 	@Column(name = "CITY_ID", nullable = true)
 	private String cityId;
 
 	/**
-	 * Address map
+	 * Province Id
 	 */
-	@Column(name = "ADDRESS_MAP", nullable = true)
-	private String addressMap;
+	@Column(name = "PROVINCE_ID", nullable = true)
+	private String provinceId;
+
+	/**
+	 * District Id
+	 */
+	@Column(name = "DISTRICT_ID", nullable = true)
+	private String districtId;
 
 	public PersonAddress() {
 	}
@@ -86,11 +62,10 @@ public class PersonAddress extends AbstractHistoricalLocking implements Multicom
 		this.pk = pk;
 	}
 
-	public PersonAddress(PersonAddressPk pk, String addressTypeId, String firstStreet, String addressNumber) {
+	public PersonAddress(PersonAddressPk pk, String addressTypeId, String addressDescription) {
 		this.pk = pk;
 		this.addressTypeId = addressTypeId;
-		this.firstStreet = firstStreet;
-		this.addressNumber = addressNumber;
+		this.addressDescription = addressDescription;
 	}
 
 	public PersonAddressPk getPk() {
@@ -109,44 +84,12 @@ public class PersonAddress extends AbstractHistoricalLocking implements Multicom
 		this.addressTypeId = addressTypeId;
 	}
 
-	public String getFirstStreet() {
-		return this.firstStreet;
+	public String getAddressDescription() {
+		return this.addressDescription;
 	}
 
-	public void setFirstStreet(String firstStreet) {
-		this.firstStreet = firstStreet;
-	}
-
-	public String getAddressNumber() {
-		return this.addressNumber;
-	}
-
-	public void setAddressNumber(String addressNumber) {
-		this.addressNumber = addressNumber;
-	}
-
-	public String getSecondStreet() {
-		return this.secondStreet;
-	}
-
-	public void setSecondStreet(String secondStreet) {
-		this.secondStreet = secondStreet;
-	}
-
-	public String getBuildingName() {
-		return this.buildingName;
-	}
-
-	public void setBuildingName(String buildingName) {
-		this.buildingName = buildingName;
-	}
-
-	public String getBuildingFloor() {
-		return this.buildingFloor;
-	}
-
-	public void setBuildingFloor(String buildingFloor) {
-		this.buildingFloor = buildingFloor;
+	public void setAddressDescription(String addressDescription) {
+		this.addressDescription = addressDescription;
 	}
 
 	public String getCountryId() {
@@ -157,14 +100,6 @@ public class PersonAddress extends AbstractHistoricalLocking implements Multicom
 		this.countryId = countryId;
 	}
 
-	public String getProvinceId() {
-		return this.provinceId;
-	}
-
-	public void setProvinceId(String provinceId) {
-		this.provinceId = provinceId;
-	}
-
 	public String getCityId() {
 		return this.cityId;
 	}
@@ -173,12 +108,20 @@ public class PersonAddress extends AbstractHistoricalLocking implements Multicom
 		this.cityId = cityId;
 	}
 
-	public String getAddressMap() {
-		return this.addressMap;
+	public String getProvinceId() {
+		return this.provinceId;
 	}
 
-	public void setAddressMap(String addressMap) {
-		this.addressMap = addressMap;
+	public void setProvinceId(String provinceId) {
+		this.provinceId = provinceId;
+	}
+
+	public String getDistrictId() {
+		return this.districtId;
+	}
+
+	public void setDistrictId(String districtId) {
+		this.districtId = districtId;
 	}
 
 	@Override
@@ -196,9 +139,7 @@ public class PersonAddress extends AbstractHistoricalLocking implements Multicom
 	@Override
 	public String toString() {
 		return "PERSON_ADDRESS:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getAddressTypeId()
-				+ ", " + this.getFirstStreet() + ", " + this.getAddressNumber() + ", " + this.getSecondStreet() + ", "
-				+ this.getBuildingName() + ", " + this.getBuildingFloor() + ", " + this.getCountryId() + ", "
-				+ this.getProvinceId() + ", " + this.getCityId() + ", " + this.getAddressMap() + ", "
-				+ this.getVersion() + "]";
+				+ ", " + this.getAddressDescription() + ", " + this.getCountryId() + ", " + this.getCityId() + ", "
+				+ this.getProvinceId() + ", " + this.getDistrictId() + ", " + this.getVersion() + "]";
 	}
 }
