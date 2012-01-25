@@ -75,16 +75,22 @@ public class Person extends AbstractHistoricalLocking implements Multicompany, H
 	private String countryId;
 
 	/**
+	 * City Id
+	 */
+	@Column(name = "CITY_ID", nullable = true)
+	private String cityId;
+
+	/**
 	 * Province Id
 	 */
 	@Column(name = "PROVINCE_ID", nullable = true)
 	private String provinceId;
 
 	/**
-	 * City Id
+	 * District Id
 	 */
-	@Column(name = "CITY_ID", nullable = true)
-	private String cityId;
+	@Column(name = "DISTRICT_ID", nullable = true)
+	private String districtId;
 
 	/**
 	 * Profession type Id
@@ -192,6 +198,14 @@ public class Person extends AbstractHistoricalLocking implements Multicompany, H
 		this.countryId = countryId;
 	}
 
+	public String getCityId() {
+		return this.cityId;
+	}
+
+	public void setCityId(String cityId) {
+		this.cityId = cityId;
+	}
+
 	public String getProvinceId() {
 		return this.provinceId;
 	}
@@ -200,12 +214,12 @@ public class Person extends AbstractHistoricalLocking implements Multicompany, H
 		this.provinceId = provinceId;
 	}
 
-	public String getCityId() {
-		return this.cityId;
+	public String getDistrictId() {
+		return this.districtId;
 	}
 
-	public void setCityId(String cityId) {
-		this.cityId = cityId;
+	public void setDistrictId(String districtId) {
+		this.districtId = districtId;
 	}
 
 	public String getProfessionTypeId() {
@@ -233,7 +247,8 @@ public class Person extends AbstractHistoricalLocking implements Multicompany, H
 		return "PERSON:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getName() + ", "
 				+ this.getLastName() + ", " + this.getSecondLastName() + ", " + this.getIdentificationTypeId() + ", "
 				+ this.getIdentificationNumber() + ", " + this.getDateOfBirth() + ", " + this.getGenderTypeId() + ", "
-				+ this.getCivilStatusId() + ", " + this.getCountryId() + ", " + this.getProvinceId() + ", "
-				+ this.getCityId() + ", " + this.getProfessionTypeId() + ", " + this.getVersion() + "]";
+				+ this.getCivilStatusId() + ", " + this.getCountryId() + ", " + this.getCityId() + ", "
+				+ this.getProvinceId() + ", " + this.getDistrictId() + ", " + this.getProfessionTypeId() + ", "
+				+ this.getVersion() + "]";
 	}
 }
