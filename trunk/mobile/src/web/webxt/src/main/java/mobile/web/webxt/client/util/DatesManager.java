@@ -99,4 +99,49 @@ public class DatesManager {
 		boolean isEqual = cu.isSameDate(dateStart, dateFinish);
 		return isEqual;
 	}
+	
+	public static boolean isBeforeToday(String date){
+		Date dateStart = stringToDate(date, Format.DATE);
+		java.util.Date today = new java.util.Date();
+		
+		if (dateStart.before(today)) {
+		    return true;
+		} else{ 
+		    return false;
+		}
+	}
+	
+	public static boolean isAfterToday(String date){
+		Date dateStart = stringToDate(date, Format.DATE);
+		java.util.Date today = new java.util.Date();
+		
+		if (dateStart.after(today)) {
+		    return true;
+		} else{ 
+		    return false;
+		}
+	}
+	
+	public static boolean compare(String date1,String date2){
+		Date dateStart = stringToDate(date1, Format.DATE);
+		Date dateFinish = stringToDate(date2, Format.DATE);
+		
+		if (dateStart.equals(dateFinish)) {
+		    return true;
+		} else{ 
+		    return false;
+		}
+	}
+	
+	public static boolean isToday(String date){
+		java.util.Date today = new java.util.Date();
+		String td= dateToString(today, Format.DATE);
+		
+		if (date.compareTo(td)==0) {
+		    return true;
+		} else{ 
+		    return false;
+		}
+	}
+	
 }
