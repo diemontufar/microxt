@@ -5,6 +5,9 @@ import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.validations.ValidationTypes;
 import mobile.web.webxt.client.form.validations.ValidationTypesValidator;
 
+import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.user.client.Element;
 
@@ -12,6 +15,7 @@ public class InputBox extends TextField<String> implements PersistentField {
 
 	String fieldInfo;
 	Validate type;
+	boolean toolTip=false;
 	
 	@Override
 	public void setMaxLength(int m) {
@@ -25,6 +29,14 @@ public class InputBox extends TextField<String> implements PersistentField {
 	protected void onRender(Element target, int index) {
 		super.onRender(target, index);
 		getInputEl().setElementAttribute("maxLength", getMaxLength());
+		
+		this.addListener(Events.OnMouseOver, new Listener<BaseEvent>() {
+		    public void handleEvent(BaseEvent be) {
+		    	if(toolTip){
+		    		setToolTip(getValue());
+		    	}
+		    }
+		});
 	}
 	
 	public InputBox(){
@@ -91,6 +103,13 @@ public class InputBox extends TextField<String> implements PersistentField {
 	public void setPersistentInfo(String field) {
 		this.fieldInfo=field;
 	}
+	
+	public boolean getToolTipValue() {
+		return toolTip;
+	}
 
-
+	public void setToolTipValue(boolean value) {
+		this.toolTip=value;
+	}
+	
 }

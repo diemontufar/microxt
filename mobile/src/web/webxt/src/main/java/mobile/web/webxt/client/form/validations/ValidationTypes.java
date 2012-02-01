@@ -5,6 +5,7 @@ public enum ValidationTypes {
 			"ALFANUMERICO"), NUMERIC("^[+0-9]+$", "NUMERICO"), EMAIL(
 			"^(\\w+)([-+.][\\w]+)*@(\\w[-\\w]*\\.){1,5}([A-Za-z]){2,4}$",
 			"EMAIL");
+	
 	String regex;
 	String name;
 
@@ -12,4 +13,5 @@ public enum ValidationTypes {
 		this.regex = regex;
 		this.name = name;
 	}
+	
 }

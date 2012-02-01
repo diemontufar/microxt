@@ -1,11 +1,17 @@
 package mobile.web.webxt.client.form.widgetsgrid;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.form.widgets.MyComboBox;
 
+import com.extjs.gxt.ui.client.data.BaseFilterConfig;
+import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
+import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -13,10 +19,10 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 public class ComboColumn extends ColumnConfig {
 
 	private int pageSize = 0;
-
 	private String process = "G201"; // General process for list of values
-
 	private int width = 0; // Calculated from cdata
+	
+	public MyComboBox combo;
 
 	public ComboColumn(MyColumnData columnData) {
 		super(columnData.getId(),columnData.getName(),columnData.getWidth());
@@ -25,6 +31,24 @@ public class ComboColumn extends ColumnConfig {
 	public void setRqData(String entity, ArrayColumnData cdata) {
 		CellEditor editor = getComboEditor(process, entity, cdata);
 		setEditor(editor);
+	}
+	
+	public void setFilter(String fieldId, String filter) {
+		MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) this.combo
+				.getStore().getLoader()).getConfig();
+
+		List<FilterConfig> filters = config.getFilterConfigs();
+		if (filters == null) {
+			System.out.println("Crear");
+			filters = new ArrayList<FilterConfig>();
+			config.setFilterConfigs(filters);
+		}
+
+		BaseFilterConfig newFilter = new BaseStringFilterConfig("", "=",
+				filter);
+		newFilter.setField(fieldId);
+		
+		filters.add(newFilter);
 	}
 
 	private CellEditor getComboEditor(String process, String entity,
@@ -38,10 +62,8 @@ public class ComboColumn extends ColumnConfig {
 		final MyListStore store = new MyListStore(loader);
 
 		// Combo
-		final MyComboBox combo = new MyComboBox();
-
+		combo = new MyComboBox();
 		combo.setForceSelection(true);
-		//combo.setTriggerAction(TriggerAction.ALL);
 		combo.setDisplayField(cdata.getIdFields().get(0));
 		combo.setStore(store);
 		combo.setTemplate(getTemplate(cdata));
@@ -52,8 +74,6 @@ public class ComboColumn extends ColumnConfig {
 		combo.setEditable(false);
 		combo.setForceSelection(true);
 
-		// combo.setHideTrigger(true);
-		
 		// Cell editor
 		CellEditor editor = new CellEditor(combo) {
 			@Override
@@ -137,6 +157,10 @@ public class ComboColumn extends ColumnConfig {
 
 	public void setProcess(String process) {
 		this.process = process;
+	}
+	
+	public MyComboBox getComboBox(){
+		return combo;
 	}
 
 }

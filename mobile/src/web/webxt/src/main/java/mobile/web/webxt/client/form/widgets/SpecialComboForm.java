@@ -1,4 +1,4 @@
-package mobile.web.webxt.client.form.widgetsgrid;
+package mobile.web.webxt.client.form.widgets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,111 +7,86 @@ import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
-import mobile.web.webxt.client.form.widgets.MyComboBox;
+import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
+import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
 
-import com.extjs.gxt.ui.client.data.BaseFilterConfig;
-import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
 import com.extjs.gxt.ui.client.data.FilterConfig;
-import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.widget.grid.CellEditor;
-import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 
-public class SpecialComboColumn extends ColumnConfig {
+public class SpecialComboForm extends MyComboBox implements PersistentField {
 
 	private int pageSize = 0;
 	private String process = "G201"; // General process for list of values
 	private int width = 0; // Calculated from cdata
-
-	private MyComboBox combo;
-
-	public SpecialComboColumn(MyColumnData columnData) {
-		super(columnData.getId(), columnData.getName(), columnData.getWidth());
+	private String persistentInfo;
+		
+	public SpecialComboForm(int width) {
+		super();
+		setWidth(width);
+		setProperties();
+	}
+	
+	public SpecialComboForm(String label) {
+		super();
+		setFieldLabel(label);
+		setProperties();
+	}
+	
+	public SpecialComboForm(int width, String displayField) {
+		this(width);
+		setDisplayField(displayField);
+		setProperties();
+	}
+	
+	public SpecialComboForm(String label, String displayField) {
+		this(label);
+		setDisplayField(displayField);
+		setProperties();
+	}
+	
+	public void setProperties(){
+		setForceSelection(true);
+		setTriggerAction(TriggerAction.ALL);
+		setItemSelector("tr.search-item");
+		setPageSize(pageSize);
+		setEditable(false);
 	}
 
 	public void setRqData(String entity, ArrayColumnData cdata) {
-		CellEditor editor = getComboEditor(entity, cdata);
-		setEditor(editor);
-	}
-
-	private CellEditor getComboEditor(String entity, final ArrayColumnData cdata) {
 		// Proxy - Loader - Store
-		final MyProcessConfig config = new MyProcessConfig(process, entity,
-				cdata.getIdFields());
+		final MyProcessConfig config = new MyProcessConfig(process, entity,cdata.getIdFields());
 		final MyHttpProxy proxy = new MyHttpProxy();
 		final MyPagingLoader loader = new MyPagingLoader(proxy, config);//loader.load(offset, limit)
 		final MyListStore store = new MyListStore(loader);
 
 		// Combo
-		combo = new MyComboBox();
-
-		combo.setForceSelection(true);
-		combo.setDisplayField(cdata.getIdFields().get(0));
-		combo.setStore(store);
-		combo.setTemplate(getTemplate(cdata));
-		combo.setMinListWidth(width);
-		combo.setPageSize(pageSize);
-
-		combo.setItemSelector("tr.search-item");
-		combo.setEditable(false);
-		combo.setForceSelection(true);
-
-		// Cell editor
-		CellEditor editor = new CellEditor(combo) {
-			@Override
-			public Object preProcessValue(Object value) {
-				if (value == null) {
-					return value;
-				}
-				return combo.getModel();
-			}
-
-			@Override
-			public Object postProcessValue(Object value) {
-				if (value == null) {
-					return value;
-				}
-
-				String returnValue = "";
-
-				ModelData model = (ModelData) value;
-
-				boolean isFirst = true;
-				for (MyColumnData cd : cdata) {
-					if (isFirst) {
-						returnValue = model.get(cdata.getIdFields().get(0));
-						isFirst = false;
-					} else if (cd.getAssociatedField() != null) {
-						returnValue = returnValue + ";"
-								+ cd.getAssociatedField() + ":"
-								+ model.get(cd.getId());
-					}
-				}
-
-				return returnValue;
-			}
-
-		};
-
-		return editor;
+		setStore(store);
+		setTemplate(getTemplate(cdata));
+		setMinListWidth(width);
 	}
-
-	public void setFilter(String fieldId, String filter) {
-		MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) combo
+	
+	public void addFilter(FilterConfig filter) {
+    	MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) this
 				.getStore().getLoader()).getConfig();
-
-		List<FilterConfig> filters = config.getFilterConfigs();
-		if (filters == null) {
-			System.out.println("Crear");
-			filters = new ArrayList<FilterConfig>();
-			config.setFilterConfigs(filters);
+    	
+    	List<FilterConfig> filters = config.getFilterConfigs(); 
+    	if(filters==null){
+    		filters  = new ArrayList<FilterConfig>();
+    	}
+    	
+    	boolean exists = false;
+    	for (FilterConfig fil : filters) {
+			if (fil.getField().compareTo(filter.getField())==0){
+				exists = true;
+				fil.setValue(filter.getValue());
+			}
 		}
-
-		BaseFilterConfig newFilter = new BaseStringFilterConfig("", "=",
-				filter);
-		newFilter.setField(fieldId);
-		
-		filters.add(newFilter);
+    	
+    	if(!exists){
+        	filters.add(filter);
+    	}
+    	
+    	config.setFilterConfigs(filters);
 	}
 
 	private String getTemplate(final ArrayColumnData cdata) {
@@ -177,6 +152,14 @@ public class SpecialComboColumn extends ColumnConfig {
 
 	public void setProcess(String process) {
 		this.process = process;
+	}
+
+	public String getPersistentInfo() {
+		return persistentInfo;
+	}
+
+	public void setPersistentInfo(String persistentInfo) {
+		this.persistentInfo = persistentInfo;
 	}
 
 }
