@@ -3,10 +3,11 @@ package mobile.web.webxt.client.devform;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.web.webxt.client.data.MyHttpProxy;
+import mobile.common.message.Item;
 import mobile.web.webxt.client.data.MyListStore;
-import mobile.web.webxt.client.data.MyPagingLoader;
-import mobile.web.webxt.client.data.MyProcessConfig;
+import mobile.web.webxt.client.data.form.DataSource;
+import mobile.web.webxt.client.data.form.DataSourceType;
+import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.form.EntityContentPanel;
 import mobile.web.webxt.client.form.MyFormPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
@@ -18,7 +19,6 @@ import mobile.web.webxt.client.form.widgets.InputBox;
 import mobile.web.webxt.client.form.widgets.MyDateField;
 import mobile.web.webxt.client.form.widgets.MyLabel;
 import mobile.web.webxt.client.form.widgets.RowContainer;
-import mobile.web.webxt.client.form.widgets.SpecialComboForm;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.ComboColumn;
 import mobile.web.webxt.client.form.widgetsgrid.EntityEditorGrid;
@@ -26,9 +26,9 @@ import mobile.web.webxt.client.form.widgetsgrid.ExpireColumnConfig;
 import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
-import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
 import mobile.web.webxt.client.util.DatesManager;
+import mobile.web.webxt.client.util.NumberType;
 import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
@@ -45,7 +45,6 @@ import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.extjs.gxt.ui.client.widget.TabPanel;
@@ -63,12 +62,18 @@ import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.user.client.Element;
 
 public class B101 extends MyGeneralForm {
-	private final String PROCESS = "B101";
+		
+	private final static String PROCESS = "C101";
+	private final static String ENTITY = "Person";
+	
+	
 	// Constants
-	final int FORM_WIDTH = 600;
+	final int FORM_WIDTH = 620;
 	final int TAB_HEIGHT = 300;
-	final int LABEL_WIDTH = 70;
-	ComboForm personIdCombo = new ComboForm(100);
+	final int LABEL_WIDTH = 60;
+	
+	
+	ComboForm personIdCombo;
 	EntityEditorGrid addressGrid;
 	MyListStore addressStore;
 	EntityEditorGrid phoneGrid;
@@ -78,6 +83,11 @@ public class B101 extends MyGeneralForm {
 	IdType type;
 
 	ContentPanel panelPrincipal = new ContentPanel();
+	
+	public B101() {
+		super(PROCESS, true);
+		setReference(new Reference("per", ENTITY));
+	}
 
 	@Override
 	protected void onRender(Element parent, int index) {
@@ -89,13 +99,13 @@ public class B101 extends MyGeneralForm {
 
 		ContentPanel left = new ContentPanel();
 		left.setHeaderVisible(false);
-		left.setWidth(270);
+		left.setWidth(280);
 		left.setHeight(300);
 		left.setBorders(false);
 
 		ContentPanel right = new ContentPanel();
 		right.setHeaderVisible(false);
-		right.setWidth(270);
+		right.setWidth(290);
 		right.setHeight(300);
 		right.setBorders(false);
 
@@ -105,7 +115,7 @@ public class B101 extends MyGeneralForm {
 		panelPrincipal.setLayout(new RowLayout(Orientation.HORIZONTAL));
 
 		// Form panel
-		final MyFormPanel form = new MyFormPanel(PROCESS, "Ingreso de personas Naturales", FORM_WIDTH);
+		final MyFormPanel form = new MyFormPanel(this, "Mantenimiento Personas Naturales", FORM_WIDTH);
 		form.setLayout(new FlowLayout());
 
 		// Header
@@ -114,14 +124,45 @@ public class B101 extends MyGeneralForm {
 		MyLabel label = new MyLabel("Persona:", LABEL_WIDTH);
 		row.add(label);
 
-		personIdCombo.setPersistentInfo("Person:pk_personId:1");
+		personIdCombo = new ComboForm(100);
+		//personIdCombo.setId("personId");
+		personIdCombo.setDataSource(new DataSource("per", "pk_personId", DataSourceType.CRITERION));
+		
+		Reference refPerson = new Reference("per1", "Person");
+		final ArrayColumnData perCdata = new ArrayColumnData();
+		perCdata.add(new MyColumnData("per1", "pk_personId", "Id", 100));
+		personIdCombo.setQueryData(refPerson, perCdata);
 		personIdCombo.setDisplayField("pk_personId");
-		final ArrayColumnData solCdata = new ArrayColumnData();
-		solCdata.add(new MyColumnData("pk_personId", "Id", 100));
-		personIdCombo.setRqData("Person", solCdata);
+		
+		personIdCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+				if (((ComboForm) se.getSource()).isSomeSelected()) {
+					form.queryForm();
+				}
+			}
+		});
+		
 		row.add(personIdCombo);
 
 		form.add(row);
+				
+		// GeneratedId
+		final InputBox generatedId = new InputBox();
+		//generatedId.setId("generatedId");
+		generatedId.setDataSource(new DataSource(Item.GENERATED_ID, DataSourceType.CONTROL));
+		generatedId.setVisible(false);
+		generatedId.setFireChangeEventOnSetValue(true);
+		generatedId.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent e) {
+				if (e.getValue() != null) {
+					personIdCombo.setRawValue((String) e.getValue());
+					personIdCombo.setLoaded(false);
+				}
+			}
+		});
+		form.add(generatedId);
+		
 
 		// Tab panel
 		final TabPanel tabPanel = new TabPanel();
@@ -145,7 +186,8 @@ public class B101 extends MyGeneralForm {
 		label = new MyLabel("Nombres:", LABEL_WIDTH);
 		row.add(label);
 
-		InputBox name = new InputBox("", "Person:name:1", 150, 40, Validate.TEXT);
+		InputBox name = new InputBox(150, 40, Validate.TEXT);
+		name.setDataSource(new DataSource("PersonName", "name", DataSourceType.DESCRIPTION));
 		name.setAllowBlank(false);
 		row.add(name);
 
@@ -158,7 +200,9 @@ public class B101 extends MyGeneralForm {
 		row.add(label);
 		fieldSet.add(row);
 
-		InputBox lastName = new InputBox("", "Person:lastName:1", 150, 40, Validate.TEXT);
+		InputBox lastName = new InputBox(150, 40, Validate.TEXT);
+		lastName.setDataSource(new DataSource("PersonLastName", "lastName", DataSourceType.DESCRIPTION));
+		lastName.createValidator(Validate.REQUIRED);
 		row.add(lastName);
 
 		row = new RowContainer();
@@ -169,6 +213,7 @@ public class B101 extends MyGeneralForm {
 		fieldSet.add(row);
 
 		InputBox lastName2 = new InputBox("", "Person:secondLastName:1", 150, 40, Validate.TEXT);
+		lastName2.setDataSource(new DataSource("PersonLastName2", "secondLastName", DataSourceType.DESCRIPTION));
 		row.add(lastName2);
 
 		row = new RowContainer();
@@ -177,7 +222,8 @@ public class B101 extends MyGeneralForm {
 		label = new MyLabel("Fecha Nacimiento:", LABEL_WIDTH);
 		row.add(label);
 
-		final MyDateField birthDate = new MyDateField(100, 40);
+		final MyDateField birthDate = new MyDateField();
+		birthDate.createValidator(Validate.REQUIRED);
 		row.add(birthDate);
 		fieldSet.add(row);
 
@@ -185,57 +231,53 @@ public class B101 extends MyGeneralForm {
 		row = new RowContainer();
 		label = new MyLabel("Genero:", LABEL_WIDTH);
 		row.add(label);
-
-		final ComboForm genderCombo = new ComboForm(50);
-		genderCombo.setPersistentInfo("Person:genderTypeId:1");
-		genderCombo.setDisplayField("pk_genderTypeId");
-		final ArrayColumnData combodata = new ArrayColumnData();
-		combodata.add(new MyColumnData("pk_genderTypeId", "Codigo", 70));
-		combodata.add(new MyColumnData("name", "Nombre", 150));
-		genderCombo.setRqData("GenderType", combodata);
-		row.add(genderCombo);
 		
-		// Description
+		
+		// Gender combo
+		final ComboForm genderCombo = new ComboForm(50);
+		genderCombo.setDataSource(new DataSource("per", "genderId", DataSourceType.RECORD));
+
+		Reference refProduct = new Reference("gen", "GenderType");
+		final ArrayColumnData pcdata = new ArrayColumnData();
+		pcdata.add(new MyColumnData("gen", "pk_genderTypeId", "Id", 70));
+		pcdata.add(new MyColumnData("gen", "name", "Nombre", 150));
+		genderCombo.setQueryData(refProduct, pcdata);
+		genderCombo.setDisplayField("pk_genderTypeId");
+		row.add(genderCombo);
+
 		final InputBox descGender = new InputBox(90);
 		descGender.setReadOnly(true);
+		descGender.setDataSource(new DataSource("GenderType", "name", DataSourceType.DESCRIPTION));
 		row.add(descGender);
 		
-		genderCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-				ModelData selected = se.getSelectedItem();
-				descGender.setValue(selected.get("name").toString());
-			}
-		});
-		
+		genderCombo.linkWithField(descGender, "name");
+				
 		fieldSet.add(row);
 
 		// Civil Status:
 		row = new RowContainer();
 		label = new MyLabel("Estado Civil:", LABEL_WIDTH);
 		row.add(label);
-
-		final ComboForm civilStatusCombo = new ComboForm(50);
-		civilStatusCombo.setPersistentInfo("Person:civilStatusId:1");
-		civilStatusCombo.setDisplayField("pk_civilStatusId");
-		final ArrayColumnData combodata2 = new ArrayColumnData();
-		combodata2.add(new MyColumnData("pk_civilStatusId", "Codigo", 70));
-		combodata2.add(new MyColumnData("name", "Nombre", 150));
-		civilStatusCombo.setRqData("CivilStatus", combodata2);
-		row.add(civilStatusCombo);
 		
-		// Description
+		
+		// Civil Status combo
+		final ComboForm civilStatusCombo = new ComboForm(50);
+		civilStatusCombo.setDataSource(new DataSource("per", "civilStatusId", DataSourceType.RECORD));
+
+		Reference refCivilStatus = new Reference("civ", "CivilStatus");
+		final ArrayColumnData csdata = new ArrayColumnData();
+		csdata.add(new MyColumnData("civ", "pk_civilStatusId", "Id", 70));
+		csdata.add(new MyColumnData("civ", "name", "Nombre", 150));
+		civilStatusCombo.setQueryData(refCivilStatus, csdata);
+		civilStatusCombo.setDisplayField("pk_civilStatusId");
+		row.add(civilStatusCombo);
+
 		final InputBox descCivilStatus = new InputBox(90);
 		descCivilStatus.setReadOnly(true);
+		descCivilStatus.setDataSource(new DataSource("CivilStatus", "name", DataSourceType.DESCRIPTION));
 		row.add(descCivilStatus);
 		
-		civilStatusCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-				ModelData selected = se.getSelectedItem();
-				descCivilStatus.setValue(selected.get("name").toString());
-			}
-		});
+		civilStatusCombo.linkWithField(descCivilStatus, "name");
 		
 		fieldSet.add(row);
 		
@@ -243,32 +285,27 @@ public class B101 extends MyGeneralForm {
 		row = new RowContainer();
 		label = new MyLabel("Profesión:", LABEL_WIDTH);
 		row.add(label);
+				
+		
+		// Profession combo
+		final ComboForm profesionCombo = new ComboForm(50);
+		profesionCombo.setDataSource(new DataSource("per", "professionTypeId", DataSourceType.RECORD));
 
-		// Combo Profesion
-		SpecialComboForm profesionCombo = new SpecialComboForm(50);
-		profesionCombo.setPersistentInfo("Person:professionTypeId:1");
+		Reference refProfession = new Reference("pro", "ProfessionType");
+		final ArrayColumnData prdata = new ArrayColumnData();
+		prdata.add(new MyColumnData("pro", "pk_professionTypeId", "Id", 70));
+		prdata.add(new MyColumnData("pro", "name", "Nombre", 150));
+		profesionCombo.setQueryData(refProfession, prdata);
 		profesionCombo.setDisplayField("pk_professionTypeId");
 		profesionCombo.setPageSize(10);
-		ArrayColumnData cdataCombo = new ArrayColumnData();
-		cdataCombo.add(new MyColumnData("pk_professionTypeId", "Codigo", 50));
-		cdataCombo.add(new MyColumnData("name", "Nombre", 200));
-		profesionCombo.setRqData("ProfessionType", cdataCombo);
 		row.add(profesionCombo);
-		
-		// Description
+
 		final InputBox descProfession = new InputBox(90);
-		descProfession.setMaxLength(300);
 		descProfession.setReadOnly(true);
-		descProfession.setToolTipValue(true);
+		descProfession.setDataSource(new DataSource("ProfessionType", "name", DataSourceType.DESCRIPTION));
 		row.add(descProfession);
 		
-		profesionCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-				ModelData selected = se.getSelectedItem();
-				descProfession.setValue(selected.get("name").toString());
-			}
-		});
+		profesionCombo.linkWithField(descProfession, "name");
 		
 		fieldSet.add(row);
 		
@@ -279,42 +316,42 @@ public class B101 extends MyGeneralForm {
 
 		FieldSet fieldSet2 = new FieldSet();
 		fieldSet2.setHeading("Identificacion");
+		fieldSet2.setWidth(270);
 		fieldSet2.setCollapsible(false);
 
-		label = new MyLabel("Tipo ID:", LABEL_WIDTH);
+		label = new MyLabel("Tipo ID:", LABEL_WIDTH+10);
 		row.add(label);
 
-		final ComboForm idTypeCombo = new ComboForm(50);
-		idTypeCombo.setPersistentInfo("Person:identificationTypeId:1");
-		idTypeCombo.setDisplayField("pk_identificationTypeId");
-		final ArrayColumnData combodata4 = new ArrayColumnData();
-		combodata4.add(new MyColumnData("pk_identificationTypeId", "Codigo", 70));
-		combodata4.add(new MyColumnData("name", "Nombre", 150));
-		idTypeCombo.setRqData("IdentificationType", combodata4);
-		row.add(idTypeCombo);
 		
-		// Description
+		//Identification Combo:
+		final ComboForm idTypeCombo = new ComboForm(50);
+		idTypeCombo.setDataSource(new DataSource("per", "identificationTypeId", DataSourceType.RECORD));
+
+		Reference refIdentification = new Reference("idt", "IdentificationType");
+		final ArrayColumnData iddata = new ArrayColumnData();
+		iddata.add(new MyColumnData("idt", "pk_identificationTypeId", "Id", 70));
+		iddata.add(new MyColumnData("idt", "name", "Nombre", 150));
+		idTypeCombo.setQueryData(refIdentification, iddata);
+		idTypeCombo.setDisplayField("pk_identificationTypeId");
+		row.add(idTypeCombo);
+
 		final InputBox descTipoId = new InputBox(90);
 		descTipoId.setReadOnly(true);
+		descTipoId.setDataSource(new DataSource("IdentificationType", "name", DataSourceType.DESCRIPTION));
 		row.add(descTipoId);
 		
-		idTypeCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-				ModelData selected = se.getSelectedItem();
-				descTipoId.setValue(selected.get("name").toString());
-			}
-		});
+		idTypeCombo.linkWithField(descTipoId, "name");
 		
 		fieldSet2.add(row);
 
 		row = new RowContainer();
 
 		// Identification
-		label = new MyLabel("Identificacion:", LABEL_WIDTH);
+		label = new MyLabel("Identificacion:", LABEL_WIDTH+10);
 		row.add(label);
 
-		final InputBox identification = new InputBox("", "Person:identificationNumber:1", 150, 40, Validate.ALFANUMERICO);
+		final InputBox identification = new InputBox(150, 40, Validate.ALPHANUMERIC);
+		identification.setDataSource(new DataSource("IdentificationNumber", "identificationNumber", DataSourceType.DESCRIPTION));
 		row.add(identification);
 		
 		identification.addListener(Events.OnBlur, new Listener<FieldEvent>() {
@@ -357,7 +394,7 @@ public class B101 extends MyGeneralForm {
 		aux.setHeight(70);
 		right.add(fieldSet2);
 		right.add(aux);
-		right.add(new Location("Person"));
+		//right.add(new Location("Person"));
 
 		panelPrincipal.add(left, new RowData(.45, 1, new Margins(4)));
 		panelPrincipal.add(right, new RowData(.45, 1, new Margins(4)));
@@ -386,10 +423,10 @@ public class B101 extends MyGeneralForm {
 		tabPanel.add(phoneTab);
 		
 		//Hidden Date field:
-		final InputBox birthDateAux = new InputBox();
-		birthDateAux.setVisible(false);
-		birthDateAux.setPersistentInfo("Person:birthDate:1");
-		form.add(birthDateAux);
+//		final InputBox birthDateAux = new InputBox();
+//		birthDateAux.setVisible(false);
+//		birthDateAux.setPersistentInfo("Person:birthDate:1");
+//		form.add(birthDateAux);
 
 		form.add(tabPanel);
 		form.setButtonAlign(HorizontalAlignment.CENTER);
@@ -401,16 +438,14 @@ public class B101 extends MyGeneralForm {
 				AlertDialog message=new AlertDialog("Error","Campos mal ingresados");;
 				
 				if (birthDate.getValue() != null) {
-					dateString = birthDate.getRawValue().toString().substring(6, 10);
-					dateString = dateString + "-" + birthDate.getRawValue().toString().substring(3, 5) + "-";
-					dateString = dateString + birthDate.getRawValue().toString().substring(0, 2);
-					birthDateAux.setValue(dateString);
+					dateString = birthDate.getDateValue();
+				
+					if (!validateDateField(dateString)){
+						message = new AlertDialog("Error","Fecha Incorrecta");
+						birthDate.forceInvalid("Fecha Incorrecta");
+					} 
 				}
 				
-				if (!validateDateField(dateString)){
-					message = new AlertDialog("Error","Fecha Incorrecta");
-					birthDate.forceInvalid("Fecha Incorrecta");
-				} 
 				if (!isValidId) {
 					message = new AlertDialog("Error","Identificacion incorrecta");
 					identification.forceInvalid("Identificacion Incorrecta");
@@ -424,12 +459,11 @@ public class B101 extends MyGeneralForm {
 					message.show();
 				}
 				
-//				if (isValidId && validateDateField(dateString)) {
-//					form.commitForm();
-//					form.isValid();
+				if (isValidId && validateDateField(dateString)) {
+					form.commitForm();
 //					//saveAddresses();
 //					//savePhones();
-//	
+				}
 //				}else{
 //					message.show();
 //				}
@@ -460,167 +494,72 @@ public class B101 extends MyGeneralForm {
 		cdata.add(new MyColumnData("provinceId", "Provincia", 50, 50, true));
 		cdata.add(new MyColumnData("cityId", "Canton", 50, 50, true));
 		cdata.add(new MyColumnData("districtId", "Parroquia", 50, 50, true));
+		getConfig().setlDataSource(cdata.getDataSources());
 
-		MyProcessConfig config = new MyProcessConfig(process, entity, cdata.getIdFields());
+		//MyProcessConfig config = new MyProcessConfig(process, entity, cdata.getIdFields());
 
 		// Proxy - loader - store
-		MyHttpProxy proxy = new MyHttpProxy();
-		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
-		addressStore = new MyListStore(loader);
+//		MyHttpProxy proxy = new MyHttpProxy();
+//		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
+		addressStore = new MyListStore(getLoader());
 
 		// Column model
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
+		
 		configs.add(new NormalColumn(cdata.get(0)));
 		configs.add(new NormalColumn(cdata.get(1)));
 
 		ComboColumn aTypeComboColumn = new ComboColumn(cdata.get(2));
+		Reference refaType = new Reference("adt", "AddressType");
 		ArrayColumnData cdataComboAType = new ArrayColumnData();
-		cdataComboAType.add(new MyColumnData("pk_addressTypeId", "ID", 40));
-		cdataComboAType.add(new MyColumnData("name", "Nombre", 150));
-		aTypeComboColumn.setRqData("AddressType", cdataComboAType);
+		cdataComboAType.add(new MyColumnData("adt","pk_addressTypeId", "ID", 40));
+		cdataComboAType.add(new MyColumnData("adt","name", "Nombre", 150));
+		aTypeComboColumn.setQueryData(refaType, cdataComboAType);
 		configs.add(aTypeComboColumn);
-
+		
 		configs.add(new NormalColumn(cdata.get(3)));
 
 		final ComboColumn countryCombo = new ComboColumn(cdata.get(4));
+		Reference refCountry = new Reference("cou", "Country");
 		ArrayColumnData combodata = new ArrayColumnData();
-		combodata.add(new MyColumnData("pk_countryId", "Pais", 70));
-		combodata.add(new MyColumnData("name", "Nombre", 150));
-		countryCombo.setRqData("Country", combodata);
+		combodata.add(new MyColumnData("cou","pk_countryId", "Pais", 70));
+		combodata.add(new MyColumnData("cou","name", "Nombre", 150));
+		countryCombo.setQueryData(refCountry, combodata);
 		configs.add(countryCombo);
 
 		final ComboColumn provinceCombo = new ComboColumn(cdata.get(5));
+		Reference refProvince = new Reference("pro", "Province");
 		ArrayColumnData combodata2 = new ArrayColumnData();
-		combodata2.add(new MyColumnData("pk_provinceId", "Provincia", 70, 20, false));
-		combodata2.add(new MyColumnData("name", "Nombre", 150, 40, false));
-		combodata2.add(new MyColumnData("pk_countryId", ColumnType.HIDDEN));
-		provinceCombo.setRqData("Province", combodata2);
+		combodata2.add(new MyColumnData("pro","pk_provinceId", "Provincia", 70));
+		combodata2.add(new MyColumnData("pro","name", "Nombre", 150));
+		combodata2.add(new MyColumnData("pro","pk_countryId","Provincia",50));
+		provinceCombo.setQueryData(refProvince, combodata2);
 		configs.add(provinceCombo);
 
 		final ComboColumn cityCombo = new ComboColumn(cdata.get(6));
+		Reference refCity = new Reference("cit", "City");
 		final ArrayColumnData combodata3 = new ArrayColumnData();
-		combodata3.add(new MyColumnData("pk_cityId", "Codigo", 70, 20, false));
-		combodata3.add(new MyColumnData("name", "Nombre", 150, 40, false));
-		combodata3.add(new MyColumnData("pk_countryId", ColumnType.HIDDEN));
-		combodata3.add(new MyColumnData("pk_provinceId", ColumnType.HIDDEN));
-		cityCombo.setRqData("City", combodata3);
+		combodata3.add(new MyColumnData("cit","pk_cityId", "Codigo", 70));
+		combodata3.add(new MyColumnData("cit","name", "Nombre", 150));
+		combodata3.add(new MyColumnData("cit","pk_countryId","Pais",50));
+		combodata3.add(new MyColumnData("cit","pk_provinceId","Ciudad",50));
+		cityCombo.setQueryData(refCity, combodata3);
 		configs.add(cityCombo);
 
 		final ComboColumn districtCombo = new ComboColumn(cdata.get(7));
+		Reference refDistrict = new Reference("dis", "District");
 		final ArrayColumnData combodata4 = new ArrayColumnData();
-		combodata4.add(new MyColumnData("pk_districtId", "Codigo", 70, 20, false));
-		combodata4.add(new MyColumnData("name", "Nombre", 150, 40, false));
-		combodata4.add(new MyColumnData("pk_countryId", ColumnType.HIDDEN));
-		combodata4.add(new MyColumnData("pk_provinceId", ColumnType.HIDDEN));
-		combodata4.add(new MyColumnData("pk_cityId", ColumnType.HIDDEN));
-		districtCombo.setRqData("District", combodata4);
+		combodata4.add(new MyColumnData("dis","pk_districtId", "Codigo", 70));
+		combodata4.add(new MyColumnData("dis","name", "Nombre", 150));
+		combodata4.add(new MyColumnData("dis","pk_countryId","Pais",50));
+		combodata4.add(new MyColumnData("dis","pk_provinceId","Provincia",50));
+		combodata4.add(new MyColumnData("dis","pk_cityId","City",50));
+		districtCombo.setQueryData(refDistrict, combodata4);
 		configs.add(districtCombo);
 
 		configs.add(new ExpireColumnConfig());
-		
-		
-		//LISTENERS:
-		countryCombo.getComboBox().addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-
-				if (countryCombo.getComboBox().getValue() == null) {
-					return;
-				}
-				
-				String filterFieldId = "pk_countryId";
-				String filterValue = countryCombo.getComboBox().getValue().get(filterFieldId).toString();
-
-				countryCombo.setFilter(filterFieldId,filterValue);
-				provinceCombo.getComboBox().setLoaded(false);
-				provinceCombo.getComboBox().setValue(null);
-				cityCombo.getComboBox().setLoaded(false);
-				cityCombo.getComboBox().setValue(null);
-				districtCombo.getComboBox().setLoaded(false);
-				districtCombo.getComboBox().setValue(null);
-			}
-		});
-		
-		provinceCombo.getComboBox().addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-
-				if (provinceCombo.getComboBox().getValue() == null) {
-					return;
-				}
-				
-				String filterField = "pk_countryId";
-				String filterField2 = "pk_provinceId";
-				String filterValue1 = countryCombo.getComboBox().getValue().get(filterField).toString();
-				String filterValue2 = provinceCombo.getComboBox().getValue().get(filterField2).toString();
-
-				cityCombo.setFilter(filterField,filterValue1);
-				cityCombo.setFilter(filterField2,filterValue2);
-				cityCombo.getComboBox().setLoaded(false);
-				cityCombo.getComboBox().setValue(null);
-				districtCombo.getComboBox().setLoaded(false);
-				districtCombo.getComboBox().setValue(null);
-			}
-		});
-		
-		districtCombo.getComboBox().addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-
-				if (districtCombo.getComboBox().getValue() == null) {
-					return;
-				}
-				
-				String filterField = "pk_countryId";
-				String filterField2 = "pk_provinceId";
-				String filterField3 = "pk_cityId";
-				
-				String filterValue1 = countryCombo.getComboBox().getValue().get(filterField).toString();
-				String filterValue2 = provinceCombo.getComboBox().getValue().get(filterField2).toString();
-				String filterValue3 = cityCombo.getComboBox().getValue().get(filterField3).toString();
-
-				districtCombo.setFilter(filterField,filterValue1);
-				districtCombo.setFilter(filterField2,filterValue2);
-				districtCombo.setFilter(filterField3,filterValue3);
-				districtCombo.getComboBox().setLoaded(false);
-				districtCombo.getComboBox().setValue(null);
-			}
-		});
-		
-		provinceCombo.getComboBox().addListener(Events.BeforeQuery, new Listener<BaseEvent>() {
-			public void handleEvent(BaseEvent be) {
-				MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) provinceCombo.getComboBox()
-						.getStore().getLoader()).getConfig();
-				if (config.getFilterConfigs() == null) {
-					be.setCancelled(true);
-					Info.display("Advertencia", "Seleccione un Pais");
-				}
-			}
-		});
-		
-		cityCombo.getComboBox().addListener(Events.BeforeQuery, new Listener<BaseEvent>() {
-			public void handleEvent(BaseEvent be) {
-				MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) cityCombo.getComboBox()
-						.getStore().getLoader()).getConfig();
-				if (config.getFilterConfigs() == null) {
-					be.setCancelled(true);
-					Info.display("Advertencia", "Seleccione una Provincia");
-				}
-			}
-		});
-		
-		districtCombo.getComboBox().addListener(Events.BeforeQuery, new Listener<BaseEvent>() {
-			public void handleEvent(BaseEvent be) {
-				MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) districtCombo.getComboBox()
-						.getStore().getLoader()).getConfig();
-				if (config.getFilterConfigs() == null) {
-					be.setCancelled(true);
-					Info.display("Advertencia", "Seleccione una Ciudad");
-				}
-			}
-		});
-
+	
 		ColumnModel cm = new ColumnModel(configs);
 
 		// Filters
@@ -635,6 +574,7 @@ public class B101 extends MyGeneralForm {
 		cp.setHeaderVisible(false);
 
 		// Grid
+		
 		addressGrid = new EntityEditorGrid(addressStore, cm);
 		addressGrid.setAutoExpandColumn("addressDescription");
 		addressGrid.addPlugin(filters);
@@ -654,7 +594,7 @@ public class B101 extends MyGeneralForm {
 		cp.setTopComponent(toolBar);
 
 		// Paging tool bar
-		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(PAGE_SIZE, loader);
+		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(addressGrid,PAGE_SIZE);
 		cp.setBottomComponent(pagingToolBar);
 
 		lc.add(cp);
@@ -679,14 +619,15 @@ public class B101 extends MyGeneralForm {
 		cdata.add(new MyColumnData("pk_phoneSequence", "Sec.", 80, 4, false));
 		cdata.add(new MyColumnData("phoneTypeId", "Tipo", 80, 4, false));
 		cdata.add(new MyColumnData("areaCode", "Cod. Area", 100, 4, false));
-		cdata.add(new MyColumnData("phoneNumber", "Numero", 100, 40, false));
+		cdata.add(new MyColumnData("phoneNumber", "Numero", 100, 40, true));
+		getConfig().setlDataSource(cdata.getDataSources());
 
-		MyProcessConfig config = new MyProcessConfig(process, entity, cdata.getIdFields());
-
-		// Proxy - loader - store
-		MyHttpProxy proxy = new MyHttpProxy();
-		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
-		phoneStore = new MyListStore(loader);
+//		MyProcessConfig config = new MyProcessConfig(process, entity, cdata.getIdFields());
+//
+//		// Proxy - loader - store
+//		MyHttpProxy proxy = new MyHttpProxy();
+//		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
+		phoneStore = new MyListStore(getLoader());
 
 		// Column model
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
@@ -695,14 +636,15 @@ public class B101 extends MyGeneralForm {
 		configs.add(new NormalColumn(cdata.get(1)));
 
 		ComboColumn pTypeComboColumn = new ComboColumn(cdata.get(2));
+		Reference refPhoneType = new Reference("pht", "PhoneType");
 		ArrayColumnData cdataComboAType = new ArrayColumnData();
-		cdataComboAType.add(new MyColumnData("pk_phoneTypeId", "ID", 40));
-		cdataComboAType.add(new MyColumnData("name", "Nombre", 150));
-		pTypeComboColumn.setRqData("PhoneType", cdataComboAType);
+		cdataComboAType.add(new MyColumnData("pht","pk_phoneTypeId", "ID", 40));
+		cdataComboAType.add(new MyColumnData("pht","name", "Nombre", 150));
+		pTypeComboColumn.setQueryData(refPhoneType, cdataComboAType);
 		configs.add(pTypeComboColumn);
-
-		configs.add(new NormalColumn(cdata.get(3)));
-		configs.add(new NormalColumn(cdata.get(4)));
+		
+		configs.add(new NormalColumn(cdata.get(3),NumberType.DECIMAL,null));
+		configs.add(new NormalColumn(cdata.get(4),NumberType.TEXT,Validate.EMAIL));
 
 		configs.add(new ExpireColumnConfig());
 
@@ -738,7 +680,7 @@ public class B101 extends MyGeneralForm {
 		cp.setTopComponent(toolBar);
 
 		// Paging tool bar
-		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(PAGE_SIZE, loader);
+		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(phoneGrid,PAGE_SIZE);
 		cp.setBottomComponent(pagingToolBar);
 
 		lc.add(cp);

@@ -1,3 +1,13 @@
 package mobile.web.webxt.client.form.validations;
 
-public enum Validate {TEXT, ALFANUMERICO, NUMERICO, PASSWORD, EMAIL};
+public enum Validate {
+	
+	REQUIRED,
+	DATE,
+	TEXT, 
+	ALPHANUMERIC, 
+	NUMERIC, 
+	PASSWORD, 
+	EMAIL,
+	
+};

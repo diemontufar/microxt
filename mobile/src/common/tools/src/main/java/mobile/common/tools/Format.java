@@ -17,7 +17,9 @@ public final class Format {
 	public static final String HOUR = "HH:mm:ss";
 	public static final String MINUTE = "mm:ss.SSS";
 	
-	public static final String CURRENCY = "#,###,###.00";
+	public static final String CURRENCY = "#,##0.00";
+	public static final String DECIMAL = "#,###,##0.00";
+	public static final String INTEGER = "#";
 	
 	public static final String FILE = "yyyyMMdd-HHmmss";
 
