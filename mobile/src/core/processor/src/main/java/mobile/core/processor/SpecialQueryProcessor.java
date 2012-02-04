@@ -12,7 +12,7 @@ import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
 import mobile.common.message.Message;
-import mobile.common.tools.ProcessorTypes;
+import mobile.common.tools.ProcessType;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityTable;
 import mobile.entity.manager.JPManager;
@@ -27,21 +27,20 @@ import org.apache.log4j.Logger;
 
 public class SpecialQueryProcessor implements GeneralProcessor {
 	private final Logger log = Log.getInstance();
-	
+
 	private final String ORDER_DIR_DESC = "DESC";
 
 	@Override
 	public Message process(Message msg) throws Exception {
 		for (EntityData data : msg.getEntityDataList()) {
-			if (data.getProcessType() != null
-					&& data.getProcessType().compareTo(ProcessorTypes.QRY.getShortName()) == 0) {
+			if (data.getProcessType() != null && data.getProcessType().compareTo(ProcessType.QUERY.getShortName()) == 0) {
 				processQuery(data);
 			}
 		}
 
 		return msg;
 	}
-		
+
 	@SuppressWarnings("rawtypes")
 	public void processQuery(EntityData data) throws Exception {
 		StringBuilder sql = new StringBuilder();
@@ -54,24 +53,22 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 		boolean hasExpire = false;
 		int fieldCounter = 0;
 		if (data.getQueryFields() != null) {
-			for (String strField : data.getQueryFields()
-					.split(";")) {
-				// Expire fields
+			for (String strField : data.getQueryFields().split(";")) {
 				if (strField.compareTo(Item.EXPIRE_ITEM) == 0) {
 					hasExpire = true;
 					continue;
 				}
 				// Description field
-				if (strField.startsWith("d:")) {
+				if (strField.indexOf(":")>0) {
 					createInnerSelect(sql, queryFields, fieldCounter, strField);
 					continue;
 				}
-				
+
 				queryFields.add(strField);
 				if (fieldCounter > 0) {
 					sql.append(", ");
 				}
-				sql.append("a." + toSqlName(strField.replaceAll("pk_", "")) );
+				sql.append("a." + toSqlName(strField.replaceAll("pk_", "")));
 				fieldCounter++;
 			}
 		}
@@ -79,9 +76,9 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 		// From
 		sql.append(" from " + toSqlName(data.getDataId()) + " a");
 
-		//Get fields information
-		Map<String,String> mtypes = getMapTypeFields(data.getDataId());
-				
+		// Get fields information
+		Map<String, String> mtypes = getMapTypeFields(data.getDataId());
+
 		// Filters
 		List<Object> lParameters = new ArrayList<Object>();
 		int filtersCounter = 0;
@@ -94,19 +91,15 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 					sql.append(" and ");
 				}
 				String[] part = filter.split(":");
-				if (part[1] == null
-						|| (part[1] != null && part[1].compareTo("") == 0)) {
-					sql.append("a." + part[0].replaceAll("pk_", "")
-							+ " like ?" + (filtersCounter + 1));
+				if (part[1] == null || (part[1] != null && part[1].compareTo("") == 0)) {
+					sql.append("a." + part[0].replaceAll("pk_", "") + " like ?" + (filtersCounter + 1));
 					lParameters.add(part[2] + "%");
-				}else{
-					if(mtypes.get(part[0])!=null && mtypes.get(part[0]).compareTo("Boolean")==0){
-						sql.append("a." + part[0].replaceAll("pk_", "pk.")
-								+ part[1] + " ?" + (filtersCounter + 1));
+				} else {
+					if (mtypes.get(part[0]) != null && mtypes.get(part[0]).compareTo("Boolean") == 0) {
+						sql.append("a." + part[0].replaceAll("pk_", "pk.") + part[1] + " ?" + (filtersCounter + 1));
 						lParameters.add(Converter.convertObject(part[2], Boolean.class));
-					}else{
-						sql.append("a." + part[0].replaceAll("pk_", "pk.")
-								+ part[1] + " ?" + (filtersCounter + 1));
+					} else {
+						sql.append("a." + part[0].replaceAll("pk_", "pk.") + part[1] + " ?" + (filtersCounter + 1));
 						lParameters.add(part[2]);
 					}
 				}
@@ -135,19 +128,14 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 				sql.append(" and ");
 			}
 			sql.append("a.COMPANY_ID = ?" + (filtersCounter + 1));
-			lParameters.add(LocalParameter.get(ParameterEnum.COMPANY,
-					String.class));
+			lParameters.add(LocalParameter.get(ParameterEnum.COMPANY, String.class));
 			filtersCounter++;
 		}
 
 		// Ordering
 		if (data.getOrderBy() != null) {
-			sql.append(" order by "
-					+ "a."
-					+ toSqlName(data.getOrderBy().replaceAll("pk_", ""))
-							.replaceAll("pk_", ""));
-			if (data.getOrderDir() != null
-					&& data.getOrderDir().compareTo(ORDER_DIR_DESC) == 0) {
+			sql.append(" order by " + "a." + toSqlName(data.getOrderBy().replaceAll("pk_", "")).replaceAll("pk_", ""));
+			if (data.getOrderDir() != null && data.getOrderDir().compareTo(ORDER_DIR_DESC) == 0) {
 				sql.append(" DESC");
 			}
 		}
@@ -165,12 +153,12 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 
 		// Get result
 		List results = query.getResultList();
-		
+
 		// Pagination:
 		int totalLength = results.size();
 
 		int offset = 0;
-		if (data.getOffset()!= null) {
+		if (data.getOffset() != null) {
 			offset = data.getOffset();
 		}
 
@@ -183,11 +171,11 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 			limit = Math.min(offset + limit, totalLength);
 		}
 
-		//-----------------------------------------------------------------------
+		// -----------------------------------------------------------------------
 		// Fill items
-		//-----------------------------------------------------------------------
+		// -----------------------------------------------------------------------
 		int itemCounter = 1;
-		
+
 		for (int i = offset; i < limit; i++) {
 			Item item = new Item(itemCounter++);
 
@@ -197,11 +185,11 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 			for (String qryField : queryFields) {
 				Object resField = result[fieldCounter++];
 				Field field = new Field(qryField);
-				
-				if(mtypes.get(qryField)!=null){
-					if(mtypes.get(qryField).compareTo("Boolean")==0){
+
+				if (mtypes.get(qryField) != null) {
+					if (mtypes.get(qryField).compareTo("Boolean") == 0) {
 						field.setValue("((Boolean))" + parseBoolean(resField.toString()));
-					}else{
+					} else {
 						field.setValue(resField.toString());
 					}
 				}
@@ -218,29 +206,28 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 
 	private Map<String, String> getMapTypeFields(String id) {
 		String SQL_FIELDS = "Select f from EntityField f where f.pk.tableId=:tableId";
-		
-		TypedQuery<EntityField> queryFields = 
-				JPManager.getEntityManager().createQuery(SQL_FIELDS,EntityField.class);
+
+		TypedQuery<EntityField> queryFields = JPManager.getEntityManager().createQuery(SQL_FIELDS, EntityField.class);
 		queryFields.setParameter("tableId", toSqlName(id));
 		List<EntityField> result = queryFields.getResultList();
-		
-		Map<String,String> mtypefields = new HashMap<String, String>();
+
+		Map<String, String> mtypefields = new HashMap<String, String>();
 		for (EntityField entityField : result) {
 			String key = new String();
-			if (entityField.getPrimaryKey()){
+			if (entityField.getPrimaryKey()) {
 				key = "pk_";
 			}
 			key = key + toLowerCamelCase(entityField.getPk().getFieldId());
 			mtypefields.put(key, entityField.getDataTypeId());
 		}
-		
+
 		return mtypefields;
 	}
 
-	private void createInnerSelect(StringBuilder sql, List<String> queryFields,
-			int fieldCounter, String strField) throws Exception {
-		
-		String[] props =  strField.split(":");
+	private void createInnerSelect(StringBuilder sql, List<String> queryFields, int fieldCounter, String strField)
+			throws Exception {
+
+		String[] props = strField.split(":");
 		String id = props[1];
 		String entity = props[2];
 		String field = props[3];
@@ -248,17 +235,17 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 		for (int i = 4; i < props.length; i++) {
 			lfilter.add(props[i]);
 		}
-		
-		if(fieldCounter>0){
+
+		if (fieldCounter > 0) {
 			sql.append(", ");
 		}
 		fieldCounter++;
-		
+
 		sql.append("(Select ");
-		
+
 		queryFields.add(id);
 		sql.append("b." + toSqlName(field.replaceAll("pk_", "")));
-		
+
 		// From
 		sql.append(" from " + toSqlName(entity) + " b");
 
@@ -289,10 +276,10 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 			sql.append("b.COMPANY_ID = '" + LocalParameter.get(ParameterEnum.COMPANY, String.class) + "' ");
 			filtersCounter++;
 		}
-		
+
 		sql.append(")");
 	}
-	
+
 	public String toSqlName(String name) {
 		String sqlName = "";
 
@@ -321,7 +308,7 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 		}
 		return sb.toString();
 	}
-	
+
 	private Boolean parseBoolean(String input) {
 		Boolean result = false;
 		if (input.compareToIgnoreCase("true") == 0 || input.compareTo("1") == 0) {
@@ -329,6 +316,5 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 		}
 		return result;
 	}
-
 
 }

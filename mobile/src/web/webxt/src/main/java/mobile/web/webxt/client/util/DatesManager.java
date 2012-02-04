@@ -8,6 +8,8 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 
 public class DatesManager {
+	
+	public static final Date DEFAULT_EXPIRED_DATE = stringToDate("9999-12-31", Format.DATE); 
 
 	public static String dateToString(Date date, String format) {
 		DateTimeFormat dateFormat = DateTimeFormat.getFormat(format);

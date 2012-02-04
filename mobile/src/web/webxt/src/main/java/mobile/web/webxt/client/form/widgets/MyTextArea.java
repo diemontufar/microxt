@@ -1,25 +1,17 @@
 package mobile.web.webxt.client.form.widgets;
 
 
+import mobile.web.webxt.client.data.form.DataSource;
+
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.google.gwt.user.client.Element;
 
 public class MyTextArea extends TextArea implements PersistentField{
 
-	String fieldInfo;
-	
-	@Override
-	public void setMaxLength(int m) {
-		super.setMaxLength(m);
-		if (rendered) {
-			getInputEl().setElementAttribute("maxLength", m);
-		}
-	}
+	DataSource dataSource;
 
-	@Override
-	protected void onRender(Element target, int index) {
-		super.onRender(target, index);
-		getInputEl().setElementAttribute("maxLength", getMaxLength());
+	public MyTextArea(String label){
+		setFieldLabel(label);
 	}
 	
 	public MyTextArea(int width, int maxLength){
@@ -33,27 +25,27 @@ public class MyTextArea extends TextArea implements PersistentField{
 		this.setMaxLength(maxLength);
 	}
 
-	public MyTextArea(String fieldLabel, String fieldInfo, int width, int maxLength){
-		this.setPersistentInfo(fieldInfo);
-		this.setFieldLabel(fieldLabel);
-		this.setWidth(width);
-		this.setMaxLength(maxLength);
+	@Override
+	public void setMaxLength(int m) {
+		super.setMaxLength(m);
+		if (rendered) {
+			getInputEl().setElementAttribute("maxLength", m);
+		}
 	}
 
-	public MyTextArea(String fieldLabel, String fieldInfo, int width, int height, int maxLength){
-		this.setPersistentInfo(fieldInfo);
-		this.setFieldLabel(fieldLabel);
-		this.setWidth(width);
-		this.setHeight(height);
-		this.setMaxLength(maxLength);
+	@Override
+	protected void onRender(Element target, int index) {
+		super.onRender(target, index);
+		getInputEl().setElementAttribute("maxLength", getMaxLength());
 	}
 
-	public String getPersistentInfo() {
-		return fieldInfo;
+	public DataSource getDataSource() {
+		return dataSource;
 	}
 
-	public void setPersistentInfo(String field) {
-		this.fieldInfo=field;
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
+
 
 }

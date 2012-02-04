@@ -1,10 +1,13 @@
 package mobile.web.webxt.client.form.widgetsgrid;
 
+import java.util.Map;
+
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.store.Record;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
+import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.EditorSupport;
 
 public class MyEditorSupport extends EditorSupport<ModelData> {
@@ -31,36 +34,29 @@ public class MyEditorSupport extends EditorSupport<ModelData> {
 		ge.setRowIndex(ed.row);
 		ge.setColIndex(ed.col);
 
-		System.out.println("EditorSuppor.value");
-		System.out.println(value);
 		if (grid.fireEvent(Events.ValidateEdit, ge)) {
-			if ((ge.getValue() instanceof String)
-					&& ge.getValue().toString().indexOf(";") > 0) {
-				String[] associations = ge.getValue().toString().split(";");
-
-				boolean isFirst = true;
-				for (String assoc : associations) {
-					if (isFirst) {
-						r.setValid(ge.getProperty(), ed.getField()
-								.isValid(true));
-						r.set(ge.getProperty(), assoc);
-						isFirst = false;
-						continue;
+			ColumnConfig cc = cm.getColumn(ed.col);
+			if(cc instanceof ComboColumn){
+				ComboColumn ccC = (ComboColumn) cc;
+				r.setValid(ge.getProperty(), ed.getField().isValid(true));
+				r.set(ge.getProperty(), ((ModelData)value).get(ccC.getComboBox().getDisplayField()));
+				
+				// Dependencies
+				if(ccC.getMlinks() != null){
+					Map<String, ColumnConfig> map= ccC.getMlinks();
+					for (String key : map.keySet()) {
+						ColumnConfig depCol = map.get(key);
+						r.setValid(depCol.getId(), true);
+						r.set(depCol.getId(), ((ModelData)value).get(key));
 					}
-					String[] fields = assoc.split(":");
-					r.setValid(fields[0], true);
-					r.set(fields[0], fields[1]);
 				}
-
-			} else {
+			}else{
 				r.setValid(ge.getProperty(), ed.getField().isValid(true));
 				r.set(ge.getProperty(), ge.getValue());
 			}
-
 			grid.fireEvent(Events.AfterEdit, ge);
 		}
 
 		grid.getView().focusCell(ed.row, ed.col, false);
-
 	}
 }

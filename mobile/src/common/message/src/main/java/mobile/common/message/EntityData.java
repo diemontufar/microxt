@@ -5,6 +5,7 @@ import java.util.List;
 public class EntityData extends Data {
 
 	public final static String PROCESS_TYPE = "_type";
+	public final static String ALIAS = "_alias";
 	public final static String QRY_FIELDS = "_qry_fields";
 	public final static String OFFSET_PAGE = "_offset_page";
 	public final static String LIMIT_PAGE = "_limit_page";
@@ -93,6 +94,14 @@ public class EntityData extends Data {
 
 	public String getProcessType() {
 		return getFieldValue(EntityData.PROCESS_TYPE);
+	}
+
+	public void setAlias(String alias) {
+		setFieldValue(EntityData.ALIAS, alias);
+	}
+
+	public String getAlias() {
+		return getFieldValue(EntityData.ALIAS);
 	}
 
 	public void setQueryFields(String queryFields) {

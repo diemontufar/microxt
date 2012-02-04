@@ -3,58 +3,71 @@ package mobile.web.webxt.client.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import mobile.common.tools.ProcessType;
+import mobile.web.webxt.client.data.form.DataSource;
+import mobile.web.webxt.client.data.form.Reference;
+
 import com.extjs.gxt.ui.client.data.BaseFilterPagingLoadConfig;
+import com.extjs.gxt.ui.client.data.FilterConfig;
 
 public class MyProcessConfig extends BaseFilterPagingLoadConfig {
 
 	private static final long serialVersionUID = 1L;
 
-	public enum ProcessType {
-		QUERY("QRY"), 
-		MAINTENANCE("MNT");
-		
-		private final String processType;
-		
-		private ProcessType(String processType) {
-			this.processType = processType;
-		}
-		
-		public String getProcessType(){
-			return processType;
-		}
-		
-	}
-
-	private final String process;
+	private String process;
 
 	private ProcessType processType;
 
-	private final String entity;
+	private Reference reference;
 
-	private final List<String> lFields;
+	private List<DataSource> lDataSource;
 
-	public MyProcessConfig(String process, String entity, List<String> lFields) {
+	public MyProcessConfig(String process, Reference reference, List<DataSource> lFields) {
 		this.process = process;
-		this.entity = entity;
-		this.lFields = lFields;
+		this.reference = reference;
+		this.lDataSource = lFields;
 	}
-	
+
 	public MyProcessConfig(String process) {
 		this.process = process;
-		this.entity = "";
-		this.lFields = new ArrayList<String>();
+		this.lDataSource = new ArrayList<DataSource>();
+	}
+	
+	public void addFilter(FilterConfig filter){
+    	List<FilterConfig> filters = getFilterConfigs(); 
+    	if(filters==null){
+    		filters  = new ArrayList<FilterConfig>();
+    	}
+    	
+    	boolean exists = false;
+    	for (FilterConfig fil : filters) {
+			if (fil.getField().compareTo(filter.getField())==0){
+				exists = true;
+				fil.setValue(filter.getValue());
+			}
+		}
+    	
+    	if(!exists){
+        	filters.add(filter);
+    	}
+    	
+    	setFilterConfigs(filters);
 	}
 
 	public String getProcess() {
 		return process;
 	}
 
-	public String getEntity() {
-		return entity;
+	public void setProcess(String process) {
+		this.process = process;
 	}
 
-	public List<String> getlFields() {
-		return lFields;
+	public Reference getReference() {
+		return reference;
+	}
+
+	public void setReference(Reference reference) {
+		this.reference = reference;
 	}
 
 	public ProcessType getProcessType() {
@@ -65,4 +78,11 @@ public class MyProcessConfig extends BaseFilterPagingLoadConfig {
 		this.processType = processType;
 	}
 
+	public List<DataSource> getlDataSource() {
+		return lDataSource;
+	}
+
+	public void setlDataSource(List<DataSource> lDataSource) {
+		this.lDataSource = lDataSource;
+	}
 }

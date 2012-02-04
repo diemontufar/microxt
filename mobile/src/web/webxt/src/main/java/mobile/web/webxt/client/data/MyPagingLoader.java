@@ -33,6 +33,7 @@ public class MyPagingLoader extends
 	}
 
 	protected void onLoadSuccess(Object loadConfig, PagingLoadResult<ModelData> result) {
+		//System.out.println("::OnLoadSuccess " + result.getData().size());
 		super.onLoadSuccess(loadConfig, result);
 	};
 

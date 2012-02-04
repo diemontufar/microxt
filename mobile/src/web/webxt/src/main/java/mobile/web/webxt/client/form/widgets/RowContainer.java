@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class RowContainer extends LayoutContainer {
 
-	private final int NORMAL_ROW_HEIGHT = 32;
+	private final int NORMAL_ROW_HEIGHT = 27;
 	
 	private HBoxLayoutData hdata = new HBoxLayoutData(new Margins(0, 10, 0, 0)); 
 	

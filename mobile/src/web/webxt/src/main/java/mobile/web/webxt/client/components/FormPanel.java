@@ -18,11 +18,10 @@ public class FormPanel extends ContentPanel {
 		setHeaderVisible(false);
 		setBorders(false);
 		setLayout(new FitLayout());
-		if(!MobileConfig.FORM_DEVELOPMENT){
-			add(tabPanel);			
-		}else{
+		if (!MobileConfig.FORM_DEVELOPMENT) {
+			add(tabPanel);
+		} else {
 			// Add here the tested form
-
 			add(new C301());
 		}
 
@@ -30,7 +29,7 @@ public class FormPanel extends ContentPanel {
 
 	public void addTab(TabItem tabItem) {
 		tabItem.setLayout(new FitLayout());
-		//tabItem.setIcon(Resources.ICONS.rss());
+		// tabItem.setIcon(Resources.ICONS.rss());
 		tabItem.setIcon(Resources.ICONS.form());
 		tabItem.setScrollMode(Scroll.AUTO);
 		String tabId = tabItem.getId();

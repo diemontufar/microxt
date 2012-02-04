@@ -3,13 +3,16 @@ package mobile.web.webxt.client.devform;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.web.webxt.client.data.MyHttpProxy;
-import mobile.web.webxt.client.data.MyListStore;
-import mobile.web.webxt.client.data.MyPagingLoader;
-import mobile.web.webxt.client.data.MyProcessConfig;
+import mobile.web.webxt.client.data.form.DataSource;
+import mobile.web.webxt.client.data.form.DataSourceType;
+import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.form.EntityContentPanel;
+import mobile.web.webxt.client.form.MyFormPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.widgets.ComboForm;
+import mobile.web.webxt.client.form.widgets.InputBox;
+import mobile.web.webxt.client.form.widgets.MyLabel;
+import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.EntityEditorGrid;
 import mobile.web.webxt.client.form.widgetsgrid.ExpireColumnConfig;
@@ -18,128 +21,126 @@ import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
 
-import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
-import com.extjs.gxt.ui.client.data.FilterConfig;
-import com.extjs.gxt.ui.client.data.LoadEvent;
-import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.LoadListener;
-import com.extjs.gxt.ui.client.widget.Info;
-import com.extjs.gxt.ui.client.widget.form.FormPanel;
+import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
+import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.google.gwt.user.client.Element;
 
 public class A104 extends MyGeneralForm {
 
-	private final String PROCESS = "A104";
-	private final String ENTITY = "Module";
+	private final static String PROCESS = "A104";
+	private final static String ENTITY = "Module";
 	private final Integer PAGE_SIZE = 5;
+
+	public A104() {
+		super(PROCESS, true);
+		setReference(ENTITY);
+	}
 
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-	      
-	    // Configuration
+
+		// Constants
+		final int FORM_WIDTH = 430;
+		final int LABEL_WIDTH = 80;
+
+		// Super Form
+		final MyFormPanel form = new MyFormPanel(this, "Módulos", FORM_WIDTH);
+		form.setLayout(new FlowLayout());
+		form.setButtonAlign(HorizontalAlignment.CENTER);
+
+		// Header
+		// Filter: subsystem
+		RowContainer row = new RowContainer();
+		row.setStyleAttribute("margin-bottom", "10px");
+
+		MyLabel label = new MyLabel("Subsistema:", LABEL_WIDTH);
+		row.add(label);
+
+		// Subsystem combo
+		final ComboForm subsystemId = new ComboForm(60);
+		subsystemId.setDataSource(new DataSource("pk_subsystemId", DataSourceType.CRITERION));
+
+		Reference refSolicitude = new Reference("sub", "Subsystem");
+		final ArrayColumnData solCdata = new ArrayColumnData();
+		solCdata.add(new MyColumnData("sub", "pk_subsystemId", "Id", 40));
+		solCdata.add(new MyColumnData("sub", "name", "Nombre", 150));
+		subsystemId.setQueryData(refSolicitude, solCdata);
+		subsystemId.setDisplayField("pk_subsystemId");
+
+		// Subsystem description
+		final InputBox subsystemName = new InputBox(150);
+		subsystemName.setDataSource(new DataSource("Subsystem", "name", DataSourceType.CRITERION_DESCRIPTION));
+		subsystemName.setReadOnly(true);
+
+		subsystemId.linkWithField(subsystemName, "name");
+
+		row.add(subsystemId);
+		row.add(subsystemName);
+
+		form.add(row);
+
+		// Main grid
+		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
 		cdata.add(new MyColumnData("pk_moduleId", "Mod", 70, 2, false));
 		cdata.add(new MyColumnData("name", "Nombre", 150, 40, false));
-
-		MyProcessConfig config = new MyProcessConfig(PROCESS, ENTITY, cdata.getIdFields());
-		
-		// Proxy - loader - store
-		MyHttpProxy proxy = new MyHttpProxy();
-		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
-		final MyListStore store = new MyListStore(loader);
+		getConfig().setlDataSource(cdata.getDataSources());
 
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-
 		configs.add(new NormalColumn(cdata.get(0)));
 		configs.add(new NormalColumn(cdata.get(1)));
 		configs.add(new ExpireColumnConfig());
-		
 		ColumnModel cm = new ColumnModel(configs);
-		
+
 		// Content panel
 		EntityContentPanel gridPanel = new EntityContentPanel(400, 230);
-		
+
 		// Grid
-		final EntityEditorGrid grid = new EntityEditorGrid(store, cm);
+		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
 		grid.setAutoExpandColumn("name");
-		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
-			public void handleEvent(BaseEvent be) {
-				//store.sort(cdata.getIdFields().get(0), SortDir.ASC);
+		grid.setBorders(true);
+		grid.addDependency(subsystemId);
+		gridPanel.add(grid);
+
+		// Top tool bar
+		GridToolBar toolBar = new GridToolBar(grid, getStore());
+		gridPanel.setTopComponent(toolBar);
+
+		// Paging tool bar
+		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(grid, PAGE_SIZE);
+		gridPanel.setBottomComponent(pagingToolBar);
+
+		form.add(gridPanel);
+
+		subsystemId.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+				if (((ComboForm) se.getSource()).isSomeSelected()) {
+					pagingToolBar.refresh();
+				}else{
+					grid.getStore().removeAll();
+				}
 			}
 		});
-		gridPanel.add(grid);
-		
-		// Top tool bar
-		GridToolBar toolBar = new GridToolBar(grid, store);
-		gridPanel.setTopComponent(toolBar);
-		
-		// Paging tool bar
-		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(PAGE_SIZE,loader);
-		gridPanel.setBottomComponent(pagingToolBar);
-		
-		// Father panel
-		EntityContentPanel panel = new EntityContentPanel("Modulos", 400, 300);
-		
-		// Subsystem combo
-	    final ComboForm combo = new ComboForm("Subsistema", "name");
-	    final ArrayColumnData combodata = new ArrayColumnData();
-		combodata.add(new MyColumnData("pk_subsystemId", "Sub", 70));
-		combodata.add(new MyColumnData("name", "Nombre", 150));
-	    combo.setRqData("Subsystem", combodata);
-	    
-	    FormPanel headerPanel = new FormPanel();
-	    headerPanel.setPadding(10);  
-	    headerPanel.setHeaderVisible(false);  
-	    headerPanel.setBodyBorder(true);  
-	    headerPanel.setFieldWidth(150);
-	    headerPanel.add(combo);
-	    
-	    LoadListener filterListener = new LoadListener() {
-	        public void loaderBeforeLoad(LoadEvent le) {
-	        	// Validate combo selected
-	        	if(combo.getValue()==null){
-	        		le.setCancelled(true);
-	        		Info.display("A104", "Debe seleccionar un Subsistema");
-	        	}
-	        	
-	        	MyProcessConfig config = le.getConfig();
-	        	String ffield = "pk_subsystemId";
-	        	
-	        	List<FilterConfig> filters = config.getFilterConfigs(); 
-	        	if(filters==null){
-	        		filters  = new ArrayList<FilterConfig>();
-	        	}
-	        	
-	        	boolean existe = false;
-	        	for (FilterConfig fil : filters) {
-					if (fil.getField().compareTo(ffield)==0){
-						existe = true;
-						fil.setValue(combo.getValue().get(ffield));
-					}
-				}
-	        	
-	        	if(!existe){
-	        		FilterConfig filter = new BaseStringFilterConfig();
-		        	filter.setField(ffield);
-		        	filter.setComparison("=");
-		        	filter.setValue(combo.getValue().get(ffield));
-		        	filters.add(filter);
-	        	}
-	        	
-	        	config.setFilterConfigs(filters);
-	        }
-	    };
-	        
-	    loader.addListener(MyPagingLoader.BeforeLoad, filterListener);
-	    
-	    panel.setTopComponent(headerPanel);
-		panel.add(gridPanel);
-		add(panel);
+
+		form.addButton(new Button("Limpiar", new SelectionListener<ButtonEvent>() {
+			@Override
+			public void componentSelected(ButtonEvent ce) {
+				form.clear();
+				grid.getStore().removeAll();
+			}
+		}));
+
+		add(form);
 	}
 }

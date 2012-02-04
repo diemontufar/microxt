@@ -1,46 +1,53 @@
 package mobile.web.webxt.client.form.widgetsgrid;
 
-import mobile.web.webxt.client.data.MyPagingLoader;
+import java.util.Map;
 
+import mobile.web.webxt.client.data.MyPagingLoader;
+import mobile.web.webxt.client.data.MyProcessConfig;
+import mobile.web.webxt.client.data.form.DataSource;
+import mobile.web.webxt.client.data.form.DataSourceType;
+
+import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
+import com.extjs.gxt.ui.client.data.FilterConfig;
+import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.toolbar.PagingToolBar;
 
 public class GridPagingToolBar extends PagingToolBar {
-	
-	private boolean waitingFilter = false;
-	
-	private String message;
-	
-	public GridPagingToolBar(int pageSize,
-			MyPagingLoader loader) {
+
+	private EntityEditorGrid grid;
+
+	public GridPagingToolBar(EntityEditorGrid grid, int pageSize) {
 		super(pageSize);
-		this.bind(loader);
+		this.grid = grid;
+		this.bind((PagingLoader<?>) grid.getStore().getLoader());
 		this.setReuseConfig(false);
 	}
-	
+
 	@Override
 	protected void doLoadRequest(int offset, int limit) {
-		if(!waitingFilter){
-			super.doLoadRequest(offset, limit);
-		}else{
-			Info.display("Requerido", message);
+		if (grid.validateDependencies()) {
+			try {
+				MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) grid.getStore().getLoader()).getConfig();
+				Map<DataSource, String> map = grid.getDsDependencies();
+				if(map != null){
+					for (DataSource ds : map.keySet()) {
+						String value = map.get(ds);
+						if (ds.getType() == DataSourceType.CRITERION && value != null) {
+							FilterConfig filter = new BaseStringFilterConfig();
+							filter.setField(ds.getField());
+							filter.setComparison(ds.getComparator());
+							filter.setValue(value);
+							config.addFilter(filter);
+						}
+					}
+				}
+				super.doLoadRequest(offset, limit);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			Info.display("Campos requeridos", "Existe campos requeridos que no han sido ingresados");
 		}
 	}
-
-	public boolean isWaitingFilter() {
-		return waitingFilter;
-	}
-
-	public void setWaitingFilter(boolean waitingFilter) {
-		this.waitingFilter = waitingFilter;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
 }

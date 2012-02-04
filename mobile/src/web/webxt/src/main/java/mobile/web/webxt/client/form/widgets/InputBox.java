@@ -1,6 +1,7 @@
 package mobile.web.webxt.client.form.widgets;
 
 
+import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.validations.ValidationTypes;
 import mobile.web.webxt.client.form.validations.ValidationTypesValidator;
@@ -13,31 +14,9 @@ import com.google.gwt.user.client.Element;
 
 public class InputBox extends TextField<String> implements PersistentField {
 
-	String fieldInfo;
+	DataSource dataSource;
 	Validate type;
 	boolean toolTip=false;
-	
-	@Override
-	public void setMaxLength(int m) {
-		super.setMaxLength(m);
-		if (rendered) {
-			getInputEl().setElementAttribute("maxLength", m);
-		}
-	}
-
-	@Override
-	protected void onRender(Element target, int index) {
-		super.onRender(target, index);
-		getInputEl().setElementAttribute("maxLength", getMaxLength());
-		
-		this.addListener(Events.OnMouseOver, new Listener<BaseEvent>() {
-		    public void handleEvent(BaseEvent be) {
-		    	if(toolTip){
-		    		setToolTip(getValue());
-		    	}
-		    }
-		});
-	}
 	
 	public InputBox(){
 		super();
@@ -60,9 +39,8 @@ public class InputBox extends TextField<String> implements PersistentField {
 		createValidator();
 	}
 
-	public InputBox(String lbl, String fieldInfo, int width,int maxLenght, Validate type) {
-		
-		this.setPersistentInfo(fieldInfo);
+	public InputBox(String lbl, String field, int width,int maxLenght, Validate type) {
+		setDataSource(new DataSource(field));
 		this.setFieldLabel(lbl.trim());
 		this.setWidth(width);
 		this.setMaxLength(maxLenght);
@@ -96,14 +74,36 @@ public class InputBox extends TextField<String> implements PersistentField {
 		
 	}
 
-	public String getPersistentInfo() {
-		return fieldInfo;
+	@Override
+	public void setMaxLength(int m) {
+		super.setMaxLength(m);
+		if (rendered) {
+			getInputEl().setElementAttribute("maxLength", m);
+		}
 	}
 
-	public void setPersistentInfo(String field) {
-		this.fieldInfo=field;
+	@Override
+	protected void onRender(Element target, int index) {
+		super.onRender(target, index);
+		getInputEl().setElementAttribute("maxLength", getMaxLength());
+		
+		this.addListener(Events.OnMouseOver, new Listener<BaseEvent>() {
+		    public void handleEvent(BaseEvent be) {
+		    	if(toolTip){
+		    		setToolTip(getValue());
+		    	}
+		    }
+		});
 	}
-	
+
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
 	public boolean getToolTipValue() {
 		return toolTip;
 	}

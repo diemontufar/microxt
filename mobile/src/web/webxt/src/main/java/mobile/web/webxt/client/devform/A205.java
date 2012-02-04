@@ -35,12 +35,6 @@ public class A205 extends MyGeneralForm {
 				FORM_WIDTH);
 		form.setLayout(new FormLayout());
 				
-		// Fields
-		InputBox isNew = new InputBox("", "UserAccess:_isNew:1", 50,5,Validate.TEXT);
-		isNew.setMinLength(1);
-		isNew.setValue("1");
-		isNew.setVisible(false);
-
 		user = new InputBox("Usuario", "UserAccess:pk_userId:1", 50,10, Validate.TEXT);
 		newPassword = new InputBox("Contraseña nueva", "UserAccess:userKey:1",50,20, Validate.PASSWORD);
 		retypePassword = new InputBox("Repita Contraseña", "", 50,20,Validate.PASSWORD);
@@ -49,7 +43,6 @@ public class A205 extends MyGeneralForm {
 		lastChange.setValue("2011-10-11");
 		lastChange.setVisible(false);
 
-		form.add(isNew);
 		form.add(user);
 		form.add(newPassword);
 		form.add(retypePassword);
