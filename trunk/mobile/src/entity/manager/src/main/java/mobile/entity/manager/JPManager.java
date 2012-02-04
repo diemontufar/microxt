@@ -109,20 +109,30 @@ public class JPManager {
 				query.setParameter("companyId", ALL_COMPANY);
 				query.setParameter("tableId",toSqlName(entity.getClass().getSimpleName()));
 				query.setHint(QueryHints.READ_ONLY, HintValues.TRUE);
-				EntityField fieldSeq = query.getSingleResult();
-				String seqName = fieldSeq.getSequentialId();
-				
-				// Get sequential number
-				SequentialPk seqPk = new SequentialPk(seqName);
-				Sequential seq = find(Sequential.class, seqPk);
-				if(seq == null){
-					throw new Exception("SEQUENCIAL NO DEFINIDO: " + seqName);
+	
+				// Find sequential name
+				EntityField fieldSeq = null;
+				try {
+					fieldSeq = query.getSingleResult();
+				} catch (Exception e) {
+					throw new Exception("SEQUENCIAL NO DEFINIDO PARA LA ENTIDAD: " + entity.getClass().getSimpleName());
 				}
-				
-				// Set sequential number and increment it
-				key.setId(seq.getSequentialValue());
-				seq.setSequentialValue(seq.getSequentialValue()+1);
-				getEntityManager().merge(seq);
+
+				if(fieldSeq != null){
+					String seqName = fieldSeq.getSequentialId();
+					
+					// Get sequential number
+					SequentialPk seqPk = new SequentialPk(seqName);
+					Sequential seq = find(Sequential.class, seqPk);
+					if(seq == null){
+						throw new Exception("SEQUENCIAL NO DEFINIDO: " + seqName);
+					}
+					
+					// Set sequential number and increment it
+					key.setId(seq.getSequentialValue());
+					seq.setSequentialValue(seq.getSequentialValue()+1);
+					getEntityManager().merge(seq);
+				}
 			}
 		}
 	}

@@ -92,17 +92,18 @@ public class ProcessorTest {
 	@Test
 	public void testQuery() {
 		try {
-			//String sql = "Select a from Recommendation a where a.pk.solicitudeId = ?1";
-			String sql = "Select a from Recommendation a where a.pk.expired = ?1 and a.pk.solicitudeId = ?2";
+			String sql = "Select a from Recommendation a where a.pk.solicitudeId = ?1";
+			//String sql = "Select a from Recommendation a where a.pk.expired = ?1 and a.pk.solicitudeId = ?2";
 			//String sql = "Select * from RECOMMENDATION a where a.SOLICITUDE_ID = ?1";
+			
+			//String sql = "Select a from Solicitude a where a.pk.solicitudeId = ?1";
 			
 			JPManager.createEntityManager();
 
 			Query query = JPManager.getEntityManager().createQuery(sql);
 			//Query query = JPManager.getEntityManager().createNativeQuery(sql);
 			//query.setHint(QueryHints.READ_ONLY, HintValues.TRUE);
-			query.setParameter(1,Timer.getExpiredTime());
-			query.setParameter(2,new Long(2));
+			query.setParameter(1,new Integer(100));
 			
 
 			List results = query.getResultList();

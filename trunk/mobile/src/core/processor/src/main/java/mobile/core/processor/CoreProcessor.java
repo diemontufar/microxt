@@ -151,17 +151,23 @@ public class CoreProcessor {
 			DatabaseException dbe = (DatabaseException) e.getCause();
 			String desc = "CÓDIGO: " + dbe.getDatabaseErrorCode() + "<br/>";
 			desc = desc + dbe.getMessage();
-			desc = desc.replaceAll("(\t|\r)", ">");
-			desc = desc.replaceAll("\n", "<br/>");
+			desc = replaceWrongCharacters(desc);
 			msg.getResponse().setMessage(desc);
 		} else if (e.getMessage() != null) {
-			String errorMessage = e.getMessage().replaceAll("(\t|\r)", ">");
-			errorMessage = errorMessage.replaceAll("\n", "<br/>");
+			String errorMessage = e.getMessage();
+			errorMessage = replaceWrongCharacters(errorMessage);
 			msg.getResponse().setMessage(errorMessage);
 		} else if (e.getCause() != null) {
 			msg.getResponse().setMessage(e.getCause().toString());
 		} else {
 			msg.getResponse().setMessage(stackToString(e));
 		}
+	}
+	
+	private String replaceWrongCharacters(String message){
+		String out = message.replaceAll("\t", "  ");
+		out = out.replaceAll("(\r|\n)", "<br/>");
+		out = out.replaceAll("\"", "'");
+		return out;
 	}
 }

@@ -18,20 +18,20 @@ public class RecommendationId extends AbstractEntityId implements GeneralEntityI
 	 */
 	@Id
 	@Column(name = "SOLICITUDE_ID", nullable = false)
-	private String solicitudeId;
+	private Integer solicitudeId;
 
 	public RecommendationId() {
 	}
 
-	public RecommendationId(String solicitudeId) {
+	public RecommendationId(Integer solicitudeId) {
 		this.solicitudeId = solicitudeId;
 	}
 
-	public String getSolicitudeId() {
+	public Integer getSolicitudeId() {
 		return this.solicitudeId;
 	}
 
-	public void setSolicitudeId(String solicitudeId) {
+	public void setSolicitudeId(Integer solicitudeId) {
 		this.solicitudeId = solicitudeId;
 	}
 
@@ -42,7 +42,7 @@ public class RecommendationId extends AbstractEntityId implements GeneralEntityI
 
 	@Override
 	public void setPk(Object pk) {
-		this.solicitudeId = (String) pk;
+		this.solicitudeId = (Integer) pk;
 	}
 
 	@Override

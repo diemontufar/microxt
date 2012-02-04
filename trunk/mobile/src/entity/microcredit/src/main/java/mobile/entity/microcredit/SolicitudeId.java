@@ -14,7 +14,7 @@ public class SolicitudeId extends AbstractEntityId implements GeneralEntityId {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Solicitude id
+	 * Name
 	 */
 	@Id
 	@Column(name = "SOLICITUDE_ID", nullable = false)

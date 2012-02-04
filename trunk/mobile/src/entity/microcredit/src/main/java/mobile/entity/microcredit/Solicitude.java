@@ -69,7 +69,7 @@ public class Solicitude extends AbstractHistoricalLocking implements Multicompan
 	/**
 	 * Expiration date
 	 */
-	@Column(name = "EXPIRATION_DATE", nullable = false)
+	@Column(name = "EXPIRATION_DATE", nullable = true)
 	private Date expirationDate;
 
 	/**
@@ -139,13 +139,12 @@ public class Solicitude extends AbstractHistoricalLocking implements Multicompan
 		this.pk = pk;
 	}
 
-	public Solicitude(SolicitudePk pk, String assessor, Date solicitudeDate, Date expirationDate, String productId,
-			String statusId, Integer numberRenewal, BigDecimal amount, Long term, String quotaTypeId,
-			Integer numberQuotas, String paymentFrequencyId, String fundsDestinationId, String destinationDescription) {
+	public Solicitude(SolicitudePk pk, String assessor, Date solicitudeDate, String productId, String statusId,
+			Integer numberRenewal, BigDecimal amount, Long term, String quotaTypeId, Integer numberQuotas,
+			String paymentFrequencyId, String fundsDestinationId, String destinationDescription) {
 		this.pk = pk;
 		this.assessor = assessor;
 		this.solicitudeDate = solicitudeDate;
-		this.expirationDate = expirationDate;
 		this.productId = productId;
 		this.statusId = statusId;
 		this.numberRenewal = numberRenewal;

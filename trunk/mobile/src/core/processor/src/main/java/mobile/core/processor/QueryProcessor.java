@@ -133,8 +133,8 @@ public class QueryProcessor implements GeneralProcessor {
 					else
 						sql.append("a." + toSqlName(field.replaceAll("pk_", "")) + comparator + " ?"
 								+ (filtersCounter + 1));
-					//Object cValue = convertParameter(value, mtypes.get(field));
-					Object cValue = value;
+					Object cValue = convertParameter(value, mtypes.get(field));
+					//Object cValue = value;
 					lParameters.add(cValue);
 				}
 				filtersCounter++;
