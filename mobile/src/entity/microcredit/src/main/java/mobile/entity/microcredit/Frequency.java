@@ -7,7 +7,7 @@ import mobile.entity.schema.Multicompany;
 import mobile.entity.schema.Multilanguage;
 
 /**
- * The persistent class for the FREQUENCY database table. Frecuency of payments
+ * The persistent class for the FREQUENCY database table. Frequencies
  */
 @Entity
 @Table(name = "FREQUENCY")
