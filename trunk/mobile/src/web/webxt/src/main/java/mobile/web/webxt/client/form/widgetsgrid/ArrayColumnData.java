@@ -3,14 +3,15 @@ package mobile.web.webxt.client.form.widgetsgrid;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
+import mobile.web.webxt.client.data.form.DataSource;
+import mobile.web.webxt.client.data.form.DataSourceType;
 
 public class ArrayColumnData extends ArrayList<MyColumnData> {
+	private static final long serialVersionUID = 1L;
+	
 	public ArrayColumnData() {
 		super();
 	}
-
-	private static final long serialVersionUID = 1L;
 
 	public List<String> getIdFields() {
 		List<String> lIdFields = new ArrayList<String>();
@@ -20,23 +21,16 @@ public class ArrayColumnData extends ArrayList<MyColumnData> {
 		return lIdFields;
 	}
 
-	public List<String> getRqFields() {
-		List<String> lQryFields = new ArrayList<String>();
+	public List<DataSource> getDataSources() {
+		List<DataSource> lFields = new ArrayList<DataSource>();
 		for (int i = 0; i < this.size(); i++) {
 			MyColumnData column = get(i);
 
-			if (column.getColumnType() == null
-					|| (column.getColumnType() != null && column
-							.getColumnType() != ColumnType.DESC)) {
-				lQryFields.add(column.getId());
-			} else {
-				lQryFields.add("d:" + column.getId() + ":" 
-						+ column.getDescriptionEntity() + ":"
-						+ column.getDescriptionField() + ":"
-						+ column.getDescriptionCriterion());
+			if (column.getDataSource() != null && column.getDataSource().getType() != DataSourceType.NONE) {
+				lFields.add(column.getDataSource());
 			}
 		}
-		return lQryFields;
+		return lFields;
 	}
 
 }

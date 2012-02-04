@@ -1,18 +1,13 @@
 package mobile.web.webxt.client.form.widgetsgrid;
 
-import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
-import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.NumberType;
-
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
-import com.google.gwt.i18n.client.NumberFormat;
 
 public class NumericColumn extends ColumnConfig {
 	
 	public static final String INTEGER_FORMAT = "#,##0";
-	
 	public static final String DECIMAL_FORMAT = "#,##0.00";
 
 	public NumericColumn(MyColumnData columnData) {
@@ -27,25 +22,8 @@ public class NumericColumn extends ColumnConfig {
 		numberField.setMaxLength(columnData.getMaxLength());
 		setEditor(new CellEditor(numberField));  
 
-		if(columnData.getNumberType()!=null){
-			if(columnData.getNumberType() == NumberType.INTEGER){
-				setNumberFormat(NumberFormat.getFormat(INTEGER_FORMAT));
-			}else if(columnData.getNumberType() == NumberType.DECIMAL){
-				setNumberFormat(NumberFormat.getFormat(DECIMAL_FORMAT));
-			}
-		}else{
-			setNumberFormat(NumberFormat.getFormat(DECIMAL_FORMAT));
-		}
-		
-		
 		// Hidden
-		setHidden(columnData);
-	}
-
-	private void setHidden(MyColumnData columnData) {
-		if (columnData.getColumnType() == ColumnType.HIDDEN) {
-			setHidden(true);
-		}
+		setHidden(!columnData.isVisible());
 	}
 
 	public NumericColumn(String id, String header, int width, int maxLength,

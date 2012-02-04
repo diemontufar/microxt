@@ -3,6 +3,7 @@ package mobile.web.webxt.client.form.widgets;
 import java.util.Date;
 
 import mobile.common.tools.Format;
+import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.util.DatesManager;
 
 import com.extjs.gxt.ui.client.event.DatePickerEvent;
@@ -14,8 +15,42 @@ import com.google.gwt.user.client.Element;
 
 public class MyDateField extends DateField implements PersistentField {
 
-	String fieldInfo;
+	DataSource dataSource;
 
+	public MyDateField() {
+		super();
+	}
+	
+	public MyDateField(int width) {
+		this.setWidth(width);
+	}
+	
+	public MyDateField(int width, int maxLength) {
+		this.setWidth(width);
+		this.setMaxLength(maxLength);
+	}
+
+	public MyDateField(int width, int height, int maxLength) {
+		this.setWidth(width);
+		this.setHeight(height);
+		this.setMaxLength(maxLength);
+	}
+
+	public MyDateField(String fieldLabel, String field, int width, int maxLength) {
+		this.setDataSource(new DataSource(field));
+		this.setFieldLabel(fieldLabel);
+		this.setWidth(width);
+		this.setMaxLength(maxLength);
+	}
+
+	public MyDateField(String fieldLabel, String field, int width, int height, int maxLength) {
+		this.setDataSource(new DataSource(field));
+		this.setFieldLabel(fieldLabel);
+		this.setWidth(width);
+		this.setHeight(height);
+		this.setMaxLength(maxLength);
+	}
+	
 	@Override
 	public void setMaxLength(int m) {
 		super.setMaxLength(m);
@@ -44,38 +79,12 @@ public class MyDateField extends DateField implements PersistentField {
 		});
 	}
 
-	public MyDateField(int width, int maxLength) {
-		this.setWidth(width);
-		this.setMaxLength(maxLength);
+	public DataSource getDataSource() {
+		return dataSource;
 	}
 
-	public MyDateField(int width, int height, int maxLength) {
-		this.setWidth(width);
-		this.setHeight(height);
-		this.setMaxLength(maxLength);
-	}
-
-	public MyDateField(String fieldLabel, String fieldInfo, int width, int maxLength) {
-		this.setPersistentInfo(fieldInfo);
-		this.setFieldLabel(fieldLabel);
-		this.setWidth(width);
-		this.setMaxLength(maxLength);
-	}
-
-	public MyDateField(String fieldLabel, String fieldInfo, int width, int height, int maxLength) {
-		this.setPersistentInfo(fieldInfo);
-		this.setFieldLabel(fieldLabel);
-		this.setWidth(width);
-		this.setHeight(height);
-		this.setMaxLength(maxLength);
-	}
-
-	public String getPersistentInfo() {
-		return fieldInfo;
-	}
-
-	public void setPersistentInfo(String field) {
-		this.fieldInfo = field;
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 
 }

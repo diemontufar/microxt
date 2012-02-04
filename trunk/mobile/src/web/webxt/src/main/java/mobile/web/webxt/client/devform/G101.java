@@ -3,10 +3,7 @@ package mobile.web.webxt.client.devform;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.web.webxt.client.data.MyHttpProxy;
-import mobile.web.webxt.client.data.MyListStore;
-import mobile.web.webxt.client.data.MyPagingLoader;
-import mobile.web.webxt.client.data.MyProcessConfig;
+import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.form.EntityContentPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
@@ -30,51 +27,48 @@ import com.google.gwt.user.client.Element;
 
 public class G101 extends MyGeneralForm {
 
+	private final static String PROCESS = "G101";
+	private final static String ENTITY = "Parameter";
 	private final Integer PAGE_SIZE = 10;
-	
-	private final String process = "G101";
+
+	public G101() {
+		super(PROCESS, true);
+		setReference(ENTITY);
+	}
 
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
 
-		// Config
-		String entity = "Parameter";
-
+		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_parameterId", "Parametro", 100, 40,
-				false));
+		cdata.add(new MyColumnData("pk_parameterId", "Parametro", 100, 40, false));
 		cdata.add(new MyColumnData("subsystemId", "Sub", 40, 2, false));
 		cdata.add(new MyColumnData("dataTypeId", "Tipo", 70, 10, false));
 		cdata.add(new MyColumnData("parameterValue", "Valor", 100, 50, false));
-		cdata.add(new MyColumnData("description", "Descripcion", 200, 150,false));
-		cdata.add(new MyColumnData("description", "Descripcion", 200, 150,false));
+		cdata.add(new MyColumnData("description", "Descripcion", 200, 150, false));
+		cdata.add(new MyColumnData("description", "Descripcion", 200, 150, false));
+		getConfig().setlDataSource(cdata.getDataSources());
 
-		MyProcessConfig config = new MyProcessConfig(process, entity,
-				cdata.getIdFields());
-
-		// Proxy - loader - store
-		MyHttpProxy proxy = new MyHttpProxy();
-		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
-		final MyListStore store = new MyListStore(loader);
-		
 		// Column model
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
 		configs.add(new NormalColumn(cdata.get(0)));
 
 		ComboColumn comboCol = new ComboColumn(cdata.get(1));
+		Reference refSub = new Reference("sub", "Subsystem");
 		ArrayColumnData cdataCombo = new ArrayColumnData();
-		cdataCombo.add(new MyColumnData("pk_subsystemId", "Sub", 40));
-		cdataCombo.add(new MyColumnData("name", "Nombre", 150));
-		comboCol.setRqData("Subsystem", cdataCombo);
+		cdataCombo.add(new MyColumnData("sub", "pk_subsystemId", "Sub", 40));
+		cdataCombo.add(new MyColumnData("sub", "name", "Nombre", 150));
+		comboCol.setQueryData(refSub, cdataCombo);
 		configs.add(comboCol);
-		
+
 		comboCol = new ComboColumn(cdata.get(2));
+		Reference refDataType = new Reference("type", "DataType");
 		cdataCombo = new ArrayColumnData();
-		cdataCombo.add(new MyColumnData("dataTypeId", "Tipo", 70));
-		cdataCombo.add(new MyColumnData("description", "Descripcion", 200));
-		comboCol.setRqData("DataType", cdataCombo);
+		cdataCombo.add(new MyColumnData("type", "dataTypeId", "Tipo", 70));
+		cdataCombo.add(new MyColumnData("type", "description", "Descripcion", 200));
+		comboCol.setQueryData(refDataType, cdataCombo);
 		configs.add(comboCol);
 
 		configs.add(new NormalColumn(cdata.get(3)));
@@ -91,26 +85,25 @@ public class G101 extends MyGeneralForm {
 		filters.addFilter(subsystemFilter);
 
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Parámetros",600,340);
+		EntityContentPanel cp = new EntityContentPanel("Parámetros", 600, 340);
 
 		// Grid
-		final EntityEditorGrid grid = new EntityEditorGrid(store, cm);
+		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
 		grid.setAutoExpandColumn("description");
 		grid.addPlugin(filters);
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
-				store.sort(cdata.getIdFields().get(0), SortDir.ASC);
+				getStore().sort(cdata.getIdFields().get(0), SortDir.ASC);
 			}
 		});
 
 		// Top tool bar
-		GridToolBar toolBar = new GridToolBar(grid, store);
+		GridToolBar toolBar = new GridToolBar(grid, getStore());
 		cp.setTopComponent(toolBar);
 
 		// Paging tool bar
-		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(
-				PAGE_SIZE, loader);
+		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(grid, PAGE_SIZE);
 		cp.setBottomComponent(pagingToolBar);
 
 		add(cp);

@@ -23,11 +23,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class XmlProcessorTest{
+public class XmlProcessorTest {
 
-	private String input  = "/home/ronald/Escritorio/input.xml";
+	private String input = "/home/ronald/Escritorio/input.xml";
 	private String output = "/home/ronald/Escritorio/output.xml";
-	
+
 	Logger log = Log.getInstance();
 
 	@Before
@@ -49,31 +49,32 @@ public class XmlProcessorTest{
 			String strMsg = FileUtil.readFile(input);
 			Parser parser = new Parser();
 			Message msg = parser.parseMsg(strMsg, Message.XML);
-			
+
 			// Processor
 			CoreProcessor proc = new CoreProcessor();
 
 			// Process
 			Message outputMsg = proc.process(msg);
-			FileUtil.writeFile(output,formatXml(outputMsg.toXML(), 2)); 
+			FileUtil.writeFile(output, formatXml(outputMsg.toXML(), 2));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private String formatXml(String input, int indent) {
-	    try {
-	        Source xmlInput = new StreamSource(new StringReader(input));
-	        StringWriter stringWriter = new StringWriter();
-	        StreamResult xmlOutput = new StreamResult(stringWriter);
-	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	        transformerFactory.setAttribute("indent-number", indent);
-	        Transformer transformer = transformerFactory.newTransformer(); 
-	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-	        transformer.transform(xmlInput, xmlOutput);
-	        return xmlOutput.getWriter().toString();
-	    } catch (Exception e) {
-	        throw new RuntimeException(e); // simple exception handling, please review it
-	    }
-	}	
+		try {
+			Source xmlInput = new StreamSource(new StringReader(input));
+			StringWriter stringWriter = new StringWriter();
+			StreamResult xmlOutput = new StreamResult(stringWriter);
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			transformerFactory.setAttribute("indent-number", indent);
+			Transformer transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.transform(xmlInput, xmlOutput);
+			return xmlOutput.getWriter().toString();
+		} catch (Exception e) {
+			throw new RuntimeException(e); // simple exception handling, please
+											// review it
+		}
+	}
 }

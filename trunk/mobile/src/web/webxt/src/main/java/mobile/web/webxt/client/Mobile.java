@@ -13,15 +13,16 @@ import com.google.gwt.maps.client.Maps;
 public class Mobile implements EntryPoint {
 
 	public void onModuleLoad() {
-		
+
 		Maps.loadMapsApi("", "2", false, new Runnable() {
 			public void run() {
 				createMVC();
 			}
 		});
 	}
-	
-	private void createMVC(){
+
+	private void createMVC() {
+		System.out.println("Starting application");
 		Dispatcher dispatcher = Dispatcher.get();
 		dispatcher.addController(new AppController());
 		dispatcher.addController(new NavController());

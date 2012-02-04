@@ -25,7 +25,7 @@ public class EntityContentPanel extends ContentPanel {
 	public EntityContentPanel(int width, int height) {
 		super();
 		setHeaderVisible(false);
-		setBodyBorder(false);
+		setBodyBorder(true);
 		setButtonAlign(HorizontalAlignment.CENTER);
 		setLayout(new FitLayout());
 		setSize(width, height);

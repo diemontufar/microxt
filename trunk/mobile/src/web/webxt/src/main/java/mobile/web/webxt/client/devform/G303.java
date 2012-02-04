@@ -3,10 +3,9 @@ package mobile.web.webxt.client.devform;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.web.webxt.client.data.MyHttpProxy;
-import mobile.web.webxt.client.data.MyListStore;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.MyProcessConfig;
+import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.form.EntityContentPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.widgets.ComboForm;
@@ -16,7 +15,6 @@ import mobile.web.webxt.client.form.widgetsgrid.ExpireColumnConfig;
 import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
-import mobile.web.webxt.client.form.widgetsgrid.MyColumnData.ColumnType;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -39,28 +37,26 @@ import com.google.gwt.user.client.Element;
 
 public class G303 extends MyGeneralForm {
 
-	private final String PROCESS = "G303";
-	private final String ENTITY = "City";
+	private final static String PROCESS = "G303";
+	private final static String ENTITY = "City";
 	private final Integer PAGE_SIZE = 5;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public G303() {
+		super(PROCESS, true);
+		setReference(ENTITY);
+	}
+
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-		
+
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
 		cdata.add(new MyColumnData("pk_countryId", "Pais", 70, 2, false));
 		cdata.add(new MyColumnData("pk_provinceId", "Prov", 70, 2, false));
 		cdata.add(new MyColumnData("pk_cityId", "Codigo", 70, 2, false));
 		cdata.add(new MyColumnData("name", "Nombre", 70, 40, false));
-		
-		MyProcessConfig config = new MyProcessConfig(PROCESS, ENTITY,cdata.getIdFields());
-
-		// Proxy - loader - store
-		MyHttpProxy proxy = new MyHttpProxy();
-		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
-		final MyListStore store = new MyListStore(loader);
+		getConfig().setlDataSource(cdata.getDataSources());
 
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
@@ -77,7 +73,7 @@ public class G303 extends MyGeneralForm {
 		EntityContentPanel gridPanel = new EntityContentPanel(450, 230);
 
 		// Grid
-		final EntityEditorGrid grid = new EntityEditorGrid(store, cm);
+		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
 		grid.setAutoExpandColumn("name");
 		grid.getColumnModel().getColumn(0).getEditor().disable();
 		grid.getColumnModel().getColumn(1).getEditor().disable();
@@ -85,39 +81,40 @@ public class G303 extends MyGeneralForm {
 
 		// Top tool bar
 		ModelData newItem = new BaseModelData();
-		newItem.set(cdata.get(0).getId(),null);
-		newItem.set(cdata.get(1).getId(),null);
-		newItem.set(cdata.get(2).getId(),null);
-		newItem.set(cdata.get(3).getId(),null);
-				
-		GridToolBar toolBar = new GridToolBar(grid, store, newItem);
+		newItem.set(cdata.get(0).getId(), null);
+		newItem.set(cdata.get(1).getId(), null);
+		newItem.set(cdata.get(2).getId(), null);
+		newItem.set(cdata.get(3).getId(), null);
+		GridToolBar toolBar = new GridToolBar(grid, getStore(), newItem);
 		toolBar.initColumnIndex = 2;
 		gridPanel.setTopComponent(toolBar);
 
 		// Paging tool bar
-		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(
-				PAGE_SIZE, loader);
+		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(grid, PAGE_SIZE);
 		gridPanel.setBottomComponent(pagingToolBar);
-		pagingToolBar.setWaitingFilter(true);
-		pagingToolBar.setMessage("Seleccione un Pais y una Provincia");
 
 		// Father panel
 		EntityContentPanel panel = new EntityContentPanel("Cantones", 440, 360);
 
 		// Country combo
-		final ComboForm countryCombo = new ComboForm("Pais", "name");
+		final ComboForm countryCombo = new ComboForm("Pais");
+		Reference refCountry = new Reference("cou", "Country");
 		final ArrayColumnData combodata = new ArrayColumnData();
-		combodata.add(new MyColumnData("pk_countryId", "Pais", 70));
-		combodata.add(new MyColumnData("name", "Nombre", 150));
-		countryCombo.setRqData("Country", combodata);
+		combodata.add(new MyColumnData("cou", "pk_countryId", "Pais", 70));
+		combodata.add(new MyColumnData("cou", "name", "Nombre", 150));
+		countryCombo.setQueryData(refCountry, combodata);
+		countryCombo.setDisplayField("name");
 
 		// Province combo
-		final ComboForm provinceCombo = new ComboForm("Provincia", "name");
+		final ComboForm provinceCombo = new ComboForm("Provincia");
+		Reference refProvince = new Reference("prov", "Province");
 		final ArrayColumnData combodata2 = new ArrayColumnData();
-		combodata2.add(new MyColumnData("pk_provinceId", "Provincia", 70));
-		combodata2.add(new MyColumnData("name", "Nombre", 150));
-		combodata2.add(new MyColumnData("pk_countryId", "Pais", 120, ColumnType.HIDDEN));
-		provinceCombo.setRqData("Province", combodata2);
+		combodata2.add(new MyColumnData("prov", "pk_provinceId", "Provincia", 70));
+		combodata2.add(new MyColumnData("prov", "name", "Nombre", 150));
+		// combodata2.add(new MyColumnData("prov", "pk_countryId", "Pais", 120,
+		// ColumnType.HIDDEN));
+		provinceCombo.setQueryData(refProvince, combodata2);
+		provinceCombo.setDisplayField("name");
 
 		// Combo boxes and table interaction
 		countryCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
@@ -130,18 +127,18 @@ public class G303 extends MyGeneralForm {
 				filter.setComparison("=");
 				filter.setValue(countryCombo.getValue().get(filterField).toString());
 
-				provinceCombo.addFilter(filter);
+				//provinceCombo.addFilter(filter);
 				provinceCombo.setLoaded(false);
 				provinceCombo.setValue(null);
 
-				store.addFilter(filter);
+				getStore().addFilter(filter);
 			}
 		});
-		
+
 		provinceCombo.addListener(Events.BeforeQuery, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
-				MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) provinceCombo
-						.getStore().getLoader()).getConfig();
+				MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) provinceCombo.getStore().getLoader())
+						.getConfig();
 				if (config.getFilterConfigs() == null) {
 					be.setCancelled(true);
 					Info.display(PROCESS, "Seleccione un Pais");
@@ -161,21 +158,20 @@ public class G303 extends MyGeneralForm {
 				filter.setField(filterField);
 				filter.setComparison("=");
 				filter.setValue(provinceCombo.getValue().get(filterField).toString());
-				store.addFilter(filter);
+				getStore().addFilter(filter);
 
-				pagingToolBar.setWaitingFilter(false);
 			}
 		});
 
-		store.addStoreListener(new StoreListener() {
-			public void handleEvent(StoreEvent se) {
-				
+		getStore().addStoreListener(new StoreListener<ModelData>() {
+			public void handleEvent(StoreEvent<ModelData> se) {
+
 				String codCountry = countryCombo.getValue().get("pk_countryId").toString();
 				String codProvince = provinceCombo.getValue().get("pk_provinceId").toString();
-				
+
 				if (se.getType() == Store.Add) {
-					grid.getStore().getAt(store.getCount()-1).set("pk_countryId", codCountry);
-					grid.getStore().getAt(store.getCount()-1).set("pk_provinceId",codProvince);
+					grid.getStore().getAt(getStore().getCount() - 1).set("pk_countryId", codCountry);
+					grid.getStore().getAt(getStore().getCount() - 1).set("pk_provinceId", codProvince);
 				}
 			}
 		});

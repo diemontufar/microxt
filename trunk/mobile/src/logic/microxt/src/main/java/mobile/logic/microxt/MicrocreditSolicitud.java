@@ -3,7 +3,7 @@ package mobile.logic.microxt;
 import mobile.common.message.EntityData;
 import mobile.common.message.Item;
 import mobile.common.message.Message;
-import mobile.common.tools.ProcessorTypes;
+import mobile.common.tools.ProcessType;
 import mobile.tools.common.Log;
 import mobile.tools.common.structure.GeneralProcessor;
 
@@ -15,7 +15,7 @@ public class MicrocreditSolicitud implements GeneralProcessor {
 
 	@Override
 	public Message process(Message msg) throws Exception {
-		if (msg.getEntityData("Solicitude").getProcessType().compareTo(ProcessorTypes.MNT.getShortName()) != 0) {
+		if (msg.getEntityData("Solicitude").getProcessType().compareTo(ProcessType.MAINTENANCE.getShortName()) != 0) {
 			return null;
 		}
 

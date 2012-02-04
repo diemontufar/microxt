@@ -1,5 +1,6 @@
 package mobile.web.webxt.client.data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +8,12 @@ import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
 import mobile.common.message.Message;
+import mobile.common.tools.Format;
+import mobile.web.webxt.client.data.form.DataSource;
+import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.parser.Parser;
 import mobile.web.webxt.client.util.ConvertionManager;
+import mobile.web.webxt.client.util.DatesManager;
 import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -36,38 +41,35 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 			String strData = data.toString();
 			Parser parser = new Parser();
 			Message msg = parser.parseMsg(strData, MSG_TYPE);
-			System.out.println("entity: " + config.getEntity());
-			EntityData entityData = msg.getEntityData(config.getEntity());
+			System.out.println("entity: " + config.getReference().getEntity());
+			EntityData entityData = msg.getEntityData(config.getReference().getEntity());
 
 			System.out.println("reading items");
 			for (Item item : entityData.getItemList()) {
 				ModelData model = new BaseModelData();
-				for (String strField : config.getlFields()) {
+				for (DataSource ds : config.getlDataSource()) {
+					// System.out.println("::DS: " + ds.getAlias() + "-" +
+					// ds.getField() + "-" + ds.getType());
 					Field field = null;
-					if (strField.startsWith("d:")) {
-						String[] params = strField.split(":");
-						field = item.getField(params[1]);
-					} else {
-						field = item.getField(strField);
+					if (ds.getType() == DataSourceType.RECORD) {
+						field = item.getField(ds.getField());
+					} else if (ds.getType() == DataSourceType.DESCRIPTION) {
+						field = item.getField(ds.getAlias() + "." + ds.getField());
 					}
-					if (field != null) {
-						if (field.getValue() != null && field.getValue().startsWith("((Boolean))")) {
-							model.set(field.getName(),
-									ConvertionManager.parseBoolean(field.getValue().toString().substring(11)));
-						} else {
-							model.set(field.getName(), field.getValue());
-						}
+					if (field != null && field.getValue() != null) {
+						model.set(ds.getField(), convertToType(field.getValue()));
 					}
 
 				}
 				models.add(model);
 			}
-			// System.out.println("Modelos");
-			// for (ModelData model : models) {
-			// for (String prop : model.getPropertyNames()) {
-			// System.out.println(prop + ":" + model.get(prop));
-			// }
-			// }
+
+			System.out.println("Modelos");
+			for (ModelData model : models) {
+				for (String prop : model.getPropertyNames()) {
+					System.out.println(prop + ":" + model.get(prop));
+				}
+			}
 
 			// Pagination
 			System.out.println("reading pagination");
@@ -86,22 +88,62 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 		return (PagingLoadResult<ModelData>) paginatedModels;
 	}
 
+	public static Object convertToType(String value) {
+		final String INTEGER = "\\(\\(Integer\\)\\)";
+		final String BIG_DECIMAL = "\\(\\(BigDecimal\\)\\)";
+		final String BOOLEAN = "\\(\\(Boolean\\)\\)";
+		final String LONG = "\\(\\(Long\\)\\)";
+		final String DATE = "\\(\\(Date\\)\\)";
+		final String TIMESTAMP = "\\(\\(Timestamp\\)\\)";
+
+		Object cValue = null;
+
+		// System.out.println("::Valor a convertir" + value);
+
+		if (value == null) {
+			return cValue;
+		}
+
+		if (value.matches("^(" + INTEGER + "|" + BIG_DECIMAL + "|" + BOOLEAN + "|" + LONG + "|" + DATE + "|"
+				+ TIMESTAMP + ").*")) {
+			if (value.matches("^(" + INTEGER + ").*")) {
+				value = value.replaceAll("(" + INTEGER + ")", "");
+				cValue = Integer.parseInt(value);
+			} else if (value.matches("^(" + BIG_DECIMAL + ").*")) {
+				value = value.replaceAll("(" + BIG_DECIMAL + ")", "");
+				cValue = new BigDecimal(value);
+			} else if (value.matches("^(" + BOOLEAN + ").*")) {
+				value = value.replaceAll("(" + BOOLEAN + ")", "");
+				cValue = ConvertionManager.parseBoolean(value);
+			} else if (value.matches("^(" + LONG + ").*")) {
+				value = value.replaceAll("(" + LONG + ")", "");
+				cValue = Long.parseLong(value);
+			} else if (value.matches("^(" + DATE + ").*")) {
+				value = value.replaceAll("(" + DATE + ")", "");
+				cValue = DatesManager.stringToDate(value, Format.DATE);
+			} else if (value.matches("^(" + TIMESTAMP + ").*")) {
+				value = value.replaceAll("(" + TIMESTAMP + ")", "");
+				cValue = DatesManager.stringToDate(value, Format.TIMESTAMP);
+			}
+		} else {
+			cValue = value;
+		}
+		return cValue;
+	}
+
 	public Message readMessage(Object loadConfig, Object data) {
 		System.out.println("MyReader.readMessage" + data.toString());
 
 		Message msg = null;
 
-		if (!data.toString().startsWith("No message received")) {
-			try {
-				String strData = data.toString();
+		try {
+			String strData = data.toString();
 
-				System.out.println("Parsing");
-				Parser parser = new Parser();
-				msg = parser.parseMsg(strData, MSG_TYPE);
-				System.out.println("End parsing");
-			} catch (Exception e) {
-				new AlertDialog("MyReader", e.getMessage()).show();
-			}
+			System.out.println("Parsing");
+			Parser parser = new Parser();
+			msg = parser.parseMsg(strData, MSG_TYPE);
+		} catch (Exception e) {
+			new AlertDialog("MyReader", e.getMessage()).show();
 		}
 
 		return msg;

@@ -3,10 +3,6 @@ package mobile.web.webxt.client.devform;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.web.webxt.client.data.MyHttpProxy;
-import mobile.web.webxt.client.data.MyListStore;
-import mobile.web.webxt.client.data.MyPagingLoader;
-import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.form.EntityContentPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
@@ -27,10 +23,15 @@ import com.google.gwt.user.client.Element;
 
 public class B004 extends MyGeneralForm {
 
-	private final String PROCESS = "B004";
-	private final String ENTITY = "CivilStatus";
+	private final static String PROCESS = "B004";
+	private final static String ENTITY = "CivilStatus";
 	private final Integer PAGE_SIZE = 5;
 
+	public B004() {
+		super(PROCESS, true);
+		setReference(ENTITY);
+	}
+	
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
@@ -39,13 +40,7 @@ public class B004 extends MyGeneralForm {
 		final ArrayColumnData cdata = new ArrayColumnData();
 		cdata.add(new MyColumnData("pk_civilStatusId", "Tipo", 70, 3,false));
 		cdata.add(new MyColumnData("name", "Nombre", 150, 50, false));
-
-		MyProcessConfig config = new MyProcessConfig(PROCESS, ENTITY, cdata.getIdFields());
-		
-		// Proxy - loader - store
-		MyHttpProxy proxy = new MyHttpProxy();
-		final MyPagingLoader loader = new MyPagingLoader(proxy, config);
-		final MyListStore store = new MyListStore(loader);
+		getConfig().setlDataSource(cdata.getDataSources());
 
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
@@ -60,21 +55,21 @@ public class B004 extends MyGeneralForm {
 		EntityContentPanel cp = new EntityContentPanel("Estado Civil", 400, 230);
 		
 		// Grid
-		final EntityEditorGrid grid = new EntityEditorGrid(store, cm);
+		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
 		grid.setAutoExpandColumn("name");
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
-				store.sort(cdata.getIdFields().get(0), SortDir.ASC);
+				getStore().sort(cdata.getIdFields().get(0), SortDir.ASC);
 			}
 		});
 
 		// Top tool bar
-		GridToolBar toolBar = new GridToolBar(grid, store);
+		GridToolBar toolBar = new GridToolBar(grid, getStore());
 		cp.setTopComponent(toolBar);
 
 		// Paging tool bar
-		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(PAGE_SIZE,loader);
+		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(grid, PAGE_SIZE);
 		cp.setBottomComponent(pagingToolBar);
 
 		add(cp);

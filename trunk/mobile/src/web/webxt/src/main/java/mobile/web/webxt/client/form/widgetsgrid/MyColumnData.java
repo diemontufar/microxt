@@ -1,16 +1,14 @@
 package mobile.web.webxt.client.form.widgetsgrid;
 
 
+import mobile.web.webxt.client.data.form.DataSource;
+import mobile.web.webxt.client.data.form.DataSourceType;
+
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 
 
 public class MyColumnData extends ColumnData{
-	
-	public enum ColumnType{
-		DESC,		// for description columns: not persistent, visible 
-		HIDDEN		// for hidden columns: persistent, hidden 	
-	}
-	
+
 	public enum NumberType{
 		INTEGER,	// for integer numbers 
 		DECIMAL		// for decimal numbers 	
@@ -22,71 +20,95 @@ public class MyColumnData extends ColumnData{
 	
 	private boolean allowBlank;
 	
-	private ColumnType columnType;
-	
-	private String descEntity;
-	
-	private String descField;
-	
-	private String descCriterion;
-	
 	private String associatedField;
 	
-	private NumberType numberType;
+	private boolean visible = true;
 	
-	public MyColumnData(String id) {
-		this.id = id;
+	//private NumberType numberType;
+	
+	private DataSource dataSource;
+	
+	public MyColumnData(String field) {
+		setId(field);
+		setDataSource(new DataSource(field));
+		setVisible(false);
 	}
 	
-	public MyColumnData(String id, ColumnType type) {
-		this.id = id;
-		this.columnType = type;
+	public MyColumnData(String alias, String field) {
+		setId(field);
+		setDataSource(new DataSource(alias, field));
+		setVisible(false);
 	}
 	
-	public MyColumnData(String id, String name, int width) {
-		this.id = id;
-		this.name = name;
-		this.width = width;
+	public MyColumnData(String alias, String field, String title, int width) {
+		setId(field);
+		setDataSource(new DataSource(alias, field, DataSourceType.RECORD));
+		setName(title);
+		setWidth(width);
 	}
 	
-	public MyColumnData(String id, String name, int width, ColumnType type) {
-		this(id, name, width);
-		this.columnType = type;
+	public MyColumnData(String alias, String field, boolean visible) {
+		setId(field);
+		setDataSource(new DataSource(alias, field, DataSourceType.RECORD));
+		setVisible(visible);
+	}
+
+	public MyColumnData(String field, String title, int width, int maxLength, boolean allowBlank) {
+		setId(field);
+		setName(title);
+		setWidth(width);
+		setMaxLength(maxLength);
+		setAllowBlank(allowBlank);
+		setDataSource(new DataSource(null, field, DataSourceType.RECORD));
 	}
 	
-	public MyColumnData(String id, String header, int width, int maxLength, boolean allowBlank) {
-		this(id, header, width);
-		this.maxLength = maxLength;
-		this.allowBlank = allowBlank;
+	public MyColumnData(String field, DataSourceType type, String header, int width, int maxLength, boolean allowBlank) {
+		setId(field);
+		setDataSource(new DataSource(field, DataSourceType.RECORD));
+		setName(header);
+		setMaxLength(maxLength);
+		setAllowBlank(allowBlank);
 	}
+
+	public MyColumnData(DataSource ds, String title, int width, boolean allowBlank) {
+		if(ds.getType() != DataSourceType.DESCRIPTION ){
+			setId(ds.getField());
+		}else{
+			setId(ds.getAlias() + "_" + ds.getField());
+		}
+		setDataSource(ds);
+		setName(title);
+		setWidth(width);
+		setAllowBlank(allowBlank);
+	}
+
+//	public MyColumnData(String id, String header, int width, int maxLength, boolean allowBlank, ColumnType type) {
+//		this(id, header, width, maxLength, allowBlank);
+//		this.columnType = type;
+//	}
 	
-	public MyColumnData(String id, String header, int width, int maxLength, boolean allowBlank, ColumnType type) {
-		this(id, header, width, maxLength, allowBlank);
-		this.columnType = type;
-	}
+//	public MyColumnData(String id, String header, int width, int maxLength, boolean allowBlank, NumberType type) {
+//		this(id, header, width, maxLength, allowBlank);
+//		this.numberType = type;
+//	}
 	
-	public MyColumnData(String id, String header, int width, int maxLength, boolean allowBlank, NumberType type) {
-		this(id, header, width, maxLength, allowBlank);
-		this.numberType = type;
-	}
+//	public void setDescriptionFields(String entity, String field, String criterion){
+//		this.descEntity = entity;
+//		this.descField = field;
+//		this.descCriterion = criterion;
+//	}
 	
-	public void setDescriptionFields(String entity, String field, String criterion){
-		this.descEntity = entity;
-		this.descField = field;
-		this.descCriterion = criterion;
-	}
-	
-	public String getDescriptionEntity(){
-		return this.descEntity;
-	}
-	
-	public String getDescriptionField(){
-		return this.descField;
-	}
-	
-	public String getDescriptionCriterion(){
-		return this.descCriterion;
-	}
+//	public String getDescriptionEntity(){
+//		return this.descEntity;
+//	}
+//	
+//	public String getDescriptionField(){
+//		return this.descField;
+//	}
+//	
+//	public String getDescriptionCriterion(){
+//		return this.descCriterion;
+//	}
 	
 	public String getId() {
 		return id;
@@ -128,13 +150,13 @@ public class MyColumnData extends ColumnData{
 		this.allowBlank = allowBlank;
 	}
 
-	public ColumnType getColumnType() {
-		return columnType;
-	}
+//	public ColumnType getColumnType() {
+//		return columnType;
+//	}
 
-	public void setColumnType(ColumnType columnType) {
-		this.columnType = columnType;
-	}
+//	public void setColumnType(ColumnType columnType) {
+//		this.columnType = columnType;
+//	}
 
 	public String getAssociatedField() {
 		return associatedField;
@@ -144,13 +166,28 @@ public class MyColumnData extends ColumnData{
 		this.associatedField = associatedField;
 	}
 
-	public NumberType getNumberType() {
-		return numberType;
+	public boolean isVisible() {
+		return visible;
 	}
 
-	public void setNumberType(NumberType numberType) {
-		this.numberType = numberType;
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
-	
+
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
+//	public NumberType getNumberType() {
+//		return numberType;
+//	}
+//
+//	public void setNumberType(NumberType numberType) {
+//		this.numberType = numberType;
+//	}
 
 }
