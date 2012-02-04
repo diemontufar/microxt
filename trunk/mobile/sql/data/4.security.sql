@@ -149,16 +149,15 @@ insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, 
 insert into COMPONENT_ID (COMPONENT_ID) values ('mobile.bus.parameter.ParameterTest');
 insert into COMPONENT_ID (COMPONENT_ID) values ('mobile.bus.security.Loggin');
 insert into COMPONENT_ID (COMPONENT_ID) values ('mobile.core.processor.MaintenanceProcessor');
-insert into COMPONENT_ID (COMPONENT_ID) values ('mobile.core.processor.SpecialQueryProcessor');
+insert into COMPONENT_ID (COMPONENT_ID) values ('mobile.core.processor.QueryProcessor');
 insert into COMPONENT_ID (COMPONENT_ID) values ('mobile.logic.general.MenuGenerator');
 
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.bus.security.Loggin', 'A', 'Loggin', 'general', 'Process loggin');
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.core.processor.MaintenanceProcessor', 'G', 'MaintenanceProcessor', 'general', 'General maintenance processor');
-insert into COMPONENT (COMPANY_ID, COMPONENT_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.core.processor.SpecialQueryProcessor', 'G', 'SpecialQueryProcessor', 'general', 'Special query');
+insert into COMPONENT (COMPANY_ID, COMPONENT_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.core.processor.QueryProcessor', 'G', 'QueryProcessor', 'general', 'General query processor');
+insert into COMPONENT (COMPANY_ID, COMPONENT_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.logic.general.MenuGenerator', 'G', 'MenuGenerator', 'general', 'Query the menu items');
 
 insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, ENABLE, AUTHORIZE) values ('MXT', 'A', '0', '01', 1, 'mobile.bus.security.Loggin', '1', '0');
 insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, ENABLE, AUTHORIZE) values ('MXT', 'A', '0', '02', 1, 'mobile.bus.parameter.ParameterTest', '1', '0');
-insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, ENABLE, AUTHORIZE) values ('MXT', 'A', '2', '02', 1, 'mobile.core.processor.SpecialQueryProcessor', '1', '0');
-insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, ENABLE, AUTHORIZE) values ('MXT', 'A', '2', '02', 2, 'mobile.core.processor.MaintenanceProcessor', '1', '0');
 insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, ENABLE, AUTHORIZE) values ('MXT', 'G', '0', '01', 1, 'mobile.logic.general.MenuGenerator', '1', '0');
 

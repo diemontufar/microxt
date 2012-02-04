@@ -1,14 +1,14 @@
-insert into address_type_ID (ADDRESS_TYPE_ID) values ('CE');
-insert into address_type_ID (ADDRESS_TYPE_ID) values ('HA');
-insert into address_type_ID (ADDRESS_TYPE_ID) values ('ML');
-insert into address_type_ID (ADDRESS_TYPE_ID) values ('OF');
-insert into address_type_ID (ADDRESS_TYPE_ID) values ('WE');
+insert into ADDRESS_TYPE_ID (ADDRESS_TYPE_ID) values ('CE');
+insert into ADDRESS_TYPE_ID (ADDRESS_TYPE_ID) values ('HA');
+insert into ADDRESS_TYPE_ID (ADDRESS_TYPE_ID) values ('ML');
+insert into ADDRESS_TYPE_ID (ADDRESS_TYPE_ID) values ('OF');
+insert into ADDRESS_TYPE_ID (ADDRESS_TYPE_ID) values ('WE');
 
-insert into address_type (COMPANY_ID, LANGUAGE_ID, ADDRESS_TYPE_ID, NAME) values ('MXT', 'ES', 'CE', 'CORREO ELECTRONICO');
-insert into address_type (COMPANY_ID, LANGUAGE_ID, ADDRESS_TYPE_ID, NAME) values ('MXT', 'ES', 'HA', 'DOMICILIO');
-insert into address_type (COMPANY_ID, LANGUAGE_ID, ADDRESS_TYPE_ID, NAME) values ('MXT', 'ES', 'ML', 'CORREO');
-insert into address_type (COMPANY_ID, LANGUAGE_ID, ADDRESS_TYPE_ID, NAME) values ('MXT', 'ES', 'OF', 'OFICINA');
-insert into address_type (COMPANY_ID, LANGUAGE_ID, ADDRESS_TYPE_ID, NAME) values ('MXT', 'ES', 'WE', 'PAGINA WEB');
+insert into ADDRESS_TYPE (COMPANY_ID, LANGUAGE_ID, ADDRESS_TYPE_ID, NAME) values ('MXT', 'ES', 'CE', 'CORREO ELECTRONICO');
+insert into ADDRESS_TYPE (COMPANY_ID, LANGUAGE_ID, ADDRESS_TYPE_ID, NAME) values ('MXT', 'ES', 'HA', 'DOMICILIO');
+insert into ADDRESS_TYPE (COMPANY_ID, LANGUAGE_ID, ADDRESS_TYPE_ID, NAME) values ('MXT', 'ES', 'ML', 'CORREO');
+insert into ADDRESS_TYPE (COMPANY_ID, LANGUAGE_ID, ADDRESS_TYPE_ID, NAME) values ('MXT', 'ES', 'OF', 'OFICINA');
+insert into ADDRESS_TYPE (COMPANY_ID, LANGUAGE_ID, ADDRESS_TYPE_ID, NAME) values ('MXT', 'ES', 'WE', 'PAGINA WEB');
 
 
 
