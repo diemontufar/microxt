@@ -9,11 +9,6 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 
 public class MyColumnData extends ColumnData{
 
-	public enum NumberType{
-		INTEGER,	// for integer numbers 
-		DECIMAL		// for decimal numbers 	
-	}
-	
 	private int width;
 	
 	private int maxLength;

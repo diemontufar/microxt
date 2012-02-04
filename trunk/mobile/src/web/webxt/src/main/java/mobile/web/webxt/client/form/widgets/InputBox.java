@@ -29,14 +29,12 @@ public class InputBox extends TextField<String> implements PersistentField {
 	public InputBox(int width, int maxLenght) {
 		this.setWidth(width);
 		this.setMaxLength(maxLenght);
-		createValidator();
 	}
 	
 	public InputBox(int width, int maxLenght, Validate type) {
 		this.setWidth(width);
 		this.setMaxLength(maxLenght);
-		this.type = type;
-		createValidator();
+		createValidator(type);
 	}
 
 	public InputBox(String lbl, String field, int width,int maxLenght, Validate type) {
@@ -44,22 +42,25 @@ public class InputBox extends TextField<String> implements PersistentField {
 		this.setFieldLabel(lbl.trim());
 		this.setWidth(width);
 		this.setMaxLength(maxLenght);
-		this.type = type;
-		createValidator();
+		createValidator(type);
 	}
 
-	private void createValidator() {
+	public void createValidator(Validate type) {
 
-		if (type == Validate.NUMERICO) {
+		if (type == Validate.REQUIRED){
+			setAllowBlank(false);
+		}
+		
+		if (type == Validate.TEXT) {
 			setValidator(new ValidationTypesValidator(ValidationTypes.ALPHABET));
 		}
 
-		if (type == Validate.ALFANUMERICO) {
+		if (type == Validate.ALPHANUMERIC) {
 			setValidator(new ValidationTypesValidator(ValidationTypes.ALPHANUMERIC));
 			setAllowBlank(true);
 		}
 
-		if (type == Validate.NUMERICO) {
+		if (type == Validate.NUMERIC) {
 			setValidator(new ValidationTypesValidator(ValidationTypes.NUMERIC));
 			setAllowBlank(true);
 		}

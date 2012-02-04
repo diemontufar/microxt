@@ -4,6 +4,7 @@ import java.util.Date;
 
 import mobile.common.tools.Format;
 import mobile.web.webxt.client.data.form.DataSource;
+import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.util.DatesManager;
 
 import com.extjs.gxt.ui.client.event.DatePickerEvent;
@@ -16,6 +17,8 @@ import com.google.gwt.user.client.Element;
 public class MyDateField extends DateField implements PersistentField {
 
 	DataSource dataSource;
+	final int WIDTH=100 ;
+	final int MAX_LENGTH=10;
 
 	public MyDateField() {
 		super();
@@ -77,6 +80,28 @@ public class MyDateField extends DateField implements PersistentField {
 			}
 
 		});
+	}
+	
+	public void createValidator(Validate type) {
+
+		if (type == Validate.REQUIRED){
+			setAllowBlank(false);
+		}
+	}
+	
+	public String getDateValue(){
+		
+		String dateString="";	
+		
+		if (this.getValue() != null) {
+			dateString = this.getRawValue().toString().substring(6, 10);
+			dateString = dateString + "-" + this.getRawValue().toString().substring(3, 5) + "-";
+			dateString = dateString + this.getRawValue().toString().substring(0, 2);
+			return dateString;
+		}else{
+			forceInvalid("Escoja una Fecha");
+			return null;
+		}
 	}
 
 	public DataSource getDataSource() {
