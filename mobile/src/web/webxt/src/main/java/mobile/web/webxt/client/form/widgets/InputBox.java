@@ -73,6 +73,11 @@ public class InputBox extends TextField<String> implements PersistentField {
 			setValidator(new ValidationTypesValidator(ValidationTypes.EMAIL));
 		}
 		
+		if (type == Validate.DATE) {
+			setValidator(new ValidationTypesValidator(ValidationTypes.DATE));
+			setToolTip("Formato: dd-mm-aaaa");
+		}
+		
 	}
 
 	@Override
