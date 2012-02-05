@@ -18,20 +18,20 @@ public class PersonId extends AbstractEntityId implements GeneralEntityId {
 	 */
 	@Id
 	@Column(name = "PERSON_ID", nullable = false)
-	private Long personId;
+	private Integer personId;
 
 	public PersonId() {
 	}
 
-	public PersonId(Long personId) {
+	public PersonId(Integer personId) {
 		this.personId = personId;
 	}
 
-	public Long getPersonId() {
+	public Integer getPersonId() {
 		return this.personId;
 	}
 
-	public void setPersonId(Long personId) {
+	public void setPersonId(Integer personId) {
 		this.personId = personId;
 	}
 
@@ -42,7 +42,7 @@ public class PersonId extends AbstractEntityId implements GeneralEntityId {
 
 	@Override
 	public void setPk(Object pk) {
-		this.personId = (Long) pk;
+		this.personId = (Integer) pk;
 	}
 
 	@Override
