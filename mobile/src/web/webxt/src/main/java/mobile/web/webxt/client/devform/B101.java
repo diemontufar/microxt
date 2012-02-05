@@ -187,7 +187,7 @@ public class B101 extends MyGeneralForm {
 		row.add(label);
 
 		InputBox name = new InputBox(150, 40, Validate.TEXT);
-		name.setDataSource(new DataSource("PersonName", "name", DataSourceType.DESCRIPTION));
+		name.setDataSource(new DataSource("per", "name", DataSourceType.RECORD));
 		name.setAllowBlank(false);
 		row.add(name);
 
@@ -201,7 +201,7 @@ public class B101 extends MyGeneralForm {
 		fieldSet.add(row);
 
 		InputBox lastName = new InputBox(150, 40, Validate.TEXT);
-		lastName.setDataSource(new DataSource("PersonLastName", "lastName", DataSourceType.DESCRIPTION));
+		lastName.setDataSource(new DataSource("per", "lastName", DataSourceType.RECORD));
 		lastName.createValidator(Validate.REQUIRED);
 		row.add(lastName);
 
@@ -213,7 +213,7 @@ public class B101 extends MyGeneralForm {
 		fieldSet.add(row);
 
 		InputBox lastName2 = new InputBox("", "Person:secondLastName:1", 150, 40, Validate.TEXT);
-		lastName2.setDataSource(new DataSource("PersonLastName2", "secondLastName", DataSourceType.DESCRIPTION));
+		lastName2.setDataSource(new DataSource("per", "secondLastName", DataSourceType.RECORD));
 		row.add(lastName2);
 
 		row = new RowContainer();
@@ -224,6 +224,7 @@ public class B101 extends MyGeneralForm {
 
 		final MyDateField birthDate = new MyDateField();
 		birthDate.createValidator(Validate.REQUIRED);
+		birthDate.setDataSource(new DataSource("per", "dateOfBirth", DataSourceType.RECORD));
 		row.add(birthDate);
 		fieldSet.add(row);
 
@@ -231,11 +232,10 @@ public class B101 extends MyGeneralForm {
 		row = new RowContainer();
 		label = new MyLabel("Genero:", LABEL_WIDTH);
 		row.add(label);
-		
-		
+				
 		// Gender combo
 		final ComboForm genderCombo = new ComboForm(50);
-		genderCombo.setDataSource(new DataSource("per", "genderId", DataSourceType.RECORD));
+		genderCombo.setDataSource(new DataSource("per", "genderTypeId", DataSourceType.RECORD));
 
 		Reference refProduct = new Reference("gen", "GenderType");
 		final ArrayColumnData pcdata = new ArrayColumnData();
@@ -351,7 +351,7 @@ public class B101 extends MyGeneralForm {
 		row.add(label);
 
 		final InputBox identification = new InputBox(150, 40, Validate.ALPHANUMERIC);
-		identification.setDataSource(new DataSource("IdentificationNumber", "identificationNumber", DataSourceType.DESCRIPTION));
+		identification.setDataSource(new DataSource("per", "identificationNumber", DataSourceType.RECORD));
 		row.add(identification);
 		
 		identification.addListener(Events.OnBlur, new Listener<FieldEvent>() {
@@ -394,7 +394,7 @@ public class B101 extends MyGeneralForm {
 		aux.setHeight(70);
 		right.add(fieldSet2);
 		right.add(aux);
-		//right.add(new Location("Person"));
+		right.add(new Location());
 
 		panelPrincipal.add(left, new RowData(.45, 1, new Margins(4)));
 		panelPrincipal.add(right, new RowData(.45, 1, new Margins(4)));
@@ -451,13 +451,13 @@ public class B101 extends MyGeneralForm {
 					identification.forceInvalid("Identificacion Incorrecta");
 				}
 				
-				if (form.isValid()){
-					message = new AlertDialog("Alerta","Es validisimo!!");
-					message.show();
-				}else{
-					message = new AlertDialog("Alerta","Es incorrecto!!");
-					message.show();
-				}
+//				if (form.isValid()){
+//					message = new AlertDialog("Alerta","Es validisimo!!");
+//					message.show();
+//				}else{
+//					message = new AlertDialog("Alerta","Es incorrecto!!");
+//					message.show();
+//				}
 				
 				if (isValidId && validateDateField(dateString)) {
 					form.commitForm();
