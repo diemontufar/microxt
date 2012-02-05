@@ -11,6 +11,16 @@
 	<packaging>jar</packaging>
 	<version>2.0</version>
 	<name>MOBILE COMMON MESSAGE</name>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
