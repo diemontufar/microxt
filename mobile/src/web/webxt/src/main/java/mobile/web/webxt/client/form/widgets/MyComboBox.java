@@ -29,11 +29,11 @@ import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.Field;
 
-public class MyComboBox extends ComboBox<ModelData> {
+public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 	private String process = "G201";
 	private int listWidth = 0;
 	private DataSource dataSource;
-	private List<Field<?>> ldependency;
+	private Map<String,Field<?>> mdependency;
 	private Map<String, Field<?>> mlinks;
 	private boolean isLoaded = false;
 
@@ -150,11 +150,11 @@ public class MyComboBox extends ComboBox<ModelData> {
 
 	}
 
-	public void addDependency(Field<?> field) {
-		if (ldependency == null) {
-			ldependency = new ArrayList<Field<?>>();
+	public void addDependency(Field<?> field, String criterionField) {
+		if (mdependency == null) {
+			mdependency = new HashMap<String, Field<?>>();
 		}
-		ldependency.add(field);
+		mdependency.put(criterionField, field);
 
 		// Listener
 		field.addListener(Events.SelectionChange, new Listener<BaseEvent>() {
@@ -170,37 +170,76 @@ public class MyComboBox extends ComboBox<ModelData> {
 	 * Returns true if all required fields are ok, false otherwise
 	 */
 	public boolean validateDependencies() {
-		if (ldependency == null || ldependency.size() < 1) {
+		if (mdependency == null || mdependency.size() < 1) {
 			return true;
 		}
 
 		boolean valid = true;
 
-		for (Field<?> f : ldependency) {
+		// Directly related
+		for (String criterion : mdependency.keySet()) {
+			Field<?> f = mdependency.get(criterion);
 			if (f.getValue() == null) {
 				f.markInvalid("Requerido");
 				valid = false;
 			}
 		}
 
+		// Indirectly related
+		for (String criterion : mdependency.keySet()) {
+			Field<?> f = mdependency.get(criterion);
+			if (f.getValue() == null && f instanceof Dependent) {
+				((Dependent)f).validateDependencies();
+			}
+		}
+
 		return valid;
 	}
 
+	
 	public Map<DataSource, String> getDsDependencies() {
-		if (ldependency == null || ldependency.size() < 1) {
+		if (mdependency == null || mdependency.size() < 1) {
 			return null;
 		}
 
 		Map<DataSource, String> mDependencies = new HashMap<DataSource, String>();
-		for (Field<?> f : ldependency) {
-			if (f instanceof PersistentField) {
-				PersistentField pf = (PersistentField) f;
-				if (pf.getDataSource() != null) {
-					String value = MyFormPanel.getValueFromField(f);
-					mDependencies.put(pf.getDataSource(), value);
-				}
+		
+		// Directly related
+		for (String criterion : mdependency.keySet()) {
+			Field<?> f = mdependency.get(criterion);
+			if (f.getValue() != null) {
+				DataSource ds = new DataSource(criterion, DataSourceType.CRITERION);
+				String value = MyFormPanel.getValueFromField(f);
+				mDependencies.put(ds, value);
 			}
 		}
+		
+		return mDependencies;
+	}
+	
+	public void getIterativeDsDependencies(Map<DataSource, String> mOriginal) {
+		if (mdependency == null || mdependency.size() < 1) {
+			return;
+		}
+		
+		if(mOriginal == null){
+			mOriginal = new HashMap<DataSource, String>();
+		}
+		
+		mOriginal.putAll(getDsDependencies());
+
+		// Indirectly related
+		for (String criterion : mdependency.keySet()) {
+			Field<?> f = mdependency.get(criterion);
+			if (f.getValue() != null && f instanceof Dependent) {
+				((Dependent) f).getIterativeDsDependencies(mOriginal);
+			}
+		}
+	}
+	
+	public Map<DataSource, String> getDeepDsDependencies() {
+		Map<DataSource, String> mDependencies = new HashMap<DataSource, String>();
+		getIterativeDsDependencies(mDependencies);
 		return mDependencies;
 	}
 
@@ -209,11 +248,12 @@ public class MyComboBox extends ComboBox<ModelData> {
 			public void handleEvent(BaseEvent be) {
 				if (validateDependencies()) {
 					MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) getStore().getLoader()).getConfig();
-					Map<DataSource, String> map = getDsDependencies();
+					//Map<DataSource, String> map = getDsDependencies();
+					Map<DataSource, String> map = getDeepDsDependencies();
 					if (map != null) {
 						for (DataSource ds : map.keySet()) {
 							String value = map.get(ds);
-							if (ds.getType() == DataSourceType.CRITERION && value != null) {
+							if (value != null) {
 								FilterConfig filter = new BaseStringFilterConfig();
 								filter.setField(ds.getField());
 								filter.setComparison(ds.getComparator());
@@ -301,4 +341,13 @@ public class MyComboBox extends ComboBox<ModelData> {
 	public void setLoaded(boolean isLoaded) {
 		this.isLoaded = isLoaded;
 	}
+
+	public Map<String, Field<?>> getMdependency() {
+		return mdependency;
+	}
+
+	public void setMdependency(Map<String, Field<?>> mdependency) {
+		this.mdependency = mdependency;
+	}
+
 }

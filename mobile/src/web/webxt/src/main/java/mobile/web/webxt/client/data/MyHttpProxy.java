@@ -254,6 +254,9 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 						queryFields = queryFields + ";";
 					}
 					String queryField = alias + "." + fieldName;
+					if(property != null){
+						queryField = queryField + ":" + property;
+					}
 					queryFields = queryFields + queryField;
 					data.setQueryFields(queryFields);
 				} else if (DataSourceType.valueOf(fieldtype) == DataSourceType.CONTROL) {

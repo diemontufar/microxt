@@ -233,7 +233,14 @@ public class QueryProcessor implements GeneralProcessor {
 				fieldCounter = 0;
 				for (String qryField : queryFields) {
 					Object resField = result[fieldCounter++];
-					Field field = new Field(qryField);
+					Field field = null;
+					if(qryField.indexOf("=")<0){
+						field = new Field(qryField);
+					}else{
+						int end = qryField.indexOf(":"); 
+						field = new Field(qryField.substring(0,end));
+					}
+					
 					if (resField != null) {
 						String completedValue = completeValue(resField, qryField);
 						field.setValue(completedValue);
@@ -415,10 +422,34 @@ public class QueryProcessor implements GeneralProcessor {
 			throws Exception {
 		queryFields.add(strField);
 
-		String[] part = strField.split("\\.");
-		String entity = part[0];
-		String field = part[1];
-
+		String entity = null;
+		String field = null;
+		Map<String, List<String>> mdependency = null;
+		
+		if(strField.indexOf("=")<0){
+			String[] part = strField.split("\\.");
+			entity = part[0];
+			field = part[1];
+		}else{
+			String [] superPart = strField.split(":");
+			String [] basic = superPart[0].split("\\.");
+			entity = basic [0];
+			field = basic [1];
+			String adeps = superPart[1];
+			String [] dep = adeps.split("\\^");
+			for (String d : dep) {
+				String [] p = d.split("=");
+				List<String> ldep = new ArrayList<String>();
+				String filteredField = p[0];
+				ldep.add(p[1]);
+				ldep.add(p[2]);
+				if(mdependency == null){
+					mdependency = new HashMap<String, List<String>>();
+				}
+				mdependency.put(filteredField, ldep);
+			}
+		}
+		
 		if (fieldCounter > 0) {
 			sql.append(", ");
 		}
@@ -431,24 +462,38 @@ public class QueryProcessor implements GeneralProcessor {
 		sql.append(" from " + toSqlName(entity));
 
 		// Filters
-		String QL_RELATIONSHIP = "Select r from EntityRelationship r where r.tableFrom = :tableFrom and r.tableTo = :tableTo";
-		Query query = JPManager.getEntityManager().createQuery(QL_RELATIONSHIP, EntityRelationship.class);
-		query.setParameter("tableFrom", toSqlName(this.entity));
-		String tableTo = null;
-		if (JPManager.getEntityTable(entity).getHasTableId()) {
-			tableTo = toSqlName(entity) + "_ID";
-		}
-		query.setParameter("tableTo", tableTo);
-		List<EntityRelationship> list = query.getResultList();
-
-		sql.append(" where ");
 		int filtersCounter = 0;
-		for (EntityRelationship rel : list) {
-			if (filtersCounter > 0) {
-				sql.append(" and ");
+		if(mdependency == null){
+			// Filters from relationship
+			String QL_RELATIONSHIP = "Select r from EntityRelationship r where r.tableFrom = :tableFrom and r.tableTo = :tableTo";
+			Query query = JPManager.getEntityManager().createQuery(QL_RELATIONSHIP, EntityRelationship.class);
+			query.setParameter("tableFrom", toSqlName(this.entity));
+			String tableTo = null;
+			if (JPManager.getEntityTable(entity).getHasTableId()) {
+				tableTo = toSqlName(entity) + "_ID";
 			}
-			sql.append(rel.getFieldTo() + "=a." + rel.getFieldFrom());
-			filtersCounter++;
+			query.setParameter("tableTo", tableTo);
+			List<EntityRelationship> list = query.getResultList();
+
+			sql.append(" where ");
+			for (EntityRelationship rel : list) {
+				if (filtersCounter > 0) {
+					sql.append(" and ");
+				}
+				sql.append(rel.getFieldTo() + "=a." + rel.getFieldFrom());
+				filtersCounter++;
+			}
+		}else{
+			// Filters from dependency
+			sql.append(" where ");
+			for (String filteredField : mdependency.keySet()) {
+				List<String> toDep = mdependency.get(filteredField);
+				if (filtersCounter > 0) {
+					sql.append(" and ");
+				}
+				sql.append(toSqlName(filteredField.replaceAll("pk_", "")) + "=a." + toSqlName(toDep.get(1).replaceAll("pk_", "")));
+				filtersCounter++;
+			}
 		}
 
 		// Automatic filters
