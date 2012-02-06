@@ -12,6 +12,7 @@ import mobile.common.message.Item;
 import mobile.common.message.Message;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
+import mobile.web.webxt.client.data.form.Dependency;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -46,20 +47,35 @@ public final class MyMessageReader {
 		// Set map of fields and values
 		// Key format: <ALIAS>:<FIELD>:<TYPE>:<PROPERTIES(optional)>
 		// Example:
-		// sol1 :pk_solicitudeId :RECORD
-		// ProductMicrocredit :description :DESCRIPTION
-		// sol1 :pk_solicitudeId :CRITERION :=
-		// sol1 :solicitudeData :ORDER :DESC
+		// sol1:pk_solicitudeId:RECORD
+		//
+		// ProductMicrocredit:description :DESCRIPTION :
+		// Province:name:DESCRIPTION:pk_countryId&per&countryId^pk_provinceId&per&provinceId
+		// Country:name:DESCRIPTION:pk_countryId=per=country_Id
+		//
+		// sol1:pk_solicitudeId:CRITERION :=
+		//
+		// sol1:solicitudeData:ORDER :DESC
+		//
 		// <empty>:generatedId:CONTROL
 
 		// Set key
 		String key = ds.getAlias() + ":" + ds.getField() + ":" + ds.getType();
 
-		if (ds.getType() != DataSourceType.RECORD) {
-			if (ds.getType() == DataSourceType.CRITERION || ds.getType() == DataSourceType.ORDER) {
-				key = key + ":" + ds.getComparator();
+		if (ds.getType() == DataSourceType.CRITERION || ds.getType() == DataSourceType.ORDER) {
+			key = key + ":" + ds.getComparator();
+		} else if (ds.getType() == DataSourceType.DESCRIPTION && ds.getDependencies() != null && ds.getDependencies().size()>0) {
+			String params = "";
+			for (Dependency d : ds.getDependencies()) {
+				if(params.length()!=0){
+					params = params + "^";
+				}
+				String param = d.getField() + "=" + d.getFromAlias() + "=" + d.getFromField();
+				params = params + param; 
 			}
+			key = key + ":" + params;
 		}
+
 		return key;
 	}
 
@@ -67,7 +83,7 @@ public final class MyMessageReader {
 		Map<String, Object> mrfields = new HashMap<String, Object>();
 
 		boolean hasAtLeastOneItem = false;
-		
+
 		for (EntityData data : msg.getEntityDataList()) {
 			// Criterion
 			String filters = data.getFilters();
@@ -103,18 +119,18 @@ public final class MyMessageReader {
 				}
 			}
 		}
-		
+
 		// Control fields
 		Data controlData = msg.getData(Message.controlData);
-		if(controlData != null){
-			if(controlData.getFieldList() != null){
+		if (controlData != null) {
+			if (controlData.getFieldList() != null) {
 				for (Field field : controlData.getFieldList()) {
 					Object cValue = MyReader.convertToType(field.getValue());
 					mrfields.put("" + FS + field.getName() + FS + DataSourceType.CONTROL, cValue);
 				}
 			}
 		}
-		
+
 		// At least one Item
 		mrfields.put("ONE_ITEM", hasAtLeastOneItem);
 

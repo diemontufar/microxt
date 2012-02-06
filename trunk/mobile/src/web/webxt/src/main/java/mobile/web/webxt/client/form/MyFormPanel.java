@@ -238,6 +238,9 @@ public class MyFormPanel extends FormPanel {
 				DataSource ds = pf.getDataSource();
 				if (ds != null && ds.getType() != DataSourceType.CRITERION) {
 					String key = MyMessageReader.buildKey(ds);
+					if(ds.getType() == DataSourceType.DESCRIPTION){
+						key = uncompleteDescriptionKey(key);
+					}
 					Object newObject = rmfields.get(key);
 					setValueToField(f, newObject, diff);
 				}
@@ -245,6 +248,15 @@ public class MyFormPanel extends FormPanel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private String uncompleteDescriptionKey(String key) {
+		String key2 = key;
+		String [] part = key.split(":");
+		if(part.length>3){
+			key2 = part[0] + ":" + part[1] + ":" + part[2];
+		}
+		return key2;
 	}
 
 	private void fillIsNewFields() {

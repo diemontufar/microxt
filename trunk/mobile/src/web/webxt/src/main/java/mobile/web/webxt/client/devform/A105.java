@@ -116,7 +116,7 @@ public class A105 extends MyGeneralForm {
 
 		moduleId.linkWithField(moduleName, "name");
 
-		moduleId.addDependency(subsystemId);
+		moduleId.addDependency(subsystemId, "pk_subsystemId");
 		
 		row.add(moduleId);
 		row.add(moduleName);
