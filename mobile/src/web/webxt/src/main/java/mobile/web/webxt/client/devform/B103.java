@@ -21,18 +21,12 @@ import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
 
-import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
-import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
-import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.google.gwt.user.client.Element;
 
@@ -42,10 +36,13 @@ public class B103 extends MyGeneralForm {
 	private final static String ENTITY = "PersonAddress";
 
 	// Constants
-	final Integer PAGE_SIZE = 5;
+	final Integer PAGE_SIZE = 10;
 	final int FORM_WIDTH = 620;
-	final int TAB_HEIGHT = 300;
+	final int GRID_HEIGHT = 350;
 	final int LABEL_WIDTH = 60;
+
+	// Global components
+	ComboForm personIdCombo;
 
 	public B103() {
 		super(PROCESS, true);
@@ -55,10 +52,6 @@ public class B103 extends MyGeneralForm {
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-		createForm();
-	}
-
-	private void createForm() {
 
 		// Form panel
 		final MyFormPanel form = new MyFormPanel(this, "Direcciones", FORM_WIDTH);
@@ -67,11 +60,13 @@ public class B103 extends MyGeneralForm {
 		// Header
 		// Person id
 		RowContainer row = new RowContainer();
+		row.setStyleAttribute("margin-bottom", "10px");
 		MyLabel label = new MyLabel("Persona:", LABEL_WIDTH);
+
 		row.add(label);
 
-		ComboForm personIdCombo = new ComboForm(100);
-		personIdCombo.setDataSource(new DataSource("per", "pk_personId", DataSourceType.CRITERION));
+		personIdCombo = new ComboForm(100);
+		personIdCombo.setDataSource(new DataSource("perAdd", "pk_personId", DataSourceType.CRITERION));
 
 		Reference refPerson = new Reference("per1", "Person");
 		final ArrayColumnData perCdata = new ArrayColumnData();
@@ -79,30 +74,20 @@ public class B103 extends MyGeneralForm {
 		personIdCombo.setQueryData(refPerson, perCdata);
 		personIdCombo.setDisplayField("pk_personId");
 
-		personIdCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-				if (((ComboForm) se.getSource()).isSomeSelected()) {
-					form.queryForm();
-				}
-			}
-		});
-
 		row.add(personIdCombo);
 
 		form.add(row);
-		
+
 		form.add(createAddressGrid());
-		
+
 		add(form);
 	}
 
 	private LayoutContainer createAddressGrid() {
-
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_addressSequence", "Sec.", 40, 20, false));
-		cdata.add(new MyColumnData("addressTypeId", "Tipo", 40, 6, false));
+		cdata.add(new MyColumnData("pk_addressSequence", "Sec.", 40, 3, false));
+		cdata.add(new MyColumnData("addressTypeId", "Tipo", 60, 6, false));
 		cdata.add(new MyColumnData("addressDescription", "Descripcion", 100, 50, true));
 		cdata.add(new MyColumnData("countryId", "Pais", 50, 50, true));
 		cdata.add(new MyColumnData("provinceId", "Provincia", 50, 50, true));
@@ -112,11 +97,11 @@ public class B103 extends MyGeneralForm {
 
 		// Column model
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-		
+
 		NormalColumn a = new NormalColumn(cdata.get(0));
-		a.getEditor().disable();
+		// a.getEditor().disable();
 		configs.add(a);
-		
+
 		ComboColumn aTypeComboColumn = new ComboColumn(cdata.get(1));
 		Reference refaType = new Reference("adt", "AddressType");
 		ArrayColumnData cdataComboAType = new ArrayColumnData();
@@ -169,31 +154,15 @@ public class B103 extends MyGeneralForm {
 
 		ColumnModel cm = new ColumnModel(configs);
 
-		// Filters
-		GridFilters filters = new GridFilters();
-		StringFilter parameterIdFilter = new StringFilter(cdata.getIdFields().get(0));
-		StringFilter subsystemFilter = new StringFilter(cdata.getIdFields().get(1));
-		filters.addFilter(parameterIdFilter);
-		filters.addFilter(subsystemFilter);
-
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel(FORM_WIDTH - 35, TAB_HEIGHT - 26);
-		cp.setHeaderVisible(false);
+		EntityContentPanel cp = new EntityContentPanel(FORM_WIDTH - 35, GRID_HEIGHT);
 
 		// Grid
-		EntityEditorGrid addressGrid = new EntityEditorGrid(getStore(), cm);
-		addressGrid.setAutoExpandColumn("addressDescription");
+		final EntityEditorGrid addressGrid = new EntityEditorGrid(getStore(), cm);
 		addressGrid.setBorders(true);
-		addressGrid.addPlugin(filters);
-//		addressGrid.getColumnModel().getColumn(0).getEditor().disable();
-//		addressGrid.getColumnModel().getColumn(1).getEditor().disable();
+		addressGrid.setAutoExpandColumn("addressDescription");
+		addressGrid.addDependency(personIdCombo);
 		cp.add(addressGrid);
-
-		addressGrid.addListener(Events.Attach, new Listener<BaseEvent>() {
-			public void handleEvent(BaseEvent be) {
-				getStore().sort(cdata.getIdFields().get(0), SortDir.ASC);
-			}
-		});
 
 		// Top tool bar
 		GridToolBar toolBar = new GridToolBar(addressGrid, getStore());
@@ -203,6 +172,18 @@ public class B103 extends MyGeneralForm {
 		// Paging tool bar
 		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(addressGrid, PAGE_SIZE);
 		cp.setBottomComponent(pagingToolBar);
+
+		// Operations
+		personIdCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+				if (((ComboForm) se.getSource()).isSomeSelected()) {
+					pagingToolBar.refresh();
+				} else {
+					addressGrid.getStore().removeAll();
+				}
+			}
+		});
 
 		return cp;
 	}
