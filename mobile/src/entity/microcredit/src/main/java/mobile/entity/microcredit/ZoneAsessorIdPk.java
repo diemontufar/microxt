@@ -9,7 +9,8 @@ import mobile.entity.schema.GeneralEntityKey;
  * The primary key class for the ZONE_ASESSOR_ID database table.
  */
 @Embeddable
-public class ZoneAsessorIdPk extends AbstractEntityKey implements GeneralEntityKey {
+public class ZoneAsessorIdPk extends AbstractEntityKey implements
+		GeneralEntityKey {
 	private static final long serialVersionUID = 1L;
 
 	/**

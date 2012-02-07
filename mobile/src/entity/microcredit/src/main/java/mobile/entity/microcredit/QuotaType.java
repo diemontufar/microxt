@@ -11,7 +11,8 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "QUOTA_TYPE")
-public class QuotaType extends AbstractEntity implements Multicompany, Multilanguage {
+public class QuotaType extends AbstractEntity implements Multicompany,
+		Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -65,6 +66,7 @@ public class QuotaType extends AbstractEntity implements Multicompany, Multilang
 
 	@Override
 	public String toString() {
-		return "QUOTA_TYPE:[" + this.getPk().toString() + ", " + this.getDescription() + "]";
+		return "QUOTA_TYPE:[" + this.getPk().toString() + ", "
+				+ this.getDescription() + "]";
 	}
 }

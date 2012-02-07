@@ -10,7 +10,8 @@ import mobile.entity.schema.GeneralEntityId;
  */
 @Entity
 @Table(name = "SOLICITUDE_STATUS_ID")
-public class SolicitudeStatusId extends AbstractEntityId implements GeneralEntityId {
+public class SolicitudeStatusId extends AbstractEntityId implements
+		GeneralEntityId {
 	private static final long serialVersionUID = 1L;
 
 	/**

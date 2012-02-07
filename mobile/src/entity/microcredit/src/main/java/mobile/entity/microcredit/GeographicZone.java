@@ -11,7 +11,8 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "GEOGRAPHIC_ZONE")
-public class GeographicZone extends AbstractEntity implements Multicompany, Multilanguage {
+public class GeographicZone extends AbstractEntity implements Multicompany,
+		Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -84,7 +85,8 @@ public class GeographicZone extends AbstractEntity implements Multicompany, Mult
 		this.pk = pk;
 	}
 
-	public GeographicZone(GeographicZonePk pk, String coordinateType, String p11, String p12) {
+	public GeographicZone(GeographicZonePk pk, String coordinateType,
+			String p11, String p12) {
 		this.pk = pk;
 		this.coordinateType = coordinateType;
 		this.p11 = p11;
@@ -193,9 +195,11 @@ public class GeographicZone extends AbstractEntity implements Multicompany, Mult
 
 	@Override
 	public String toString() {
-		return "GEOGRAPHIC_ZONE:[" + this.getPk().toString() + ", " + this.getDescription() + ", "
-				+ this.getCoordinateType() + ", " + this.getP11() + ", " + this.getP12() + ", " + this.getP21() + ", "
-				+ this.getP22() + ", " + this.getP31() + ", " + this.getP32() + ", " + this.getP41() + ", "
+		return "GEOGRAPHIC_ZONE:[" + this.getPk().toString() + ", "
+				+ this.getDescription() + ", " + this.getCoordinateType()
+				+ ", " + this.getP11() + ", " + this.getP12() + ", "
+				+ this.getP21() + ", " + this.getP22() + ", " + this.getP31()
+				+ ", " + this.getP32() + ", " + this.getP41() + ", "
 				+ this.getP42() + "]";
 	}
 }

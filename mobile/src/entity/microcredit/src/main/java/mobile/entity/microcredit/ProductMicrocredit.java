@@ -15,7 +15,8 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "PRODUCT_MICROCREDIT")
-public class ProductMicrocredit extends AbstractHistorical implements Multicompany, Multilanguage, Historical {
+public class ProductMicrocredit extends AbstractHistorical implements
+		Multicompany, Multilanguage, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -70,8 +71,9 @@ public class ProductMicrocredit extends AbstractHistorical implements Multicompa
 		this.pk = pk;
 	}
 
-	public ProductMicrocredit(ProductMicrocreditPk pk, String description, String currencyId, BigDecimal minAmount,
-			BigDecimal maxAmount, Long minPeriod, Long maxPeriod, BigDecimal rate) {
+	public ProductMicrocredit(ProductMicrocreditPk pk, String description,
+			String currencyId, BigDecimal minAmount, BigDecimal maxAmount,
+			Long minPeriod, Long maxPeriod, BigDecimal rate) {
 		this.pk = pk;
 		this.description = description;
 		this.currencyId = currencyId;
@@ -160,9 +162,10 @@ public class ProductMicrocredit extends AbstractHistorical implements Multicompa
 
 	@Override
 	public String toString() {
-		return "PRODUCT_MICROCREDIT:[" + this.getPk().toString() + ", " + this.getCreated() + ", "
-				+ this.getDescription() + ", " + this.getCurrencyId() + ", " + this.getMinAmount() + ", "
-				+ this.getMaxAmount() + ", " + this.getMinPeriod() + ", " + this.getMaxPeriod() + ", " + this.getRate()
-				+ "]";
+		return "PRODUCT_MICROCREDIT:[" + this.getPk().toString() + ", "
+				+ this.getCreated() + ", " + this.getDescription() + ", "
+				+ this.getCurrencyId() + ", " + this.getMinAmount() + ", "
+				+ this.getMaxAmount() + ", " + this.getMinPeriod() + ", "
+				+ this.getMaxPeriod() + ", " + this.getRate() + "]";
 	}
 }

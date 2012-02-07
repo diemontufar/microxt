@@ -13,8 +13,8 @@ import mobile.entity.schema.OptimisticLocking;
  */
 @Entity
 @Table(name = "PARTNER_GROUP_MEMBER")
-public class PartnerGroupMember extends AbstractHistoricalLocking implements Multicompany, Historical,
-		OptimisticLocking {
+public class PartnerGroupMember extends AbstractHistoricalLocking implements
+		Multicompany, Historical, OptimisticLocking {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -51,7 +51,8 @@ public class PartnerGroupMember extends AbstractHistoricalLocking implements Mul
 		this.pk = pk;
 	}
 
-	public PartnerGroupMember(PartnerGroupMemberPk pk, String partnerGroupId, Long personId, String responsabilityId) {
+	public PartnerGroupMember(PartnerGroupMemberPk pk, String partnerGroupId,
+			Long personId, String responsabilityId) {
 		this.pk = pk;
 		this.partnerGroupId = partnerGroupId;
 		this.personId = personId;
@@ -112,8 +113,9 @@ public class PartnerGroupMember extends AbstractHistoricalLocking implements Mul
 
 	@Override
 	public String toString() {
-		return "PARTNER_GROUP_MEMBER:[" + this.getPk().toString() + ", " + this.getCreated() + ", "
-				+ this.getPartnerGroupId() + ", " + this.getPersonId() + ", " + this.getResponsabilityId() + ", "
+		return "PARTNER_GROUP_MEMBER:[" + this.getPk().toString() + ", "
+				+ this.getCreated() + ", " + this.getPartnerGroupId() + ", "
+				+ this.getPersonId() + ", " + this.getResponsabilityId() + ", "
 				+ this.getObservations() + ", " + this.getVersion() + "]";
 	}
 }

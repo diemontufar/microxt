@@ -13,34 +13,36 @@ import mobile.entity.schema.GeneralEntityId;
 public class PartnerId extends AbstractEntityId implements GeneralEntityId {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private PartnerIdPk pk;
+	/**
+	 * Person id
+	 */
+	@Id
+	@Column(name = "PARTNER_ID", nullable = false)
+	private Integer partnerId;
 
 	public PartnerId() {
 	}
 
-	public PartnerId(PartnerIdPk pk) {
-		this.pk = pk;
+	public PartnerId(Integer partnerId) {
+		this.partnerId = partnerId;
 	}
 
-	public PartnerIdPk getPk() {
-		return this.pk;
+	public Integer getPartnerId() {
+		return this.partnerId;
 	}
 
-	public void setPk(PartnerIdPk pk) {
-		this.pk = pk;
+	public void setPartnerId(Integer partnerId) {
+		this.partnerId = partnerId;
+	}
+
+	@Override
+	public Object getPk() {
+		return this.partnerId;
 	}
 
 	@Override
 	public void setPk(Object pk) {
-		this.pk = (PartnerIdPk) pk;
-	}
-
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		PartnerId copy = (PartnerId) super.clone();
-		copy.setPk((PartnerIdPk) this.pk.clone());
-		return copy;
+		this.partnerId = (Integer) pk;
 	}
 
 	@Override
