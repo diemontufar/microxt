@@ -1,7 +1,5 @@
 package mobile.web.webxt.client.devform;
 
-import java.util.Date;
-
 import mobile.common.message.Item;
 import mobile.common.tools.Format;
 import mobile.web.webxt.client.data.form.DataSource;
@@ -12,6 +10,7 @@ import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgets.ComboForm;
 import mobile.web.webxt.client.form.widgets.InputBox;
+import mobile.web.webxt.client.form.widgets.MyDateField;
 import mobile.web.webxt.client.form.widgets.MyLabel;
 import mobile.web.webxt.client.form.widgets.MyTextArea;
 import mobile.web.webxt.client.form.widgets.RowContainer;
@@ -40,7 +39,6 @@ import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Element;
 
 public class C201 extends MyGeneralForm {
@@ -65,7 +63,8 @@ public class C201 extends MyGeneralForm {
 	SimpleComboBox<Integer> diaReunion;
 	
 	//Person Fields:
-	InputBox identification,name,lastName,birth,age,gender,civilStatus;
+	InputBox identification,name,lastName,age,gender,civilStatus;
+	MyDateField birth;
 	ContentPanel principalPanel = new ContentPanel();
 	
 	Button save,clear;
@@ -148,6 +147,15 @@ public class C201 extends MyGeneralForm {
 		form.add(fieldSetActivity);
 		add(form);
 		
+		partnerCode.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+				if (((ComboForm) se.getSource()).isSomeSelected()) {
+					form.queryForm();
+				}
+			}
+		});
+		
 	}
 	
 	private FieldSet createPersonForm(){
@@ -183,11 +191,11 @@ public class C201 extends MyGeneralForm {
 		row = new RowContainer();
 		label = new MyLabel("Edad:", LABEL_WIDTH+10);
 		row.add(label);	
-		birth= new InputBox(100,40,Validate.TEXT);
-		birth.setVisible(true);
+		birth= new MyDateField(100);
+		birth.setVisible(false);
 		birth.setFireChangeEventOnSetValue(true);
 		age= new InputBox(100,40,Validate.TEXT);
-		//row.add(age);
+		row.add(age);
 		row.add(birth);
 		fieldSet.add(row);
 		
@@ -231,17 +239,11 @@ public class C201 extends MyGeneralForm {
 		
 		birth.addListener(Events.Change, new Listener<BaseEvent>() {
 		    public void handleEvent(BaseEvent be) {
-		    	System.out.println("OnChange!!!!!!!!!!!!!!");
 				if (birth.getValue() != null) {
 					int age1=0;
-					Date date;
-//					DateTimeFormat dformat = DateTimeFormat.getFormat(Format.DATE_PRESENTATION);
-//					System.out.println(birth.getValue().toString());
-//					date=(Date)birth.get
-//					System.out.println(date);
-//					age1=DatesManager.calculateAge(DatesManager.dateToString(date, Format.DATE));
-//					age.setValue(String.valueOf(age1));
-//					System.out.println("Entro aqui: "+age1);
+					String date=DatesManager.dateToString(birth.getValue(), Format.DATE);
+					age1=DatesManager.calculateAge(date);
+					age.setValue(String.valueOf(age1));
 				}
 		    }
 		});
@@ -269,16 +271,7 @@ public class C201 extends MyGeneralForm {
 		perCdata.add(new MyColumnData("par1", "pk_partnerId", "Id", 100));
 		partnerCode.setQueryData(refPartner, perCdata);
 		partnerCode.setDisplayField("pk_partnerId");
-		
-		partnerCode.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-				if (((ComboForm) se.getSource()).isSomeSelected()) {
-					form.queryForm();
-				}
-			}
-		});
-		
+				
 		row.add(partnerCode);
 		fieldSet.add(row);
 		
