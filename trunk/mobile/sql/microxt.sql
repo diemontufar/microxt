@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9
+-- version 3.4.5
 -- http://www.phpmyadmin.net
 --
--- Servidor: localhost
--- Tiempo de generación: 20-01-2012 a las 23:18:10
--- Versión del servidor: 5.5.8
--- Versión de PHP: 5.3.5
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 07-02-2012 a las 07:54:37
+-- Versión del servidor: 5.5.16
+-- Versión de PHP: 5.3.8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -16,16 +17,16 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `microxt4`
+-- Base de datos: `microxt`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ADDRESS_TYPE`
+-- Estructura de tabla para la tabla `address_type`
 --
 
-CREATE TABLE IF NOT EXISTS `ADDRESS_TYPE` (
+CREATE TABLE IF NOT EXISTS `address_type` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `ADDRESS_TYPE_ID` varchar(4) NOT NULL,
@@ -36,33 +37,45 @@ CREATE TABLE IF NOT EXISTS `ADDRESS_TYPE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `ADDRESS_TYPE`
+-- Volcado de datos para la tabla `address_type`
 --
 
+INSERT INTO `address_type` (`COMPANY_ID`, `LANGUAGE_ID`, `ADDRESS_TYPE_ID`, `NAME`) VALUES
+('MXT', 'ES', 'CE', 'CORREO ELECTRONICO'),
+('MXT', 'ES', 'HA', 'DOMICILIO'),
+('MXT', 'ES', 'ML', 'CORREO'),
+('MXT', 'ES', 'OF', 'OFICINA'),
+('MXT', 'ES', 'WE', 'PAGINA WEB');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ADDRESS_TYPE_ID`
+-- Estructura de tabla para la tabla `address_type_id`
 --
 
-CREATE TABLE IF NOT EXISTS `ADDRESS_TYPE_ID` (
+CREATE TABLE IF NOT EXISTS `address_type_id` (
   `ADDRESS_TYPE_ID` varchar(4) NOT NULL,
   PRIMARY KEY (`ADDRESS_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `ADDRESS_TYPE_ID`
+-- Volcado de datos para la tabla `address_type_id`
 --
 
+INSERT INTO `address_type_id` (`ADDRESS_TYPE_ID`) VALUES
+('CE'),
+('HA'),
+('ML'),
+('OF'),
+('WE');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `CITY`
+-- Estructura de tabla para la tabla `city`
 --
 
-CREATE TABLE IF NOT EXISTS `CITY` (
+CREATE TABLE IF NOT EXISTS `city` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `COUNTRY_ID` varchar(2) NOT NULL,
@@ -75,10 +88,10 @@ CREATE TABLE IF NOT EXISTS `CITY` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `CITY`
+-- Volcado de datos para la tabla `city`
 --
 
-INSERT INTO `CITY` (`COMPANY_ID`, `LANGUAGE_ID`, `COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `NAME`) VALUES
+INSERT INTO `city` (`COMPANY_ID`, `LANGUAGE_ID`, `COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `NAME`) VALUES
 ('MXT', 'ES', 'EC', 'AZ', 'CH', 'Chordeleg'),
 ('MXT', 'ES', 'EC', 'AZ', 'CU', 'Cuenca'),
 ('MXT', 'ES', 'EC', 'AZ', 'EL', 'El Pan'),
@@ -98,10 +111,10 @@ INSERT INTO `CITY` (`COMPANY_ID`, `LANGUAGE_ID`, `COUNTRY_ID`, `PROVINCE_ID`, `C
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `CITY_ID`
+-- Estructura de tabla para la tabla `city_id`
 --
 
-CREATE TABLE IF NOT EXISTS `CITY_ID` (
+CREATE TABLE IF NOT EXISTS `city_id` (
   `COUNTRY_ID` varchar(2) NOT NULL,
   `PROVINCE_ID` varchar(2) NOT NULL,
   `CITY_ID` varchar(3) NOT NULL,
@@ -109,10 +122,10 @@ CREATE TABLE IF NOT EXISTS `CITY_ID` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `CITY_ID`
+-- Volcado de datos para la tabla `city_id`
 --
 
-INSERT INTO `CITY_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) VALUES
+INSERT INTO `city_id` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) VALUES
 ('EC', 'AZ', 'CH'),
 ('EC', 'AZ', 'CU'),
 ('EC', 'AZ', 'EL'),
@@ -132,10 +145,10 @@ INSERT INTO `CITY_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `CIVIL_STATUS`
+-- Estructura de tabla para la tabla `civil_status`
 --
 
-CREATE TABLE IF NOT EXISTS `CIVIL_STATUS` (
+CREATE TABLE IF NOT EXISTS `civil_status` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `CIVIL_STATUS_ID` varchar(4) NOT NULL,
@@ -146,10 +159,10 @@ CREATE TABLE IF NOT EXISTS `CIVIL_STATUS` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `CIVIL_STATUS`
+-- Volcado de datos para la tabla `civil_status`
 --
 
-INSERT INTO `CIVIL_STATUS` (`COMPANY_ID`, `LANGUAGE_ID`, `CIVIL_STATUS_ID`, `NAME`) VALUES
+INSERT INTO `civil_status` (`COMPANY_ID`, `LANGUAGE_ID`, `CIVIL_STATUS_ID`, `NAME`) VALUES
 ('MXT', 'ES', 'CAS', 'CASADO(A)'),
 ('MXT', 'ES', 'DIV', 'DIVORCIADO(A)'),
 ('MXT', 'ES', 'SEP', 'SEPARADO(A)'),
@@ -160,19 +173,19 @@ INSERT INTO `CIVIL_STATUS` (`COMPANY_ID`, `LANGUAGE_ID`, `CIVIL_STATUS_ID`, `NAM
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `CIVIL_STATUS_ID`
+-- Estructura de tabla para la tabla `civil_status_id`
 --
 
-CREATE TABLE IF NOT EXISTS `CIVIL_STATUS_ID` (
+CREATE TABLE IF NOT EXISTS `civil_status_id` (
   `CIVIL_STATUS_ID` varchar(4) NOT NULL,
   PRIMARY KEY (`CIVIL_STATUS_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `CIVIL_STATUS_ID`
+-- Volcado de datos para la tabla `civil_status_id`
 --
 
-INSERT INTO `CIVIL_STATUS_ID` (`CIVIL_STATUS_ID`) VALUES
+INSERT INTO `civil_status_id` (`CIVIL_STATUS_ID`) VALUES
 ('CAS'),
 ('DIV'),
 ('SEP'),
@@ -183,10 +196,10 @@ INSERT INTO `CIVIL_STATUS_ID` (`CIVIL_STATUS_ID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `COMPANY`
+-- Estructura de tabla para la tabla `company`
 --
 
-CREATE TABLE IF NOT EXISTS `COMPANY` (
+CREATE TABLE IF NOT EXISTS `company` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `NAME` varchar(40) NOT NULL,
   `DATAFILE_ID` int(11) DEFAULT NULL,
@@ -197,20 +210,20 @@ CREATE TABLE IF NOT EXISTS `COMPANY` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `COMPANY`
+-- Volcado de datos para la tabla `company`
 --
 
-INSERT INTO `COMPANY` (`COMPANY_ID`, `NAME`, `DATAFILE_ID`, `UPGRADE_NUMBER`, `LICENSE_DATE`, `ENABLE`) VALUES
-('ALL', 'DEFAULT COMPANY', NULL, 1.10, '2011-01-01 00:00:00', '1'),
-('MXT', 'MICROXT', NULL, 1.00, '2011-01-01 00:00:00', '1');
+INSERT INTO `company` (`COMPANY_ID`, `NAME`, `DATAFILE_ID`, `UPGRADE_NUMBER`, `LICENSE_DATE`, `ENABLE`) VALUES
+('ALL', 'DEFAULT COMPANY', NULL, '1.10', '2011-01-01 00:00:00', '1'),
+('MXT', 'MICROXT', NULL, '1.00', '2011-01-01 00:00:00', '1');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `COMPONENT`
+-- Estructura de tabla para la tabla `component`
 --
 
-CREATE TABLE IF NOT EXISTS `COMPONENT` (
+CREATE TABLE IF NOT EXISTS `component` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `COMPONENT_ID` varchar(150) NOT NULL,
   `SUBSYSTEM_ID` varchar(2) NOT NULL,
@@ -223,43 +236,44 @@ CREATE TABLE IF NOT EXISTS `COMPONENT` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `COMPONENT`
+-- Volcado de datos para la tabla `component`
 --
 
-INSERT INTO `COMPONENT` (`COMPANY_ID`, `COMPONENT_ID`, `SUBSYSTEM_ID`, `CLASS_NAME`, `METHOD_NAME`, `DESCRIPTION`) VALUES
+INSERT INTO `component` (`COMPANY_ID`, `COMPONENT_ID`, `SUBSYSTEM_ID`, `CLASS_NAME`, `METHOD_NAME`, `DESCRIPTION`) VALUES
 ('MXT', 'mobile.bus.security.Loggin', 'A', 'Loggin', 'general', 'Process loggin'),
 ('MXT', 'mobile.core.processor.MaintenanceProcessor', 'G', 'MaintenanceProcessor', 'general', 'General maintenance processor'),
-('MXT', 'mobile.core.processor.SpecialQueryProcessor', 'G', 'SpecialQueryProcessor', 'general', 'Special query');
+('MXT', 'mobile.core.processor.QueryProcessor', 'G', 'QueryProcessor', 'general', 'General query processor'),
+('MXT', 'mobile.logic.general.MenuGenerator', 'G', 'MenuGenerator', 'general', 'Query the menu items');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `COMPONENT_ID`
+-- Estructura de tabla para la tabla `component_id`
 --
 
-CREATE TABLE IF NOT EXISTS `COMPONENT_ID` (
+CREATE TABLE IF NOT EXISTS `component_id` (
   `COMPONENT_ID` varchar(150) NOT NULL,
   PRIMARY KEY (`COMPONENT_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `COMPONENT_ID`
+-- Volcado de datos para la tabla `component_id`
 --
 
-INSERT INTO `COMPONENT_ID` (`COMPONENT_ID`) VALUES
+INSERT INTO `component_id` (`COMPONENT_ID`) VALUES
 ('mobile.bus.parameter.ParameterTest'),
 ('mobile.bus.security.Loggin'),
 ('mobile.core.processor.MaintenanceProcessor'),
-('mobile.core.processor.SpecialQueryProcessor'),
+('mobile.core.processor.QueryProcessor'),
 ('mobile.logic.general.MenuGenerator');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `COUNTRY`
+-- Estructura de tabla para la tabla `country`
 --
 
-CREATE TABLE IF NOT EXISTS `COUNTRY` (
+CREATE TABLE IF NOT EXISTS `country` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `COUNTRY_ID` varchar(2) NOT NULL,
@@ -271,37 +285,37 @@ CREATE TABLE IF NOT EXISTS `COUNTRY` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `COUNTRY`
+-- Volcado de datos para la tabla `country`
 --
 
-INSERT INTO `COUNTRY` (`COMPANY_ID`, `LANGUAGE_ID`, `COUNTRY_ID`, `NAME`, `AREA_CODE`) VALUES
+INSERT INTO `country` (`COMPANY_ID`, `LANGUAGE_ID`, `COUNTRY_ID`, `NAME`, `AREA_CODE`) VALUES
 ('MXT', 'ES', 'EC', 'ECUADOR', '0000');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `COUNTRY_ID`
+-- Estructura de tabla para la tabla `country_id`
 --
 
-CREATE TABLE IF NOT EXISTS `COUNTRY_ID` (
+CREATE TABLE IF NOT EXISTS `country_id` (
   `COUNTRY_ID` varchar(2) NOT NULL,
   PRIMARY KEY (`COUNTRY_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `COUNTRY_ID`
+-- Volcado de datos para la tabla `country_id`
 --
 
-INSERT INTO `COUNTRY_ID` (`COUNTRY_ID`) VALUES
+INSERT INTO `country_id` (`COUNTRY_ID`) VALUES
 ('EC');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `CURRENCY`
+-- Estructura de tabla para la tabla `currency`
 --
 
-CREATE TABLE IF NOT EXISTS `CURRENCY` (
+CREATE TABLE IF NOT EXISTS `currency` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `EXPIRED` datetime NOT NULL,
@@ -315,33 +329,39 @@ CREATE TABLE IF NOT EXISTS `CURRENCY` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `CURRENCY`
+-- Volcado de datos para la tabla `currency`
 --
 
+INSERT INTO `currency` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `CURRENCY_ID`, `CREATED`, `DESCRIPTION`, `INITIALS`) VALUES
+('MXT', 'ES', '9999-12-31 00:00:00', 'EUR', '2012-01-20 20:46:58', 'EURO', '$'),
+('MXT', 'ES', '9999-12-31 00:00:00', 'USD', '2012-01-20 20:46:58', 'DOLAR', '€');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `CURRENCY_ID`
+-- Estructura de tabla para la tabla `currency_id`
 --
 
-CREATE TABLE IF NOT EXISTS `CURRENCY_ID` (
+CREATE TABLE IF NOT EXISTS `currency_id` (
   `CURRENCY_ID` varchar(3) NOT NULL,
   PRIMARY KEY (`CURRENCY_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `CURRENCY_ID`
+-- Volcado de datos para la tabla `currency_id`
 --
 
+INSERT INTO `currency_id` (`CURRENCY_ID`) VALUES
+('EUR'),
+('USD');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `DATABASE_TYPE`
+-- Estructura de tabla para la tabla `database_type`
 --
 
-CREATE TABLE IF NOT EXISTS `DATABASE_TYPE` (
+CREATE TABLE IF NOT EXISTS `database_type` (
   `DATA_TYPE_ID` varchar(30) NOT NULL,
   `DATABASE_ID` varchar(30) NOT NULL,
   `DATA_SIZE` smallint(6) NOT NULL,
@@ -350,10 +370,10 @@ CREATE TABLE IF NOT EXISTS `DATABASE_TYPE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `DATABASE_TYPE`
+-- Volcado de datos para la tabla `database_type`
 --
 
-INSERT INTO `DATABASE_TYPE` (`DATA_TYPE_ID`, `DATABASE_ID`, `DATA_SIZE`, `DATABASE_TYPE`) VALUES
+INSERT INTO `database_type` (`DATA_TYPE_ID`, `DATABASE_ID`, `DATA_SIZE`, `DATABASE_TYPE`) VALUES
 ('BigDecimal', 'MYSQL', 0, 'DECIMAL'),
 ('BigDecimal', 'ORACLE', 0, 'NUMBER'),
 ('Blob', 'MYSQL', 0, 'BLOB'),
@@ -380,10 +400,10 @@ INSERT INTO `DATABASE_TYPE` (`DATA_TYPE_ID`, `DATABASE_ID`, `DATA_SIZE`, `DATABA
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `DATAFILE`
+-- Estructura de tabla para la tabla `datafile`
 --
 
-CREATE TABLE IF NOT EXISTS `DATAFILE` (
+CREATE TABLE IF NOT EXISTS `datafile` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `DATAFILE_ID` int(11) NOT NULL,
@@ -399,44 +419,34 @@ CREATE TABLE IF NOT EXISTS `DATAFILE` (
   KEY `DATAFILE_ID_FK` (`DATAFILE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `DATAFILE`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `DATAFILE_ID`
+-- Estructura de tabla para la tabla `datafile_id`
 --
 
-CREATE TABLE IF NOT EXISTS `DATAFILE_ID` (
+CREATE TABLE IF NOT EXISTS `datafile_id` (
   `DATAFILE_ID` int(11) NOT NULL,
   PRIMARY KEY (`DATAFILE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `DATAFILE_ID`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `DATAFILE_TYPE`
+-- Estructura de tabla para la tabla `datafile_type`
 --
 
-CREATE TABLE IF NOT EXISTS `DATAFILE_TYPE` (
+CREATE TABLE IF NOT EXISTS `datafile_type` (
   `DATAFILE_TYPE_ID` varchar(4) NOT NULL,
   `NAME` varchar(40) NOT NULL,
   PRIMARY KEY (`DATAFILE_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `DATAFILE_TYPE`
+-- Volcado de datos para la tabla `datafile_type`
 --
 
-INSERT INTO `DATAFILE_TYPE` (`DATAFILE_TYPE_ID`, `NAME`) VALUES
+INSERT INTO `datafile_type` (`DATAFILE_TYPE_ID`, `NAME`) VALUES
 ('DOC', 'Word Document Format'),
 ('JPG', 'Image File Format'),
 ('PDF', 'Portable Document Format'),
@@ -445,20 +455,20 @@ INSERT INTO `DATAFILE_TYPE` (`DATAFILE_TYPE_ID`, `NAME`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `DATA_TYPE`
+-- Estructura de tabla para la tabla `data_type`
 --
 
-CREATE TABLE IF NOT EXISTS `DATA_TYPE` (
+CREATE TABLE IF NOT EXISTS `data_type` (
   `DATA_TYPE_ID` varchar(30) NOT NULL,
   `DESCRIPTION` varchar(100) NOT NULL,
   PRIMARY KEY (`DATA_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `DATA_TYPE`
+-- Volcado de datos para la tabla `data_type`
 --
 
-INSERT INTO `DATA_TYPE` (`DATA_TYPE_ID`, `DESCRIPTION`) VALUES
+INSERT INTO `data_type` (`DATA_TYPE_ID`, `DESCRIPTION`) VALUES
 ('BigDecimal', 'Number with decimal fractions'),
 ('Blob', 'Binary large object'),
 ('Boolean', 'Logic values true and false'),
@@ -472,10 +482,10 @@ INSERT INTO `DATA_TYPE` (`DATA_TYPE_ID`, `DESCRIPTION`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `DISTRICT`
+-- Estructura de tabla para la tabla `district`
 --
 
-CREATE TABLE IF NOT EXISTS `DISTRICT` (
+CREATE TABLE IF NOT EXISTS `district` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `COUNTRY_ID` varchar(2) NOT NULL,
@@ -488,18 +498,13 @@ CREATE TABLE IF NOT EXISTS `DISTRICT` (
   KEY `DISTRICT_LANGUAGE_FK` (`LANGUAGE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `DISTRICT`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `DISTRICT_ID`
+-- Estructura de tabla para la tabla `district_id`
 --
 
-CREATE TABLE IF NOT EXISTS `DISTRICT_ID` (
+CREATE TABLE IF NOT EXISTS `district_id` (
   `COUNTRY_ID` varchar(2) NOT NULL,
   `PROVINCE_ID` varchar(2) NOT NULL,
   `CITY_ID` varchar(3) NOT NULL,
@@ -507,18 +512,13 @@ CREATE TABLE IF NOT EXISTS `DISTRICT_ID` (
   PRIMARY KEY (`COUNTRY_ID`,`PROVINCE_ID`,`CITY_ID`,`DISTRICT_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `DISTRICT_ID`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ENTITY_FIELD`
+-- Estructura de tabla para la tabla `entity_field`
 --
 
-CREATE TABLE IF NOT EXISTS `ENTITY_FIELD` (
+CREATE TABLE IF NOT EXISTS `entity_field` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `TABLE_ID` varchar(30) NOT NULL,
   `FIELD_ID` varchar(30) NOT NULL,
@@ -541,10 +541,10 @@ CREATE TABLE IF NOT EXISTS `ENTITY_FIELD` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `ENTITY_FIELD`
+-- Volcado de datos para la tabla `entity_field`
 --
 
-INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`, `DATA_TYPE_ID`, `DATA_SIZE`, `DATA_SCALE`, `PRIMARY_KEY`, `UNIQUE_KEY`, `NULLABLE`, `DEFAULT_VALUE`, `SEQUENTIAL_ID`, `MINIMUM_VALUE`, `MAXIMUM_VALUE`, `DESCRIPTION`) VALUES
+INSERT INTO `entity_field` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`, `DATA_TYPE_ID`, `DATA_SIZE`, `DATA_SCALE`, `PRIMARY_KEY`, `UNIQUE_KEY`, `NULLABLE`, `DEFAULT_VALUE`, `SEQUENTIAL_ID`, `MINIMUM_VALUE`, `MAXIMUM_VALUE`, `DESCRIPTION`) VALUES
 ('ALL', 'ADDRESS_TYPE', 'ADDRESS_TYPE_ID', 1, 'String', 4, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Address type Id'),
 ('ALL', 'ADDRESS_TYPE', 'NAME', 2, 'String', 40, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Name of address type'),
 ('ALL', 'CITY', 'CITY_ID', 3, 'String', 3, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'City Id'),
@@ -654,9 +654,9 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'PARTNER', 'ACTIVITY', 3, 'String', 300, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Activity'),
 ('ALL', 'PARTNER', 'FREQUENCY_ID', 5, 'String', 3, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Meeting Frequency id'),
 ('ALL', 'PARTNER', 'MEETING_DAY', 6, 'Integer', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Meeting day'),
-('ALL', 'PARTNER', 'PARTNER_ID', 1, 'String', 10, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Person id'),
+('ALL', 'PARTNER', 'PARTNER_ID', 1, 'Integer', 0, 0, '1', '0', '0', NULL, 'PARTNER', NULL, NULL, 'Person id'),
 ('ALL', 'PARTNER', 'PERSON_ID', 2, 'Long', 10, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Person id'),
-('ALL', 'PARTNER', 'USER_ID', 4, 'String', 20, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'User Id'),
+('ALL', 'PARTNER', 'USER_ID', 4, 'String', 20, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'User Id'),
 ('ALL', 'PARTNER_GROUP', 'ACTIVITY', 4, 'String', 300, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Activity'),
 ('ALL', 'PARTNER_GROUP', 'CREATION_DATE', 3, 'Date', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Creation date'),
 ('ALL', 'PARTNER_GROUP', 'FREQUENCY_ID', 6, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Meeting Frequency id'),
@@ -673,13 +673,13 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'PERSON', 'CIVIL_STATUS_ID', 9, 'String', 4, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Civil type status Id'),
 ('ALL', 'PERSON', 'COUNTRY_ID', 10, 'String', 2, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Country Id'),
 ('ALL', 'PERSON', 'DATE_OF_BIRTH', 7, 'Date', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Date of birth'),
-('ALL', 'PERSON', 'DISTRICT_ID', 13, 'String', 4, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'District Id'),
+('ALL', 'PERSON', 'DISTRICT_ID', 13, 'String', 4, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'District Id'),
 ('ALL', 'PERSON', 'GENDER_TYPE_ID', 8, 'String', 4, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Gender type Id'),
 ('ALL', 'PERSON', 'IDENTIFICATION_NUMBER', 6, 'String', 40, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Identification number'),
 ('ALL', 'PERSON', 'IDENTIFICATION_TYPE_ID', 5, 'String', 4, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Identification type Id'),
 ('ALL', 'PERSON', 'LAST_NAME', 3, 'String', 40, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Lastname of person'),
 ('ALL', 'PERSON', 'NAME', 2, 'String', 40, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Name of person'),
-('ALL', 'PERSON', 'PERSON_ID', 1, 'Long', 10, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Person Id'),
+('ALL', 'PERSON', 'PERSON_ID', 1, 'Integer', 0, 0, '1', '0', '0', NULL, 'PERSON', NULL, NULL, 'Person Id'),
 ('ALL', 'PERSON', 'PROFESSION_TYPE_ID', 14, 'String', 4, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Profession type Id'),
 ('ALL', 'PERSON', 'PROVINCE_ID', 12, 'String', 2, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Province Id'),
 ('ALL', 'PERSON', 'SECOND_LAST_NAME', 4, 'String', 40, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Second lastname of person'),
@@ -688,7 +688,7 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'PERSON_ADDRESS', 'ADDRESS_TYPE_ID', 3, 'String', 4, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Address type Id'),
 ('ALL', 'PERSON_ADDRESS', 'CITY_ID', 6, 'String', 3, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'City Id'),
 ('ALL', 'PERSON_ADDRESS', 'COUNTRY_ID', 5, 'String', 2, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Country Id'),
-('ALL', 'PERSON_ADDRESS', 'DISTRICT_ID', 8, 'String', 4, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'District Id'),
+('ALL', 'PERSON_ADDRESS', 'DISTRICT_ID', 8, 'String', 4, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'District Id'),
 ('ALL', 'PERSON_ADDRESS', 'PERSON_ID', 1, 'Long', 10, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Person Id'),
 ('ALL', 'PERSON_ADDRESS', 'PROVINCE_ID', 7, 'String', 2, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Province Id'),
 ('ALL', 'PERSON_PHONE', 'AREA_CODE', 4, 'String', 4, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Area code'),
@@ -742,7 +742,7 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'RECOMMENDATION', 'FAMILY_UNIT', 4, 'String', 500, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Comments about family unit'),
 ('ALL', 'RECOMMENDATION', 'PAYMENT_MORALE', 5, 'String', 500, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Comments about payment morale'),
 ('ALL', 'RECOMMENDATION', 'PROPOSAL', 7, 'String', 25, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Proposal'),
-('ALL', 'RECOMMENDATION', 'SOLICITUDE_ID', 1, 'String', 25, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Solicitude Id'),
+('ALL', 'RECOMMENDATION', 'SOLICITUDE_ID', 1, 'Integer', 0, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Solicitude Id'),
 ('ALL', 'RESPONSABILITY', 'DESCRIPTION', 3, 'String', 60, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Description'),
 ('ALL', 'RESPONSABILITY', 'NAME', 2, 'String', 40, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Name'),
 ('ALL', 'RESPONSABILITY', 'RESPONSABILITY_ID', 1, 'String', 3, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Responsability id'),
@@ -762,9 +762,9 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'SOLICITUDE', 'AMOUNT', 13, 'BigDecimal', 19, 6, '0', '0', '0', NULL, NULL, NULL, NULL, 'Amount'),
 ('ALL', 'SOLICITUDE', 'APPROVAL_DATE', 7, 'Date', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Approval date'),
 ('ALL', 'SOLICITUDE', 'ASSESSOR', 3, 'String', 20, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Assessor'),
-('ALL', 'SOLICITUDE', 'DESTINATION_DESCRIPTION', 19, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Description of destination'),
+('ALL', 'SOLICITUDE', 'DESTINATION_DESCRIPTION', 19, 'String', 500, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Description of destination'),
 ('ALL', 'SOLICITUDE', 'DISBURSEMENT_DATE', 8, 'Date', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Disbursement date'),
-('ALL', 'SOLICITUDE', 'EXPIRATION_DATE', 9, 'Date', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Expiration date'),
+('ALL', 'SOLICITUDE', 'EXPIRATION_DATE', 9, 'Date', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Expiration date'),
 ('ALL', 'SOLICITUDE', 'FUNDS_DESTINATION_ID', 18, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Destination of funds'),
 ('ALL', 'SOLICITUDE', 'GROUP_CLIENT_ID', 5, 'String', 10, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Group'),
 ('ALL', 'SOLICITUDE', 'NUMBER_QUOTAS', 16, 'Integer', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Number of fees'),
@@ -774,7 +774,7 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'SOLICITUDE', 'PRODUCT_ID', 10, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Product id'),
 ('ALL', 'SOLICITUDE', 'QUOTA_TYPE_ID', 15, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Quota type id'),
 ('ALL', 'SOLICITUDE', 'SOLICITUDE_DATE', 6, 'Date', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Solicitud date'),
-('ALL', 'SOLICITUDE', 'SOLICITUDE_ID', 1, 'String', 25, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Name'),
+('ALL', 'SOLICITUDE', 'SOLICITUDE_ID', 1, 'Integer', 0, 0, '1', '0', '0', NULL, 'SOLICITUDE', NULL, NULL, 'Name'),
 ('ALL', 'SOLICITUDE', 'STATUS_ID', 11, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Solicitude status id'),
 ('ALL', 'SOLICITUDE', 'TERM', 14, 'Long', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Term'),
 ('ALL', 'SOLICITUDE_STATUS', 'DESCRIPTION', 2, 'String', 50, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Description'),
@@ -821,20 +821,20 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ENTITY_FIELD_ID`
+-- Estructura de tabla para la tabla `entity_field_id`
 --
 
-CREATE TABLE IF NOT EXISTS `ENTITY_FIELD_ID` (
+CREATE TABLE IF NOT EXISTS `entity_field_id` (
   `TABLE_ID` varchar(30) NOT NULL,
   `FIELD_ID` varchar(30) NOT NULL,
   PRIMARY KEY (`TABLE_ID`,`FIELD_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `ENTITY_FIELD_ID`
+-- Volcado de datos para la tabla `entity_field_id`
 --
 
-INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
+INSERT INTO `entity_field_id` (`TABLE_ID`, `FIELD_ID`) VALUES
 ('ADDRESS_TYPE', 'ADDRESS_TYPE_ID'),
 ('ADDRESS_TYPE', 'COMPANY_ID'),
 ('ADDRESS_TYPE', 'LANGUAGE_ID'),
@@ -1036,7 +1036,6 @@ INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
 ('PARTNER_GROUP_MEMBER', 'RESPONSABILITY_ID'),
 ('PARTNER_GROUP_MEMBER_ID', 'PARTNER_GROUP_MEMBER_ID'),
 ('PARTNER_ID', 'PARTNER_ID'),
-('PARTNER_ID', 'USER_ID'),
 ('PERSON', 'CITY_ID'),
 ('PERSON', 'CIVIL_STATUS_ID'),
 ('PERSON', 'COMPANY_ID'),
@@ -1065,7 +1064,6 @@ INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
 ('PERSON_ADDRESS', 'EXPIRED'),
 ('PERSON_ADDRESS', 'PERSON_ID'),
 ('PERSON_ADDRESS', 'PROVINCE_ID'),
-('PERSON_ID', 'DISTRICT_ID'),
 ('PERSON_ID', 'PERSON_ID'),
 ('PERSON_PHONE', 'AREA_CODE'),
 ('PERSON_PHONE', 'COMPANY_ID'),
@@ -1296,10 +1294,10 @@ INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ENTITY_RELATIONSHIP`
+-- Estructura de tabla para la tabla `entity_relationship`
 --
 
-CREATE TABLE IF NOT EXISTS `ENTITY_RELATIONSHIP` (
+CREATE TABLE IF NOT EXISTS `entity_relationship` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `RELATIONSHIP_ID` varchar(30) NOT NULL,
   `RELATIONSHIP_ORDER` tinyint(4) NOT NULL,
@@ -1313,10 +1311,10 @@ CREATE TABLE IF NOT EXISTS `ENTITY_RELATIONSHIP` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `ENTITY_RELATIONSHIP`
+-- Volcado de datos para la tabla `entity_relationship`
 --
 
-INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHIP_ORDER`, `TABLE_FROM`, `FIELD_FROM`, `TABLE_TO`, `FIELD_TO`) VALUES
+INSERT INTO `entity_relationship` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHIP_ORDER`, `TABLE_FROM`, `FIELD_FROM`, `TABLE_TO`, `FIELD_TO`) VALUES
 ('ALL', 'CITY_ID_PROVINCE_ID_FK', 1, 'CITY_ID', 'COUNTRY_ID', 'PROVINCE_ID', 'COUNTRY_ID'),
 ('ALL', 'CITY_ID_PROVINCE_ID_FK', 2, 'CITY_ID', 'PROVINCE_ID', 'PROVINCE_ID', 'PROVINCE_ID'),
 ('ALL', 'COMPONENT_SUBSYSTEM_ID_FK', 1, 'COMPONENT', 'SUBSYSTEM_ID', 'SUBSYSTEM_ID', 'SUBSYSTEM_ID'),
@@ -1454,13 +1452,11 @@ INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHI
 ('MXT', 'PARTNER_GROUP_LANGUAGE_FK', 1, 'PARTNER_GROUP', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
 ('MXT', 'PARTNER_GROUP_MEMBER_ID_FK', 1, 'PARTNER_GROUP_MEMBER', 'PARTNER_GROUP_MEMBER_ID', 'PARTNER_GROUP_MEMBER_ID', 'PARTNER_GROUP_MEMBER_ID'),
 ('MXT', 'PARTNER_ID_FK', 1, 'PARTNER', 'PARTNER_ID', 'PARTNER_ID', 'PARTNER_ID'),
-('MXT', 'PARTNER_ID_FK', 2, 'PARTNER', 'USER_ID', 'PARTNER_ID', 'USER_ID'),
 ('MXT', 'PARTNER_LANGUAGE_FK', 1, 'PARTNER', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
 ('MXT', 'PARTN_COMPANY_FK', 1, 'PARTNER_GROUP_MEMBER', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
 ('MXT', 'PERSON_ADDRESS_COMPANY_FK', 1, 'PERSON_ADDRESS', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
 ('MXT', 'PERSON_COMPANY_FK', 1, 'PERSON', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
 ('MXT', 'PERSON_ID_FK', 1, 'PERSON', 'PERSON_ID', 'PERSON_ID', 'PERSON_ID'),
-('MXT', 'PERSON_ID_FK', 2, 'PERSON', 'DISTRICT_ID', 'PERSON_ID', 'DISTRICT_ID'),
 ('MXT', 'PERSON_PHONE_COMPANY_FK', 1, 'PERSON_PHONE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
 ('MXT', 'PERSON_TYPE_COMPANY_FK', 1, 'PERSON_TYPE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
 ('MXT', 'PERSON_TYPE_ID_FK', 1, 'PERSON_TYPE', 'PERSON_TYPE_ID', 'PERSON_TYPE_ID', 'PERSON_TYPE_ID'),
@@ -1538,10 +1534,10 @@ INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHI
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ENTITY_TABLE`
+-- Estructura de tabla para la tabla `entity_table`
 --
 
-CREATE TABLE IF NOT EXISTS `ENTITY_TABLE` (
+CREATE TABLE IF NOT EXISTS `entity_table` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `TABLE_ID` varchar(30) NOT NULL,
   `HAS_TABLE_ID` varchar(1) NOT NULL,
@@ -1558,10 +1554,10 @@ CREATE TABLE IF NOT EXISTS `ENTITY_TABLE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `ENTITY_TABLE`
+-- Volcado de datos para la tabla `entity_table`
 --
 
-INSERT INTO `ENTITY_TABLE` (`COMPANY_ID`, `TABLE_ID`, `HAS_TABLE_ID`, `PACKAGE_NAME`, `MULTI_COMPANY`, `MULTI_LANGUAGE`, `HISTORICAL_DATA`, `OPTIMISTIC_LOCKING`, `ENUMERATED_TYPES`, `CACHE_MEMORY`, `DESCRIPTION`) VALUES
+INSERT INTO `entity_table` (`COMPANY_ID`, `TABLE_ID`, `HAS_TABLE_ID`, `PACKAGE_NAME`, `MULTI_COMPANY`, `MULTI_LANGUAGE`, `HISTORICAL_DATA`, `OPTIMISTIC_LOCKING`, `ENUMERATED_TYPES`, `CACHE_MEMORY`, `DESCRIPTION`) VALUES
 ('ALL', 'ADDRESS_TYPE', '1', 'person', '1', '1', '0', '0', '0', '0', 'Values of address types'),
 ('ALL', 'CITY', '1', 'parameter', '1', '1', '0', '0', '0', '0', 'Values of cities'),
 ('ALL', 'CIVIL_STATUS', '1', 'person', '1', '1', '0', '0', '0', '0', 'Values of civil statuses'),
@@ -1577,7 +1573,7 @@ INSERT INTO `ENTITY_TABLE` (`COMPANY_ID`, `TABLE_ID`, `HAS_TABLE_ID`, `PACKAGE_N
 ('ALL', 'ENTITY_FIELD', '1', 'common', '1', '0', '0', '0', '0', '0', 'Values of entity fields'),
 ('ALL', 'ENTITY_RELATIONSHIP', '0', 'common', '1', '0', '0', '0', '0', '0', 'Values of entity relationships'),
 ('ALL', 'ENTITY_TABLE', '1', 'common', '1', '0', '0', '0', '0', '0', 'Values of entity tables'),
-('ALL', 'FREQUENCY', '1', 'microcredit', '1', '1', '0', '0', '0', '0', 'Frecuency of payments'),
+('ALL', 'FREQUENCY', '1', 'microcredit', '1', '1', '0', '0', '0', '0', 'Frequencies'),
 ('ALL', 'FUNDS_DESTINATION', '1', 'microcredit', '1', '1', '0', '0', '0', '0', 'Destination of funds'),
 ('ALL', 'GENDER_TYPE', '1', 'person', '0', '1', '0', '0', '1', '0', 'Values of gender types'),
 ('ALL', 'GEOGRAPHIC_ZONE', '1', 'microcredit', '1', '1', '0', '0', '0', '0', 'Geographic zones'),
@@ -1624,19 +1620,19 @@ INSERT INTO `ENTITY_TABLE` (`COMPANY_ID`, `TABLE_ID`, `HAS_TABLE_ID`, `PACKAGE_N
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ENTITY_TABLE_ID`
+-- Estructura de tabla para la tabla `entity_table_id`
 --
 
-CREATE TABLE IF NOT EXISTS `ENTITY_TABLE_ID` (
+CREATE TABLE IF NOT EXISTS `entity_table_id` (
   `TABLE_ID` varchar(30) NOT NULL,
   PRIMARY KEY (`TABLE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `ENTITY_TABLE_ID`
+-- Volcado de datos para la tabla `entity_table_id`
 --
 
-INSERT INTO `ENTITY_TABLE_ID` (`TABLE_ID`) VALUES
+INSERT INTO `entity_table_id` (`TABLE_ID`) VALUES
 ('ADDRESS_TYPE'),
 ('ADDRESS_TYPE_ID'),
 ('CITY'),
@@ -1742,10 +1738,10 @@ INSERT INTO `ENTITY_TABLE_ID` (`TABLE_ID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `FREQUENCY`
+-- Estructura de tabla para la tabla `frequency`
 --
 
-CREATE TABLE IF NOT EXISTS `FREQUENCY` (
+CREATE TABLE IF NOT EXISTS `frequency` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `FREQUENCY_ID` varchar(3) NOT NULL,
@@ -1756,33 +1752,51 @@ CREATE TABLE IF NOT EXISTS `FREQUENCY` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `FREQUENCY`
+-- Volcado de datos para la tabla `frequency`
 --
 
+INSERT INTO `frequency` (`COMPANY_ID`, `LANGUAGE_ID`, `FREQUENCY_ID`, `DESCRIPTION`) VALUES
+('MXT', 'ES', '1', 'DIARIO'),
+('MXT', 'ES', '2', 'SEMANAL'),
+('MXT', 'ES', '3', 'QUINCENAL'),
+('MXT', 'ES', '4', 'MENSUAL'),
+('MXT', 'ES', '5', 'BIMENSUAL'),
+('MXT', 'ES', '6', 'TRIMESTRAL'),
+('MXT', 'ES', '7', 'SEMESTRAL'),
+('MXT', 'ES', '8', 'ANUAL');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `FREQUENCY_ID`
+-- Estructura de tabla para la tabla `frequency_id`
 --
 
-CREATE TABLE IF NOT EXISTS `FREQUENCY_ID` (
+CREATE TABLE IF NOT EXISTS `frequency_id` (
   `FREQUENCY_ID` varchar(3) NOT NULL,
   PRIMARY KEY (`FREQUENCY_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `FREQUENCY_ID`
+-- Volcado de datos para la tabla `frequency_id`
 --
 
+INSERT INTO `frequency_id` (`FREQUENCY_ID`) VALUES
+('1'),
+('2'),
+('3'),
+('4'),
+('5'),
+('6'),
+('7'),
+('8');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `FUNDS_DESTINATION`
+-- Estructura de tabla para la tabla `funds_destination`
 --
 
-CREATE TABLE IF NOT EXISTS `FUNDS_DESTINATION` (
+CREATE TABLE IF NOT EXISTS `funds_destination` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `FUNDS_DESTINATION_ID` varchar(3) NOT NULL,
@@ -1793,33 +1807,39 @@ CREATE TABLE IF NOT EXISTS `FUNDS_DESTINATION` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `FUNDS_DESTINATION`
+-- Volcado de datos para la tabla `funds_destination`
 --
 
+INSERT INTO `funds_destination` (`COMPANY_ID`, `LANGUAGE_ID`, `FUNDS_DESTINATION_ID`, `DESCRIPTION`) VALUES
+('MXT', 'ES', 'CON', 'CONSUMO'),
+('MXT', 'ES', 'PRO', 'PRODUCCION');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `FUNDS_DESTINATION_ID`
+-- Estructura de tabla para la tabla `funds_destination_id`
 --
 
-CREATE TABLE IF NOT EXISTS `FUNDS_DESTINATION_ID` (
+CREATE TABLE IF NOT EXISTS `funds_destination_id` (
   `FUNDS_DESTINATION_ID` varchar(3) NOT NULL,
   PRIMARY KEY (`FUNDS_DESTINATION_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `FUNDS_DESTINATION_ID`
+-- Volcado de datos para la tabla `funds_destination_id`
 --
 
+INSERT INTO `funds_destination_id` (`FUNDS_DESTINATION_ID`) VALUES
+('CON'),
+('PRO');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `GENDER_TYPE`
+-- Estructura de tabla para la tabla `gender_type`
 --
 
-CREATE TABLE IF NOT EXISTS `GENDER_TYPE` (
+CREATE TABLE IF NOT EXISTS `gender_type` (
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `GENDER_TYPE_ID` varchar(4) NOT NULL,
   `NAME` varchar(40) NOT NULL,
@@ -1828,39 +1848,39 @@ CREATE TABLE IF NOT EXISTS `GENDER_TYPE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `GENDER_TYPE`
+-- Volcado de datos para la tabla `gender_type`
 --
 
-INSERT INTO `GENDER_TYPE` (`LANGUAGE_ID`, `GENDER_TYPE_ID`, `NAME`) VALUES
+INSERT INTO `gender_type` (`LANGUAGE_ID`, `GENDER_TYPE_ID`, `NAME`) VALUES
 ('ES', 'F', 'FEMENINO'),
 ('ES', 'M', 'MASCULINO');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `GENDER_TYPE_ID`
+-- Estructura de tabla para la tabla `gender_type_id`
 --
 
-CREATE TABLE IF NOT EXISTS `GENDER_TYPE_ID` (
+CREATE TABLE IF NOT EXISTS `gender_type_id` (
   `GENDER_TYPE_ID` varchar(4) NOT NULL,
   PRIMARY KEY (`GENDER_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `GENDER_TYPE_ID`
+-- Volcado de datos para la tabla `gender_type_id`
 --
 
-INSERT INTO `GENDER_TYPE_ID` (`GENDER_TYPE_ID`) VALUES
+INSERT INTO `gender_type_id` (`GENDER_TYPE_ID`) VALUES
 ('F'),
 ('M');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `GEOGRAPHIC_ZONE`
+-- Estructura de tabla para la tabla `geographic_zone`
 --
 
-CREATE TABLE IF NOT EXISTS `GEOGRAPHIC_ZONE` (
+CREATE TABLE IF NOT EXISTS `geographic_zone` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `GEOGRAPHIC_ZONE_ID` varchar(6) NOT NULL,
@@ -1879,34 +1899,24 @@ CREATE TABLE IF NOT EXISTS `GEOGRAPHIC_ZONE` (
   KEY `GEOGRAPHIC_ZONE_LANGUAGE_FK` (`LANGUAGE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `GEOGRAPHIC_ZONE`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `GEOGRAPHIC_ZONE_ID`
+-- Estructura de tabla para la tabla `geographic_zone_id`
 --
 
-CREATE TABLE IF NOT EXISTS `GEOGRAPHIC_ZONE_ID` (
+CREATE TABLE IF NOT EXISTS `geographic_zone_id` (
   `GEOGRAPHIC_ZONE_ID` varchar(6) NOT NULL,
   PRIMARY KEY (`GEOGRAPHIC_ZONE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `GEOGRAPHIC_ZONE_ID`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `HOST`
+-- Estructura de tabla para la tabla `host`
 --
 
-CREATE TABLE IF NOT EXISTS `HOST` (
+CREATE TABLE IF NOT EXISTS `host` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `HOST_ID` varchar(40) NOT NULL,
@@ -1917,34 +1927,24 @@ CREATE TABLE IF NOT EXISTS `HOST` (
   KEY `HOST_ID_FK` (`HOST_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `HOST`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `HOST_ID`
+-- Estructura de tabla para la tabla `host_id`
 --
 
-CREATE TABLE IF NOT EXISTS `HOST_ID` (
+CREATE TABLE IF NOT EXISTS `host_id` (
   `HOST_ID` varchar(40) NOT NULL,
   PRIMARY KEY (`HOST_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `HOST_ID`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `IDENTIFICATION_TYPE`
+-- Estructura de tabla para la tabla `identification_type`
 --
 
-CREATE TABLE IF NOT EXISTS `IDENTIFICATION_TYPE` (
+CREATE TABLE IF NOT EXISTS `identification_type` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `IDENTIFICATION_TYPE_ID` varchar(4) NOT NULL,
@@ -1955,10 +1955,10 @@ CREATE TABLE IF NOT EXISTS `IDENTIFICATION_TYPE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `IDENTIFICATION_TYPE`
+-- Volcado de datos para la tabla `identification_type`
 --
 
-INSERT INTO `IDENTIFICATION_TYPE` (`COMPANY_ID`, `LANGUAGE_ID`, `IDENTIFICATION_TYPE_ID`, `NAME`) VALUES
+INSERT INTO `identification_type` (`COMPANY_ID`, `LANGUAGE_ID`, `IDENTIFICATION_TYPE_ID`, `NAME`) VALUES
 ('MXT', 'ES', 'CED', 'CEDULA DE IDENTIDAD'),
 ('MXT', 'ES', 'PER', 'PERSONA SIN IDENTIFICACION'),
 ('MXT', 'ES', 'PSE', 'PASAPORTE EXTRANJERO'),
@@ -1967,19 +1967,19 @@ INSERT INTO `IDENTIFICATION_TYPE` (`COMPANY_ID`, `LANGUAGE_ID`, `IDENTIFICATION_
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `IDENTIFICATION_TYPE_ID`
+-- Estructura de tabla para la tabla `identification_type_id`
 --
 
-CREATE TABLE IF NOT EXISTS `IDENTIFICATION_TYPE_ID` (
+CREATE TABLE IF NOT EXISTS `identification_type_id` (
   `IDENTIFICATION_TYPE_ID` varchar(4) NOT NULL,
   PRIMARY KEY (`IDENTIFICATION_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `IDENTIFICATION_TYPE_ID`
+-- Volcado de datos para la tabla `identification_type_id`
 --
 
-INSERT INTO `IDENTIFICATION_TYPE_ID` (`IDENTIFICATION_TYPE_ID`) VALUES
+INSERT INTO `identification_type_id` (`IDENTIFICATION_TYPE_ID`) VALUES
 ('CED'),
 ('PER'),
 ('PSE'),
@@ -1988,30 +1988,30 @@ INSERT INTO `IDENTIFICATION_TYPE_ID` (`IDENTIFICATION_TYPE_ID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `LANGUAGE`
+-- Estructura de tabla para la tabla `language`
 --
 
-CREATE TABLE IF NOT EXISTS `LANGUAGE` (
+CREATE TABLE IF NOT EXISTS `language` (
   `LANGUAGE_ID` varchar(4) NOT NULL,
   `NAME` varchar(40) NOT NULL,
   PRIMARY KEY (`LANGUAGE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `LANGUAGE`
+-- Volcado de datos para la tabla `language`
 --
 
-INSERT INTO `LANGUAGE` (`LANGUAGE_ID`, `NAME`) VALUES
+INSERT INTO `language` (`LANGUAGE_ID`, `NAME`) VALUES
 ('EN', 'ENGLISH'),
 ('ES', 'ESPAÑOL');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `MODULE`
+-- Estructura de tabla para la tabla `module`
 --
 
-CREATE TABLE IF NOT EXISTS `MODULE` (
+CREATE TABLE IF NOT EXISTS `module` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `SUBSYSTEM_ID` varchar(2) NOT NULL,
@@ -2023,13 +2023,15 @@ CREATE TABLE IF NOT EXISTS `MODULE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `MODULE`
+-- Volcado de datos para la tabla `module`
 --
 
-INSERT INTO `MODULE` (`COMPANY_ID`, `LANGUAGE_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, `NAME`) VALUES
+INSERT INTO `module` (`COMPANY_ID`, `LANGUAGE_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, `NAME`) VALUES
 ('MXT', 'ES', 'A', '0', 'AUTENTITICACION'),
 ('MXT', 'ES', 'A', '1', 'DATOS GENERALES'),
 ('MXT', 'ES', 'A', '2', 'ROLES Y USUARIOS'),
+('MXT', 'ES', 'B', '0', 'PARAMETRIZACION'),
+('MXT', 'ES', 'B', '1', 'PERSONAS NATURALES'),
 ('MXT', 'ES', 'C', '0', 'PARAMETRIZACION'),
 ('MXT', 'ES', 'C', '1', 'PLANIFICACION'),
 ('MXT', 'ES', 'C', '2', 'COMERCIALIZACION'),
@@ -2038,28 +2040,31 @@ INSERT INTO `MODULE` (`COMPANY_ID`, `LANGUAGE_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, 
 ('MXT', 'ES', 'C', '5', 'SEGUIMIENTO Y RECUPERACION'),
 ('MXT', 'ES', 'G', '0', 'MENU'),
 ('MXT', 'ES', 'G', '1', 'PARAMETROS'),
-('MXT', 'ES', 'G', '2', 'LISTAS PARA LOS COMBOS');
+('MXT', 'ES', 'G', '2', 'LISTAS PARA LOS COMBOS'),
+('MXT', 'ES', 'G', '3', 'LOCALIZACION');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `MODULE_ID`
+-- Estructura de tabla para la tabla `module_id`
 --
 
-CREATE TABLE IF NOT EXISTS `MODULE_ID` (
+CREATE TABLE IF NOT EXISTS `module_id` (
   `SUBSYSTEM_ID` varchar(2) NOT NULL,
   `MODULE_ID` varchar(2) NOT NULL,
   PRIMARY KEY (`SUBSYSTEM_ID`,`MODULE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `MODULE_ID`
+-- Volcado de datos para la tabla `module_id`
 --
 
-INSERT INTO `MODULE_ID` (`SUBSYSTEM_ID`, `MODULE_ID`) VALUES
+INSERT INTO `module_id` (`SUBSYSTEM_ID`, `MODULE_ID`) VALUES
 ('A', '0'),
 ('A', '1'),
 ('A', '2'),
+('B', '0'),
+('B', '1'),
 ('C', '0'),
 ('C', '1'),
 ('C', '2'),
@@ -2068,15 +2073,16 @@ INSERT INTO `MODULE_ID` (`SUBSYSTEM_ID`, `MODULE_ID`) VALUES
 ('C', '5'),
 ('G', '0'),
 ('G', '1'),
-('G', '2');
+('G', '2'),
+('G', '3');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PARAMETER`
+-- Estructura de tabla para la tabla `parameter`
 --
 
-CREATE TABLE IF NOT EXISTS `PARAMETER` (
+CREATE TABLE IF NOT EXISTS `parameter` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `PARAMETER_ID` varchar(40) NOT NULL,
@@ -2090,64 +2096,56 @@ CREATE TABLE IF NOT EXISTS `PARAMETER` (
   KEY `PARAMETER_ID_FK` (`PARAMETER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PARAMETER`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PARAMETER_ID`
+-- Estructura de tabla para la tabla `parameter_id`
 --
 
-CREATE TABLE IF NOT EXISTS `PARAMETER_ID` (
+CREATE TABLE IF NOT EXISTS `parameter_id` (
   `PARAMETER_ID` varchar(40) NOT NULL,
   PRIMARY KEY (`PARAMETER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PARAMETER_ID`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PARTNER`
+-- Estructura de tabla para la tabla `partner`
 --
 
-CREATE TABLE IF NOT EXISTS `PARTNER` (
+CREATE TABLE IF NOT EXISTS `partner` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `EXPIRED` datetime NOT NULL,
-  `PARTNER_ID` varchar(10) NOT NULL,
-  `USER_ID` varchar(20) NOT NULL,
+  `PARTNER_ID` int(11) NOT NULL,
   `CREATED` datetime NOT NULL,
   `PERSON_ID` int(11) NOT NULL,
   `ACTIVITY` varchar(300) DEFAULT NULL,
+  `USER_ID` varchar(20) NOT NULL,
   `FREQUENCY_ID` varchar(3) DEFAULT NULL,
   `MEETING_DAY` int(11) DEFAULT NULL,
-  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`EXPIRED`,`PARTNER_ID`,`USER_ID`),
+  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`EXPIRED`,`PARTNER_ID`),
   KEY `PARTNER_FREQ_ID_FK` (`FREQUENCY_ID`),
-  KEY `PARTNER_ID_FK` (`PARTNER_ID`,`USER_ID`),
+  KEY `PARTNER_ID_FK` (`PARTNER_ID`),
   KEY `PARTNER_LANGUAGE_FK` (`LANGUAGE_ID`),
   KEY `PARTNER_PERSON_ID_FK` (`PERSON_ID`),
   KEY `PARTNER_USER_ID_FK` (`USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PARTNER`
+-- Volcado de datos para la tabla `partner`
 --
 
+INSERT INTO `partner` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `PARTNER_ID`, `CREATED`, `PERSON_ID`, `ACTIVITY`, `USER_ID`, `FREQUENCY_ID`, `MEETING_DAY`) VALUES
+('MXT', 'ES', '9999-12-31 00:00:00', 1, '2012-02-05 20:41:29', 1, 'xxxxxxxxxxxxxx', 'DIEGO', '2', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PARTNER_GROUP`
+-- Estructura de tabla para la tabla `partner_group`
 --
 
-CREATE TABLE IF NOT EXISTS `PARTNER_GROUP` (
+CREATE TABLE IF NOT EXISTS `partner_group` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `EXPIRED` datetime NOT NULL,
@@ -2166,34 +2164,24 @@ CREATE TABLE IF NOT EXISTS `PARTNER_GROUP` (
   KEY `PARTNER_GROUP_USER_ID_FK` (`USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PARTNER_GROUP`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PARTNER_GROUP_ID`
+-- Estructura de tabla para la tabla `partner_group_id`
 --
 
-CREATE TABLE IF NOT EXISTS `PARTNER_GROUP_ID` (
+CREATE TABLE IF NOT EXISTS `partner_group_id` (
   `PARTNER_GROUP_ID` varchar(15) NOT NULL,
   PRIMARY KEY (`PARTNER_GROUP_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PARTNER_GROUP_ID`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PARTNER_GROUP_MEMBER`
+-- Estructura de tabla para la tabla `partner_group_member`
 --
 
-CREATE TABLE IF NOT EXISTS `PARTNER_GROUP_MEMBER` (
+CREATE TABLE IF NOT EXISTS `partner_group_member` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `PARTNER_GROUP_MEMBER_ID` varchar(15) NOT NULL,
@@ -2210,55 +2198,45 @@ CREATE TABLE IF NOT EXISTS `PARTNER_GROUP_MEMBER` (
   KEY `PARTNER_GRP_MEM_RESP_ID_FK` (`RESPONSABILITY_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PARTNER_GROUP_MEMBER`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PARTNER_GROUP_MEMBER_ID`
+-- Estructura de tabla para la tabla `partner_group_member_id`
 --
 
-CREATE TABLE IF NOT EXISTS `PARTNER_GROUP_MEMBER_ID` (
+CREATE TABLE IF NOT EXISTS `partner_group_member_id` (
   `PARTNER_GROUP_MEMBER_ID` varchar(15) NOT NULL,
   PRIMARY KEY (`PARTNER_GROUP_MEMBER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PARTNER_GROUP_MEMBER_ID`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PARTNER_ID`
+-- Estructura de tabla para la tabla `partner_id`
 --
 
-CREATE TABLE IF NOT EXISTS `PARTNER_ID` (
-  `PARTNER_ID` varchar(10) NOT NULL,
-  `USER_ID` varchar(20) NOT NULL,
-  PRIMARY KEY (`PARTNER_ID`,`USER_ID`)
+CREATE TABLE IF NOT EXISTS `partner_id` (
+  `PARTNER_ID` int(11) NOT NULL,
+  PRIMARY KEY (`PARTNER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PARTNER_ID`
+-- Volcado de datos para la tabla `partner_id`
 --
 
+INSERT INTO `partner_id` (`PARTNER_ID`) VALUES
+(1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PERSON`
+-- Estructura de tabla para la tabla `person`
 --
 
-CREATE TABLE IF NOT EXISTS `PERSON` (
+CREATE TABLE IF NOT EXISTS `person` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `PERSON_ID` int(11) NOT NULL,
-  `DISTRICT_ID` varchar(4) NOT NULL,
   `CREATED` datetime NOT NULL,
   `NAME` varchar(40) NOT NULL,
   `LAST_NAME` varchar(40) NOT NULL,
@@ -2271,74 +2249,73 @@ CREATE TABLE IF NOT EXISTS `PERSON` (
   `COUNTRY_ID` varchar(2) NOT NULL,
   `CITY_ID` varchar(3) DEFAULT NULL,
   `PROVINCE_ID` varchar(2) DEFAULT NULL,
+  `DISTRICT_ID` varchar(4) DEFAULT NULL,
   `PROFESSION_TYPE_ID` varchar(4) DEFAULT NULL,
   `VERSION` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`PERSON_ID`,`DISTRICT_ID`),
+  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`PERSON_ID`),
   KEY `PERSON_CITY_ID_FK` (`COUNTRY_ID`,`PROVINCE_ID`,`CITY_ID`),
   KEY `PERSON_CIVIL_STATUS_ID_FK` (`CIVIL_STATUS_ID`),
   KEY `PERSON_GENDER_TYPE_ID_FK` (`GENDER_TYPE_ID`),
   KEY `PERSON_IDENTIF_TYPE_ID_FK` (`IDENTIFICATION_TYPE_ID`),
-  KEY `PERSON_ID_FK` (`PERSON_ID`,`DISTRICT_ID`),
+  KEY `PERSON_ID_FK` (`PERSON_ID`),
   KEY `PERSON_PROFESSION_TYPE_ID_FK` (`PROFESSION_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PERSON`
+-- Volcado de datos para la tabla `person`
 --
 
+INSERT INTO `person` (`COMPANY_ID`, `EXPIRED`, `PERSON_ID`, `CREATED`, `NAME`, `LAST_NAME`, `SECOND_LAST_NAME`, `IDENTIFICATION_TYPE_ID`, `IDENTIFICATION_NUMBER`, `DATE_OF_BIRTH`, `GENDER_TYPE_ID`, `CIVIL_STATUS_ID`, `COUNTRY_ID`, `CITY_ID`, `PROVINCE_ID`, `DISTRICT_ID`, `PROFESSION_TYPE_ID`, `VERSION`) VALUES
+('MXT', '9999-12-31 00:00:00', 1, '2012-02-05 20:36:35', 'Diego Fabian', 'Montufar', 'Cevallos', 'CED', '0105362651', '2012-02-01 00:00:00', 'M', 'SOL', 'EC', NULL, NULL, NULL, '102', 1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PERSON_ADDRESS`
+-- Estructura de tabla para la tabla `person_address`
 --
 
-CREATE TABLE IF NOT EXISTS `PERSON_ADDRESS` (
+CREATE TABLE IF NOT EXISTS `person_address` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `PERSON_ID` int(11) NOT NULL,
   `ADDRESS_SEQUENCE` tinyint(4) NOT NULL,
-  `DISTRICT_ID` varchar(4) NOT NULL,
   `CREATED` datetime NOT NULL,
   `ADDRESS_TYPE_ID` varchar(4) NOT NULL,
   `ADDRESS_DESCRIPTION` varchar(40) NOT NULL,
   `COUNTRY_ID` varchar(2) DEFAULT NULL,
   `CITY_ID` varchar(3) DEFAULT NULL,
   `PROVINCE_ID` varchar(2) DEFAULT NULL,
+  `DISTRICT_ID` varchar(4) DEFAULT NULL,
   `VERSION` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`PERSON_ID`,`ADDRESS_SEQUENCE`,`DISTRICT_ID`),
+  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`PERSON_ID`,`ADDRESS_SEQUENCE`),
   KEY `PERSON_ADDRESS_DISTRICT_ID_FK` (`COUNTRY_ID`,`PROVINCE_ID`,`CITY_ID`,`DISTRICT_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PERSON_ADDRESS`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PERSON_ID`
+-- Estructura de tabla para la tabla `person_id`
 --
 
-CREATE TABLE IF NOT EXISTS `PERSON_ID` (
+CREATE TABLE IF NOT EXISTS `person_id` (
   `PERSON_ID` int(11) NOT NULL,
-  `DISTRICT_ID` varchar(4) NOT NULL,
-  PRIMARY KEY (`PERSON_ID`,`DISTRICT_ID`)
+  PRIMARY KEY (`PERSON_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PERSON_ID`
+-- Volcado de datos para la tabla `person_id`
 --
 
+INSERT INTO `person_id` (`PERSON_ID`) VALUES
+(1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PERSON_PHONE`
+-- Estructura de tabla para la tabla `person_phone`
 --
 
-CREATE TABLE IF NOT EXISTS `PERSON_PHONE` (
+CREATE TABLE IF NOT EXISTS `person_phone` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `PERSON_ID` int(11) NOT NULL,
@@ -2351,18 +2328,13 @@ CREATE TABLE IF NOT EXISTS `PERSON_PHONE` (
   PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`PERSON_ID`,`PHONE_SEQUENCE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PERSON_PHONE`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PERSON_TYPE`
+-- Estructura de tabla para la tabla `person_type`
 --
 
-CREATE TABLE IF NOT EXISTS `PERSON_TYPE` (
+CREATE TABLE IF NOT EXISTS `person_type` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `PERSON_TYPE_ID` varchar(4) NOT NULL,
@@ -2373,39 +2345,39 @@ CREATE TABLE IF NOT EXISTS `PERSON_TYPE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PERSON_TYPE`
+-- Volcado de datos para la tabla `person_type`
 --
 
-INSERT INTO `PERSON_TYPE` (`COMPANY_ID`, `LANGUAGE_ID`, `PERSON_TYPE_ID`, `NAME`) VALUES
+INSERT INTO `person_type` (`COMPANY_ID`, `LANGUAGE_ID`, `PERSON_TYPE_ID`, `NAME`) VALUES
 ('MXT', 'ES', 'JUR', 'JURIDICA'),
 ('MXT', 'ES', 'NAT', 'NATURAL');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PERSON_TYPE_ID`
+-- Estructura de tabla para la tabla `person_type_id`
 --
 
-CREATE TABLE IF NOT EXISTS `PERSON_TYPE_ID` (
+CREATE TABLE IF NOT EXISTS `person_type_id` (
   `PERSON_TYPE_ID` varchar(4) NOT NULL,
   PRIMARY KEY (`PERSON_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PERSON_TYPE_ID`
+-- Volcado de datos para la tabla `person_type_id`
 --
 
-INSERT INTO `PERSON_TYPE_ID` (`PERSON_TYPE_ID`) VALUES
+INSERT INTO `person_type_id` (`PERSON_TYPE_ID`) VALUES
 ('JUR'),
 ('NAT');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PHONE_TYPE`
+-- Estructura de tabla para la tabla `phone_type`
 --
 
-CREATE TABLE IF NOT EXISTS `PHONE_TYPE` (
+CREATE TABLE IF NOT EXISTS `phone_type` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `PHONE_TYPE_ID` varchar(4) NOT NULL,
@@ -2416,10 +2388,10 @@ CREATE TABLE IF NOT EXISTS `PHONE_TYPE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PHONE_TYPE`
+-- Volcado de datos para la tabla `phone_type`
 --
 
-INSERT INTO `PHONE_TYPE` (`COMPANY_ID`, `LANGUAGE_ID`, `PHONE_TYPE_ID`, `NAME`) VALUES
+INSERT INTO `phone_type` (`COMPANY_ID`, `LANGUAGE_ID`, `PHONE_TYPE_ID`, `NAME`) VALUES
 ('MXT', 'ES', 'ALE', 'ALEGRO'),
 ('MXT', 'ES', 'C/W', 'CABLE / WIRL'),
 ('MXT', 'ES', 'CEL', 'CELULAR'),
@@ -2432,19 +2404,19 @@ INSERT INTO `PHONE_TYPE` (`COMPANY_ID`, `LANGUAGE_ID`, `PHONE_TYPE_ID`, `NAME`) 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PHONE_TYPE_ID`
+-- Estructura de tabla para la tabla `phone_type_id`
 --
 
-CREATE TABLE IF NOT EXISTS `PHONE_TYPE_ID` (
+CREATE TABLE IF NOT EXISTS `phone_type_id` (
   `PHONE_TYPE_ID` varchar(4) NOT NULL,
   PRIMARY KEY (`PHONE_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PHONE_TYPE_ID`
+-- Volcado de datos para la tabla `phone_type_id`
 --
 
-INSERT INTO `PHONE_TYPE_ID` (`PHONE_TYPE_ID`) VALUES
+INSERT INTO `phone_type_id` (`PHONE_TYPE_ID`) VALUES
 ('ALE'),
 ('C/W'),
 ('CEL'),
@@ -2457,10 +2429,10 @@ INSERT INTO `PHONE_TYPE_ID` (`PHONE_TYPE_ID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PROCESS`
+-- Estructura de tabla para la tabla `process`
 --
 
-CREATE TABLE IF NOT EXISTS `PROCESS` (
+CREATE TABLE IF NOT EXISTS `process` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `EXPIRED` datetime NOT NULL,
@@ -2480,10 +2452,10 @@ CREATE TABLE IF NOT EXISTS `PROCESS` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PROCESS`
+-- Volcado de datos para la tabla `process`
 --
 
-INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`, `CREATED`, `NAME`, `ENABLE`, `MENU`, `URL`, `DATAFILE_ID`) VALUES
+INSERT INTO `process` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`, `CREATED`, `NAME`, `ENABLE`, `MENU`, `URL`, `DATAFILE_ID`) VALUES
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '0', '01', '2011-10-14 00:00:00', 'LOGGIN', '1', '0', 'A001', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '01', '2011-10-14 00:00:00', 'ESTADO DE USUARIOS', '1', '1', 'A101', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '02', '2011-11-27 00:00:00', 'TIPOS DE USUARIO', '1', '1', 'A102', NULL),
@@ -2496,6 +2468,14 @@ INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '04', '2011-11-30 00:00:00', 'ROLES POR USUARIO', '1', '1', 'A204', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '05', '2011-11-30 00:00:00', 'PASSWORD USUARIOS', '1', '1', 'A205', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '06', '2011-12-07 00:00:00', 'TERMINALES', '1', '1', 'A206', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '01', '2012-01-21 19:34:18', 'TIPOS DE PERSONA', '1', '1', 'B001', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '02', '2012-01-21 19:34:18', 'TIPOS DE IDENTIFICACION', '1', '1', 'B002', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '03', '2012-01-21 19:34:18', 'GENEROS', '1', '1', 'B003', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '04', '2012-01-21 19:34:18', 'ESTADOS CIVILES', '1', '1', 'B004', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '05', '2012-01-21 19:34:18', 'PROFESIONES', '1', '1', 'B005', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '06', '2011-10-14 00:00:00', 'TIPOS DE DIRECCION', '1', '1', 'B006', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '07', '2011-10-14 00:00:00', 'TIPOS DE TELEFONO', '1', '1', 'B007', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'B', '1', '01', '2011-10-14 00:00:00', 'PERSONAS', '1', '1', 'B101', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '01', '2012-01-14 16:55:33', 'MONEDAS', '1', '1', 'C001', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '02', '2012-01-14 16:55:34', 'ESTATUS SOLICITUD', '1', '1', 'C002', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '03', '2012-01-14 16:55:34', 'TIPOS DE CUOTA', '1', '1', 'C003', NULL),
@@ -2510,17 +2490,21 @@ INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '2', '02', '2012-01-14 16:57:28', 'SOCIOS GRUPALES', '1', '1', 'C202', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '3', '01', '2012-01-14 16:58:40', 'SOLICITUD DE MICROCREDITO', '1', '1', 'C301', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '3', '02', '2012-01-14 16:58:41', 'RECOMENDACION', '1', '1', 'C302', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'G', '0', '01', '2011-10-14 00:00:00', 'MENU PRINCIPAL', '1', '1', 'G001', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'G', '0', '01', '2011-10-14 00:00:00', 'MENU PRINCIPAL', '1', '0', 'G001', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '1', '01', '2011-10-14 00:00:00', 'PARAMETROS GENERALES', '1', '1', 'G101', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '01', '2011-10-14 00:00:00', 'LISTA DE VALORES PARA LOS COMBOS', '1', '0', 'G201', NULL);
+('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '01', '2011-10-14 00:00:00', 'LISTA DE VALORES PARA LOS COMBOS', '1', '0', 'G201', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '01', '2011-10-14 00:00:00', 'PAISES', '1', '1', 'G301', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '02', '2011-10-14 00:00:00', 'PROVINCIAS', '1', '1', 'G302', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '03', '2011-10-14 00:00:00', 'CANTONES', '1', '1', 'G303', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '04', '2011-10-14 00:00:00', 'PARROQUIAS', '1', '1', 'G304', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PROCESS_COMPONENT`
+-- Estructura de tabla para la tabla `process_component`
 --
 
-CREATE TABLE IF NOT EXISTS `PROCESS_COMPONENT` (
+CREATE TABLE IF NOT EXISTS `process_component` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `SUBSYSTEM_ID` varchar(2) NOT NULL,
   `MODULE_ID` varchar(2) NOT NULL,
@@ -2535,23 +2519,21 @@ CREATE TABLE IF NOT EXISTS `PROCESS_COMPONENT` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PROCESS_COMPONENT`
+-- Volcado de datos para la tabla `process_component`
 --
 
-INSERT INTO `PROCESS_COMPONENT` (`COMPANY_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`, `PROCESS_SEQUENCE`, `COMPONENT_ID`, `ENABLE`, `AUTHORIZE`) VALUES
+INSERT INTO `process_component` (`COMPANY_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`, `PROCESS_SEQUENCE`, `COMPONENT_ID`, `ENABLE`, `AUTHORIZE`) VALUES
 ('MXT', 'A', '0', '01', 1, 'mobile.bus.security.Loggin', '1', '0'),
 ('MXT', 'A', '0', '02', 1, 'mobile.bus.parameter.ParameterTest', '1', '0'),
-('MXT', 'A', '2', '02', 1, 'mobile.core.processor.SpecialQueryProcessor', '1', '0'),
-('MXT', 'A', '2', '02', 2, 'mobile.core.processor.MaintenanceProcessor', '1', '0'),
 ('MXT', 'G', '0', '01', 1, 'mobile.logic.general.MenuGenerator', '1', '0');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PROCESS_ID`
+-- Estructura de tabla para la tabla `process_id`
 --
 
-CREATE TABLE IF NOT EXISTS `PROCESS_ID` (
+CREATE TABLE IF NOT EXISTS `process_id` (
   `SUBSYSTEM_ID` varchar(2) NOT NULL,
   `MODULE_ID` varchar(2) NOT NULL,
   `PROCESS_ID` varchar(2) NOT NULL,
@@ -2559,10 +2541,10 @@ CREATE TABLE IF NOT EXISTS `PROCESS_ID` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PROCESS_ID`
+-- Volcado de datos para la tabla `process_id`
 --
 
-INSERT INTO `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) VALUES
+INSERT INTO `process_id` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) VALUES
 ('A', '0', '01'),
 ('A', '0', '02'),
 ('A', '1', '01'),
@@ -2576,6 +2558,14 @@ INSERT INTO `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) VALUES
 ('A', '2', '04'),
 ('A', '2', '05'),
 ('A', '2', '06'),
+('B', '0', '01'),
+('B', '0', '02'),
+('B', '0', '03'),
+('B', '0', '04'),
+('B', '0', '05'),
+('B', '0', '06'),
+('B', '0', '07'),
+('B', '1', '01'),
 ('C', '0', '01'),
 ('C', '0', '02'),
 ('C', '0', '03'),
@@ -2592,15 +2582,19 @@ INSERT INTO `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) VALUES
 ('C', '3', '02'),
 ('G', '0', '01'),
 ('G', '1', '01'),
-('G', '2', '01');
+('G', '2', '01'),
+('G', '3', '01'),
+('G', '3', '02'),
+('G', '3', '03'),
+('G', '3', '04');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PRODUCT_ASESSOR`
+-- Estructura de tabla para la tabla `product_asessor`
 --
 
-CREATE TABLE IF NOT EXISTS `PRODUCT_ASESSOR` (
+CREATE TABLE IF NOT EXISTS `product_asessor` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `USER_ID` varchar(20) NOT NULL,
@@ -2612,35 +2606,25 @@ CREATE TABLE IF NOT EXISTS `PRODUCT_ASESSOR` (
   KEY `PROD_ASSESSOR_PRODUCT_ID_FK` (`PRODUCT_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PRODUCT_ASESSOR`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PRODUCT_ASESSOR_ID`
+-- Estructura de tabla para la tabla `product_asessor_id`
 --
 
-CREATE TABLE IF NOT EXISTS `PRODUCT_ASESSOR_ID` (
+CREATE TABLE IF NOT EXISTS `product_asessor_id` (
   `USER_ID` varchar(20) NOT NULL,
   `PRODUCT_ID` varchar(3) NOT NULL,
   PRIMARY KEY (`USER_ID`,`PRODUCT_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PRODUCT_ASESSOR_ID`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PRODUCT_MICROCREDIT`
+-- Estructura de tabla para la tabla `product_microcredit`
 --
 
-CREATE TABLE IF NOT EXISTS `PRODUCT_MICROCREDIT` (
+CREATE TABLE IF NOT EXISTS `product_microcredit` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `EXPIRED` datetime NOT NULL,
@@ -2659,34 +2643,24 @@ CREATE TABLE IF NOT EXISTS `PRODUCT_MICROCREDIT` (
   KEY `PRODU_LANGUAGE_FK` (`LANGUAGE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PRODUCT_MICROCREDIT`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PRODUCT_MICROCREDIT_ID`
+-- Estructura de tabla para la tabla `product_microcredit_id`
 --
 
-CREATE TABLE IF NOT EXISTS `PRODUCT_MICROCREDIT_ID` (
+CREATE TABLE IF NOT EXISTS `product_microcredit_id` (
   `PRODUCT_ID` varchar(3) NOT NULL,
   PRIMARY KEY (`PRODUCT_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PRODUCT_MICROCREDIT_ID`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PROFESSION_TYPE`
+-- Estructura de tabla para la tabla `profession_type`
 --
 
-CREATE TABLE IF NOT EXISTS `PROFESSION_TYPE` (
+CREATE TABLE IF NOT EXISTS `profession_type` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `PROFESSION_TYPE_ID` varchar(4) NOT NULL,
@@ -2697,10 +2671,10 @@ CREATE TABLE IF NOT EXISTS `PROFESSION_TYPE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PROFESSION_TYPE`
+-- Volcado de datos para la tabla `profession_type`
 --
 
-INSERT INTO `PROFESSION_TYPE` (`COMPANY_ID`, `LANGUAGE_ID`, `PROFESSION_TYPE_ID`, `NAME`) VALUES
+INSERT INTO `profession_type` (`COMPANY_ID`, `LANGUAGE_ID`, `PROFESSION_TYPE_ID`, `NAME`) VALUES
 ('MXT', 'ES', '0', 'NO CODIFICADO'),
 ('MXT', 'ES', '1', 'NO USAR'),
 ('MXT', 'ES', '10', 'ADMINISTRADOR DE SEGURIDAD'),
@@ -3065,19 +3039,19 @@ INSERT INTO `PROFESSION_TYPE` (`COMPANY_ID`, `LANGUAGE_ID`, `PROFESSION_TYPE_ID`
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PROFESSION_TYPE_ID`
+-- Estructura de tabla para la tabla `profession_type_id`
 --
 
-CREATE TABLE IF NOT EXISTS `PROFESSION_TYPE_ID` (
+CREATE TABLE IF NOT EXISTS `profession_type_id` (
   `PROFESSION_TYPE_ID` varchar(4) NOT NULL,
   PRIMARY KEY (`PROFESSION_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PROFESSION_TYPE_ID`
+-- Volcado de datos para la tabla `profession_type_id`
 --
 
-INSERT INTO `PROFESSION_TYPE_ID` (`PROFESSION_TYPE_ID`) VALUES
+INSERT INTO `profession_type_id` (`PROFESSION_TYPE_ID`) VALUES
 ('0'),
 ('1'),
 ('10'),
@@ -3442,10 +3416,10 @@ INSERT INTO `PROFESSION_TYPE_ID` (`PROFESSION_TYPE_ID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PROFILE`
+-- Estructura de tabla para la tabla `profile`
 --
 
-CREATE TABLE IF NOT EXISTS `PROFILE` (
+CREATE TABLE IF NOT EXISTS `profile` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `PROFILE_ID` varchar(4) NOT NULL,
@@ -3456,34 +3430,24 @@ CREATE TABLE IF NOT EXISTS `PROFILE` (
   KEY `PROFILE_LANGUAGE_FK` (`LANGUAGE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PROFILE`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PROFILE_ID`
+-- Estructura de tabla para la tabla `profile_id`
 --
 
-CREATE TABLE IF NOT EXISTS `PROFILE_ID` (
+CREATE TABLE IF NOT EXISTS `profile_id` (
   `PROFILE_ID` varchar(4) NOT NULL,
   PRIMARY KEY (`PROFILE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `PROFILE_ID`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PROVINCE`
+-- Estructura de tabla para la tabla `province`
 --
 
-CREATE TABLE IF NOT EXISTS `PROVINCE` (
+CREATE TABLE IF NOT EXISTS `province` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `COUNTRY_ID` varchar(2) NOT NULL,
@@ -3495,10 +3459,10 @@ CREATE TABLE IF NOT EXISTS `PROVINCE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PROVINCE`
+-- Volcado de datos para la tabla `province`
 --
 
-INSERT INTO `PROVINCE` (`COMPANY_ID`, `LANGUAGE_ID`, `COUNTRY_ID`, `PROVINCE_ID`, `NAME`) VALUES
+INSERT INTO `province` (`COMPANY_ID`, `LANGUAGE_ID`, `COUNTRY_ID`, `PROVINCE_ID`, `NAME`) VALUES
 ('MXT', 'ES', 'EC', 'AZ', 'Azuay'),
 ('MXT', 'ES', 'EC', 'BO', 'Bolivar'),
 ('MXT', 'ES', 'EC', 'CA', 'Carchi'),
@@ -3525,20 +3489,20 @@ INSERT INTO `PROVINCE` (`COMPANY_ID`, `LANGUAGE_ID`, `COUNTRY_ID`, `PROVINCE_ID`
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `PROVINCE_ID`
+-- Estructura de tabla para la tabla `province_id`
 --
 
-CREATE TABLE IF NOT EXISTS `PROVINCE_ID` (
+CREATE TABLE IF NOT EXISTS `province_id` (
   `COUNTRY_ID` varchar(2) NOT NULL,
   `PROVINCE_ID` varchar(2) NOT NULL,
   PRIMARY KEY (`COUNTRY_ID`,`PROVINCE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `PROVINCE_ID`
+-- Volcado de datos para la tabla `province_id`
 --
 
-INSERT INTO `PROVINCE_ID` (`COUNTRY_ID`, `PROVINCE_ID`) VALUES
+INSERT INTO `province_id` (`COUNTRY_ID`, `PROVINCE_ID`) VALUES
 ('EC', 'AZ'),
 ('EC', 'BO'),
 ('EC', 'CA'),
@@ -3565,10 +3529,10 @@ INSERT INTO `PROVINCE_ID` (`COUNTRY_ID`, `PROVINCE_ID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `QUOTA_TYPE`
+-- Estructura de tabla para la tabla `quota_type`
 --
 
-CREATE TABLE IF NOT EXISTS `QUOTA_TYPE` (
+CREATE TABLE IF NOT EXISTS `quota_type` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `QUOTA_TYPE_ID` varchar(3) NOT NULL,
@@ -3579,37 +3543,43 @@ CREATE TABLE IF NOT EXISTS `QUOTA_TYPE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `QUOTA_TYPE`
+-- Volcado de datos para la tabla `quota_type`
 --
 
+INSERT INTO `quota_type` (`COMPANY_ID`, `LANGUAGE_ID`, `QUOTA_TYPE_ID`, `DESCRIPTION`) VALUES
+('MXT', 'ES', 'AMR', 'AMORTIZACION GRADUAL'),
+('MXT', 'ES', 'MNL', 'MANUAL');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `QUOTA_TYPE_ID`
+-- Estructura de tabla para la tabla `quota_type_id`
 --
 
-CREATE TABLE IF NOT EXISTS `QUOTA_TYPE_ID` (
+CREATE TABLE IF NOT EXISTS `quota_type_id` (
   `QUOTA_TYPE_ID` varchar(3) NOT NULL,
   PRIMARY KEY (`QUOTA_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `QUOTA_TYPE_ID`
+-- Volcado de datos para la tabla `quota_type_id`
 --
 
+INSERT INTO `quota_type_id` (`QUOTA_TYPE_ID`) VALUES
+('AMR'),
+('MNL');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `RECOMMENDATION`
+-- Estructura de tabla para la tabla `recommendation`
 --
 
-CREATE TABLE IF NOT EXISTS `RECOMMENDATION` (
+CREATE TABLE IF NOT EXISTS `recommendation` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `EXPIRED` datetime NOT NULL,
-  `SOLICITUDE_ID` varchar(25) NOT NULL,
+  `SOLICITUDE_ID` int(11) NOT NULL,
   `CREATED` datetime NOT NULL,
   `DOCUMENTS` varchar(500) NOT NULL,
   `ECONOMIC_UNIT` varchar(500) NOT NULL,
@@ -3623,34 +3593,24 @@ CREATE TABLE IF NOT EXISTS `RECOMMENDATION` (
   KEY `RECOMMENDATION_SOLICITUDE_ID` (`SOLICITUDE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `RECOMMENDATION`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `RECOMMENDATION_ID`
+-- Estructura de tabla para la tabla `recommendation_id`
 --
 
-CREATE TABLE IF NOT EXISTS `RECOMMENDATION_ID` (
-  `SOLICITUDE_ID` varchar(25) NOT NULL,
+CREATE TABLE IF NOT EXISTS `recommendation_id` (
+  `SOLICITUDE_ID` int(11) NOT NULL,
   PRIMARY KEY (`SOLICITUDE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `RECOMMENDATION_ID`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `RESPONSABILITY`
+-- Estructura de tabla para la tabla `responsability`
 --
 
-CREATE TABLE IF NOT EXISTS `RESPONSABILITY` (
+CREATE TABLE IF NOT EXISTS `responsability` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `EXPIRED` datetime NOT NULL,
@@ -3664,33 +3624,41 @@ CREATE TABLE IF NOT EXISTS `RESPONSABILITY` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `RESPONSABILITY`
+-- Volcado de datos para la tabla `responsability`
 --
 
+INSERT INTO `responsability` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `RESPONSABILITY_ID`, `CREATED`, `NAME`, `DESCRIPTION`) VALUES
+('MXT', 'ES', '9999-12-31 00:00:00', '1', '2012-01-13 00:00:00', 'PRESIDENTE(A)', 'PRESIDENTE DEL GRUPO'),
+('MXT', 'ES', '9999-12-31 00:00:00', '2', '2012-01-13 00:00:00', 'SECRETARIO(A)', 'SECRETARI(A) DEL GRUPO'),
+('MXT', 'ES', '9999-12-31 00:00:00', '3', '2012-01-13 00:00:00', 'INTEGRANTE', 'MIEMBRO DEL GRUPO');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `RESPONSABILITY_ID`
+-- Estructura de tabla para la tabla `responsability_id`
 --
 
-CREATE TABLE IF NOT EXISTS `RESPONSABILITY_ID` (
+CREATE TABLE IF NOT EXISTS `responsability_id` (
   `RESPONSABILITY_ID` varchar(3) NOT NULL,
   PRIMARY KEY (`RESPONSABILITY_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `RESPONSABILITY_ID`
+-- Volcado de datos para la tabla `responsability_id`
 --
 
+INSERT INTO `responsability_id` (`RESPONSABILITY_ID`) VALUES
+('1'),
+('2'),
+('3');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `RESPONSE`
+-- Estructura de tabla para la tabla `response`
 --
 
-CREATE TABLE IF NOT EXISTS `RESPONSE` (
+CREATE TABLE IF NOT EXISTS `response` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `RESPONSE_ID` varchar(8) NOT NULL,
@@ -3701,10 +3669,10 @@ CREATE TABLE IF NOT EXISTS `RESPONSE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `RESPONSE`
+-- Volcado de datos para la tabla `response`
 --
 
-INSERT INTO `RESPONSE` (`COMPANY_ID`, `LANGUAGE_ID`, `RESPONSE_ID`, `DESCRIPTION`) VALUES
+INSERT INTO `response` (`COMPANY_ID`, `LANGUAGE_ID`, `RESPONSE_ID`, `DESCRIPTION`) VALUES
 ('ALL', 'EN', 'FAILED', 'PROCESS FAILED'),
 ('ALL', 'EN', 'SUCCESS', 'PROCESS SUCCESSFUL'),
 ('ALL', 'ES', 'FAILED', 'PROCESO FALLIDO'),
@@ -3713,29 +3681,29 @@ INSERT INTO `RESPONSE` (`COMPANY_ID`, `LANGUAGE_ID`, `RESPONSE_ID`, `DESCRIPTION
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `RESPONSE_ID`
+-- Estructura de tabla para la tabla `response_id`
 --
 
-CREATE TABLE IF NOT EXISTS `RESPONSE_ID` (
+CREATE TABLE IF NOT EXISTS `response_id` (
   `RESPONSE_ID` varchar(8) NOT NULL,
   PRIMARY KEY (`RESPONSE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `RESPONSE_ID`
+-- Volcado de datos para la tabla `response_id`
 --
 
-INSERT INTO `RESPONSE_ID` (`RESPONSE_ID`) VALUES
+INSERT INTO `response_id` (`RESPONSE_ID`) VALUES
 ('FAILED'),
 ('SUCCESS');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ROLE`
+-- Estructura de tabla para la tabla `role`
 --
 
-CREATE TABLE IF NOT EXISTS `ROLE` (
+CREATE TABLE IF NOT EXISTS `role` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `PROFILE_ID` varchar(4) NOT NULL,
@@ -3751,18 +3719,13 @@ CREATE TABLE IF NOT EXISTS `ROLE` (
   KEY `ROLE_PROCESS_ID_FK` (`SUBSYSTEM_ID`,`MODULE_ID`,`PROCESS_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `ROLE`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `SEQUENTIAL`
+-- Estructura de tabla para la tabla `sequential`
 --
 
-CREATE TABLE IF NOT EXISTS `SEQUENTIAL` (
+CREATE TABLE IF NOT EXISTS `sequential` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `SEQUENTIAL_ID` varchar(40) NOT NULL,
   `SEQUENTIAL_VALUE` int(11) NOT NULL DEFAULT '0',
@@ -3772,37 +3735,45 @@ CREATE TABLE IF NOT EXISTS `SEQUENTIAL` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `SEQUENTIAL`
+-- Volcado de datos para la tabla `sequential`
 --
 
+INSERT INTO `sequential` (`COMPANY_ID`, `SEQUENTIAL_ID`, `SEQUENTIAL_VALUE`, `VERSION`) VALUES
+('MXT', 'PARTNER', 2, 1),
+('MXT', 'PERSON', 2, 1),
+('MXT', 'SOLICITUDE', 1000, 2);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `SEQUENTIAL_ID`
+-- Estructura de tabla para la tabla `sequential_id`
 --
 
-CREATE TABLE IF NOT EXISTS `SEQUENTIAL_ID` (
+CREATE TABLE IF NOT EXISTS `sequential_id` (
   `SEQUENTIAL_ID` varchar(40) NOT NULL,
   PRIMARY KEY (`SEQUENTIAL_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `SEQUENTIAL_ID`
+-- Volcado de datos para la tabla `sequential_id`
 --
 
+INSERT INTO `sequential_id` (`SEQUENTIAL_ID`) VALUES
+('PARTNER'),
+('PERSON'),
+('SOLICITUDE');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `SOLICITUDE`
+-- Estructura de tabla para la tabla `solicitude`
 --
 
-CREATE TABLE IF NOT EXISTS `SOLICITUDE` (
+CREATE TABLE IF NOT EXISTS `solicitude` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `EXPIRED` datetime NOT NULL,
-  `SOLICITUDE_ID` varchar(25) NOT NULL,
+  `SOLICITUDE_ID` int(11) NOT NULL,
   `CREATED` datetime NOT NULL,
   `ACCOUNT` varchar(25) DEFAULT NULL,
   `ASSESSOR` varchar(20) NOT NULL,
@@ -3811,7 +3782,7 @@ CREATE TABLE IF NOT EXISTS `SOLICITUDE` (
   `SOLICITUDE_DATE` datetime NOT NULL,
   `APPROVAL_DATE` datetime DEFAULT NULL,
   `DISBURSEMENT_DATE` datetime DEFAULT NULL,
-  `EXPIRATION_DATE` datetime NOT NULL,
+  `EXPIRATION_DATE` datetime DEFAULT NULL,
   `PRODUCT_ID` varchar(3) NOT NULL,
   `STATUS_ID` varchar(3) NOT NULL,
   `NUMBER_RENEWAL` int(11) NOT NULL,
@@ -3821,100 +3792,88 @@ CREATE TABLE IF NOT EXISTS `SOLICITUDE` (
   `NUMBER_QUOTAS` int(11) NOT NULL,
   `PAYMENT_FREQUENCY_ID` varchar(3) NOT NULL,
   `FUNDS_DESTINATION_ID` varchar(3) NOT NULL,
-  `DESTINATION_DESCRIPTION` varchar(3) NOT NULL,
+  `DESTINATION_DESCRIPTION` varchar(500) NOT NULL,
   `VERSION` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`EXPIRED`,`SOLICITUDE_ID`),
   KEY `SOLICITUDE_FUNDS_DEST_ID_FK` (`FUNDS_DESTINATION_ID`),
   KEY `SOLICITUDE_GROUP_CLIENT_ID_FK` (`GROUP_CLIENT_ID`),
   KEY `SOLICITUDE_ID_FK` (`SOLICITUDE_ID`),
-  KEY `SOLICITUDE_LANGUAGE_FK` (`LANGUAGE_ID`),
-  KEY `SOLICITUDE_PARTNER_CLIE_ID_FK` (`PARTNER_CLIENT_ID`),
-  KEY `SOLICITUDE_PAY_FREQ_ID_FK` (`PAYMENT_FREQUENCY_ID`),
-  KEY `SOLICITUDE_PRODUCT_ID_FK` (`PRODUCT_ID`),
-  KEY `SOLICITUDE_QUOTA_TYPE_ID_FK` (`QUOTA_TYPE_ID`),
-  KEY `SOLICITUDE_SOL_STATUS_ID_FK` (`STATUS_ID`),
-  KEY `SOLICITUDE_USER_ACCOUNT_ID_FK` (`ASSESSOR`)
+  KEY `SOLICITUDE_LANGUAGE_FK` (`LANGUAGE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `SOLICITUDE`
---
-
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `SOLICITUDE_ID`
+-- Estructura de tabla para la tabla `solicitude_id`
 --
 
-CREATE TABLE IF NOT EXISTS `SOLICITUDE_ID` (
-  `SOLICITUDE_ID` varchar(25) NOT NULL,
+CREATE TABLE IF NOT EXISTS `solicitude_id` (
+  `SOLICITUDE_ID` int(11) NOT NULL,
   PRIMARY KEY (`SOLICITUDE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `SOLICITUDE_ID`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `SOLICITUDE_STATUS`
+-- Estructura de tabla para la tabla `solicitude_status`
 --
 
-CREATE TABLE IF NOT EXISTS `SOLICITUDE_STATUS` (
+CREATE TABLE IF NOT EXISTS `solicitude_status` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `STATUS_ID` varchar(3) NOT NULL,
   `DESCRIPTION` varchar(50) NOT NULL,
-  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`STATUS_ID`),
-  KEY `SOLICITUDE_STATUS_ID_FK` (`STATUS_ID`),
-  KEY `SOLICITUDE_STATUS_LANGUAGE_FK` (`LANGUAGE_ID`)
+  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`STATUS_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `SOLICITUDE_STATUS`
+-- Volcado de datos para la tabla `solicitude_status`
 --
 
+INSERT INTO `solicitude_status` (`COMPANY_ID`, `LANGUAGE_ID`, `STATUS_ID`, `DESCRIPTION`) VALUES
+('MXT', 'ES', '001', 'SOLICITADA'),
+('MXT', 'ES', '002', 'APROVADA'),
+('MXT', 'ES', '003', 'DENEGADA');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `SOLICITUDE_STATUS_ID`
+-- Estructura de tabla para la tabla `solicitude_status_id`
 --
 
-CREATE TABLE IF NOT EXISTS `SOLICITUDE_STATUS_ID` (
+CREATE TABLE IF NOT EXISTS `solicitude_status_id` (
   `STATUS_ID` varchar(3) NOT NULL,
   PRIMARY KEY (`STATUS_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `SOLICITUDE_STATUS_ID`
+-- Volcado de datos para la tabla `solicitude_status_id`
 --
 
+INSERT INTO `solicitude_status_id` (`STATUS_ID`) VALUES
+('001'),
+('002'),
+('003');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `SUBSYSTEM`
+-- Estructura de tabla para la tabla `subsystem`
 --
 
-CREATE TABLE IF NOT EXISTS `SUBSYSTEM` (
+CREATE TABLE IF NOT EXISTS `subsystem` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `SUBSYSTEM_ID` varchar(2) NOT NULL,
   `NAME` varchar(40) NOT NULL,
-  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`SUBSYSTEM_ID`),
-  KEY `SUBSYSTEM_ID_FK` (`SUBSYSTEM_ID`),
-  KEY `SUBSYSTEM_LANGUAGE_FK` (`LANGUAGE_ID`)
+  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`SUBSYSTEM_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `SUBSYSTEM`
+-- Volcado de datos para la tabla `subsystem`
 --
 
-INSERT INTO `SUBSYSTEM` (`COMPANY_ID`, `LANGUAGE_ID`, `SUBSYSTEM_ID`, `NAME`) VALUES
+INSERT INTO `subsystem` (`COMPANY_ID`, `LANGUAGE_ID`, `SUBSYSTEM_ID`, `NAME`) VALUES
 ('MXT', 'ES', 'A', 'SEGURIDADES'),
 ('MXT', 'ES', 'B', 'PERSONAS'),
 ('MXT', 'ES', 'C', 'MICROCREDITO'),
@@ -3923,19 +3882,19 @@ INSERT INTO `SUBSYSTEM` (`COMPANY_ID`, `LANGUAGE_ID`, `SUBSYSTEM_ID`, `NAME`) VA
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `SUBSYSTEM_ID`
+-- Estructura de tabla para la tabla `subsystem_id`
 --
 
-CREATE TABLE IF NOT EXISTS `SUBSYSTEM_ID` (
+CREATE TABLE IF NOT EXISTS `subsystem_id` (
   `SUBSYSTEM_ID` varchar(2) NOT NULL,
   PRIMARY KEY (`SUBSYSTEM_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `SUBSYSTEM_ID`
+-- Volcado de datos para la tabla `subsystem_id`
 --
 
-INSERT INTO `SUBSYSTEM_ID` (`SUBSYSTEM_ID`) VALUES
+INSERT INTO `subsystem_id` (`SUBSYSTEM_ID`) VALUES
 ('A'),
 ('B'),
 ('C'),
@@ -3944,10 +3903,10 @@ INSERT INTO `SUBSYSTEM_ID` (`SUBSYSTEM_ID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `USER_ACCESS`
+-- Estructura de tabla para la tabla `user_access`
 --
 
-CREATE TABLE IF NOT EXISTS `USER_ACCESS` (
+CREATE TABLE IF NOT EXISTS `user_access` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `USER_ID` varchar(20) NOT NULL,
@@ -3956,22 +3915,16 @@ CREATE TABLE IF NOT EXISTS `USER_ACCESS` (
   `LAST_CHANGE` datetime NOT NULL,
   `QUESTION` varchar(100) DEFAULT NULL,
   `ANSWER` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`),
-  KEY `USER_ACCESS_USER_ACCOUNT_ID_FK` (`USER_ID`)
+  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `USER_ACCESS`
---
-
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `USER_ACCOUNT`
+-- Estructura de tabla para la tabla `user_account`
 --
 
-CREATE TABLE IF NOT EXISTS `USER_ACCOUNT` (
+CREATE TABLE IF NOT EXISTS `user_account` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `USER_ID` varchar(20) NOT NULL,
@@ -3983,41 +3936,43 @@ CREATE TABLE IF NOT EXISTS `USER_ACCOUNT` (
   `EMAIL` varchar(100) NOT NULL,
   `PERSON_ID` int(11) DEFAULT NULL,
   `VERSION` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`),
-  KEY `USER_ACCOUNT_ID_FK` (`USER_ID`),
-  KEY `USER_ACCOUNT_PERSON_ID_FK` (`PERSON_ID`),
-  KEY `USER_ACCOUNT_USER_STATUS_ID_FK` (`USER_STATUS_ID`),
-  KEY `USER_ACCOUNT_USER_TYPE_ID_FK` (`USER_TYPE_ID`)
+  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `USER_ACCOUNT`
+-- Volcado de datos para la tabla `user_account`
 --
 
+INSERT INTO `user_account` (`COMPANY_ID`, `EXPIRED`, `USER_ID`, `CREATED`, `NAME`, `USER_TYPE_ID`, `USER_STATUS_ID`, `LANGUAGE_ID`, `EMAIL`, `PERSON_ID`, `VERSION`) VALUES
+('MXT', '9999-12-31 00:00:00', 'ADMIN', '2012-01-20 20:46:12', 'ADMINISTRATOR', 'SYS', 'ACT', 'ES', 'admin@mobile.com', NULL, 1),
+('MXT', '9999-12-31 00:00:00', 'DIEGO', '2012-02-05 20:39:50', 'DIOGONAL', 'ASE', 'ACT', 'ES', 'SDFSD', NULL, 1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `USER_ACCOUNT_ID`
+-- Estructura de tabla para la tabla `user_account_id`
 --
 
-CREATE TABLE IF NOT EXISTS `USER_ACCOUNT_ID` (
+CREATE TABLE IF NOT EXISTS `user_account_id` (
   `USER_ID` varchar(20) NOT NULL,
   PRIMARY KEY (`USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `USER_ACCOUNT_ID`
+-- Volcado de datos para la tabla `user_account_id`
 --
 
+INSERT INTO `user_account_id` (`USER_ID`) VALUES
+('ADMIN'),
+('DIEGO');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `USER_AUTHORIZATION`
+-- Estructura de tabla para la tabla `user_authorization`
 --
 
-CREATE TABLE IF NOT EXISTS `USER_AUTHORIZATION` (
+CREATE TABLE IF NOT EXISTS `user_authorization` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `USER_ID` varchar(20) NOT NULL,
@@ -4026,24 +3981,16 @@ CREATE TABLE IF NOT EXISTS `USER_AUTHORIZATION` (
   `MODULE_ID` varchar(2) NOT NULL,
   `PROCESS_ID` varchar(2) NOT NULL,
   `CREATED` datetime NOT NULL,
-  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`,`AUTHORIZER_ID`,`SUBSYSTEM_ID`,`MODULE_ID`,`PROCESS_ID`),
-  KEY `USER_AUTH_PROCESS_ID_FK` (`SUBSYSTEM_ID`,`MODULE_ID`,`PROCESS_ID`),
-  KEY `USER_AUTH_USER_ACCOUNT_ID_FK` (`USER_ID`),
-  KEY `USER_AUTH_USER_AUTH_ID_FK` (`AUTHORIZER_ID`)
+  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`,`AUTHORIZER_ID`,`SUBSYSTEM_ID`,`MODULE_ID`,`PROCESS_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `USER_AUTHORIZATION`
---
-
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `USER_NOTIFICATION`
+-- Estructura de tabla para la tabla `user_notification`
 --
 
-CREATE TABLE IF NOT EXISTS `USER_NOTIFICATION` (
+CREATE TABLE IF NOT EXISTS `user_notification` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `USER_ID` varchar(20) NOT NULL,
@@ -4052,79 +3999,55 @@ CREATE TABLE IF NOT EXISTS `USER_NOTIFICATION` (
   `SUBJECT` varchar(100) NOT NULL,
   `MESSAGE` varchar(4000) NOT NULL,
   `READ_` varchar(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`),
-  KEY `USER_NOTIF_USER_ACCOUNT_ID_FK` (`USER_ID`),
-  KEY `USER_NOTIF_USER_NOT_TYPE_ID_FK` (`USER_NOTIFICATION_TYPE_ID`)
+  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `USER_NOTIFICATION`
---
-
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `USER_NOTIFICATION_TYPE`
+-- Estructura de tabla para la tabla `user_notification_type`
 --
 
-CREATE TABLE IF NOT EXISTS `USER_NOTIFICATION_TYPE` (
+CREATE TABLE IF NOT EXISTS `user_notification_type` (
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `USER_NOTIFICATION_TYPE_ID` varchar(4) NOT NULL,
   `NAME` varchar(40) NOT NULL,
-  PRIMARY KEY (`LANGUAGE_ID`,`USER_NOTIFICATION_TYPE_ID`),
-  KEY `USER_NOTIFICATION_TYPE_ID_FK` (`USER_NOTIFICATION_TYPE_ID`)
+  PRIMARY KEY (`LANGUAGE_ID`,`USER_NOTIFICATION_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `USER_NOTIFICATION_TYPE`
---
-
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `USER_NOTIFICATION_TYPE_ID`
+-- Estructura de tabla para la tabla `user_notification_type_id`
 --
 
-CREATE TABLE IF NOT EXISTS `USER_NOTIFICATION_TYPE_ID` (
+CREATE TABLE IF NOT EXISTS `user_notification_type_id` (
   `USER_NOTIFICATION_TYPE_ID` varchar(4) NOT NULL,
   PRIMARY KEY (`USER_NOTIFICATION_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcar la base de datos para la tabla `USER_NOTIFICATION_TYPE_ID`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `USER_PROFILE`
+-- Estructura de tabla para la tabla `user_profile`
 --
 
-CREATE TABLE IF NOT EXISTS `USER_PROFILE` (
+CREATE TABLE IF NOT EXISTS `user_profile` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `USER_ID` varchar(20) NOT NULL,
   `PROFILE_ID` varchar(4) NOT NULL,
   `CREATED` datetime NOT NULL,
-  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`,`PROFILE_ID`),
-  KEY `USER_PROF_USER_ACCOUNT_ID_FK` (`USER_ID`)
+  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`,`PROFILE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `USER_PROFILE`
---
-
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `USER_SESSION`
+-- Estructura de tabla para la tabla `user_session`
 --
 
-CREATE TABLE IF NOT EXISTS `USER_SESSION` (
+CREATE TABLE IF NOT EXISTS `user_session` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `EXPIRED` datetime NOT NULL,
   `USER_ID` varchar(20) NOT NULL,
@@ -4132,616 +4055,510 @@ CREATE TABLE IF NOT EXISTS `USER_SESSION` (
   `CREATED` datetime NOT NULL,
   `TOKEN` varchar(100) NOT NULL,
   `VERSION` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`,`HOST_ID`),
-  KEY `USER_SESSION_HOST_ID_FK` (`HOST_ID`),
-  KEY `USER_SESS_USER_ACCOUNT_ID_FK` (`USER_ID`)
+  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`,`HOST_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `USER_SESSION`
---
-
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `USER_STATUS`
+-- Estructura de tabla para la tabla `user_status`
 --
 
-CREATE TABLE IF NOT EXISTS `USER_STATUS` (
+CREATE TABLE IF NOT EXISTS `user_status` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `USER_STATUS_ID` varchar(4) NOT NULL,
   `NAME` varchar(40) NOT NULL,
-  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`USER_STATUS_ID`),
-  KEY `USER_STATUS_ID_FK` (`USER_STATUS_ID`),
-  KEY `USER_STATUS_LANGUAGE_FK` (`LANGUAGE_ID`)
+  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`USER_STATUS_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `USER_STATUS`
+-- Volcado de datos para la tabla `user_status`
 --
 
+INSERT INTO `user_status` (`COMPANY_ID`, `LANGUAGE_ID`, `USER_STATUS_ID`, `NAME`) VALUES
+('MXT', 'ES', 'ACT', 'ACTIVO'),
+('MXT', 'ES', 'BLO', 'BLOQUEADO'),
+('MXT', 'ES', 'INA', 'INACTIVO');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `USER_STATUS_ID`
+-- Estructura de tabla para la tabla `user_status_id`
 --
 
-CREATE TABLE IF NOT EXISTS `USER_STATUS_ID` (
+CREATE TABLE IF NOT EXISTS `user_status_id` (
   `USER_STATUS_ID` varchar(4) NOT NULL,
   PRIMARY KEY (`USER_STATUS_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `USER_STATUS_ID`
+-- Volcado de datos para la tabla `user_status_id`
 --
 
+INSERT INTO `user_status_id` (`USER_STATUS_ID`) VALUES
+('ACT'),
+('BLO'),
+('INA');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `USER_TYPE`
+-- Estructura de tabla para la tabla `user_type`
 --
 
-CREATE TABLE IF NOT EXISTS `USER_TYPE` (
+CREATE TABLE IF NOT EXISTS `user_type` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `USER_TYPE_ID` varchar(4) NOT NULL,
   `NAME` varchar(40) NOT NULL,
-  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`USER_TYPE_ID`),
-  KEY `USER_TYPE_ID_FK` (`USER_TYPE_ID`),
-  KEY `USER_TYPE_LANGUAGE_FK` (`LANGUAGE_ID`)
+  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`USER_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `USER_TYPE`
+-- Volcado de datos para la tabla `user_type`
 --
 
+INSERT INTO `user_type` (`COMPANY_ID`, `LANGUAGE_ID`, `USER_TYPE_ID`, `NAME`) VALUES
+('MXT', 'ES', 'ADM', 'ADMINISTRADOR'),
+('MXT', 'ES', 'ASE', 'ASESOR CREDITO'),
+('MXT', 'ES', 'OPE', 'OPERADOR'),
+('MXT', 'ES', 'SYS', 'SISTEMAS');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `USER_TYPE_ID`
+-- Estructura de tabla para la tabla `user_type_id`
 --
 
-CREATE TABLE IF NOT EXISTS `USER_TYPE_ID` (
+CREATE TABLE IF NOT EXISTS `user_type_id` (
   `USER_TYPE_ID` varchar(4) NOT NULL,
   PRIMARY KEY (`USER_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `USER_TYPE_ID`
+-- Volcado de datos para la tabla `user_type_id`
 --
 
+INSERT INTO `user_type_id` (`USER_TYPE_ID`) VALUES
+('ADM'),
+('ASE'),
+('OPE'),
+('SYS');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ZONE_ASESSOR`
+-- Estructura de tabla para la tabla `zone_asessor`
 --
 
-CREATE TABLE IF NOT EXISTS `ZONE_ASESSOR` (
+CREATE TABLE IF NOT EXISTS `zone_asessor` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `LANGUAGE_ID` varchar(2) NOT NULL,
   `USER_ID` varchar(20) NOT NULL,
   `GEOGRAPHIC_ZONE_ID` varchar(6) NOT NULL,
   `OBSERVATIONS` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`USER_ID`,`GEOGRAPHIC_ZONE_ID`),
-  KEY `ZONE_ASESSOR_ID_FK` (`USER_ID`,`GEOGRAPHIC_ZONE_ID`),
-  KEY `ZONE_ASESSOR_LANGUAGE_FK` (`LANGUAGE_ID`),
-  KEY `ZONE_ASE_GEO_ZONE_ID_FK` (`GEOGRAPHIC_ZONE_ID`)
+  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`USER_ID`,`GEOGRAPHIC_ZONE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `ZONE_ASESSOR`
---
-
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ZONE_ASESSOR_ID`
+-- Estructura de tabla para la tabla `zone_asessor_id`
 --
 
-CREATE TABLE IF NOT EXISTS `ZONE_ASESSOR_ID` (
+CREATE TABLE IF NOT EXISTS `zone_asessor_id` (
   `USER_ID` varchar(20) NOT NULL,
   `GEOGRAPHIC_ZONE_ID` varchar(6) NOT NULL,
   PRIMARY KEY (`USER_ID`,`GEOGRAPHIC_ZONE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcar la base de datos para la tabla `ZONE_ASESSOR_ID`
---
-
-
---
--- Filtros para las tablas descargadas (dump)
+-- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `ADDRESS_TYPE`
+-- Filtros para la tabla `address_type`
 --
-ALTER TABLE `ADDRESS_TYPE`
-  ADD CONSTRAINT `ADDRESS_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ADDRESS_TYPE_ID_FK` FOREIGN KEY (`ADDRESS_TYPE_ID`) REFERENCES `ADDRESS_TYPE_ID` (`ADDRESS_TYPE_ID`),
-  ADD CONSTRAINT `ADDRESS_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `address_type`
+  ADD CONSTRAINT `ADDRESS_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `ADDRESS_TYPE_ID_FK` FOREIGN KEY (`ADDRESS_TYPE_ID`) REFERENCES `address_type_id` (`ADDRESS_TYPE_ID`),
+  ADD CONSTRAINT `ADDRESS_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `CITY`
+-- Filtros para la tabla `city`
 --
-ALTER TABLE `CITY`
-  ADD CONSTRAINT `CITY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `CITY_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) REFERENCES `CITY_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`),
-  ADD CONSTRAINT `CITY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `city`
+  ADD CONSTRAINT `CITY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `CITY_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) REFERENCES `city_id` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`),
+  ADD CONSTRAINT `CITY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `CITY_ID`
+-- Filtros para la tabla `city_id`
 --
-ALTER TABLE `CITY_ID`
-  ADD CONSTRAINT `CITY_ID_PROVINCE_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`) REFERENCES `PROVINCE_ID` (`COUNTRY_ID`, `PROVINCE_ID`);
+ALTER TABLE `city_id`
+  ADD CONSTRAINT `CITY_ID_PROVINCE_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`) REFERENCES `province_id` (`COUNTRY_ID`, `PROVINCE_ID`);
 
 --
--- Filtros para la tabla `CIVIL_STATUS`
+-- Filtros para la tabla `civil_status`
 --
-ALTER TABLE `CIVIL_STATUS`
-  ADD CONSTRAINT `CIVIL_STATUS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `CIVIL_STATUS_ID_FK` FOREIGN KEY (`CIVIL_STATUS_ID`) REFERENCES `CIVIL_STATUS_ID` (`CIVIL_STATUS_ID`),
-  ADD CONSTRAINT `CIVIL_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `civil_status`
+  ADD CONSTRAINT `CIVIL_STATUS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `CIVIL_STATUS_ID_FK` FOREIGN KEY (`CIVIL_STATUS_ID`) REFERENCES `civil_status_id` (`CIVIL_STATUS_ID`),
+  ADD CONSTRAINT `CIVIL_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `COMPONENT`
+-- Filtros para la tabla `component`
 --
-ALTER TABLE `COMPONENT`
-  ADD CONSTRAINT `COMPONENT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `COMPONENT_ID_FK` FOREIGN KEY (`COMPONENT_ID`) REFERENCES `COMPONENT_ID` (`COMPONENT_ID`),
-  ADD CONSTRAINT `COMPONENT_SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `SUBSYSTEM_ID` (`SUBSYSTEM_ID`);
+ALTER TABLE `component`
+  ADD CONSTRAINT `COMPONENT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `COMPONENT_ID_FK` FOREIGN KEY (`COMPONENT_ID`) REFERENCES `component_id` (`COMPONENT_ID`),
+  ADD CONSTRAINT `COMPONENT_SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `subsystem_id` (`SUBSYSTEM_ID`);
 
 --
--- Filtros para la tabla `COUNTRY`
+-- Filtros para la tabla `country`
 --
-ALTER TABLE `COUNTRY`
-  ADD CONSTRAINT `COUNTRY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `COUNTRY_ID_FK` FOREIGN KEY (`COUNTRY_ID`) REFERENCES `COUNTRY_ID` (`COUNTRY_ID`),
-  ADD CONSTRAINT `COUNTRY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `country`
+  ADD CONSTRAINT `COUNTRY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `COUNTRY_ID_FK` FOREIGN KEY (`COUNTRY_ID`) REFERENCES `country_id` (`COUNTRY_ID`),
+  ADD CONSTRAINT `COUNTRY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `CURRENCY`
+-- Filtros para la tabla `currency`
 --
-ALTER TABLE `CURRENCY`
-  ADD CONSTRAINT `CURRENCY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `CURRENCY_ID_FK` FOREIGN KEY (`CURRENCY_ID`) REFERENCES `CURRENCY_ID` (`CURRENCY_ID`),
-  ADD CONSTRAINT `CURRENCY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `currency`
+  ADD CONSTRAINT `CURRENCY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `CURRENCY_ID_FK` FOREIGN KEY (`CURRENCY_ID`) REFERENCES `currency_id` (`CURRENCY_ID`),
+  ADD CONSTRAINT `CURRENCY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `DATABASE_TYPE`
+-- Filtros para la tabla `database_type`
 --
-ALTER TABLE `DATABASE_TYPE`
-  ADD CONSTRAINT `DATABASE_TYPE_DATA_TYPE_FK` FOREIGN KEY (`DATA_TYPE_ID`) REFERENCES `DATA_TYPE` (`DATA_TYPE_ID`);
+ALTER TABLE `database_type`
+  ADD CONSTRAINT `DATABASE_TYPE_DATA_TYPE_FK` FOREIGN KEY (`DATA_TYPE_ID`) REFERENCES `data_type` (`DATA_TYPE_ID`);
 
 --
--- Filtros para la tabla `DATAFILE`
+-- Filtros para la tabla `datafile`
 --
-ALTER TABLE `DATAFILE`
-  ADD CONSTRAINT `DATAFILE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `DATAFILE_DATAFILE_TYPE_FK` FOREIGN KEY (`DATAFILE_TYPE_ID`) REFERENCES `DATAFILE_TYPE` (`DATAFILE_TYPE_ID`),
-  ADD CONSTRAINT `DATAFILE_ID_FK` FOREIGN KEY (`DATAFILE_ID`) REFERENCES `DATAFILE_ID` (`DATAFILE_ID`);
+ALTER TABLE `datafile`
+  ADD CONSTRAINT `DATAFILE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `DATAFILE_DATAFILE_TYPE_FK` FOREIGN KEY (`DATAFILE_TYPE_ID`) REFERENCES `datafile_type` (`DATAFILE_TYPE_ID`),
+  ADD CONSTRAINT `DATAFILE_ID_FK` FOREIGN KEY (`DATAFILE_ID`) REFERENCES `datafile_id` (`DATAFILE_ID`);
 
 --
--- Filtros para la tabla `DISTRICT`
+-- Filtros para la tabla `district`
 --
-ALTER TABLE `DISTRICT`
-  ADD CONSTRAINT `DISTRICT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `DISTRICT_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`) REFERENCES `DISTRICT_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`),
-  ADD CONSTRAINT `DISTRICT_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `district`
+  ADD CONSTRAINT `DISTRICT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `DISTRICT_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`) REFERENCES `district_id` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`),
+  ADD CONSTRAINT `DISTRICT_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `DISTRICT_ID`
+-- Filtros para la tabla `district_id`
 --
-ALTER TABLE `DISTRICT_ID`
-  ADD CONSTRAINT `DISTRICT_ID_CITY_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) REFERENCES `CITY_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`);
+ALTER TABLE `district_id`
+  ADD CONSTRAINT `DISTRICT_ID_CITY_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) REFERENCES `city_id` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`);
 
 --
--- Filtros para la tabla `ENTITY_FIELD`
+-- Filtros para la tabla `entity_field`
 --
-ALTER TABLE `ENTITY_FIELD`
-  ADD CONSTRAINT `ENTITY_FIELD_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ENTITY_FIELD_DATA_TYPE_FK` FOREIGN KEY (`DATA_TYPE_ID`) REFERENCES `DATA_TYPE` (`DATA_TYPE_ID`),
-  ADD CONSTRAINT `ENTITY_FIELD_ID_FK` FOREIGN KEY (`TABLE_ID`, `FIELD_ID`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`),
-  ADD CONSTRAINT `ENTITY_FIELD_SEQUENTIAL_ID_FK` FOREIGN KEY (`SEQUENTIAL_ID`) REFERENCES `SEQUENTIAL_ID` (`SEQUENTIAL_ID`);
+ALTER TABLE `entity_field`
+  ADD CONSTRAINT `ENTITY_FIELD_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `ENTITY_FIELD_DATA_TYPE_FK` FOREIGN KEY (`DATA_TYPE_ID`) REFERENCES `data_type` (`DATA_TYPE_ID`),
+  ADD CONSTRAINT `ENTITY_FIELD_ID_FK` FOREIGN KEY (`TABLE_ID`, `FIELD_ID`) REFERENCES `entity_field_id` (`TABLE_ID`, `FIELD_ID`),
+  ADD CONSTRAINT `ENTITY_FIELD_SEQUENTIAL_ID_FK` FOREIGN KEY (`SEQUENTIAL_ID`) REFERENCES `sequential_id` (`SEQUENTIAL_ID`);
 
 --
--- Filtros para la tabla `ENTITY_FIELD_ID`
+-- Filtros para la tabla `entity_field_id`
 --
-ALTER TABLE `ENTITY_FIELD_ID`
-  ADD CONSTRAINT `ENTITY_FIELD_ID_TABLE_ID_FK` FOREIGN KEY (`TABLE_ID`) REFERENCES `ENTITY_TABLE_ID` (`TABLE_ID`);
+ALTER TABLE `entity_field_id`
+  ADD CONSTRAINT `ENTITY_FIELD_ID_TABLE_ID_FK` FOREIGN KEY (`TABLE_ID`) REFERENCES `entity_table_id` (`TABLE_ID`);
 
 --
--- Filtros para la tabla `ENTITY_RELATIONSHIP`
+-- Filtros para la tabla `entity_relationship`
 --
-ALTER TABLE `ENTITY_RELATIONSHIP`
-  ADD CONSTRAINT `ENTITY_RELATIONSHIP_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ENTITY_RELATIONSHIP_FROM_FK` FOREIGN KEY (`TABLE_FROM`, `FIELD_FROM`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`),
-  ADD CONSTRAINT `ENTITY_RELATIONSHIP_TO_FK` FOREIGN KEY (`TABLE_TO`, `FIELD_TO`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`);
+ALTER TABLE `entity_relationship`
+  ADD CONSTRAINT `ENTITY_RELATIONSHIP_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `ENTITY_RELATIONSHIP_FROM_FK` FOREIGN KEY (`TABLE_FROM`, `FIELD_FROM`) REFERENCES `entity_field_id` (`TABLE_ID`, `FIELD_ID`),
+  ADD CONSTRAINT `ENTITY_RELATIONSHIP_TO_FK` FOREIGN KEY (`TABLE_TO`, `FIELD_TO`) REFERENCES `entity_field_id` (`TABLE_ID`, `FIELD_ID`);
 
 --
--- Filtros para la tabla `ENTITY_TABLE`
+-- Filtros para la tabla `entity_table`
 --
-ALTER TABLE `ENTITY_TABLE`
-  ADD CONSTRAINT `ENTITY_TABLE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ENTITY_TABLE_ID_FK` FOREIGN KEY (`TABLE_ID`) REFERENCES `ENTITY_TABLE_ID` (`TABLE_ID`);
+ALTER TABLE `entity_table`
+  ADD CONSTRAINT `ENTITY_TABLE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `ENTITY_TABLE_ID_FK` FOREIGN KEY (`TABLE_ID`) REFERENCES `entity_table_id` (`TABLE_ID`);
 
 --
--- Filtros para la tabla `FREQUENCY`
+-- Filtros para la tabla `frequency`
 --
-ALTER TABLE `FREQUENCY`
-  ADD CONSTRAINT `FREQUENCY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `FREQUENCY_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
-  ADD CONSTRAINT `FREQUENCY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `frequency`
+  ADD CONSTRAINT `FREQUENCY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `FREQUENCY_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `frequency_id` (`FREQUENCY_ID`),
+  ADD CONSTRAINT `FREQUENCY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `FUNDS_DESTINATION`
+-- Filtros para la tabla `funds_destination`
 --
-ALTER TABLE `FUNDS_DESTINATION`
-  ADD CONSTRAINT `FUNDS_DESTINATION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `FUNDS_DESTINATION_ID_FK` FOREIGN KEY (`FUNDS_DESTINATION_ID`) REFERENCES `FUNDS_DESTINATION_ID` (`FUNDS_DESTINATION_ID`),
-  ADD CONSTRAINT `FUNDS_DESTINATION_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `funds_destination`
+  ADD CONSTRAINT `FUNDS_DESTINATION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `FUNDS_DESTINATION_ID_FK` FOREIGN KEY (`FUNDS_DESTINATION_ID`) REFERENCES `funds_destination_id` (`FUNDS_DESTINATION_ID`),
+  ADD CONSTRAINT `FUNDS_DESTINATION_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `GENDER_TYPE`
+-- Filtros para la tabla `gender_type`
 --
-ALTER TABLE `GENDER_TYPE`
-  ADD CONSTRAINT `GENDER_TYPE_ID_FK` FOREIGN KEY (`GENDER_TYPE_ID`) REFERENCES `GENDER_TYPE_ID` (`GENDER_TYPE_ID`),
-  ADD CONSTRAINT `GENDER_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `gender_type`
+  ADD CONSTRAINT `GENDER_TYPE_ID_FK` FOREIGN KEY (`GENDER_TYPE_ID`) REFERENCES `gender_type_id` (`GENDER_TYPE_ID`),
+  ADD CONSTRAINT `GENDER_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `GEOGRAPHIC_ZONE`
+-- Filtros para la tabla `geographic_zone`
 --
-ALTER TABLE `GEOGRAPHIC_ZONE`
-  ADD CONSTRAINT `GEOGRAPHIC_ZONE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `GEOGRAPHIC_ZONE_ID_FK` FOREIGN KEY (`GEOGRAPHIC_ZONE_ID`) REFERENCES `GEOGRAPHIC_ZONE_ID` (`GEOGRAPHIC_ZONE_ID`),
-  ADD CONSTRAINT `GEOGRAPHIC_ZONE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `geographic_zone`
+  ADD CONSTRAINT `GEOGRAPHIC_ZONE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `GEOGRAPHIC_ZONE_ID_FK` FOREIGN KEY (`GEOGRAPHIC_ZONE_ID`) REFERENCES `geographic_zone_id` (`GEOGRAPHIC_ZONE_ID`),
+  ADD CONSTRAINT `GEOGRAPHIC_ZONE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `HOST`
+-- Filtros para la tabla `host`
 --
-ALTER TABLE `HOST`
-  ADD CONSTRAINT `HOST_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `HOST_ID_FK` FOREIGN KEY (`HOST_ID`) REFERENCES `HOST_ID` (`HOST_ID`);
+ALTER TABLE `host`
+  ADD CONSTRAINT `HOST_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `HOST_ID_FK` FOREIGN KEY (`HOST_ID`) REFERENCES `host_id` (`HOST_ID`);
 
 --
--- Filtros para la tabla `IDENTIFICATION_TYPE`
+-- Filtros para la tabla `identification_type`
 --
-ALTER TABLE `IDENTIFICATION_TYPE`
-  ADD CONSTRAINT `IDENTIFICATION_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `IDENTIFICATION_TYPE_ID_FK` FOREIGN KEY (`IDENTIFICATION_TYPE_ID`) REFERENCES `IDENTIFICATION_TYPE_ID` (`IDENTIFICATION_TYPE_ID`),
-  ADD CONSTRAINT `IDENT_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `identification_type`
+  ADD CONSTRAINT `IDENTIFICATION_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `IDENTIFICATION_TYPE_ID_FK` FOREIGN KEY (`IDENTIFICATION_TYPE_ID`) REFERENCES `identification_type_id` (`IDENTIFICATION_TYPE_ID`),
+  ADD CONSTRAINT `IDENT_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `MODULE`
+-- Filtros para la tabla `module`
 --
-ALTER TABLE `MODULE`
-  ADD CONSTRAINT `MODULE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `MODULE_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`) REFERENCES `MODULE_ID` (`SUBSYSTEM_ID`, `MODULE_ID`),
-  ADD CONSTRAINT `MODULE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `module`
+  ADD CONSTRAINT `MODULE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `MODULE_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`) REFERENCES `module_id` (`SUBSYSTEM_ID`, `MODULE_ID`),
+  ADD CONSTRAINT `MODULE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `MODULE_ID`
+-- Filtros para la tabla `module_id`
 --
-ALTER TABLE `MODULE_ID`
-  ADD CONSTRAINT `MODULE_ID_SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `SUBSYSTEM_ID` (`SUBSYSTEM_ID`);
+ALTER TABLE `module_id`
+  ADD CONSTRAINT `MODULE_ID_SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `subsystem_id` (`SUBSYSTEM_ID`);
 
 --
--- Filtros para la tabla `PARAMETER`
+-- Filtros para la tabla `parameter`
 --
-ALTER TABLE `PARAMETER`
-  ADD CONSTRAINT `PARAMETER_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PARAMETER_DATA_TYPE_FK` FOREIGN KEY (`DATA_TYPE_ID`) REFERENCES `DATA_TYPE` (`DATA_TYPE_ID`),
-  ADD CONSTRAINT `PARAMETER_ID_FK` FOREIGN KEY (`PARAMETER_ID`) REFERENCES `PARAMETER_ID` (`PARAMETER_ID`);
+ALTER TABLE `parameter`
+  ADD CONSTRAINT `PARAMETER_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PARAMETER_DATA_TYPE_FK` FOREIGN KEY (`DATA_TYPE_ID`) REFERENCES `data_type` (`DATA_TYPE_ID`),
+  ADD CONSTRAINT `PARAMETER_ID_FK` FOREIGN KEY (`PARAMETER_ID`) REFERENCES `parameter_id` (`PARAMETER_ID`);
 
 --
--- Filtros para la tabla `PARTNER`
+-- Filtros para la tabla `partner`
 --
-ALTER TABLE `PARTNER`
-  ADD CONSTRAINT `PARTNER_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PARTNER_FREQ_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
-  ADD CONSTRAINT `PARTNER_ID_FK` FOREIGN KEY (`PARTNER_ID`, `USER_ID`) REFERENCES `PARTNER_ID` (`PARTNER_ID`, `USER_ID`),
-  ADD CONSTRAINT `PARTNER_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `PARTNER_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`),
-  ADD CONSTRAINT `PARTNER_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+ALTER TABLE `partner`
+  ADD CONSTRAINT `PARTNER_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PARTNER_FREQ_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `frequency_id` (`FREQUENCY_ID`),
+  ADD CONSTRAINT `PARTNER_ID_FK` FOREIGN KEY (`PARTNER_ID`) REFERENCES `partner_id` (`PARTNER_ID`),
+  ADD CONSTRAINT `PARTNER_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`),
+  ADD CONSTRAINT `PARTNER_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `person_id` (`PERSON_ID`),
+  ADD CONSTRAINT `PARTNER_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `user_account_id` (`USER_ID`);
 
 --
--- Filtros para la tabla `PARTNER_GROUP`
+-- Filtros para la tabla `partner_group`
 --
-ALTER TABLE `PARTNER_GROUP`
-  ADD CONSTRAINT `PARTNER_GROUP_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PARTNER_GROUP_FREQ_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
-  ADD CONSTRAINT `PARTNER_GROUP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`),
-  ADD CONSTRAINT `PARTNER_GROUP_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `PARTNER_GROUP_PAR_GRP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`),
-  ADD CONSTRAINT `PARTNER_GROUP_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+ALTER TABLE `partner_group`
+  ADD CONSTRAINT `PARTNER_GROUP_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PARTNER_GROUP_FREQ_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `frequency_id` (`FREQUENCY_ID`),
+  ADD CONSTRAINT `PARTNER_GROUP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `partner_group_id` (`PARTNER_GROUP_ID`),
+  ADD CONSTRAINT `PARTNER_GROUP_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`),
+  ADD CONSTRAINT `PARTNER_GROUP_PAR_GRP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `partner_group_id` (`PARTNER_GROUP_ID`),
+  ADD CONSTRAINT `PARTNER_GROUP_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `user_account_id` (`USER_ID`);
 
 --
--- Filtros para la tabla `PARTNER_GROUP_MEMBER`
+-- Filtros para la tabla `partner_group_member`
 --
-ALTER TABLE `PARTNER_GROUP_MEMBER`
-  ADD CONSTRAINT `PARTNER_GROUP_MEMBER_ID_FK` FOREIGN KEY (`PARTNER_GROUP_MEMBER_ID`) REFERENCES `PARTNER_GROUP_MEMBER_ID` (`PARTNER_GROUP_MEMBER_ID`),
-  ADD CONSTRAINT `PARTNER_GRP_MEM_GRP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`),
-  ADD CONSTRAINT `PARTNER_GRP_MEM_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`),
-  ADD CONSTRAINT `PARTNER_GRP_MEM_RESP_ID_FK` FOREIGN KEY (`RESPONSABILITY_ID`) REFERENCES `RESPONSABILITY_ID` (`RESPONSABILITY_ID`),
-  ADD CONSTRAINT `PARTN_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
+ALTER TABLE `partner_group_member`
+  ADD CONSTRAINT `PARTNER_GROUP_MEMBER_ID_FK` FOREIGN KEY (`PARTNER_GROUP_MEMBER_ID`) REFERENCES `partner_group_member_id` (`PARTNER_GROUP_MEMBER_ID`),
+  ADD CONSTRAINT `PARTNER_GRP_MEM_GRP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `partner_group_id` (`PARTNER_GROUP_ID`),
+  ADD CONSTRAINT `PARTNER_GRP_MEM_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `person_id` (`PERSON_ID`),
+  ADD CONSTRAINT `PARTNER_GRP_MEM_RESP_ID_FK` FOREIGN KEY (`RESPONSABILITY_ID`) REFERENCES `responsability_id` (`RESPONSABILITY_ID`),
+  ADD CONSTRAINT `PARTN_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`);
 
 --
--- Filtros para la tabla `PERSON`
+-- Filtros para la tabla `person`
 --
-ALTER TABLE `PERSON`
-  ADD CONSTRAINT `PERSON_CITY_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) REFERENCES `CITY_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`),
-  ADD CONSTRAINT `PERSON_CIVIL_STATUS_ID_FK` FOREIGN KEY (`CIVIL_STATUS_ID`) REFERENCES `CIVIL_STATUS_ID` (`CIVIL_STATUS_ID`),
-  ADD CONSTRAINT `PERSON_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PERSON_GENDER_TYPE_ID_FK` FOREIGN KEY (`GENDER_TYPE_ID`) REFERENCES `GENDER_TYPE_ID` (`GENDER_TYPE_ID`),
-  ADD CONSTRAINT `PERSON_IDENTIF_TYPE_ID_FK` FOREIGN KEY (`IDENTIFICATION_TYPE_ID`) REFERENCES `IDENTIFICATION_TYPE_ID` (`IDENTIFICATION_TYPE_ID`),
-  ADD CONSTRAINT `PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`, `DISTRICT_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`, `DISTRICT_ID`),
-  ADD CONSTRAINT `PERSON_PROFESSION_TYPE_ID_FK` FOREIGN KEY (`PROFESSION_TYPE_ID`) REFERENCES `PROFESSION_TYPE_ID` (`PROFESSION_TYPE_ID`);
+ALTER TABLE `person`
+  ADD CONSTRAINT `PERSON_CITY_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) REFERENCES `city_id` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`),
+  ADD CONSTRAINT `PERSON_CIVIL_STATUS_ID_FK` FOREIGN KEY (`CIVIL_STATUS_ID`) REFERENCES `civil_status_id` (`CIVIL_STATUS_ID`),
+  ADD CONSTRAINT `PERSON_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PERSON_GENDER_TYPE_ID_FK` FOREIGN KEY (`GENDER_TYPE_ID`) REFERENCES `gender_type_id` (`GENDER_TYPE_ID`),
+  ADD CONSTRAINT `PERSON_IDENTIF_TYPE_ID_FK` FOREIGN KEY (`IDENTIFICATION_TYPE_ID`) REFERENCES `identification_type_id` (`IDENTIFICATION_TYPE_ID`),
+  ADD CONSTRAINT `PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `person_id` (`PERSON_ID`),
+  ADD CONSTRAINT `PERSON_PROFESSION_TYPE_ID_FK` FOREIGN KEY (`PROFESSION_TYPE_ID`) REFERENCES `profession_type_id` (`PROFESSION_TYPE_ID`);
 
 --
--- Filtros para la tabla `PERSON_ADDRESS`
+-- Filtros para la tabla `person_address`
 --
-ALTER TABLE `PERSON_ADDRESS`
-  ADD CONSTRAINT `PERSON_ADDRESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PERSON_ADDRESS_DISTRICT_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`) REFERENCES `DISTRICT_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`);
+ALTER TABLE `person_address`
+  ADD CONSTRAINT `PERSON_ADDRESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PERSON_ADDRESS_DISTRICT_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`) REFERENCES `district_id` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`);
 
 --
--- Filtros para la tabla `PERSON_PHONE`
+-- Filtros para la tabla `person_phone`
 --
-ALTER TABLE `PERSON_PHONE`
-  ADD CONSTRAINT `PERSON_PHONE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
+ALTER TABLE `person_phone`
+  ADD CONSTRAINT `PERSON_PHONE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`);
 
 --
--- Filtros para la tabla `PERSON_TYPE`
+-- Filtros para la tabla `person_type`
 --
-ALTER TABLE `PERSON_TYPE`
-  ADD CONSTRAINT `PERSON_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PERSON_TYPE_ID_FK` FOREIGN KEY (`PERSON_TYPE_ID`) REFERENCES `PERSON_TYPE_ID` (`PERSON_TYPE_ID`),
-  ADD CONSTRAINT `PERSON_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `person_type`
+  ADD CONSTRAINT `PERSON_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PERSON_TYPE_ID_FK` FOREIGN KEY (`PERSON_TYPE_ID`) REFERENCES `person_type_id` (`PERSON_TYPE_ID`),
+  ADD CONSTRAINT `PERSON_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `PHONE_TYPE`
+-- Filtros para la tabla `phone_type`
 --
-ALTER TABLE `PHONE_TYPE`
-  ADD CONSTRAINT `PHONE_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PHONE_TYPE_ID_FK` FOREIGN KEY (`PHONE_TYPE_ID`) REFERENCES `PHONE_TYPE_ID` (`PHONE_TYPE_ID`),
-  ADD CONSTRAINT `PHONE_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `phone_type`
+  ADD CONSTRAINT `PHONE_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PHONE_TYPE_ID_FK` FOREIGN KEY (`PHONE_TYPE_ID`) REFERENCES `phone_type_id` (`PHONE_TYPE_ID`),
+  ADD CONSTRAINT `PHONE_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `PROCESS`
+-- Filtros para la tabla `process`
 --
-ALTER TABLE `PROCESS`
-  ADD CONSTRAINT `PROCESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PROCESS_DATAFILE_ID_FK` FOREIGN KEY (`DATAFILE_ID`) REFERENCES `DATAFILE_ID` (`DATAFILE_ID`),
-  ADD CONSTRAINT `PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`),
-  ADD CONSTRAINT `PROCESS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `process`
+  ADD CONSTRAINT `PROCESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PROCESS_DATAFILE_ID_FK` FOREIGN KEY (`DATAFILE_ID`) REFERENCES `datafile_id` (`DATAFILE_ID`),
+  ADD CONSTRAINT `PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `process_id` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`),
+  ADD CONSTRAINT `PROCESS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `PROCESS_COMPONENT`
+-- Filtros para la tabla `process_component`
 --
-ALTER TABLE `PROCESS_COMPONENT`
-  ADD CONSTRAINT `PROCESS_COMPONENT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PROCESS_COMP_COMPONENT_ID_FK` FOREIGN KEY (`COMPONENT_ID`) REFERENCES `COMPONENT_ID` (`COMPONENT_ID`),
-  ADD CONSTRAINT `PROCESS_COMP_PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`);
+ALTER TABLE `process_component`
+  ADD CONSTRAINT `PROCESS_COMPONENT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PROCESS_COMP_COMPONENT_ID_FK` FOREIGN KEY (`COMPONENT_ID`) REFERENCES `component_id` (`COMPONENT_ID`),
+  ADD CONSTRAINT `PROCESS_COMP_PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `process_id` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`);
 
 --
--- Filtros para la tabla `PROCESS_ID`
+-- Filtros para la tabla `process_id`
 --
-ALTER TABLE `PROCESS_ID`
-  ADD CONSTRAINT `PROCESS_ID_MODULE_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`) REFERENCES `MODULE_ID` (`SUBSYSTEM_ID`, `MODULE_ID`);
+ALTER TABLE `process_id`
+  ADD CONSTRAINT `PROCESS_ID_MODULE_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`) REFERENCES `module_id` (`SUBSYSTEM_ID`, `MODULE_ID`);
 
 --
--- Filtros para la tabla `PRODUCT_ASESSOR`
+-- Filtros para la tabla `product_asessor`
 --
-ALTER TABLE `PRODUCT_ASESSOR`
-  ADD CONSTRAINT `PRODUCT_ASESSOR_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PRODUCT_ASESSOR_ID_FK` FOREIGN KEY (`USER_ID`, `PRODUCT_ID`) REFERENCES `PRODUCT_ASESSOR_ID` (`USER_ID`, `PRODUCT_ID`),
-  ADD CONSTRAINT `PRODUCT_ASESSOR_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `PROD_ASSESSOR_PRODUCT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`),
-  ADD CONSTRAINT `PROD_ASSESSOR_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+ALTER TABLE `product_asessor`
+  ADD CONSTRAINT `PRODUCT_ASESSOR_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PRODUCT_ASESSOR_ID_FK` FOREIGN KEY (`USER_ID`, `PRODUCT_ID`) REFERENCES `product_asessor_id` (`USER_ID`, `PRODUCT_ID`),
+  ADD CONSTRAINT `PRODUCT_ASESSOR_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`),
+  ADD CONSTRAINT `PROD_ASSESSOR_PRODUCT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `product_microcredit_id` (`PRODUCT_ID`),
+  ADD CONSTRAINT `PROD_ASSESSOR_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `user_account_id` (`USER_ID`);
 
 --
--- Filtros para la tabla `PRODUCT_MICROCREDIT`
+-- Filtros para la tabla `product_microcredit`
 --
-ALTER TABLE `PRODUCT_MICROCREDIT`
-  ADD CONSTRAINT `PRODUCT_MICROCREDIT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PRODUCT_MICROCREDIT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`),
-  ADD CONSTRAINT `PRODUCT_MIC_CURRENCY_ID_FK` FOREIGN KEY (`CURRENCY_ID`) REFERENCES `CURRENCY_ID` (`CURRENCY_ID`),
-  ADD CONSTRAINT `PRODU_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `product_microcredit`
+  ADD CONSTRAINT `PRODUCT_MICROCREDIT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PRODUCT_MICROCREDIT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `product_microcredit_id` (`PRODUCT_ID`),
+  ADD CONSTRAINT `PRODUCT_MIC_CURRENCY_ID_FK` FOREIGN KEY (`CURRENCY_ID`) REFERENCES `currency_id` (`CURRENCY_ID`),
+  ADD CONSTRAINT `PRODU_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `PROFESSION_TYPE`
+-- Filtros para la tabla `profession_type`
 --
-ALTER TABLE `PROFESSION_TYPE`
-  ADD CONSTRAINT `PROFESSION_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PROFESSION_TYPE_ID_FK` FOREIGN KEY (`PROFESSION_TYPE_ID`) REFERENCES `PROFESSION_TYPE_ID` (`PROFESSION_TYPE_ID`),
-  ADD CONSTRAINT `PROFESSION_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `profession_type`
+  ADD CONSTRAINT `PROFESSION_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PROFESSION_TYPE_ID_FK` FOREIGN KEY (`PROFESSION_TYPE_ID`) REFERENCES `profession_type_id` (`PROFESSION_TYPE_ID`),
+  ADD CONSTRAINT `PROFESSION_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `PROFILE`
+-- Filtros para la tabla `profile`
 --
-ALTER TABLE `PROFILE`
-  ADD CONSTRAINT `PROFILE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PROFILE_ID_FK` FOREIGN KEY (`PROFILE_ID`) REFERENCES `PROFILE_ID` (`PROFILE_ID`),
-  ADD CONSTRAINT `PROFILE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `profile`
+  ADD CONSTRAINT `PROFILE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PROFILE_ID_FK` FOREIGN KEY (`PROFILE_ID`) REFERENCES `profile_id` (`PROFILE_ID`),
+  ADD CONSTRAINT `PROFILE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `PROVINCE`
+-- Filtros para la tabla `province`
 --
-ALTER TABLE `PROVINCE`
-  ADD CONSTRAINT `PROVINCE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PROVINCE_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`) REFERENCES `PROVINCE_ID` (`COUNTRY_ID`, `PROVINCE_ID`),
-  ADD CONSTRAINT `PROVINCE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `province`
+  ADD CONSTRAINT `PROVINCE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `PROVINCE_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`) REFERENCES `province_id` (`COUNTRY_ID`, `PROVINCE_ID`),
+  ADD CONSTRAINT `PROVINCE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `PROVINCE_ID`
+-- Filtros para la tabla `province_id`
 --
-ALTER TABLE `PROVINCE_ID`
-  ADD CONSTRAINT `PROVINCE_ID_COUNTRY_ID_FK` FOREIGN KEY (`COUNTRY_ID`) REFERENCES `COUNTRY_ID` (`COUNTRY_ID`);
+ALTER TABLE `province_id`
+  ADD CONSTRAINT `PROVINCE_ID_COUNTRY_ID_FK` FOREIGN KEY (`COUNTRY_ID`) REFERENCES `country_id` (`COUNTRY_ID`);
 
 --
--- Filtros para la tabla `QUOTA_TYPE`
+-- Filtros para la tabla `quota_type`
 --
-ALTER TABLE `QUOTA_TYPE`
-  ADD CONSTRAINT `QUOTA_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `QUOTA_TYPE_ID_FK` FOREIGN KEY (`QUOTA_TYPE_ID`) REFERENCES `QUOTA_TYPE_ID` (`QUOTA_TYPE_ID`),
-  ADD CONSTRAINT `QUOTA_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `quota_type`
+  ADD CONSTRAINT `QUOTA_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `QUOTA_TYPE_ID_FK` FOREIGN KEY (`QUOTA_TYPE_ID`) REFERENCES `quota_type_id` (`QUOTA_TYPE_ID`),
+  ADD CONSTRAINT `QUOTA_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `RECOMMENDATION`
+-- Filtros para la tabla `recommendation`
 --
-ALTER TABLE `RECOMMENDATION`
-  ADD CONSTRAINT `RECOMMENDATION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `RECOMMENDATION_ID_FK` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `RECOMMENDATION_ID` (`SOLICITUDE_ID`),
-  ADD CONSTRAINT `RECOMMENDATION_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `RECOMMENDATION_SOLICITUDE_ID` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `SOLICITUDE_ID` (`SOLICITUDE_ID`);
+ALTER TABLE `recommendation`
+  ADD CONSTRAINT `RECOMMENDATION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `RECOMMENDATION_ID_FK` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `recommendation_id` (`SOLICITUDE_ID`),
+  ADD CONSTRAINT `RECOMMENDATION_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`),
+  ADD CONSTRAINT `RECOMMENDATION_SOLICITUDE_ID` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `solicitude_id` (`SOLICITUDE_ID`);
 
 --
--- Filtros para la tabla `RESPONSABILITY`
+-- Filtros para la tabla `responsability`
 --
-ALTER TABLE `RESPONSABILITY`
-  ADD CONSTRAINT `RESPONSABILITY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `RESPONSABILITY_ID_FK` FOREIGN KEY (`RESPONSABILITY_ID`) REFERENCES `RESPONSABILITY_ID` (`RESPONSABILITY_ID`),
-  ADD CONSTRAINT `RESPONSABILITY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `responsability`
+  ADD CONSTRAINT `RESPONSABILITY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `RESPONSABILITY_ID_FK` FOREIGN KEY (`RESPONSABILITY_ID`) REFERENCES `responsability_id` (`RESPONSABILITY_ID`),
+  ADD CONSTRAINT `RESPONSABILITY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `RESPONSE`
+-- Filtros para la tabla `response`
 --
-ALTER TABLE `RESPONSE`
-  ADD CONSTRAINT `RESPONSE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `RESPONSE_ID_FK` FOREIGN KEY (`RESPONSE_ID`) REFERENCES `RESPONSE_ID` (`RESPONSE_ID`),
-  ADD CONSTRAINT `RESPONSE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+ALTER TABLE `response`
+  ADD CONSTRAINT `RESPONSE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `RESPONSE_ID_FK` FOREIGN KEY (`RESPONSE_ID`) REFERENCES `response_id` (`RESPONSE_ID`),
+  ADD CONSTRAINT `RESPONSE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
 --
--- Filtros para la tabla `ROLE`
+-- Filtros para la tabla `role`
 --
-ALTER TABLE `ROLE`
-  ADD CONSTRAINT `ROLE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ROLE_PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`);
+ALTER TABLE `role`
+  ADD CONSTRAINT `ROLE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `ROLE_PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `process_id` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`);
 
 --
--- Filtros para la tabla `SEQUENTIAL`
+-- Filtros para la tabla `sequential`
 --
-ALTER TABLE `SEQUENTIAL`
-  ADD CONSTRAINT `SEQUENTIAL_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `SEQUENTIAL_ID_FK` FOREIGN KEY (`SEQUENTIAL_ID`) REFERENCES `SEQUENTIAL_ID` (`SEQUENTIAL_ID`);
+ALTER TABLE `sequential`
+  ADD CONSTRAINT `SEQUENTIAL_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `SEQUENTIAL_ID_FK` FOREIGN KEY (`SEQUENTIAL_ID`) REFERENCES `sequential_id` (`SEQUENTIAL_ID`);
 
 --
--- Filtros para la tabla `SOLICITUDE`
+-- Filtros para la tabla `solicitude`
 --
-ALTER TABLE `SOLICITUDE`
-  ADD CONSTRAINT `SOLICITUDE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `SOLICITUDE_FUNDS_DEST_ID_FK` FOREIGN KEY (`FUNDS_DESTINATION_ID`) REFERENCES `FUNDS_DESTINATION_ID` (`FUNDS_DESTINATION_ID`),
-  ADD CONSTRAINT `SOLICITUDE_GROUP_CLIENT_ID_FK` FOREIGN KEY (`GROUP_CLIENT_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`),
-  ADD CONSTRAINT `SOLICITUDE_ID_FK` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `SOLICITUDE_ID` (`SOLICITUDE_ID`),
-  ADD CONSTRAINT `SOLICITUDE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `SOLICITUDE_PARTNER_CLIE_ID_FK` FOREIGN KEY (`PARTNER_CLIENT_ID`) REFERENCES `PARTNER_ID` (`PARTNER_ID`),
-  ADD CONSTRAINT `SOLICITUDE_PAY_FREQ_ID_FK` FOREIGN KEY (`PAYMENT_FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
-  ADD CONSTRAINT `SOLICITUDE_PRODUCT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`),
-  ADD CONSTRAINT `SOLICITUDE_QUOTA_TYPE_ID_FK` FOREIGN KEY (`QUOTA_TYPE_ID`) REFERENCES `QUOTA_TYPE_ID` (`QUOTA_TYPE_ID`),
-  ADD CONSTRAINT `SOLICITUDE_SOL_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `SOLICITUDE_STATUS_ID` (`STATUS_ID`),
-  ADD CONSTRAINT `SOLICITUDE_USER_ACCOUNT_ID_FK` FOREIGN KEY (`ASSESSOR`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+ALTER TABLE `solicitude`
+  ADD CONSTRAINT `SOLICITUDE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
+  ADD CONSTRAINT `SOLICITUDE_FUNDS_DEST_ID_FK` FOREIGN KEY (`FUNDS_DESTINATION_ID`) REFERENCES `funds_destination_id` (`FUNDS_DESTINATION_ID`),
+  ADD CONSTRAINT `SOLICITUDE_GROUP_CLIENT_ID_FK` FOREIGN KEY (`GROUP_CLIENT_ID`) REFERENCES `partner_group_id` (`PARTNER_GROUP_ID`),
+  ADD CONSTRAINT `SOLICITUDE_ID_FK` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `solicitude_id` (`SOLICITUDE_ID`),
+  ADD CONSTRAINT `SOLICITUDE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `language` (`LANGUAGE_ID`);
 
---
--- Filtros para la tabla `SOLICITUDE_STATUS`
---
-ALTER TABLE `SOLICITUDE_STATUS`
-  ADD CONSTRAINT `SOLICITUDE_STATUS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `SOLICITUDE_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `SOLICITUDE_STATUS_ID` (`STATUS_ID`),
-  ADD CONSTRAINT `SOLICITUDE_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
-
---
--- Filtros para la tabla `SUBSYSTEM`
---
-ALTER TABLE `SUBSYSTEM`
-  ADD CONSTRAINT `SUBSYSTEM_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `SUBSYSTEM_ID` (`SUBSYSTEM_ID`),
-  ADD CONSTRAINT `SUBSYSTEM_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
-
---
--- Filtros para la tabla `USER_ACCESS`
---
-ALTER TABLE `USER_ACCESS`
-  ADD CONSTRAINT `USER_ACCESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_ACCESS_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
-
---
--- Filtros para la tabla `USER_ACCOUNT`
---
-ALTER TABLE `USER_ACCOUNT`
-  ADD CONSTRAINT `USER_ACCOUNT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
-  ADD CONSTRAINT `USER_ACCOUNT_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`),
-  ADD CONSTRAINT `USER_ACCOUNT_USER_STATUS_ID_FK` FOREIGN KEY (`USER_STATUS_ID`) REFERENCES `USER_STATUS_ID` (`USER_STATUS_ID`),
-  ADD CONSTRAINT `USER_ACCOUNT_USER_TYPE_ID_FK` FOREIGN KEY (`USER_TYPE_ID`) REFERENCES `USER_TYPE_ID` (`USER_TYPE_ID`);
-
---
--- Filtros para la tabla `USER_AUTHORIZATION`
---
-ALTER TABLE `USER_AUTHORIZATION`
-  ADD CONSTRAINT `USER_AUTHORIZATION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_AUTH_PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`),
-  ADD CONSTRAINT `USER_AUTH_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
-  ADD CONSTRAINT `USER_AUTH_USER_AUTH_ID_FK` FOREIGN KEY (`AUTHORIZER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
-
---
--- Filtros para la tabla `USER_NOTIFICATION`
---
-ALTER TABLE `USER_NOTIFICATION`
-  ADD CONSTRAINT `USER_NOTIFICATION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_NOTIF_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
-  ADD CONSTRAINT `USER_NOTIF_USER_NOT_TYPE_ID_FK` FOREIGN KEY (`USER_NOTIFICATION_TYPE_ID`) REFERENCES `USER_NOTIFICATION_TYPE_ID` (`USER_NOTIFICATION_TYPE_ID`);
-
---
--- Filtros para la tabla `USER_NOTIFICATION_TYPE`
---
-ALTER TABLE `USER_NOTIFICATION_TYPE`
-  ADD CONSTRAINT `USER_NOTIFICATION_TYPE_ID_FK` FOREIGN KEY (`USER_NOTIFICATION_TYPE_ID`) REFERENCES `USER_NOTIFICATION_TYPE_ID` (`USER_NOTIFICATION_TYPE_ID`),
-  ADD CONSTRAINT `USER__LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
-
---
--- Filtros para la tabla `USER_PROFILE`
---
-ALTER TABLE `USER_PROFILE`
-  ADD CONSTRAINT `USER_PROFILE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_PROF_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
-
---
--- Filtros para la tabla `USER_SESSION`
---
-ALTER TABLE `USER_SESSION`
-  ADD CONSTRAINT `USER_SESSION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_SESSION_HOST_ID_FK` FOREIGN KEY (`HOST_ID`) REFERENCES `HOST_ID` (`HOST_ID`),
-  ADD CONSTRAINT `USER_SESS_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
-
---
--- Filtros para la tabla `USER_STATUS`
---
-ALTER TABLE `USER_STATUS`
-  ADD CONSTRAINT `USER_STATUS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_STATUS_ID_FK` FOREIGN KEY (`USER_STATUS_ID`) REFERENCES `USER_STATUS_ID` (`USER_STATUS_ID`),
-  ADD CONSTRAINT `USER_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
-
---
--- Filtros para la tabla `USER_TYPE`
---
-ALTER TABLE `USER_TYPE`
-  ADD CONSTRAINT `USER_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_TYPE_ID_FK` FOREIGN KEY (`USER_TYPE_ID`) REFERENCES `USER_TYPE_ID` (`USER_TYPE_ID`),
-  ADD CONSTRAINT `USER_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
-
---
--- Filtros para la tabla `ZONE_ASESSOR`
---
-ALTER TABLE `ZONE_ASESSOR`
-  ADD CONSTRAINT `ZONE_ASESSOR_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ZONE_ASESSOR_ID_FK` FOREIGN KEY (`USER_ID`, `GEOGRAPHIC_ZONE_ID`) REFERENCES `ZONE_ASESSOR_ID` (`USER_ID`, `GEOGRAPHIC_ZONE_ID`),
-  ADD CONSTRAINT `ZONE_ASESSOR_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `ZONE_ASE_GEO_ZONE_ID_FK` FOREIGN KEY (`GEOGRAPHIC_ZONE_ID`) REFERENCES `GEOGRAPHIC_ZONE_ID` (`GEOGRAPHIC_ZONE_ID`),
-  ADD CONSTRAINT `ZONE_ASE_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
