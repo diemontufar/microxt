@@ -12,7 +12,8 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "PARTNER")
-public class Partner extends AbstractHistorical implements Multicompany, Multilanguage, Historical {
+public class Partner extends AbstractHistorical implements Multicompany,
+		Multilanguage, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -29,6 +30,12 @@ public class Partner extends AbstractHistorical implements Multicompany, Multila
 	 */
 	@Column(name = "ACTIVITY", nullable = true)
 	private String activity;
+
+	/**
+	 * User Id
+	 */
+	@Column(name = "USER_ID", nullable = false)
+	private String userId;
 
 	/**
 	 * Meeting Frequency id
@@ -49,9 +56,10 @@ public class Partner extends AbstractHistorical implements Multicompany, Multila
 		this.pk = pk;
 	}
 
-	public Partner(PartnerPk pk, Long personId) {
+	public Partner(PartnerPk pk, Long personId, String userId) {
 		this.pk = pk;
 		this.personId = personId;
+		this.userId = userId;
 	}
 
 	public PartnerPk getPk() {
@@ -76,6 +84,14 @@ public class Partner extends AbstractHistorical implements Multicompany, Multila
 
 	public void setActivity(String activity) {
 		this.activity = activity;
+	}
+
+	public String getUserId() {
+		return this.userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getFrequencyId() {
@@ -108,7 +124,9 @@ public class Partner extends AbstractHistorical implements Multicompany, Multila
 
 	@Override
 	public String toString() {
-		return "PARTNER:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getPersonId() + ", "
-				+ this.getActivity() + ", " + this.getFrequencyId() + ", " + this.getMeetingDay() + "]";
+		return "PARTNER:[" + this.getPk().toString() + ", " + this.getCreated()
+				+ ", " + this.getPersonId() + ", " + this.getActivity() + ", "
+				+ this.getUserId() + ", " + this.getFrequencyId() + ", "
+				+ this.getMeetingDay() + "]";
 	}
 }

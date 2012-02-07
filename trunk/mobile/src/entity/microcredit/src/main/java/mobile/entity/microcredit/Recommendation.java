@@ -14,8 +14,8 @@ import mobile.entity.schema.OptimisticLocking;
  */
 @Entity
 @Table(name = "RECOMMENDATION")
-public class Recommendation extends AbstractHistoricalLocking implements Multicompany, Multilanguage, Historical,
-		OptimisticLocking {
+public class Recommendation extends AbstractHistoricalLocking implements
+		Multicompany, Multilanguage, Historical, OptimisticLocking {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -64,8 +64,9 @@ public class Recommendation extends AbstractHistoricalLocking implements Multico
 		this.pk = pk;
 	}
 
-	public Recommendation(RecommendationPk pk, String documents, String economicUnit, String familyUnit,
-			String paymentMorale, String creditHistory, String proposal) {
+	public Recommendation(RecommendationPk pk, String documents,
+			String economicUnit, String familyUnit, String paymentMorale,
+			String creditHistory, String proposal) {
 		this.pk = pk;
 		this.documents = documents;
 		this.economicUnit = economicUnit;
@@ -145,8 +146,10 @@ public class Recommendation extends AbstractHistoricalLocking implements Multico
 
 	@Override
 	public String toString() {
-		return "RECOMMENDATION:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getDocuments()
-				+ ", " + this.getEconomicUnit() + ", " + this.getFamilyUnit() + ", " + this.getPaymentMorale() + ", "
-				+ this.getCreditHistory() + ", " + this.getProposal() + ", " + this.getVersion() + "]";
+		return "RECOMMENDATION:[" + this.getPk().toString() + ", "
+				+ this.getCreated() + ", " + this.getDocuments() + ", "
+				+ this.getEconomicUnit() + ", " + this.getFamilyUnit() + ", "
+				+ this.getPaymentMorale() + ", " + this.getCreditHistory()
+				+ ", " + this.getProposal() + ", " + this.getVersion() + "]";
 	}
 }

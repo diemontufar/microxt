@@ -10,7 +10,8 @@ import mobile.entity.schema.MultilanguageKey;
  * The primary key class for the ZONE_ASESSOR database table.
  */
 @Embeddable
-public class ZoneAsessorPk extends AbstractCompanyLanguageKey implements MulticompanyKey, MultilanguageKey {
+public class ZoneAsessorPk extends AbstractCompanyLanguageKey implements
+		MulticompanyKey, MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -51,7 +52,7 @@ public class ZoneAsessorPk extends AbstractCompanyLanguageKey implements Multico
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getUserId() + ", "
-				+ this.getGeographicZoneId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
+				+ this.getUserId() + ", " + this.getGeographicZoneId() + "]";
 	}
 }

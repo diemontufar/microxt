@@ -12,7 +12,8 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "FUNDS_DESTINATION")
-public class FundsDestination extends AbstractEntity implements Multicompany, Multilanguage {
+public class FundsDestination extends AbstractEntity implements Multicompany,
+		Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -66,6 +67,7 @@ public class FundsDestination extends AbstractEntity implements Multicompany, Mu
 
 	@Override
 	public String toString() {
-		return "FUNDS_DESTINATION:[" + this.getPk().toString() + ", " + this.getDescription() + "]";
+		return "FUNDS_DESTINATION:[" + this.getPk().toString() + ", "
+				+ this.getDescription() + "]";
 	}
 }

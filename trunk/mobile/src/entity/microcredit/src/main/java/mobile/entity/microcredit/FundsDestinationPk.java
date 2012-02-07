@@ -10,7 +10,8 @@ import mobile.entity.schema.MultilanguageKey;
  * The primary key class for the FUNDS_DESTINATION database table.
  */
 @Embeddable
-public class FundsDestinationPk extends AbstractCompanyLanguageKey implements MulticompanyKey, MultilanguageKey {
+public class FundsDestinationPk extends AbstractCompanyLanguageKey implements
+		MulticompanyKey, MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -36,6 +37,7 @@ public class FundsDestinationPk extends AbstractCompanyLanguageKey implements Mu
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getFundsDestinationId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
+				+ this.getFundsDestinationId() + "]";
 	}
 }

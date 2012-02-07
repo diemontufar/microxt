@@ -13,7 +13,8 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "RESPONSABILITY")
-public class Responsability extends AbstractHistorical implements Multicompany, Multilanguage, Historical {
+public class Responsability extends AbstractHistorical implements Multicompany,
+		Multilanguage, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -81,7 +82,8 @@ public class Responsability extends AbstractHistorical implements Multicompany, 
 
 	@Override
 	public String toString() {
-		return "RESPONSABILITY:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getName() + ", "
+		return "RESPONSABILITY:[" + this.getPk().toString() + ", "
+				+ this.getCreated() + ", " + this.getName() + ", "
 				+ this.getDescription() + "]";
 	}
 }

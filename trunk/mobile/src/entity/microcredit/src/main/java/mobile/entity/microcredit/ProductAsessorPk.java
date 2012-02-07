@@ -10,7 +10,8 @@ import mobile.entity.schema.MultilanguageKey;
  * The primary key class for the PRODUCT_ASESSOR database table.
  */
 @Embeddable
-public class ProductAsessorPk extends AbstractCompanyLanguageKey implements MulticompanyKey, MultilanguageKey {
+public class ProductAsessorPk extends AbstractCompanyLanguageKey implements
+		MulticompanyKey, MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -51,7 +52,7 @@ public class ProductAsessorPk extends AbstractCompanyLanguageKey implements Mult
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getUserId() + ", "
-				+ this.getProductId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
+				+ this.getUserId() + ", " + this.getProductId() + "]";
 	}
 }

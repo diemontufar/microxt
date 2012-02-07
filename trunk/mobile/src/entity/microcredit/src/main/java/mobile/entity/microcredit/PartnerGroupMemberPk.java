@@ -10,7 +10,8 @@ import mobile.entity.schema.HistoricalKey;
  * The primary key class for the PARTNER_GROUP_MEMBER database table.
  */
 @Embeddable
-public class PartnerGroupMemberPk extends AbstractCompanyHistoricalKey implements MulticompanyKey, HistoricalKey {
+public class PartnerGroupMemberPk extends AbstractCompanyHistoricalKey
+		implements MulticompanyKey, HistoricalKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -36,6 +37,7 @@ public class PartnerGroupMemberPk extends AbstractCompanyHistoricalKey implement
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getExpired() + ", " + this.getPartnerGroupMemberId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getExpired() + ", "
+				+ this.getPartnerGroupMemberId() + "]";
 	}
 }

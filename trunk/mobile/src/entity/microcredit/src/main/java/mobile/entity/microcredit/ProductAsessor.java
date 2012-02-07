@@ -12,7 +12,8 @@ import mobile.entity.schema.Multilanguage;
  */
 @Entity
 @Table(name = "PRODUCT_ASESSOR")
-public class ProductAsessor extends AbstractEntity implements Multicompany, Multilanguage {
+public class ProductAsessor extends AbstractEntity implements Multicompany,
+		Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -61,6 +62,7 @@ public class ProductAsessor extends AbstractEntity implements Multicompany, Mult
 
 	@Override
 	public String toString() {
-		return "PRODUCT_ASESSOR:[" + this.getPk().toString() + ", " + this.getObservations() + "]";
+		return "PRODUCT_ASESSOR:[" + this.getPk().toString() + ", "
+				+ this.getObservations() + "]";
 	}
 }
