@@ -56,6 +56,13 @@ public class MyFormPanel extends FormPanel {
 		setFrame(true);
 		setWidth(width);
 	}
+	
+	public MyFormPanel(MyGeneralForm parent, String title, String width) {
+		this.parent = parent;
+		setHeading(title);
+		setFrame(true);
+		setWidth(width);
+	}
 
 	public boolean isNewItem() {
 		return isNewItem;

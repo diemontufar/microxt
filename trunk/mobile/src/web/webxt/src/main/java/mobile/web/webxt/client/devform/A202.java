@@ -17,6 +17,8 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
+import mobile.web.webxt.client.form.widgetsgrid.NumericColumn;
+import mobile.web.webxt.client.util.NumberType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -53,12 +55,9 @@ public class A202 extends MyGeneralForm {
 		cdata.add(new MyColumnData("pk_subsystemId"));
 		cdata.add(new MyColumnData("pk_moduleId"));
 		cdata.add(new MyColumnData("pk_processId"));
-		// cdata.add(new MyColumnData("pk_subsystemId", "Sub", 30, 4, false));
-		// cdata.add(new MyColumnData("pk_moduleId", "Mod", 30, 4, false));
-		// cdata.add(new MyColumnData("pk_processId", "Pro", 30, 4, false));
-		cdata.add(new MyColumnData("pk_dayId", "Día", 50, 3, false));
-		cdata.add(new MyColumnData("hourFrom", "Hora desde", 100, 150, true));
-		cdata.add(new MyColumnData("hourTo", "Hora hasta", 100, 150, true));
+		cdata.add(new MyColumnData("pk_dayId", "Día", 50, 1, false));
+		cdata.add(new MyColumnData("hourFrom", "Hora desde", 100, 4, true));
+		cdata.add(new MyColumnData("hourTo", "Hora hasta", 100, 4, true));
 		cdata.add(new MyColumnData("editable", "Editable", 60, 10, false));
 		getConfig().setlDataSource(cdata.getDataSources());
 
@@ -101,9 +100,9 @@ public class A202 extends MyGeneralForm {
 		comboProcess.linkWithColumn("pk_moduleId", modCol);
 		comboProcess.linkWithColumn("pk_processId", proCol);
 
-		configs.add(new NormalColumn(cdata.get(5)));
-		configs.add(new NormalColumn(cdata.get(6)));
-		configs.add(new NormalColumn(cdata.get(7)));
+		configs.add(new NumericColumn(cdata.get(5),NumberType.INTEGER));
+		configs.add(new NumericColumn(cdata.get(6),NumberType.INTEGER));
+		configs.add(new NumericColumn(cdata.get(7),NumberType.INTEGER));
 
 		CheckColumnConfig a = new CheckColumn(cdata.get(8));
 		configs.add(a);

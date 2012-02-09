@@ -7,10 +7,10 @@ import mobile.web.webxt.client.form.validations.ValidationTypes;
 import mobile.web.webxt.client.form.validations.ValidationTypesValidator;
 import mobile.web.webxt.client.util.NumberType;
 
-
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.Element;
 
 public class MyNumberField extends NumberField implements PersistentField {
 
@@ -61,7 +61,21 @@ public class MyNumberField extends NumberField implements PersistentField {
 		}
 		super.onBlur(arg0);
 	}
+	
+	@Override
+	public void setMaxLength(int m) {
+		super.setMaxLength(m);
+		if (rendered) {
+			getInputEl().setElementAttribute("maxLength", m);
+		}
+	}
 
+	@Override
+	protected void onRender(Element target, int index) {
+		super.onRender(target, index);
+		getInputEl().setElementAttribute("maxLength", getMaxLength());
+	}
+	
 	public MyNumberField(int width) {
 		super();
 		setWidth(width);

@@ -5,7 +5,6 @@ import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgets.InputBox;
 import mobile.web.webxt.client.util.NumberType;
 
-import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -19,8 +18,8 @@ public class NormalColumn extends ColumnConfig {
 		setHeader(columnData.getName());
 		setWidth(columnData.getWidth());
 
-		inputbox = new InputBox(columnData.getWidth(),
-				columnData.getMaxLength(), Validate.TEXT);
+		inputbox = new InputBox(columnData.getWidth(),columnData.getMaxLength(), Validate.TEXT);
+		inputbox.setValidateOnBlur(true);
 		setEditor(new CellEditor(inputbox));
 
 		// Visible
@@ -38,6 +37,8 @@ public class NormalColumn extends ColumnConfig {
 
 		// Create field and formatters
 		createField(columnData, type, vType);
+		inputbox.setValidateOnBlur(true);
+		setEditor(new CellEditor(inputbox));
 
 		// Visible
 		if (!columnData.isVisible()) {
@@ -50,29 +51,28 @@ public class NormalColumn extends ColumnConfig {
 		setId(id);
 		setHeader(header);
 		setWidth(width);
-		TextField<String> text = new TextField<String>();
-		text.setAllowBlank(allowBlank);
-		text.setMaxLength(maxLength);
-		setEditor(new CellEditor(text));
+		
+		// Create field and formatters
+		inputbox = new InputBox(width, maxLength, Validate.TEXT);
+		inputbox.setValidateOnBlur(true);
+		inputbox.setAllowBlank(allowBlank);
+		inputbox.setMaxLength(maxLength);
+		setEditor(new CellEditor(inputbox));
 	}
 	
 	private void createField(MyColumnData columnData, NumberType type, Validate vType) {
 
 		if (type == NumberType.TEXT && vType == null) {
 			inputbox = new InputBox(columnData.getWidth(), columnData.getMaxLength(), Validate.TEXT);
-			setEditor(new CellEditor(inputbox));
 		}
 
 		if (type == NumberType.TEXT && vType != null) {
 			inputbox = new InputBox(columnData.getWidth(), columnData.getMaxLength(), vType);
-			setEditor(new CellEditor(inputbox));
 		}
 
 		if (type == NumberType.DATE && vType == null) {
 			
 			inputbox = new InputBox(columnData.getWidth(), columnData.getMaxLength());
-			setEditor(new CellEditor(inputbox));
-
 			DateTimeFormat dtFormat = DateTimeFormat.getFormat(Format.DATE_PRESENTATION);
 			setDateTimeFormat(dtFormat);
 

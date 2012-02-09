@@ -34,6 +34,7 @@ public class InputBox extends TextField<String> implements PersistentField {
 	public InputBox(int width, int maxLenght, Validate type) {
 		this.setWidth(width);
 		this.setMaxLength(maxLenght);
+		setType(type);
 		createValidator(type);
 	}
 
@@ -42,6 +43,7 @@ public class InputBox extends TextField<String> implements PersistentField {
 		this.setFieldLabel(lbl.trim());
 		this.setWidth(width);
 		this.setMaxLength(maxLenght);
+		setType(type);
 		createValidator(type);
 	}
 
@@ -76,6 +78,7 @@ public class InputBox extends TextField<String> implements PersistentField {
 		if (type == Validate.DATE) {
 			setValidator(new ValidationTypesValidator(ValidationTypes.DATE));
 			setToolTip("Formato: dd-mm-aaaa");
+			setMaxLength(10);
 		}
 		
 	}
@@ -118,4 +121,21 @@ public class InputBox extends TextField<String> implements PersistentField {
 		this.toolTip=value;
 	}
 	
+	@Override
+	public String getValue() {
+		if (super.getValue()!=null && getType()!=Validate.EMAIL){
+			return super.getValue().toUpperCase();
+		}else{
+			return super.getValue();
+		}
+	}
+
+	public Validate getType() {
+		return type;
+	}
+
+	public void setType(Validate type) {
+		this.type = type;
+	}
+
 }
