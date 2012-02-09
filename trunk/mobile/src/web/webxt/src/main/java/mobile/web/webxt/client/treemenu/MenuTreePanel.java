@@ -150,6 +150,7 @@ public class MenuTreePanel extends LayoutContainer {
 
 		// Add listener
 		tree.addListener(Events.OnDoubleClick, new Listener<TreePanelEvent<ModelData>>() {
+		//tree.addListener(Events.OnClick, new Listener<TreePanelEvent<ModelData>>() {
 			public void handleEvent(TreePanelEvent<ModelData> be) {
 				// If node is leaf (is a process)
 				if (be.getNode().isLeaf()) {

@@ -17,9 +17,11 @@ import mobile.web.webxt.client.devform.B002;
 import mobile.web.webxt.client.devform.B003;
 import mobile.web.webxt.client.devform.B004;
 import mobile.web.webxt.client.devform.B005;
-import mobile.web.webxt.client.devform.B007;
 import mobile.web.webxt.client.devform.B006;
+import mobile.web.webxt.client.devform.B007;
 import mobile.web.webxt.client.devform.B101;
+import mobile.web.webxt.client.devform.B102;
+import mobile.web.webxt.client.devform.B103;
 import mobile.web.webxt.client.devform.C001;
 import mobile.web.webxt.client.devform.C002;
 import mobile.web.webxt.client.devform.C003;
@@ -121,6 +123,10 @@ public class FormView extends View {
 			tabItem.add(new B007());
 		} else if (processId.compareTo("B101") == 0) {
 			tabItem.add(new B101());
+		} else if (processId.compareTo("B102") == 0) {
+			tabItem.add(new B102());
+		} else if (processId.compareTo("B103") == 0) {
+			tabItem.add(new B103());
 		} else if (processId.compareTo("C001") == 0) {
 			tabItem.add(new C001());
 		} else if (processId.compareTo("C002") == 0) {
