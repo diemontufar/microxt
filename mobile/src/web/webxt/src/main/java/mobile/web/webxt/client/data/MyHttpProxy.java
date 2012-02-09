@@ -35,6 +35,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 	private final String CONTENT_TYPE = "text/plain; charset=utf-8";
 	private final String url = "http://127.0.0.1:9090/mobile/Core";
+	//private final String url = "http://192.168.0.100:8080/mobile/Core";
+	//private final String url = GWT.getModuleBaseURL()+ "mobile/Core";
 
 	protected RequestBuilder builder;
 	protected String initUrl;
@@ -45,7 +47,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	public final String QUERY_PROCESSING_MSG_1 = "Procesando consulta combo";
 	private String queryProcessing = QUERY_PROCESSING_MSG_0;
 
-	public MyHttpProxy() {
+	public MyHttpProxy() { 
 		builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		builder.setHeader("Content-Type", CONTENT_TYPE);
 		builder.setHeader("Accept", "application/json");

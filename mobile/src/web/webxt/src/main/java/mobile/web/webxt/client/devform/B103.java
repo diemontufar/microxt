@@ -127,6 +127,7 @@ public class B103 extends MyGeneralForm {
 		combodata2.add(new MyColumnData("pro", "name", "Nombre", 150));
 		combodata2.add(new MyColumnData("pro", "pk_countryId", "Provincia", 50));
 		provinceCombo.setQueryData(refProvince, combodata2);
+		provinceCombo.addDependency(countryCombo, "pk_countryId");
 		configs.add(provinceCombo);
 
 		final ComboColumn cityCombo = new ComboColumn(cdata.get(5));
@@ -137,6 +138,7 @@ public class B103 extends MyGeneralForm {
 		combodata3.add(new MyColumnData("cit", "pk_countryId", "Pais", 50));
 		combodata3.add(new MyColumnData("cit", "pk_provinceId", "Ciudad", 50));
 		cityCombo.setQueryData(refCity, combodata3);
+		cityCombo.addDependency(provinceCombo, "pk_provinceId");
 		configs.add(cityCombo);
 
 		final ComboColumn districtCombo = new ComboColumn(cdata.get(6));
@@ -148,6 +150,7 @@ public class B103 extends MyGeneralForm {
 		combodata4.add(new MyColumnData("dis", "pk_provinceId", "Provincia", 50));
 		combodata4.add(new MyColumnData("dis", "pk_cityId", "City", 50));
 		districtCombo.setQueryData(refDistrict, combodata4);
+		districtCombo.addDependency(cityCombo, "pk_cityId");
 		configs.add(districtCombo);
 
 		configs.add(new ExpireColumnConfig());
