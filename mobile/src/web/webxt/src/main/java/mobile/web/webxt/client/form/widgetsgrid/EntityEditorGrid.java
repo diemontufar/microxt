@@ -28,6 +28,8 @@ public class EntityEditorGrid extends EditorGrid<ModelData> {
 		getView().setEmptyText("No hay datos");
 		setLoadMask(true);
 		setStripeRows(true);
+		setColumnLines(true);
+		setFiresEvents(true);
 
 		// Set pluggins
 		addPlugins();

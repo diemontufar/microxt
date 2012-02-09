@@ -35,7 +35,7 @@ public class A205 extends MyGeneralForm {
 				FORM_WIDTH);
 		form.setLayout(new FormLayout());
 				
-		user = new InputBox("Usuario", "UserAccess:pk_userId:1", 50,10, Validate.TEXT);
+		user = new InputBox("Usuario", "UserAccess:pk_userId:1", 50,11, Validate.TEXT);
 		newPassword = new InputBox("Contraseña nueva", "UserAccess:userKey:1",50,20, Validate.PASSWORD);
 		retypePassword = new InputBox("Repita Contraseña", "", 50,20,Validate.PASSWORD);
 

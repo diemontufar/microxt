@@ -6,6 +6,7 @@ import java.util.List;
 import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.form.EntityContentPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
+import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.ComboColumn;
 import mobile.web.webxt.client.form.widgetsgrid.EntityEditorGrid;
@@ -14,6 +15,7 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
+import mobile.web.webxt.client.util.NumberType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -48,7 +50,7 @@ public class A203 extends MyGeneralForm {
 		cdata.add(new MyColumnData("userStatusId", "Estado", 70, 4, false));
 		cdata.add(new MyColumnData("languageId", "Idioma", 70, 4,false));
 		cdata.add(new MyColumnData("email", "Email", 120, 100,false));
-		cdata.add(new MyColumnData("personId", "ID persona", 70, 10,true));
+		cdata.add(new MyColumnData("personId", "ID persona", 70, 11,true));
 		getConfig().setlDataSource(cdata.getDataSources());
 
 		// Column model
@@ -80,14 +82,16 @@ public class A203 extends MyGeneralForm {
 		langCdata.add(new MyColumnData("lang","name", "Nombre", 150));
 		languageComboColumn.setQueryData(refLanuage, langCdata);
 		configs.add(languageComboColumn);
-		configs.add(new NormalColumn(cdata.get(5)));
+		
+		configs.add(new NormalColumn(cdata.get(5),NumberType.TEXT,Validate.EMAIL));
 		
 		ComboColumn personComboColumn = new ComboColumn(cdata.get(6));
 		Reference refPerson = new Reference("per","Person");
 		ArrayColumnData perCdata = new ArrayColumnData();
-		perCdata.add(new MyColumnData("per","pk_personId", "ID", 40));
-		perCdata.add(new MyColumnData("per","name", "Nombre", 150));
-		perCdata.add(new MyColumnData("per","lastName", "Apellido", 150));
+		perCdata.add(new MyColumnData("per","pk_personId", "Codigo", 40));
+		perCdata.add(new MyColumnData("per","identificationNumber", "ID", 40));
+		perCdata.add(new MyColumnData("per","name", "Nombre", 120));
+		perCdata.add(new MyColumnData("per","lastName", "Apellido", 130));
 		personComboColumn.setQueryData(refPerson, perCdata);
 		configs.add(personComboColumn);
 		

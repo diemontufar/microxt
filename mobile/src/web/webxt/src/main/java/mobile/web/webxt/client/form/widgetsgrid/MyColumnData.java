@@ -19,8 +19,6 @@ public class MyColumnData extends ColumnData{
 	
 	private boolean visible = true;
 	
-	//private NumberType numberType;
-	
 	private DataSource dataSource;
 	
 	public MyColumnData(String field) {
@@ -77,34 +75,6 @@ public class MyColumnData extends ColumnData{
 		setAllowBlank(allowBlank);
 	}
 
-//	public MyColumnData(String id, String header, int width, int maxLength, boolean allowBlank, ColumnType type) {
-//		this(id, header, width, maxLength, allowBlank);
-//		this.columnType = type;
-//	}
-	
-//	public MyColumnData(String id, String header, int width, int maxLength, boolean allowBlank, NumberType type) {
-//		this(id, header, width, maxLength, allowBlank);
-//		this.numberType = type;
-//	}
-	
-//	public void setDescriptionFields(String entity, String field, String criterion){
-//		this.descEntity = entity;
-//		this.descField = field;
-//		this.descCriterion = criterion;
-//	}
-	
-//	public String getDescriptionEntity(){
-//		return this.descEntity;
-//	}
-//	
-//	public String getDescriptionField(){
-//		return this.descField;
-//	}
-//	
-//	public String getDescriptionCriterion(){
-//		return this.descCriterion;
-//	}
-	
 	public String getId() {
 		return id;
 	}
@@ -145,14 +115,6 @@ public class MyColumnData extends ColumnData{
 		this.allowBlank = allowBlank;
 	}
 
-//	public ColumnType getColumnType() {
-//		return columnType;
-//	}
-
-//	public void setColumnType(ColumnType columnType) {
-//		this.columnType = columnType;
-//	}
-
 	public String getAssociatedField() {
 		return associatedField;
 	}
@@ -176,13 +138,5 @@ public class MyColumnData extends ColumnData{
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-
-//	public NumberType getNumberType() {
-//		return numberType;
-//	}
-//
-//	public void setNumberType(NumberType numberType) {
-//		this.numberType = numberType;
-//	}
 
 }
