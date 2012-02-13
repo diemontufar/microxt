@@ -30,7 +30,7 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 	}
 
 	public PagingLoadResult<ModelData> read(Object loadConfig, Object data) {
-		System.out.println("MyReader.read: " + data.toString());
+		System.out.println(">>MyReader.read...");
 		ArrayList<ModelData> models = new ArrayList<ModelData>();
 		PagingLoadResult<ModelData> paginatedModels = new BasePagingLoadResult<ModelData>(models);
 
@@ -56,8 +56,14 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 					} else if (ds.getType() == DataSourceType.DESCRIPTION) {
 						field = item.getField(ds.getAlias() + "." + ds.getField());
 					}
-					if (field != null && field.getValue() != null) {
-						model.set(ds.getField(), convertToType(field.getValue()));
+					//if (field != null && field.getValue() != null) {
+					if (field != null) {
+						String modelPropertyName = ds.getField(); 
+						if(ds.getType() == DataSourceType.DESCRIPTION){
+							modelPropertyName = ds.getAlias() + "_" + ds.getField();
+						}
+						model.set(modelPropertyName, convertToType(field.getValue()));
+						
 					}
 
 				}
