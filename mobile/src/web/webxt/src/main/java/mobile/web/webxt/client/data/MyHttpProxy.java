@@ -24,6 +24,7 @@ import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -34,9 +35,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 	private final String CONTENT_TYPE = "text/plain; charset=utf-8";
-	private final String url = "http://127.0.0.1:9090/mobile/Core";
-	//private final String url = "http://192.168.0.100:8080/mobile/Core";
-	//private final String url = GWT.getModuleBaseURL()+ "mobile/Core";
+	// private final String url = "http://127.0.0.1:9090/mobile/Core";
+	private final String url = GWT.getHostPageBaseURL() + "mobile/Core";
 
 	protected RequestBuilder builder;
 	protected String initUrl;
@@ -47,7 +47,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	public final String QUERY_PROCESSING_MSG_1 = "Procesando consulta combo";
 	private String queryProcessing = QUERY_PROCESSING_MSG_0;
 
-	public MyHttpProxy() { 
+	public MyHttpProxy() {
 		builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		builder.setHeader("Content-Type", CONTENT_TYPE);
 		builder.setHeader("Accept", "application/json");
@@ -58,6 +58,9 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	public void load(final DataReader<PagingLoadResult<ModelData>> readerNull, final Object loadConfig,
 			final AsyncCallback<PagingLoadResult<ModelData>> callback) {
 		System.out.println("MyHttpProxy.load: ");
+
+		GWT.log("Host page base URL: " + GWT.getHostPageBaseURL());
+		GWT.log("Module base URL: " + GWT.getModuleBaseURL());
 
 		if (displayNotifications) {
 			Dispatcher.forwardEvent(AppEvents.UserNotification, queryProcessing);
@@ -164,6 +167,9 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	public void requestMsg(final MyProcessConfig config, final AsyncCallback<Message> callback) {
 		System.out.println("MyHttpProxy.requestMsg: " + config.toString());
 
+		GWT.log("Host page base URL: " + GWT.getHostPageBaseURL());
+		GWT.log("Module base URL: " + GWT.getModuleBaseURL());
+
 		try {
 			// Request
 			Message msg = new Message();
@@ -256,7 +262,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 						queryFields = queryFields + ";";
 					}
 					String queryField = alias + "." + fieldName;
-					if(property != null){
+					if (property != null) {
 						queryField = queryField + ":" + property;
 					}
 					queryFields = queryFields + queryField;
