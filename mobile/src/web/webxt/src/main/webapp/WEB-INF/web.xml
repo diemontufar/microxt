@@ -5,6 +5,20 @@
 
 <web-app>
 
+	<servlet>
+		<servlet-name>HttpProxy</servlet-name>
+		<servlet-class>com.jsos.httpproxy.HttpProxyServlet</servlet-class>
+		<init-param>
+			<param-name>host</param-name>
+			<param-value>http://127.0.0.1:9090/mobile/Core</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>HttpProxy</servlet-name>
+		<url-pattern>mobile/Core</url-pattern>
+	</servlet-mapping>
+
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>Mobile.html</welcome-file>
