@@ -19,12 +19,12 @@ import org.apache.log4j.Logger;
 public class Core extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String CONTENT_TYPE = "text/plain; charset=UTF-8";
-	private static final String ACCESS_CONTROL = "http://127.0.0.1:8888";
 	private Logger log = Log.getInstance();
 
 	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String message = null;
 		try {
+			log.info(":::::::::::::::::::::::::");
 			// log.info("request: " + request);
 			log.info("content-type: " + request.getContentType());
 			log.info("content-length: " + request.getContentLength());
@@ -37,8 +37,8 @@ public class Core extends HttpServlet {
 			log.info("Input message: " + message);
 
 			if (message == null) {
-				response.setContentType(CONTENT_TYPE);
-				response.setHeader("Access-Control-Allow-Origin", ACCESS_CONTROL);
+				setResponseProp(response);
+				
 				PrintWriter out = response.getWriter();
 
 				// Test message
@@ -56,8 +56,7 @@ public class Core extends HttpServlet {
 			proc.process(msg);
 
 			// Return the changes in JSON format
-			response.setContentType(CONTENT_TYPE);
-			response.setHeader("Access-Control-Allow-Origin", ACCESS_CONTROL);
+			setResponseProp(response);
 			PrintWriter out = response.getWriter();
 
 			out.println(msg.toJSON());
@@ -66,5 +65,10 @@ public class Core extends HttpServlet {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void setResponseProp(HttpServletResponse response) {
+		response.setContentType(CONTENT_TYPE);
+		//response.setHeader("Access-Control-Allow-Origin", ACCESS_CONTROL);
 	}
 }
