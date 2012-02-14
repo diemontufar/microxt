@@ -1,5 +1,7 @@
 package mobile.web.webxt.client.form.widgetsgrid;
 
+import java.math.BigDecimal;
+
 import mobile.common.tools.Format;
 import mobile.web.webxt.client.form.widgets.MyNumberField;
 import mobile.web.webxt.client.util.NumberType;
@@ -116,5 +118,12 @@ public class NumericColumn extends ColumnConfig {
 			setRenderer(gridInteger);
 		}
 
+		
+		// Set property editor
+		if (type == NumberType.INTEGER) {
+			numerfield.setPropertyEditorType(Integer.class);
+		}else if (type == NumberType.CURRENCY || type == NumberType.DECIMAL){
+			numerfield.setPropertyEditorType(BigDecimal.class);
+		}
 	}
 }

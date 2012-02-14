@@ -21,31 +21,48 @@ public class MyColumnData extends ColumnData{
 	
 	private DataSource dataSource;
 	
+	/**
+	 * Creates a data source RECORD with the alias in <code>null</code> and the provided field
+	 */
 	public MyColumnData(String field) {
 		setId(field);
 		setDataSource(new DataSource(field));
 		setVisible(false);
 	}
 	
+	/**
+	 * Creates a data source RECORD with the provided alias and field<br/>
+	 * without visibility
+	 */
 	public MyColumnData(String alias, String field) {
 		setId(field);
-		setDataSource(new DataSource(alias, field));
+		setDataSource(new DataSource(alias, field, DataSourceType.RECORD));
 		setVisible(false);
 	}
-	
+
+	/**
+	 * Creates a data source with the provided alias, field and type<br/>
+	 */
 	public MyColumnData(String alias, String field, String title, int width) {
 		setId(field);
 		setDataSource(new DataSource(alias, field, DataSourceType.RECORD));
 		setName(title);
 		setWidth(width);
 	}
-	
+
+	/**
+	 * Creates a data source RECORD with the provided alias and field<br/>
+	 * and the provided visibility
+	 */
 	public MyColumnData(String alias, String field, boolean visible) {
 		setId(field);
 		setDataSource(new DataSource(alias, field, DataSourceType.RECORD));
 		setVisible(visible);
 	}
 
+	/**
+	 * Creates a data source RECORD with alias in null and the provided field
+	 */
 	public MyColumnData(String field, String title, int width, int maxLength, boolean allowBlank) {
 		setId(field);
 		setName(title);
@@ -55,14 +72,9 @@ public class MyColumnData extends ColumnData{
 		setDataSource(new DataSource(null, field, DataSourceType.RECORD));
 	}
 	
-	public MyColumnData(String field, DataSourceType type, String header, int width, int maxLength, boolean allowBlank) {
-		setId(field);
-		setDataSource(new DataSource(field, DataSourceType.RECORD));
-		setName(header);
-		setMaxLength(maxLength);
-		setAllowBlank(allowBlank);
-	}
-
+	/** 
+	 * If type is DESCRIPTION applies a different model data property structure 
+	 */
 	public MyColumnData(DataSource ds, String title, int width, boolean allowBlank) {
 		if(ds.getType() != DataSourceType.DESCRIPTION ){
 			setId(ds.getField());

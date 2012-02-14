@@ -60,6 +60,8 @@ public class MyEditorSupport extends EditorSupport<ModelData> {
 							}
 						}
 
+					}else{
+						ge.setCancelled(true);
 					}
 				}
 			}
