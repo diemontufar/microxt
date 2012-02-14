@@ -21,6 +21,8 @@ import mobile.web.webxt.client.form.widgetsgrid.NumericColumn;
 import mobile.web.webxt.client.util.NumberType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -125,7 +127,17 @@ public class A202 extends MyGeneralForm {
 		});
 
 		// Top tool bar
-		GridToolBar toolBar = new GridToolBar(grid, getStore());
+		ModelData initModel = new BaseModelData();
+		initModel.set(cdata.get(0).getId(), null);
+		initModel.set(cdata.get(1).getId(), null);
+		initModel.set(cdata.get(2).getId(), null);
+		initModel.set(cdata.get(3).getId(), null);
+		initModel.set(cdata.get(4).getId(), null);
+		initModel.set(cdata.get(5).getId(), null);
+		initModel.set(cdata.get(6).getId(), null);
+		initModel.set(cdata.get(7).getId(), null);
+		initModel.set(cdata.get(8).getId(), true);
+		GridToolBar toolBar = new GridToolBar(grid, getStore(), initModel);
 		cp.setTopComponent(toolBar);
 
 		// Paging tool bar
