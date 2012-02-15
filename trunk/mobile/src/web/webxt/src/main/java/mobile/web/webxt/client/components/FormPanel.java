@@ -1,8 +1,14 @@
 package mobile.web.webxt.client.components;
 
 import mobile.web.webxt.client.MobileConfig;
-import mobile.web.webxt.client.devform.C301;
-import mobile.web.webxt.client.devform.FormExample;
+import mobile.web.webxt.client.devform.B101;
+import mobile.web.webxt.client.devform.B102;
+import mobile.web.webxt.client.devform.B103;
+import mobile.web.webxt.client.devform.C102;
+import mobile.web.webxt.client.devform.C103;
+import mobile.web.webxt.client.devform.C201;
+import mobile.web.webxt.client.devform.ObtainPersonInformation;
+import mobile.web.webxt.client.devform.ZonePreview;
 import mobile.web.webxt.client.resources.Resources;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -23,7 +29,8 @@ public class FormPanel extends ContentPanel {
 			add(tabPanel);
 		} else {
 			// Add here the tested form
-			add(new FormExample());
+			//add(new B103());
+			add(new C103());
 		}
 
 	}

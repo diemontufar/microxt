@@ -43,6 +43,9 @@ public class B103 extends MyGeneralForm {
 
 	// Global components
 	ComboForm personIdCombo;
+	ObtainPersonInformation personalInfo; 
+	MyLabel labelPerson;
+	String pCode;
 
 	public B103() {
 		super(PROCESS, true);
@@ -73,8 +76,12 @@ public class B103 extends MyGeneralForm {
 		perCdata.add(new MyColumnData("per1", "pk_personId", "Id", 100));
 		personIdCombo.setQueryData(refPerson, perCdata);
 		personIdCombo.setDisplayField("pk_personId");
+		
+		// Person id
+		labelPerson = new MyLabel("", LABEL_WIDTH);
 
 		row.add(personIdCombo);
+		row.add(labelPerson);
 
 		form.add(row);
 
@@ -125,7 +132,7 @@ public class B103 extends MyGeneralForm {
 		ArrayColumnData combodata2 = new ArrayColumnData();
 		combodata2.add(new MyColumnData("pro", "pk_provinceId", "Provincia", 70));
 		combodata2.add(new MyColumnData("pro", "name", "Nombre", 150));
-		combodata2.add(new MyColumnData("pro", "pk_countryId", "Provincia", 50));
+		combodata2.add(new MyColumnData("pro", "pk_countryId", "Provincia", 70));
 		provinceCombo.setQueryData(refProvince, combodata2);
 		provinceCombo.addDependency(countryCombo, "pk_countryId");
 		configs.add(provinceCombo);
@@ -175,6 +182,9 @@ public class B103 extends MyGeneralForm {
 		// Paging tool bar
 		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(addressGrid, PAGE_SIZE);
 		cp.setBottomComponent(pagingToolBar);
+		personalInfo = new ObtainPersonInformation();
+		personalInfo.setVisible(true);
+		cp.add(personalInfo);
 
 		// Operations
 		personIdCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
@@ -182,6 +192,11 @@ public class B103 extends MyGeneralForm {
 			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
 				if (((ComboForm) se.getSource()).isSomeSelected()) {
 					pagingToolBar.refresh();
+					ModelData value;
+					value= se.getSelectedItem();
+					pCode=value.get("pk_personId");
+					personalInfo.setPersonId(pCode);
+					labelPerson.setText(personalInfo.getPersonName());
 				} else {
 					addressGrid.getStore().removeAll();
 				}

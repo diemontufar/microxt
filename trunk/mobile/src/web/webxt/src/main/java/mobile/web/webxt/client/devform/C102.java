@@ -1,46 +1,45 @@
 package mobile.web.webxt.client.devform;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import mobile.web.webxt.client.data.MyHttpProxy;
-import mobile.web.webxt.client.data.MyProcessConfig;
+import mobile.common.message.Item;
+import mobile.web.webxt.client.data.form.DataSource;
+import mobile.web.webxt.client.data.form.DataSourceType;
+import mobile.web.webxt.client.data.form.Reference;
+import mobile.web.webxt.client.form.MyFormPanel;
+import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.validations.Validate;
+import mobile.web.webxt.client.form.widgets.ComboForm;
 import mobile.web.webxt.client.form.widgets.InputBox;
+import mobile.web.webxt.client.form.widgets.MyLabel;
+import mobile.web.webxt.client.form.widgets.MyNumberField;
 import mobile.web.webxt.client.form.widgets.MyTextArea;
-import mobile.web.webxt.client.mvc.AppEvents;
+import mobile.web.webxt.client.form.widgets.RowContainer;
+import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
+import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
-import com.extjs.gxt.ui.client.Style.LayoutRegion;
+import com.extjs.gxt.ui.client.Style.Orientation;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.HorizontalPanel;
-import com.extjs.gxt.ui.client.widget.Html;
-import com.extjs.gxt.ui.client.widget.Label;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.VerticalPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.FormPanel;
-import com.extjs.gxt.ui.client.widget.form.FormPanel.LabelAlign;
-import com.extjs.gxt.ui.client.widget.form.NumberField;
+import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
-import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
-import com.extjs.gxt.ui.client.widget.layout.FormLayout;
+import com.extjs.gxt.ui.client.widget.layout.RowData;
+import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.maps.client.MapUIOptions;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.event.MapClickHandler;
 import com.google.gwt.maps.client.event.MarkerDragEndHandler;
-import com.google.gwt.maps.client.event.PolygonLineUpdatedHandler;
-import com.google.gwt.maps.client.event.PolylineLineUpdatedHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.geom.Point;
 import com.google.gwt.maps.client.geom.Size;
@@ -52,31 +51,42 @@ import com.google.gwt.maps.client.overlay.PolyStyleOptions;
 import com.google.gwt.maps.client.overlay.Polygon;
 import com.google.gwt.maps.client.overlay.Polyline;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.FlexTable;
 
-public class C102 extends LayoutContainer {
+public class C102 extends MyGeneralForm {
 
-	private final String process = "C102";
+	private final static String PROCESS = "C102";
+	private final static String ENTITY = "GeographicZone";
 
-	private MyProcessConfig config;
+	// Constants
+	final String FORM_WIDTH = "100%";
+	final int LABEL_WIDTH = 60;
+	ContentPanel principalPanel = new ContentPanel();
 
-	private Map<String, String> mfield;
+	MyFormPanel form;
+	RowContainer row;
+	MyLabel label;
 
-	private MyHttpProxy proxy = new MyHttpProxy();
+	public C102() {
+		super(PROCESS);
+		setReference(new Reference("geo", ENTITY));
+	}
 
 	// Fields for coordinates:
-	NumberField longitude = new NumberField();
-	NumberField latitude = new NumberField();
-	InputBox isNew = new InputBox("", "GeographicZone:_new_item:1", 50,2,Validate.ALFANUMERICO);
+	MyNumberField longitude = new MyNumberField();
+	MyNumberField latitude = new MyNumberField();
+	MyNumberField longitude2 = new MyNumberField();
+	MyNumberField latitude2 = new MyNumberField();
+	MyNumberField longitude3 = new MyNumberField();
+	MyNumberField latitude3 = new MyNumberField();
+	MyNumberField longitude4 = new MyNumberField();
+	MyNumberField latitude4 = new MyNumberField();
 
 	private int MAX_POINTS = 3; // 4 points
 	private int MAX_DOWNPANEL_HEIGHT = 420; // pixels
-	private int MAX_UPPANEL_HEIGHT = 100; // pixels
-	private int MAX_LEFTPANEL_HEIGHT = 250; // pixels
 	private double INITIAL_LATITUDE = -2.8989009; // Cuenca-Ecuador
 	private double INITIAL_LONGITUDE = -78.997668; // Cuenca-Ecuador
 	private int ZOOM_LEVEL_NORMAL = 14;
+	private int ZOOM_LEVEL_CENTERED = 15;
 	private String color = "#FF0000"; // polyline
 	private double opacity = 1.0; // polyline
 	private int weight = 1; // polyline
@@ -88,12 +98,11 @@ public class C102 extends LayoutContainer {
 	Button save;
 	Button cancel;
 
-	FormPanel fpCodDesc; 
-	InputBox code; 
+	InputBox coornidateType;
+	ComboForm code;
 	MyTextArea description;
 
-	private MapWidget map = new MapWidget(LatLng.newInstance(INITIAL_LATITUDE,
-			INITIAL_LONGITUDE), ZOOM_LEVEL_NORMAL);
+	private MapWidget map = new MapWidget(LatLng.newInstance(INITIAL_LATITUDE, INITIAL_LONGITUDE), ZOOM_LEVEL_NORMAL);
 
 	Marker[] points;
 	private static LatLng[] coordinatesPolygon = new LatLng[5];
@@ -103,35 +112,35 @@ public class C102 extends LayoutContainer {
 	private Polygon polygon;
 
 	int counter = 0;
+	boolean isMNT = true;
 
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-		setWidth(800);
-		final BorderLayout layout = new BorderLayout();
 		counter = 0;
-		config = new MyProcessConfig(process);
-		isNew.setValue("1");
-		isNew.hide();
-		setLayout(layout);
 		createPanel();
 	}
 
 	private void createPanel() {
 
-		ContentPanel cpMap = new ContentPanel();
-		cpMap.setHeight(MAX_DOWNPANEL_HEIGHT);
-		cpMap.setHeaderVisible(false);
-		final AlertDialog alertZone = new AlertDialog("Error","Debe ingresar codigo de la zona");
+		// Form panel
+		form = new MyFormPanel(this, "Mantenimiento de Zonas Geográficas", FORM_WIDTH);
+		form.setHeaderVisible(false);	
+		form.setDeferHeight(true);
+
+		ContentPanel left = new ContentPanel();
+		left.setHeaderVisible(false);
+		left.setBorders(true);
+
+		ContentPanel right = new ContentPanel();
+		right.setHeaderVisible(false);
+		right.setStyleAttribute("padding", "10");
+		right.setBorders(true);
 
 		save = new Button("Guardar", new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				if(code.getValue()==null){
-					alertZone.show();
-				}else{
-					commitForm();
-				}
+				preCommitForm();
 			}
 		});
 
@@ -139,161 +148,257 @@ public class C102 extends LayoutContainer {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
 				resetForm();
+				pointRadio.setValue(true);
+				map.setCenter(LatLng.newInstance(INITIAL_LATITUDE, INITIAL_LONGITUDE), ZOOM_LEVEL_NORMAL);
 			}
 		});
-		
-		
-		ContentPanel cpForm = new ContentPanel();
-		cpForm.setHeight(MAX_DOWNPANEL_HEIGHT);
-		cpForm.setHeading("Ingreso Zonas Geograficas");
-		cpForm.addButton(save);
-		cpForm.addButton(cancel);
-		cpForm.setButtonAlign(HorizontalAlignment.CENTER);
-		cpForm.setFrame(true);
 
-		BorderLayoutData headerData = new BorderLayoutData(LayoutRegion.NORTH,
-				MAX_UPPANEL_HEIGHT);
-		headerData.setCollapsible(true);
-		headerData.setHideCollapseTool(true);
-		headerData.setSplit(true);
-		headerData.setMargins(new Margins(0, 0, 5, 0));
+		right.addButton(save);
+		right.addButton(cancel);
+		right.setButtonAlign(HorizontalAlignment.CENTER);
 
-		BorderLayoutData mapData = new BorderLayoutData(LayoutRegion.CENTER);
-		mapData.setCollapsible(true);
-		mapData.setFloatable(true);
-		mapData.setHideCollapseTool(true);
-		mapData.setSplit(true);
-		mapData.setMargins(new Margins(0, 0, 5, 0));
+		principalPanel.setHeaderVisible(false);
+		principalPanel.setSize(getWidth() - 40, 500);
+		principalPanel.setLayout(new RowLayout(Orientation.HORIZONTAL));
 
-		BorderLayoutData formData = new BorderLayoutData(LayoutRegion.EAST,
-				MAX_LEFTPANEL_HEIGHT);
-		formData.setSplit(false);
-		formData.setCollapsible(true);
-		formData.setMargins(new Margins(0, 5, 0, 0));
+		left.add(createMap());
+		right.add(createForm());
 
-		cpMap.add(createMap());
-		cpForm.add(createForm());
+		principalPanel.add(left, new RowData(.72, 1, new Margins(3)));
+		principalPanel.add(right, new RowData(.28, 1, new Margins(3)));
 
-		add(cpMap, mapData);
-		add(cpForm, formData);
+		form.add(principalPanel);
+
+		add(form);
 
 	}
 
-	private FormPanel createForm() {
+	private FieldSet createForm() {
 
-		fpCodDesc = new FormPanel();
-		code = new InputBox("", "GeographicZone:pk_geographicZoneId:1", 90,6,Validate.ALFANUMERICO);
-		description = new MyTextArea("", "GeographicZone:description:1",90,100);
-		
-		final FormPanel panel = new FormPanel();
-		panel.setHeaderVisible(false);
-		panel.setFrame(false);
-		panel.setHeight("600");
-		panel.setWidth("250");
-		int fieldHeights = 80;
+		FieldSet fieldSet = new FieldSet();
+		fieldSet.setHeading("Datos de la Zona");
+		fieldSet.setCollapsible(false);
+		fieldSet.setWidth(250);
+		fieldSet.setHeight(400);
 
-		VerticalPanel vPoints = new VerticalPanel();
+		// Code
+		row = new RowContainer();
+		label = new MyLabel("Codigo:", LABEL_WIDTH);
+		row.add(label);
 
-		FlexTable table = new FlexTable();
-		table.getElement().getStyle().setProperty("margin", "2px");
-		table.setCellSpacing(5);
-		table.setCellPadding(2);
+		code = new ComboForm(70);
+		code.setDataSource(new DataSource("geo", "pk_geographicZoneId", DataSourceType.CRITERION));
 
-		// Point Names:
-		longitude.setName("longitude");
-		latitude.setName("latitude");
+		Reference refPartner = new Reference("geo1", "GeographicZone");
+		final ArrayColumnData perCdata = new ArrayColumnData();
+		perCdata.add(new MyColumnData("geo1", "pk_geographicZoneId", "Id", 100));
+		code.setQueryData(refPartner, perCdata);
+		code.setDisplayField("pk_geographicZoneId");
 
-		// Point Heights
-		longitude.setWidth(fieldHeights);
-		latitude.setWidth(fieldHeights);
-		longitude.setEditable(false);
-		latitude.setEditable(false);
+		code.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+				if (((ComboForm) se.getSource()).isSomeSelected()) {
+					isMNT = false;
+					form.queryForm();
 
-		// Point Labels:
-		table.setHTML(0, 1,
-				"<div style='font-size: 12px; width: 35px'>Coord:</span>");
+					if (coornidateType.getValue() != null && coornidateType.getValue().compareTo("PUNTO") == 0) {
+						pointRadio.setValue(true);
+					} else if (coornidateType.getValue() != null && coornidateType.getValue().compareTo("RUTA") == 0) {
+						routeRadio.setValue(true);
+					} else if (coornidateType.getValue() != null && coornidateType.getValue().compareTo("ZONA") == 0) {
+						polygonRadio.setValue(true);
+					}
+				}
+			}
+		});
 
-		// Field positions
-		table.setWidget(0, 2, latitude);
-		table.setWidget(0, 3, longitude);
+		row.add(code);
+		fieldSet.add(row);
 
-		HorizontalPanel hPanel = new HorizontalPanel();
-		hPanel.add(new Html(
-				"<div style='font-size: 12px; width: 180px'><center><B>DATOS DE LA ZONA<B></center></span>"));
+		// GeneratedId
+		final InputBox generatedId = new InputBox();
+		generatedId.setDataSource(new DataSource(Item.GENERATED_ID, DataSourceType.CONTROL));
+		generatedId.setVisible(false);
+		generatedId.setFireChangeEventOnSetValue(true);
+		generatedId.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent e) {
+				if (e.getValue() != null) {
+					code.setRawValue((String) e.getValue());
+					code.setLoaded(false);
+				}
+			}
+		});
+		row.add(generatedId);
+		fieldSet.add(row);
 
-
-		fpCodDesc.setFrame(false);
-		fpCodDesc.setHeaderVisible(false);
-		fpCodDesc.setBorders(false);
-
-		FormLayout layoutForm = new FormLayout();
-		layoutForm.setLabelAlign(LabelAlign.TOP);
-		fpCodDesc.setLayout(layoutForm);
-		fpCodDesc.add(hPanel);
-		fpCodDesc.add(new Label());
-		code.setFieldLabel("Codigo");
-		code.setMinLength(1);
-		code.setAllowBlank(false);
-		fpCodDesc.add(code);
-		fpCodDesc.add(new Label());
-		description.setFieldLabel("Descripcion");
-		description.setEmptyText("Ingrese la descripcion de la zona");
-		fpCodDesc.add(description);
-
-		pointRadio.setBoxLabel("Punto");
-		routeRadio.setBoxLabel("Ruta");
-		polygonRadio.setBoxLabel("Poligono");
+		// Coordinate Types
+		row = new RowContainer();
+		row.setHeight(40);
+		pointRadio.setBoxLabel("PUNTO");
+		routeRadio.setBoxLabel("RUTA");
+		polygonRadio.setBoxLabel("ZONA");
 		pointRadio.setValue(true);
 		final RadioGroup radioGroup = new RadioGroup();
 		radioGroup.add(pointRadio);
 		radioGroup.add(routeRadio);
 		radioGroup.add(polygonRadio);
 
-		
-		vPoints.add(new Label());
-		vPoints.add(new Label("Tipo de Coordenadas:"));
-
 		radioGroup.addListener(Events.Change, new Listener<FieldEvent>() {
 			public void handleEvent(FieldEvent fe) {
-				map.clearOverlays();
-				counter = 0;
-				initializePoints();
 				clearFields();
 			}
 		});
 
-		vPoints.add(radioGroup);
-		vPoints.add(new Label());
-		isNew.setMinLength(1);
-		vPoints.add(isNew);
+		row.add(radioGroup);
+		fieldSet.add(row);
 
-		panel.add(fpCodDesc);
-		panel.add(table);
-		panel.add(vPoints);
+		// Description
+		row = new RowContainer();
+		label = new MyLabel("Descripción:", LABEL_WIDTH);
+		row.add(label);
+		fieldSet.add(row);
 
-		return panel;
+		row = new RowContainer();
+		row.setHeight(70);
+		description = new MyTextArea(210, 300);
+		description.setDataSource(new DataSource("geo", "description", DataSourceType.RECORD));
+		description.setAllowBlank(false);
+		description.setEmptyText("Ingrese la descripcion de la zona");
+
+		row.add(description);
+		fieldSet.add(row);
+
+		coornidateType = new InputBox(90, 20, Validate.TEXT);
+		coornidateType.setVisible(false);
+		coornidateType.setFireChangeEventOnSetValue(true);
+		coornidateType.setDataSource(new DataSource("geo", "coordinateType", DataSourceType.RECORD));
+
+		coornidateType.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent e) {
+				if (e.getValue() != null) {
+					if (coornidateType.getValue().compareTo("PUNTO") == 0) {
+						pointRadio.setValue(true);
+					} else if (coornidateType.getValue().compareTo("RUTA") == 0) {
+						routeRadio.setValue(true);
+					} else if (coornidateType.getValue().compareTo("ZONA") == 0) {
+						polygonRadio.setValue(true);
+					}
+				}
+			}
+		});
+
+		form.add(coornidateType);
+		// Points preview values:
+
+		row = new RowContainer();
+		label = new MyLabel("Coordenadas:", LABEL_WIDTH);
+		row.add(label);
+		fieldSet.add(row);
+
+		row = new RowContainer();
+		latitude = new MyNumberField(100);
+		latitude.setDataSource(new DataSource("geo", "p11", DataSourceType.RECORD));
+		latitude.setEditable(false);
+
+		longitude = new MyNumberField(100);
+		longitude.setDataSource(new DataSource("geo", "p12", DataSourceType.RECORD));
+		longitude.setEditable(false);
+		longitude.setFireChangeEventOnSetValue(true);
+
+		longitude.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent e) {
+				if (!isMNT && e.getValue() != null) {
+
+					if (e.getValue() != null && coornidateType.getValue().compareTo("PUNTO") == 0) {
+						createPoints(coornidateType.getValue());
+					}
+				}
+			}
+		});
+
+		row.add(latitude);
+		row.add(longitude);
+		fieldSet.add(row);
+
+		row = new RowContainer();
+		latitude2 = new MyNumberField(100);
+		latitude2.setDataSource(new DataSource("geo", "p21", DataSourceType.RECORD));
+		latitude2.setEditable(false);
+
+		longitude2 = new MyNumberField(100);
+		longitude2.setDataSource(new DataSource("geo", "p22", DataSourceType.RECORD));
+		longitude2.setEditable(false);
+
+		row.add(latitude2);
+		row.add(longitude2);
+		fieldSet.add(row);
+
+		row = new RowContainer();
+		latitude3 = new MyNumberField(100);
+		latitude3.setDataSource(new DataSource("geo", "p31", DataSourceType.RECORD));
+		latitude3.setEditable(false);
+
+		longitude3 = new MyNumberField(100);
+		longitude3.setDataSource(new DataSource("geo", "p32", DataSourceType.RECORD));
+		longitude3.setEditable(false);
+
+		row.add(latitude3);
+		row.add(longitude3);
+		fieldSet.add(row);
+
+		row = new RowContainer();
+		latitude4 = new MyNumberField(100);
+		latitude4.setDataSource(new DataSource("geo", "p41", DataSourceType.RECORD));
+		latitude4.setEditable(false);
+
+		longitude4 = new MyNumberField(100);
+		longitude4.setDataSource(new DataSource("geo", "p42", DataSourceType.RECORD));
+		longitude4.setEditable(false);
+		longitude4.setFireChangeEventOnSetValue(true);
+
+		longitude4.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent e) {
+				if (!isMNT && e.getValue() != null) {
+
+					createPoints(coornidateType.getValue());
+					createCoordinatePoints();
+					if (e.getValue() != null && coornidateType.getValue().compareTo("RUTA") == 0) {
+						createRoute();
+					} else if ((e.getValue() != null && coornidateType.getValue().compareTo("ZONA") == 0)) {
+						createPolygon();
+					}
+				}
+			}
+		});
+
+		row.add(latitude4);
+		row.add(longitude4);
+		fieldSet.add(row);
+
+		return fieldSet;
 	}
 
-	private void initializePoints(){
+	private void initializePoints() {
 		points = new Marker[MAX_POINTS + 1];
 
 		for (int j = 0; j <= MAX_POINTS; j++) {
 			points[j] = null;
 		}
 	}
-	
-	private int countNullPoints(){
-		int count=0;
-		
+
+	private int countNullPoints() {
+		int count = 0;
+
 		for (int j = 0; j <= MAX_POINTS; j++) {
-			if(points[j] == null){
+			if (points[j] == null) {
 				count++;
 			}
 		}
-		
+
 		return count;
 	}
-	
+
 	private LayoutContainer createMap() {
 
 		initializePoints();
@@ -309,8 +414,7 @@ public class C102 extends LayoutContainer {
 		map.setUI(opts);
 
 		// Create our "tiny" marker icon
-		Icon icon = Icon
-				.newInstance("http://labs.google.com/ridefinder/images/mm_20_red.png");
+		Icon icon = Icon.newInstance("http://labs.google.com/ridefinder/images/mm_20_red.png");
 		icon.setShadowURL("http://labs.google.com/ridefinder/images/mm_20_shadow.png");
 		icon.setIconSize(Size.newInstance(12, 20));
 		icon.setShadowSize(Size.newInstance(22, 20));
@@ -336,6 +440,14 @@ public class C102 extends LayoutContainer {
 					MAX_POINTS = 3;
 				}
 
+				if (!isMNT && routeRadio.getValue()) {
+					counter = 5;
+				}
+
+				if (!isMNT && polygonRadio.getValue()) {
+					counter = 5;
+				}
+
 				if (overlay != null && overlay instanceof Marker) {
 					sender.removeOverlay(overlay);
 					clearFields();
@@ -346,38 +458,39 @@ public class C102 extends LayoutContainer {
 
 					marker.addMarkerDragEndHandler(new MarkerDragEndHandler() {
 						public void onDragEnd(MarkerDragEndEvent event) {
-							updateFields(marker);
+							// updateFields(marker);
 							if (routeRadio.getValue()) {
 								updateCoordinatesRoute();
 								map.removeOverlay(polyline);
 								polyline = new Polyline(coordinatesRoute);
-								createRoute();
+								createVectorRoute();
 							} else if (polygonRadio.getValue()) {
 								updateCoordinatesPolygon();
 								map.removeOverlay(polygon);
-								polygon = new Polygon(coordinatesPolygon);	
-								createPolygon();
+								polygon = new Polygon(coordinatesPolygon);
+								createVectorPolygon();
 							}
+							fillCoordinateFields();
 						}
 					});
 
 					sender.addOverlay(marker);
 					points[counter] = marker;
-					updateFields(marker);
-					System.out.println("Punto " + counter + ": "
-							+ point.getLatitude() + "," + point.getLongitude());
+					// updateFields(marker);
+					System.out.println("Punto " + counter + ": " + point.getLatitude() + "," + point.getLongitude());
 
 					if (routeRadio.getValue() && counter == 3) {
 						updateCoordinatesRoute();
 						polyline = new Polyline(coordinatesRoute);
-						createRoute();
+						createVectorRoute();
 					} else if (polygonRadio.getValue() && counter == 3) {
 						updateCoordinatesPolygon();
-						polygon = new Polygon(coordinatesPolygon);						
-						createPolygon();
+						polygon = new Polygon(coordinatesPolygon);
+						createVectorPolygon();
 					}
 
 					counter++;
+					fillCoordinateFields();
 				}
 			}
 		});
@@ -387,28 +500,35 @@ public class C102 extends LayoutContainer {
 		return lcMap;
 	}
 
-	private void updateFields(Marker marker) {
-		longitude.setValue(marker.getLatLng().getLongitude());
-		latitude.setValue(marker.getLatLng().getLatitude());
+	private void setPointOnField(MyNumberField field, Marker marker, String coordMetric) {
+		if (coordMetric.compareTo("lon") == 0) {
+			field.setValue(marker.getLatLng().getLongitude());
+		} else if (coordMetric.compareTo("lat") == 0) {
+			field.setValue(marker.getLatLng().getLatitude());
+		}
 	}
 
 	private void clearFields() {
 		longitude.clear();
 		latitude.clear();
+		longitude2.clear();
+		latitude2.clear();
+		longitude3.clear();
+		latitude3.clear();
+		longitude4.clear();
+		latitude4.clear();
+
 	}
-	
-	private void resetForm(){
+
+	private void resetForm() {
 		map.clearOverlays();
-		//map = new MapWidget(LatLng.newInstance(INITIAL_LATITUDE,
-		//		INITIAL_LONGITUDE), ZOOM_LEVEL_NORMAL);
 		counter = 0;
-		initializePoints();
 		clearFields();
-		code.clear();
+		code.clearSelections();
 		description.clear();
-		pointRadio.setValue(true);
-		polyline=null;
-		polygon=null;
+		initializePoints();
+		polyline = null;
+		polygon = null;
 	}
 
 	private void updateCoordinatesPolygon() {
@@ -416,8 +536,7 @@ public class C102 extends LayoutContainer {
 			if (i == 4) {
 				coordinatesPolygon[i] = coordinatesPolygon[0];
 			} else {
-				coordinatesPolygon[i] = LatLng.newInstance(points[i]
-						.getLatLng().getLatitude(), points[i].getLatLng()
+				coordinatesPolygon[i] = LatLng.newInstance(points[i].getLatLng().getLatitude(), points[i].getLatLng()
 						.getLongitude());
 			}
 		}
@@ -425,140 +544,206 @@ public class C102 extends LayoutContainer {
 
 	private void updateCoordinatesRoute() {
 		for (int i = 0; i < coordinatesRoute.length; i++) {
-			coordinatesRoute[i] = LatLng.newInstance(points[i].getLatLng()
-					.getLatitude(), points[i].getLatLng().getLongitude());
+			coordinatesRoute[i] = LatLng.newInstance(points[i].getLatLng().getLatitude(), points[i].getLatLng()
+					.getLongitude());
 		}
+	}
+
+	private void createVectorRoute() {
+
+		PolyStyleOptions style = PolyStyleOptions.newInstance(color, weight, opacity);
+		map.addOverlay(polyline);
+		polyline.setStrokeStyle(style);
+	}
+
+	private void createVectorPolygon() {
+
+		PolyStyleOptions style = PolyStyleOptions.newInstance(color, weight, opacity);
+		map.addOverlay(polygon);
+		polygon.setStrokeStyle(style);
 	}
 
 	private void createRoute() {
 
-		PolyStyleOptions style = PolyStyleOptions.newInstance(color, weight,opacity);
+		polyline = new Polyline(coordinatesRoute);
+
+		PolyStyleOptions style = PolyStyleOptions.newInstance(color, weight, opacity);
 		map.addOverlay(polyline);
 		polyline.setStrokeStyle(style);
-
-		polyline.addPolylineLineUpdatedHandler(new PolylineLineUpdatedHandler() {
-
-			public void onUpdate(PolylineLineUpdatedEvent event) {
-				System.out.println("Polyline Updated");
-			}
-		});
-
-		System.out.println("Bounds=" + polyline.getBounds().getNorthEast()
-				+ "," + polyline.getBounds().getSouthWest() + " length="
-				+ polyline.getLength() + "m");
 	}
 
 	private void createPolygon() {
 
-		PolyStyleOptions style = PolyStyleOptions.newInstance(color, weight,opacity);
+		polygon = new Polygon(coordinatesPolygon);
+
+		PolyStyleOptions style = PolyStyleOptions.newInstance(color, weight, opacity);
 		map.addOverlay(polygon);
 		polygon.setStrokeStyle(style);
 
-		polygon.addPolygonLineUpdatedHandler(new PolygonLineUpdatedHandler() {
+	}
 
-			public void onUpdate(PolygonLineUpdatedEvent event) {
-				System.out.println("Polygon Updated");
+	private void createCoordinatePoints() {
+
+		coordinatesPolygon[0] = LatLng.newInstance((Double) latitude.getValue(), (Double) longitude.getValue());
+		coordinatesPolygon[1] = LatLng.newInstance((Double) latitude2.getValue(), (Double) longitude2.getValue());
+		coordinatesPolygon[2] = LatLng.newInstance((Double) latitude3.getValue(), (Double) longitude3.getValue());
+		coordinatesPolygon[3] = LatLng.newInstance((Double) latitude4.getValue(), (Double) longitude4.getValue());
+		coordinatesPolygon[4] = coordinatesPolygon[0];
+
+		coordinatesRoute[0] = coordinatesPolygon[0];
+		coordinatesRoute[1] = coordinatesPolygon[1];
+		coordinatesRoute[2] = coordinatesPolygon[2];
+		coordinatesRoute[3] = coordinatesPolygon[3];
+
+	}
+
+	private void preCommitForm() {
+
+		AlertDialog alertPoint = new AlertDialog("Error", "Debe seleccionar al menos un punto en el mapa");
+		AlertDialog alertPoints = new AlertDialog("Error", "Debe seleccionar al menos cuatro puntos en el mapa");
+		int numPoints = countNullPoints();
+		boolean isOK = false;
+		boolean fourPoints = false;
+		String coordType = "";
+
+		if (numPoints == 4 && isMNT) {
+			alertPoint.show();
+			return;
+		} else {
+			isOK = true;
+		}
+
+		System.out.println("Numero de puntos con null: " + numPoints);
+
+		if (routeRadio.getValue() && numPoints > 0 && isMNT) {
+			alertPoints.show();
+			return;
+		} else {
+			isOK = true;
+		}
+
+		if (polygonRadio.getValue() && numPoints > 0 && isMNT) {
+			alertPoints.show();
+			return;
+		} else {
+			isOK = true;
+		}
+
+		if (pointRadio.getValue() && isOK) {
+			coordType = "PUNTO";
+		} else if (routeRadio.getValue() && isOK) {
+			coordType = "RUTA";
+			fourPoints = true;
+		} else if (polygonRadio.getValue() && isOK) {
+			coordType = "ZONA";
+			fourPoints = true;
+		}
+
+		coornidateType.setValue(coordType);
+
+		if (!fourPoints) {
+			longitude2.clear();
+			latitude2.clear();
+			longitude3.clear();
+			latitude3.clear();
+			longitude4.clear();
+			latitude4.clear();
+		}
+
+		if (isOK) {
+			form.commitForm();
+			map.setCenter(LatLng.newInstance(INITIAL_LATITUDE, INITIAL_LONGITUDE), ZOOM_LEVEL_NORMAL);
+		}
+
+	}
+
+	public void fillCoordinateFields() {
+
+		latitude.setValue(points[0].getLatLng().getLatitude());
+		longitude.setValue(points[0].getLatLng().getLongitude());
+		latitude2.setValue(points[1].getLatLng().getLatitude());
+		longitude2.setValue(points[1].getLatLng().getLongitude());
+		latitude3.setValue(points[2].getLatLng().getLatitude());
+		longitude3.setValue(points[2].getLatLng().getLongitude());
+		latitude4.setValue(points[3].getLatLng().getLatitude());
+		longitude4.setValue(points[3].getLatLng().getLongitude());
+
+	}
+
+	private void createPoints(String coordType) {
+
+		map.clearOverlays();
+
+		// Create our "tiny" marker icon
+		Icon icon = Icon.newInstance("http://labs.google.com/ridefinder/images/mm_20_red.png");
+		icon.setShadowURL("http://labs.google.com/ridefinder/images/mm_20_shadow.png");
+		icon.setIconSize(Size.newInstance(12, 20));
+		icon.setShadowSize(Size.newInstance(22, 20));
+		icon.setIconAnchor(Point.newInstance(6, 20));
+		icon.setInfoWindowAnchor(Point.newInstance(5, 1));
+
+		final MarkerOptions options = MarkerOptions.newInstance();
+		options.setIcon(icon);
+		options.setAutoPan(true);
+		options.setDraggable(true);
+		options.setClickable(false);
+
+		if (pointRadio.getValue()) {
+
+			LatLng point = LatLng.newInstance((Double) latitude.getValue(), (Double) longitude.getValue());
+			Marker marker = new Marker(point, options);
+			createMarkerListener(marker, latitude, longitude);
+			map.addOverlay(marker);
+			map.setCenter(LatLng.newInstance((Double) latitude.getValue(), (Double) longitude.getValue()),
+					ZOOM_LEVEL_CENTERED);
+
+		} else if (coornidateType.getValue().compareTo("RUTA") == 0 || coornidateType.getValue().compareTo("ZONA") == 0) {
+
+			LatLng point;
+			Marker marker;
+
+			point = LatLng.newInstance((Double) latitude.getValue(), (Double) longitude.getValue());
+			marker = new Marker(point, options);
+			createMarkerListener(marker, latitude, longitude);
+			map.addOverlay(marker);
+
+			point = LatLng.newInstance((Double) latitude2.getValue(), (Double) longitude2.getValue());
+			marker = new Marker(point, options);
+			createMarkerListener(marker, latitude2, longitude2);
+			map.addOverlay(marker);
+
+			point = LatLng.newInstance((Double) latitude3.getValue(), (Double) longitude3.getValue());
+			marker = new Marker(point, options);
+			createMarkerListener(marker, latitude3, longitude3);
+			map.addOverlay(marker);
+			map.setCenter(LatLng.newInstance((Double) latitude3.getValue(), (Double) longitude3.getValue()),
+					ZOOM_LEVEL_CENTERED);
+
+			point = LatLng.newInstance((Double) latitude4.getValue(), (Double) longitude4.getValue());
+			marker = new Marker(point, options);
+			createMarkerListener(marker, latitude4, longitude4);
+			map.addOverlay(marker);
+
+		}
+	}
+
+	private void createMarkerListener(final Marker marker, final MyNumberField lat, final MyNumberField lon) {
+
+		marker.addMarkerDragEndHandler(new MarkerDragEndHandler() {
+			public void onDragEnd(MarkerDragEndEvent event) {
+				setPointOnField(lat, marker, "lat");
+				setPointOnField(lon, marker, "lon");
+				createPoints(coornidateType.getValue());
+				createCoordinatePoints();
+				if (coornidateType.getValue().compareTo("RUTA") == 0) {
+					createRoute();
+				} else if (coornidateType.getValue().compareTo("ZONA") == 0) {
+					createPolygon();
+				}
+				fillCoordinateFields();
 			}
 		});
 
-		System.out.println("Bounds=" + polygon.getBounds().getNorthEast() + ","
-				+ polygon.getBounds().getSouthWest() + " area="
-				+ polygon.getArea() + "m");
-
 	}
 
-	private void commitForm() {
-
-		AlertDialog alertPoint = new AlertDialog("Error","Debe seleccionar al menos un punto en el mapa");
-		AlertDialog alertPoints = new AlertDialog("Error","Debe seleccionar al menos cuatro puntos en el mapa");
-		int numPoints=countNullPoints();
-		boolean isOK=false;
-		boolean fourPoints=false;
-		String coordType = "";
-		mfield = new HashMap<String, String>();
-		
-		if (numPoints==4){
-			alertPoint.show();
-			return;
-		}else{
-			isOK=true;
-		}
-		
-		
-		System.out.println("Numero de puntos con null: "+numPoints);
-		
-		if (routeRadio.getValue() && numPoints>0){
-			alertPoints.show();
-			return;
-		}else{
-			isOK=true;
-		}
-		
-		if (polygonRadio.getValue() && numPoints>0){
-			alertPoints.show();
-			return;
-		}else{
-			isOK=true;
-		}
-	
-		mfield.put(isNew.getPersistentInfo(), isNew.getValue().toString());
-		mfield.put("GeographicZone:pk_geographicZoneId:1", code.getValue().toString());
-		mfield.put("GeographicZone:description:1", description.getValue());
-		
-		if (pointRadio.getValue() && isOK) {
-			coordType = "PUNTO";
-			mfield.put("GeographicZone:coordinateType:1", coordType);
-			mfield.put("GeographicZone:p11:1",String.valueOf(points[0].getLatLng().getLatitude()));
-			mfield.put("GeographicZone:p12:1",String.valueOf(points[0].getLatLng().getLongitude()));
-		} else if (routeRadio.getValue()  && isOK) {
-			coordType = "RUTA";
-			fourPoints=true;
-		} else if (polygonRadio.getValue()  && isOK){
-			coordType = "POLIGONO";
-			fourPoints = true;
-		}
-		
-		if (fourPoints){
-			mfield.put("GeographicZone:coordinateType:1", coordType);
-			mfield.put("GeographicZone:p11:1",
-					String.valueOf(points[0].getLatLng().getLatitude()));
-			mfield.put("GeographicZone:p12:1",
-					String.valueOf(points[0].getLatLng().getLongitude()));
-			mfield.put("GeographicZone:p21:1",
-					String.valueOf(points[1].getLatLng().getLatitude()));
-			mfield.put("GeographicZone:p22:1",
-					String.valueOf(points[1].getLatLng().getLongitude()));
-			mfield.put("GeographicZone:p31:1",
-					String.valueOf(points[2].getLatLng().getLatitude()));
-			mfield.put("GeographicZone:p32:1",
-					String.valueOf(points[2].getLatLng().getLongitude()));
-			mfield.put("GeographicZone:p41:1",
-					String.valueOf(points[3].getLatLng().getLatitude()));
-			mfield.put("GeographicZone:p42:1",
-					String.valueOf(points[3].getLatLng().getLongitude()));
-		}
-		
-		System.out.println("MyForm.commitChanges");
-		for (String key : mfield.keySet()) {
-			System.out.println(key + ":" + mfield.get(key));
-		}
-
-		AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>() {
-			public void onSuccess(Boolean result) {
-				Dispatcher.forwardEvent(AppEvents.UserNotification,
-						"Mantenimiento exitoso");
-			}
-
-			public void onFailure(Throwable caught) {
-				new AlertDialog("MyFormPanel", caught.getMessage()).show();
-			}
-		};
-
-		if (isOK){
-			//proxy.commitForm(config, mfield, callback);
-			resetForm();
-			map.setCenter(LatLng.newInstance(INITIAL_LATITUDE,INITIAL_LONGITUDE), ZOOM_LEVEL_NORMAL);
-		}
-
-	}
 }

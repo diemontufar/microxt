@@ -18,20 +18,20 @@ public class PartnerGroupId extends AbstractEntityId implements GeneralEntityId 
 	 */
 	@Id
 	@Column(name = "PARTNER_GROUP_ID", nullable = false)
-	private String partnerGroupId;
+	private Integer partnerGroupId;
 
 	public PartnerGroupId() {
 	}
 
-	public PartnerGroupId(String partnerGroupId) {
+	public PartnerGroupId(Integer partnerGroupId) {
 		this.partnerGroupId = partnerGroupId;
 	}
 
-	public String getPartnerGroupId() {
+	public Integer getPartnerGroupId() {
 		return this.partnerGroupId;
 	}
 
-	public void setPartnerGroupId(String partnerGroupId) {
+	public void setPartnerGroupId(Integer partnerGroupId) {
 		this.partnerGroupId = partnerGroupId;
 	}
 
@@ -42,7 +42,7 @@ public class PartnerGroupId extends AbstractEntityId implements GeneralEntityId 
 
 	@Override
 	public void setPk(Object pk) {
-		this.partnerGroupId = (String) pk;
+		this.partnerGroupId = (Integer) pk;
 	}
 
 	@Override
