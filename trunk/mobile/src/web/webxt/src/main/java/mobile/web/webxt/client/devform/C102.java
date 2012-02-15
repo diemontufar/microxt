@@ -34,6 +34,7 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.maps.client.MapUIOptions;
@@ -60,8 +61,7 @@ public class C102 extends MyGeneralForm {
 	// Constants
 	final String FORM_WIDTH = "100%";
 	final int LABEL_WIDTH = 60;
-	ContentPanel principalPanel = new ContentPanel();
-
+	
 	MyFormPanel form;
 	RowContainer row;
 	MyLabel label;
@@ -82,7 +82,6 @@ public class C102 extends MyGeneralForm {
 	MyNumberField latitude4 = new MyNumberField();
 
 	private int MAX_POINTS = 3; // 4 points
-	private int MAX_DOWNPANEL_HEIGHT = 420; // pixels
 	private double INITIAL_LATITUDE = -2.8989009; // Cuenca-Ecuador
 	private double INITIAL_LONGITUDE = -78.997668; // Cuenca-Ecuador
 	private int ZOOM_LEVEL_NORMAL = 14;
@@ -117,6 +116,7 @@ public class C102 extends MyGeneralForm {
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
+		setLayout(new FitLayout());
 		counter = 0;
 		createPanel();
 	}
@@ -125,8 +125,8 @@ public class C102 extends MyGeneralForm {
 
 		// Form panel
 		form = new MyFormPanel(this, "Mantenimiento de Zonas Geográficas", FORM_WIDTH);
-		form.setHeaderVisible(false);	
-		form.setDeferHeight(true);
+		//form.setHeaderVisible(false);	
+		form.setLayout(new RowLayout(Orientation.HORIZONTAL));
 
 		ContentPanel left = new ContentPanel();
 		left.setHeaderVisible(false);
@@ -157,20 +157,13 @@ public class C102 extends MyGeneralForm {
 		right.addButton(cancel);
 		right.setButtonAlign(HorizontalAlignment.CENTER);
 
-		principalPanel.setHeaderVisible(false);
-		principalPanel.setSize(getWidth() - 40, 500);
-		principalPanel.setLayout(new RowLayout(Orientation.HORIZONTAL));
-
 		left.add(createMap());
 		right.add(createForm());
 
-		principalPanel.add(left, new RowData(.72, 1, new Margins(3)));
-		principalPanel.add(right, new RowData(.28, 1, new Margins(3)));
-
-		form.add(principalPanel);
+		form.add(left, new RowData(.72, 1, new Margins(3)));
+		form.add(right, new RowData(.28, 1, new Margins(3)));
 
 		add(form);
-
 	}
 
 	private FieldSet createForm() {
@@ -178,8 +171,6 @@ public class C102 extends MyGeneralForm {
 		FieldSet fieldSet = new FieldSet();
 		fieldSet.setHeading("Datos de la Zona");
 		fieldSet.setCollapsible(false);
-		fieldSet.setWidth(250);
-		fieldSet.setHeight(400);
 
 		// Code
 		row = new RowContainer();
@@ -404,10 +395,10 @@ public class C102 extends MyGeneralForm {
 		initializePoints();
 
 		LayoutContainer lcMap = new LayoutContainer();
-		lcMap.setHeight(MAX_DOWNPANEL_HEIGHT);
+		//lcMap.setHeight(MAX_DOWNPANEL_HEIGHT);
 
-		map.setSize("100%", "600px");
-		map.setGoogleBarEnabled(true);
+		map.setSize("100%", "100%");
+		map.setGoogleBarEnabled(false);
 
 		MapUIOptions opts = map.getDefaultUI();
 		opts.setDoubleClick(false);
@@ -743,7 +734,5 @@ public class C102 extends MyGeneralForm {
 				fillCoordinateFields();
 			}
 		});
-
 	}
-
 }

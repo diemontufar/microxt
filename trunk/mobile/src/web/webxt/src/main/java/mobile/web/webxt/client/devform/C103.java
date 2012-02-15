@@ -19,22 +19,19 @@ import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
+import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.grid.CellSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
-import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
-import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.Element;
 
 public class C103 extends MyGeneralForm {
@@ -42,7 +39,7 @@ public class C103 extends MyGeneralForm {
 	private final static String PROCESS = "C103";
 	private final static String ENTITY = "ZoneAsessor";
 	private final Integer PAGE_SIZE = 5;
-	
+
 	EntityEditorGrid grid;
 	List<String> zonesList = new ArrayList<String>();
 
@@ -54,7 +51,6 @@ public class C103 extends MyGeneralForm {
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-
 
 		final ArrayColumnData cdata = new ArrayColumnData();
 		cdata.add(new MyColumnData("pk_userId", "Asesor", 70, 20, false));
@@ -79,82 +75,85 @@ public class C103 extends MyGeneralForm {
 		ComboColumn profileGeoZone = new ComboColumn(cdata.get(1));
 		Reference refGeoZone = new Reference("geo", "GeographicZone");
 		ArrayColumnData cdataComboZone = new ArrayColumnData();
-		cdataComboZone.add(new MyColumnData("geo","pk_geographicZoneId", "ID", 40));
-		cdataComboZone.add(new MyColumnData("geo","description", "Descripcion", 150));
+		cdataComboZone.add(new MyColumnData("geo", "pk_geographicZoneId", "ID", 40));
+		cdataComboZone.add(new MyColumnData("geo", "description", "Descripcion", 150));
 		profileGeoZone.setQueryData(refGeoZone, cdataComboZone);
 		configs.add(profileGeoZone);
 
 		configs.add(new NormalColumn(cdata.get(2)));
-		
-		GridCellRenderer<ModelData> buttonRenderer = new GridCellRenderer<ModelData>() {  
-			  
-		      private boolean init;  
-		  
-		      public Object render(final ModelData model, String property, ColumnData config, final int rowIndex,  
-		          final int colIndex, ListStore<ModelData> store, final Grid<ModelData> grid) {  
-		        if (!init) {  
-		          init = true;  
-		          grid.addListener(Events.ColumnResize, new Listener<GridEvent<ModelData>>() {  
-		  
-		            public void handleEvent(GridEvent<ModelData> be) {  
-		              for (int i = 0; i < be.getGrid().getStore().getCount(); i++) {  
-		                if (be.getGrid().getView().getWidget(i, be.getColIndex()) != null  
-		                    && be.getGrid().getView().getWidget(i, be.getColIndex()) instanceof BoxComponent) {  
-		                  ((BoxComponent) be.getGrid().getView().getWidget(i, be.getColIndex())).setWidth(be.getWidth() - 10);  
-		                }  
-		              }  
-		            }  
-		          });  
-		        }  
-		        
-		        Button b = new Button("Ver", new SelectionListener<ButtonEvent>() {  
-		          @Override  
-		          public void componentSelected(ButtonEvent ce) {  
 
-//		        	  grid.getSelectionModel().deselectAll();
-//                      grid.setSelectionModel(new GridSelectionModel<ModelData>());
-//
-//
-//		        	  System.out.println(grid.getSelectionModel().getSelectedItem());
-		        	  //grid.sets
-		        	  
-//					  ModelData val = grid.getModel();
-					  //System.out.println(grid.getView());
-//		        	  String personCode = val.get("pk_userId");
-		        	  zonesList.add("234");
-//		        	  Info.display("Informacion","Cod. Usuario: "+personCode + " ; Asesor: "+ zonesList );
-		        	  ZonePreview zp =new ZonePreview("DIEGO","2",zonesList);
-		        	  zp.show();
-		          }  
-		        });  
-		        b.setWidth(grid.getColumnModel().getColumnWidth(colIndex) - 10);  
-		        b.setToolTip("Ver Informacion de la Zona Asignada");  
-		        
-//		        final GridSelectionModel<ModelData> csm = new CellSelectionModel<ModelData>();
-//		        grid.setSelectionModel(csm);        
-//		        grid.addListener(Events.CellClick, new Listener<GridEvent>() {            
-//		            public void handleEvent(GridEvent ge) {
-//		            	System.out.println(csm.getSelectedItem().getProperties());
-//		            }
-//		        });
-		  
-		        return b;  
- 
-		      }  
-		      
-		      
-		    };  
-		
-		ColumnConfig column = new ColumnConfig();  
-	    column.setId("preview");  
-	    column.setHeader("Ver");  
-	    column.setWidth(50);  
-	    column.setRenderer(buttonRenderer);  
-	    configs.add(column);  
-			
+		GridCellRenderer<ModelData> buttonRenderer = new GridCellRenderer<ModelData>() {
+
+			private boolean init;
+
+			public Object render(final ModelData model, String property, ColumnData config, final int rowIndex,
+					final int colIndex, ListStore<ModelData> store, final Grid<ModelData> grid) {
+				if (!init) {
+					init = true;
+					grid.addListener(Events.ColumnResize, new Listener<GridEvent<ModelData>>() {
+
+						public void handleEvent(GridEvent<ModelData> be) {
+							for (int i = 0; i < be.getGrid().getStore().getCount(); i++) {
+								if (be.getGrid().getView().getWidget(i, be.getColIndex()) != null
+										&& be.getGrid().getView().getWidget(i, be.getColIndex()) instanceof BoxComponent) {
+									((BoxComponent) be.getGrid().getView().getWidget(i, be.getColIndex())).setWidth(be
+											.getWidth() - 10);
+								}
+							}
+						}
+					});
+				}
+
+				Button b = new Button("Ver", new SelectionListener<ButtonEvent>() {
+					@Override
+					public void componentSelected(ButtonEvent ce) {
+						Info.display("Prueba", model.get("pk_userId").toString());
+						// grid.getSelectionModel().deselectAll();
+						// grid.setSelectionModel(new
+						// GridSelectionModel<ModelData>());
+						//
+						//
+						// System.out.println(grid.getSelectionModel().getSelectedItem());
+						// grid.sets
+
+						// ModelData val = grid.getModel();
+						// System.out.println(grid.getView());
+						// String personCode = val.get("pk_userId");
+						zonesList.add("234");
+						// Info.display("Informacion","Cod. Usuario: "+personCode
+						// + " ; Asesor: "+ zonesList );
+						//ZonePreview zp = new ZonePreview("DIEGO", "2", zonesList);
+						//zp.show();
+					}
+				});
+				b.setWidth(grid.getColumnModel().getColumnWidth(colIndex) - 10);
+				b.setToolTip("Ver Informacion de la Zona Asignada");
+
+				// final GridSelectionModel<ModelData> csm = new
+				// CellSelectionModel<ModelData>();
+				// grid.setSelectionModel(csm);
+				// grid.addListener(Events.CellClick, new Listener<GridEvent>()
+				// {
+				// public void handleEvent(GridEvent ge) {
+				// System.out.println(csm.getSelectedItem().getProperties());
+				// }
+				// });
+
+				return b;
+
+			}
+
+		};
+
+		ColumnConfig column = new ColumnConfig();
+		column.setId("preview");
+		column.setHeader("Ver");
+		column.setWidth(50);
+		column.setRenderer(buttonRenderer);
+		configs.add(column);
 
 		configs.add(new ExpireColumnConfig());
-		
+
 		ColumnModel cm = new ColumnModel(configs);
 
 		// Content panel
