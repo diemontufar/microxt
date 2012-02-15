@@ -19,20 +19,20 @@ public class GeographicZoneId extends AbstractEntityId implements
 	 */
 	@Id
 	@Column(name = "GEOGRAPHIC_ZONE_ID", nullable = false)
-	private String geographicZoneId;
+	private Integer geographicZoneId;
 
 	public GeographicZoneId() {
 	}
 
-	public GeographicZoneId(String geographicZoneId) {
+	public GeographicZoneId(Integer geographicZoneId) {
 		this.geographicZoneId = geographicZoneId;
 	}
 
-	public String getGeographicZoneId() {
+	public Integer getGeographicZoneId() {
 		return this.geographicZoneId;
 	}
 
-	public void setGeographicZoneId(String geographicZoneId) {
+	public void setGeographicZoneId(Integer geographicZoneId) {
 		this.geographicZoneId = geographicZoneId;
 	}
 
@@ -43,7 +43,7 @@ public class GeographicZoneId extends AbstractEntityId implements
 
 	@Override
 	public void setPk(Object pk) {
-		this.geographicZoneId = (String) pk;
+		this.geographicZoneId = (Integer) pk;
 	}
 
 	@Override

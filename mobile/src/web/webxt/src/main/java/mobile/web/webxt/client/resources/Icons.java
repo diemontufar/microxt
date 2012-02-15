@@ -31,5 +31,11 @@ public interface Icons extends ImageBundle {
 	
 	@Resource(path + "disk2.png")
 	AbstractImagePrototype save();
+	
+	@Resource(path + "Previous.png")
+	AbstractImagePrototype previous();
+	
+	@Resource(path + "Next.png")
+	AbstractImagePrototype next();
 
 }

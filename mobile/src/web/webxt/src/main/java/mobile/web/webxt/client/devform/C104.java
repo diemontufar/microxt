@@ -15,6 +15,7 @@ import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
 import mobile.web.webxt.client.form.widgetsgrid.NumericColumn;
+import mobile.web.webxt.client.util.NumberType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -66,8 +67,8 @@ public class C104 extends MyGeneralForm {
 		currencyComboCol.setQueryData(refCurrency, cdataCombo);
 		configs.add(currencyComboCol);
 
-		configs.add(new NumericColumn(cdata.get(3)));
-		configs.add(new NumericColumn(cdata.get(4)));
+		configs.add(new NormalColumn(cdata.get(3),NumberType.DECIMAL,null));
+		configs.add(new NormalColumn(cdata.get(4),NumberType.DECIMAL,null));
 		configs.add(new NumericColumn(cdata.get(5)));
 		configs.add(new NumericColumn(cdata.get(6)));
 		configs.add(new NumericColumn(cdata.get(7)));

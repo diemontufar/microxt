@@ -8,6 +8,7 @@ import mobile.web.webxt.client.form.validations.ValidationTypesValidator;
 
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.user.client.Element;
@@ -103,6 +104,14 @@ public class InputBox extends TextField<String> implements PersistentField {
 		    	}
 		    }
 		});
+		
+		this.addListener(Events.OnBlur, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent e) {
+				if (getValue()!=null && getType()!=Validate.EMAIL){
+					setValue(getValue().toString().toUpperCase());
+				}
+			}
+		});
 	}
 
 	public DataSource getDataSource() {
@@ -137,5 +146,4 @@ public class InputBox extends TextField<String> implements PersistentField {
 	public void setType(Validate type) {
 		this.type = type;
 	}
-
 }

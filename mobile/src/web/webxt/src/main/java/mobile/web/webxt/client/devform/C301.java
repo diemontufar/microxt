@@ -67,7 +67,6 @@ public class C301 extends MyGeneralForm {
 		row.add(label);
 
 		final ComboForm solicitudeId = new ComboForm(100);
-		solicitudeId.setId("solicitudeId");
 		solicitudeId.setDataSource(new DataSource("sol", "pk_solicitudeId", DataSourceType.CRITERION));
 
 		Reference refSolicitude = new Reference("sol1", "Solicitude");

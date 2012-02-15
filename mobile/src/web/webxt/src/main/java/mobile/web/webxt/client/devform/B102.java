@@ -96,7 +96,6 @@ public class B102 extends MyGeneralForm {
 
 		// GeneratedId
 		final InputBox generatedId = new InputBox();
-		// generatedId.setId("generatedId");
 		generatedId.setDataSource(new DataSource(Item.GENERATED_ID, DataSourceType.CONTROL));
 		generatedId.setVisible(false);
 		generatedId.setFireChangeEventOnSetValue(true);
@@ -172,6 +171,7 @@ public class B102 extends MyGeneralForm {
 		birthDate.setWidth(FIELD_WIDTH);
 		birthDate.setAllowBlank(false);
 		birthDate.setMaxValue(DatesManager.getCurrentDate());
+		birthDate.setMaxLength(10);
 
 		row.add(birthDate);
 
@@ -250,6 +250,7 @@ public class B102 extends MyGeneralForm {
 		final InputBox descProfession = new InputBox(FIELD_WIDTH - 60);
 		descProfession.setReadOnly(true);
 		descProfession.setDataSource(new DataSource("ProfessionType", "name", DataSourceType.DESCRIPTION));
+		descProfession.setToolTipValue(true);
 		row.add(descProfession);
 
 		profesionCombo.linkWithField(descProfession, "name");
@@ -283,6 +284,7 @@ public class B102 extends MyGeneralForm {
 		final InputBox descTipoId = new InputBox(FIELD_WIDTH_2 - 60);
 		descTipoId.setDataSource(new DataSource("IdentificationType", "name", DataSourceType.DESCRIPTION));
 		descTipoId.setReadOnly(true);
+		descTipoId.setToolTipValue(true);
 		row.add(descTipoId);
 
 		idTypeCombo.linkWithField(descTipoId, "name");
@@ -296,6 +298,7 @@ public class B102 extends MyGeneralForm {
 
 		final InputBox identification = new InputBox(FIELD_WIDTH_2, 40, Validate.ALPHANUMERIC);
 		identification.setDataSource(new DataSource("per", "identificationNumber", DataSourceType.RECORD));
+		identification.setAllowBlank(false);
 		row.add(identification);
 
 		identification.addListener(Events.OnBlur, new Listener<FieldEvent>() {
@@ -303,8 +306,10 @@ public class B102 extends MyGeneralForm {
 
 				if (type == IdType.CED || type == IdType.RUC) {
 					isValidId = new ValidateIdentification().isValid(identification.getValue(), type);
-				}
-
+				}else{
+					isValidId=true;
+				}				
+				
 				if (!isValidId) {
 					identification.isValid(false);
 					identification.markInvalid("Identificacion Incorrecta");
