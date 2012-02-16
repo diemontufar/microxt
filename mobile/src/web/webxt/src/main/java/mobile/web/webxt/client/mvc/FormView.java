@@ -140,7 +140,7 @@ public class FormView extends View {
 		} else if (processId.compareTo("C101") == 0) {
 			tabItem.add(new C101());
 		} else if (processId.compareTo("C102") == 0) {
-				tabItem.add(new C102());
+			tabItem.add(new C102());
 		} else if (processId.compareTo("C103") == 0) {
 			tabItem.add(new C103());
 		} else if (processId.compareTo("C104") == 0) {
