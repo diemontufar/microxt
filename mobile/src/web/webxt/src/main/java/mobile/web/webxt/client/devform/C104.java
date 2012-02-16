@@ -67,11 +67,11 @@ public class C104 extends MyGeneralForm {
 		currencyComboCol.setQueryData(refCurrency, cdataCombo);
 		configs.add(currencyComboCol);
 
-		configs.add(new NormalColumn(cdata.get(3),NumberType.DECIMAL,null));
-		configs.add(new NormalColumn(cdata.get(4),NumberType.DECIMAL,null));
+		configs.add(new NumericColumn(cdata.get(3), NumberType.DECIMAL));
+		configs.add(new NumericColumn(cdata.get(4), NumberType.DECIMAL));
 		configs.add(new NumericColumn(cdata.get(5)));
 		configs.add(new NumericColumn(cdata.get(6)));
-		configs.add(new NumericColumn(cdata.get(7)));
+		configs.add(new NumericColumn(cdata.get(7), NumberType.DECIMAL));
 		configs.add(new ExpireColumnConfig());
 
 		ColumnModel cm = new ColumnModel(configs);

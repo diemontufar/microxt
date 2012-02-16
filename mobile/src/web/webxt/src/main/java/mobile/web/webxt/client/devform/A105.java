@@ -22,7 +22,6 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
-import mobile.web.webxt.client.util.NumberType;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -90,9 +89,9 @@ public class A105 extends MyGeneralForm {
 
 		row.add(subsystemId);
 		row.add(subsystemName);
-		
+
 		form.add(row);
-		
+
 		// Filter: module
 		row = new RowContainer();
 		row.setStyleAttribute("margin-bottom", "10px");
@@ -119,7 +118,7 @@ public class A105 extends MyGeneralForm {
 		moduleId.linkWithField(moduleName, "name");
 
 		moduleId.addDependency(subsystemId, "pk_subsystemId");
-		
+
 		row.add(moduleId);
 		row.add(moduleName);
 
@@ -137,8 +136,8 @@ public class A105 extends MyGeneralForm {
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		configs.add(new NormalColumn(cdata.get(0),NumberType.TEXT,Validate.TEXT));
-		configs.add(new NormalColumn(cdata.get(1),NumberType.TEXT,Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(0), Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(1), Validate.TEXT));
 		NormalColumn urlColumn = new NormalColumn(cdata.get(2));
 		urlColumn.setEditor(null);
 		configs.add(urlColumn);
@@ -157,7 +156,7 @@ public class A105 extends MyGeneralForm {
 		grid.setBorders(true);
 		grid.addDependency(subsystemId);
 		grid.addDependency(moduleId);
-		
+
 		gridPanel.add(grid);
 
 		// Top tool bar
@@ -174,7 +173,6 @@ public class A105 extends MyGeneralForm {
 		// Paging tool bar
 		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(grid, PAGE_SIZE);
 		gridPanel.setBottomComponent(pagingToolBar);
-		
 
 		// Operations
 		moduleId.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
@@ -182,12 +180,12 @@ public class A105 extends MyGeneralForm {
 			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
 				if (((ComboForm) se.getSource()).isSomeSelected()) {
 					pagingToolBar.refresh();
-				}else{
+				} else {
 					grid.getStore().removeAll();
 				}
 			}
 		});
-		
+
 		grid.addListener(Events.AfterEdit, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
 				@SuppressWarnings("unchecked")
