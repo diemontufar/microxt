@@ -35,7 +35,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 	private final String CONTENT_TYPE = "text/plain; charset=utf-8";
+	// private final String CONTENT_TYPE = "text/plain; charset=ISO-8859-1";
 	// private final String url = "http://127.0.0.1:9090/mobile/Core";
+	private final String ACCEPT = "application/json";
+	// private final String ACCEPT = "text/plain";
 	private final String url = GWT.getHostPageBaseURL() + "mobile/Core";
 
 	protected RequestBuilder builder;
@@ -50,17 +53,14 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	public MyHttpProxy() {
 		builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		builder.setHeader("Content-Type", CONTENT_TYPE);
-		builder.setHeader("Accept", "application/json");
-		initUrl = builder.getUrl();
+		builder.setHeader("Accept", ACCEPT);
+		builder.setTimeoutMillis(10000);
 		reader = new MyReader();
 	}
 
 	public void load(final DataReader<PagingLoadResult<ModelData>> readerNull, final Object loadConfig,
 			final AsyncCallback<PagingLoadResult<ModelData>> callback) {
 		System.out.println("MyHttpProxy.load: ");
-
-		GWT.log("Host page base URL: " + GWT.getHostPageBaseURL());
-		GWT.log("Module base URL: " + GWT.getModuleBaseURL());
 
 		if (displayNotifications) {
 			Dispatcher.forwardEvent(AppEvents.UserNotification, queryProcessing);
@@ -139,7 +139,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 			msg.addData(entityData);
 
-			String data = msg.toJSON();
+			String data = convertMessage(msg);
 
 			System.out.println("Send request...");
 			builder.sendRequest(data, new RequestCallback() {
@@ -176,8 +176,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			msg.getRequest().setProcess(config.getProcess());
 
 			System.out.println("Conversion en json");
-			String data = msg.toJSON();
-
+			String data = convertMessage(msg);
+			
 			builder.sendRequest(data, new RequestCallback() {
 				public void onError(Request request, Throwable e) {
 					callback.onFailure(e);
@@ -282,8 +282,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 			// Send message
 			System.out.println("Set message in json format...");
-			String message = "";
-			message = msg.toJSON();
+			String message = convertMessage(msg);
 
 			System.out.println("Send request...");
 			builder.sendRequest(message, new RequestCallback() {
@@ -378,13 +377,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			msg.addData(entityData);
 
 			System.out.println("Set message in json format...");
-			String data = "";
-			try {
-				data = msg.toJSON();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
+			String data = convertMessage(msg);
+			System.out.println("Mensaje: " + data);
 			System.out.println("Send request...");
 			builder.sendRequest(data, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
@@ -434,7 +428,6 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 			for (String key : mfields.keySet()) {
 				String value = mfields.get(key);
-				System.out.println(key + ">" + value);
 
 				String[] kp = key.split(":");
 				// String alias = kp[0];
@@ -457,7 +450,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 						filters = filters + ";";
 					}
 					String filter = fieldName + ":" + validateNull(property) + ":" + validateNull(value);
-					System.out.println(filter);
+					System.out.println("filter: " + filter);
 					filters = filters + filter;
 					data.setFilter(filters);
 				}
@@ -470,8 +463,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			// Send message
 			System.out.println("Set message in json format...");
 			String message = "";
-			message = msg.toJSON();
-
+			message = convertMessage(msg);
+			System.out.println("Message: " + message);
 			System.out.println("Send request...");
 			builder.sendRequest(message, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
@@ -528,6 +521,10 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		return msg;
 	}
 
+	private String convertMessage(Message msg){
+		return URL.encode(msg.toJSON());
+	}
+	
 	protected String generateUrl(Object loadConfig) {
 		StringBuffer sb = new StringBuffer();
 		if (loadConfig instanceof ModelData) {
