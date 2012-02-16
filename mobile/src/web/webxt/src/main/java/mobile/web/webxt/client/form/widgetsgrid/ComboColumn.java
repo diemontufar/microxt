@@ -166,11 +166,13 @@ public class ComboColumn extends ColumnConfig {
 	}
 
 	public void clearDependent(Record rec) {
-		for (ColumnConfig cc : getLdependent()) {
-			((ComboColumn) cc).clearCell(rec);
-		}
-		for (ColumnConfig cc : getLdependent()) {
-			((ComboColumn) cc).clearDependent(rec);
+		if(getLdependent()!=null && getLdependent().size()>0){
+			for (ColumnConfig cc : getLdependent()) {
+				((ComboColumn) cc).clearCell(rec);
+			}
+			for (ColumnConfig cc : getLdependent()) {
+				((ComboColumn) cc).clearDependent(rec);
+			}
 		}
 	}
 

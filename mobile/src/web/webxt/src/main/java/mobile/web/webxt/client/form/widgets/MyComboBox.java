@@ -283,12 +283,13 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 			if (columnData.isVisible()) {
 				sb.append("<td class=\"x-grid3-header x-grid3-hd x-grid3-cell x-grid3-td-name \" role=\"presentation\" align=\"left\" style=\"\">");
 				sb.append("<div role=\"columnheader\" aria-haspopup=\"false\" class=\"x-grid3-hd-inner x-component\" style=\"width: "
-						+ columnData.getWidth() + "px; height: 14px; \" aria-sort=\"none\">");
+						+ (columnData.getWidth() - 10) + "px; height: 14px; \" aria-sort=\"none\">");
 				listWidth += columnData.getWidth();
 				sb.append("<span class=\"x-component\">" + columnData.getName() + "</span>");
 				sb.append("</div></td>");
 			}
 		}
+		listWidth += 2;
 		sb.append("</tr>");
 
 		sb.append("<div class=\"x-grid3-row\">");

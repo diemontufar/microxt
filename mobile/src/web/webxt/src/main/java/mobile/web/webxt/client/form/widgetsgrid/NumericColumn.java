@@ -28,14 +28,17 @@ public class NumericColumn extends ColumnConfig {
 	NumberCellRenderer<Grid<ModelData>> decimalRenderer;
 	NumberCellRenderer<Grid<ModelData>> integerRenderer;
 
-	public NumericColumn(MyColumnData columnData) {
+	private NumericColumn(){
 		super();
+		setAlignment(HorizontalAlignment.RIGHT);
+	}
+	
+	public NumericColumn(MyColumnData columnData) {
+		this();
 		setId(columnData.getId());
 		setHeader(columnData.getName());
 		setWidth(columnData.getWidth());
 
-		setAlignment(HorizontalAlignment.RIGHT);
-		
 		// Create field and formatters
 		createField(columnData, NumberType.INTEGER);
 
@@ -49,12 +52,10 @@ public class NumericColumn extends ColumnConfig {
 	}
 
 	public NumericColumn(MyColumnData columnData, NumberType type) {
-		super();
+		this();
 		setId(columnData.getId());
 		setHeader(columnData.getName());
 		setWidth(columnData.getWidth());
-
-		setAlignment(HorizontalAlignment.RIGHT);
 
 		// Create field and formatters
 		createField(columnData, type);
@@ -63,6 +64,7 @@ public class NumericColumn extends ColumnConfig {
 		numerfield.setMaxLength(columnData.getMaxLength());
 		numerfield.setValidateOnBlur(true);
 		setEditor(new CellEditor(numerfield));
+		
 		// Hidden
 		setHidden(!columnData.isVisible());
 	}
@@ -70,7 +72,6 @@ public class NumericColumn extends ColumnConfig {
 	private void createField(MyColumnData columnData, NumberType type) {
 
 		if (type == NumberType.CURRENCY) {
-			System.out.println("Es una columna de tipo currency");
 			numerfield = new MyNumberField(NumberType.CURRENCY);
 
 			currencyRenderer = new NumberCellRenderer<Grid<ModelData>>(currency);
