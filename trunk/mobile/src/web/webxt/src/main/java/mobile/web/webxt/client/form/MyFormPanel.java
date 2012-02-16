@@ -285,7 +285,7 @@ public class MyFormPanel extends FormPanel {
 
 		// Validate
 		if (!isValid()) {
-			Dispatcher.forwardEvent(AppEvents.UserNotification, "Existe errores de validacion");
+			Info.display("Validación", "Existe errores de validación");
 			return;
 		}
 
