@@ -38,28 +38,29 @@ insert into PROVINCE_ID (COUNTRY_ID, PROVINCE_ID) values ('EC', 'SU');
 insert into PROVINCE_ID (COUNTRY_ID, PROVINCE_ID) values ('EC', 'TU');
 insert into PROVINCE_ID (COUNTRY_ID, PROVINCE_ID) values ('EC', 'ZA');
 
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'Azuay');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'BO', 'Bolivar');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'CA', 'Carchi');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'CH', 'Chimborazo');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'CO', 'Cotopaxi');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'CR', 'Canar');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'EL', 'ElOro');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'ES', 'Esmeraldas');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'GA', 'Galapagos');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'GU', 'Guayas');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'IM', 'Imbabura');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'LO', 'Loja');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'MA', 'Manabi');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'MO', 'Morona-Santiago');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'NA', 'Napo');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'OR', 'Orellana');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'PA', 'Pastaza');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'PI', 'Pichincha');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'RI', 'LosRios');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'SU', 'Sucumbios');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'TU', 'Tungurahua');
-insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'ZA', 'Zamora-Chinchipe');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'AZUAY');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'BO', 'BOLIVAR');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'CA', 'CARCHI');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'CH', 'CHIMBORAZO');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'CO', 'COTOPAXI');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'CR', 'CAÑAR');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'EL', 'EL ORO');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'ES', 'ESMERALDAS');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'GA', 'GALAPAGOS');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'GU', 'GUAYAS');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'IM', 'IMBABURA');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'LO', 'LOJA');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'MA', 'MANABÍ');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'MO', 'MORONA SANTIAGO');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'NA', 'NAPO');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'OR', 'ORELLANA');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'PA', 'PASTAZA');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'PI', 'PICHINCHA');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'RI', 'LOS RIOS');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'SU', 'SUCUMBIOS');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'TU', 'TUNGURAHUA');
+insert into PROVINCE (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, NAME) values ('MXT', 'ES', 'EC', 'ZA', 'ZAMORA CHINCHIPE');
+
 
 
 insert into CITY_ID (COUNTRY_ID, PROVINCE_ID, CITY_ID) values ('EC', 'AZ', 'CH');
@@ -78,20 +79,21 @@ insert into CITY_ID (COUNTRY_ID, PROVINCE_ID, CITY_ID) values ('EC', 'AZ', 'SG')
 insert into CITY_ID (COUNTRY_ID, PROVINCE_ID, CITY_ID) values ('EC', 'AZ', 'SI');
 insert into CITY_ID (COUNTRY_ID, PROVINCE_ID, CITY_ID) values ('EC', 'AZ', 'SO');
 
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'CH', 'Chordeleg');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'CU', 'Cuenca');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'EL', 'El Pan');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'GI', 'Giron');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'GL', 'Gualaceo');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'GU', 'Guachapala');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'NA', 'Nabon');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'OA', 'Oña');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'PA', 'Paute');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'PO', 'Camilo Ponce');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'PU', 'Pucara');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'SA', 'San Fernando');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'SG', 'Sigsig');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'SI', 'Santa Isabel');
-insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'SO', 'Sevilla De Oro');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'CH', 'CHORDELEG');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'CU', 'CUENCA');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'EL', 'EL PAN');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'GI', 'GIRÓN');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'GL', 'GUALACEO');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'GU', 'GUACHAPALA');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'NA', 'NABON');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'OA', 'OÑA');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'PA', 'PAUTE');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'PO', 'CAMILO PONCE');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'PU', 'PUCARÁ');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'SA', 'SAN FERNANDO');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'SG', 'SIGSIG');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'SI', 'SANTA ISABEL');
+insert into CITY (COMPANY_ID, LANGUAGE_ID, COUNTRY_ID, PROVINCE_ID, CITY_ID, NAME) values ('MXT', 'ES', 'EC', 'AZ', 'SO', 'SEVILLA DE ORO');
+
 
 
