@@ -1,83 +1,101 @@
 package mobile.web.webxt.client.devform;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import mobile.web.webxt.client.data.form.Reference;
+import mobile.web.webxt.client.form.EntityContentPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
+import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
+import mobile.web.webxt.client.form.widgetsgrid.ComboColumn;
+import mobile.web.webxt.client.form.widgetsgrid.EntityEditorGrid;
+import mobile.web.webxt.client.form.widgetsgrid.ExpireColumnConfig;
+import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
+import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
+import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
+import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
+
+import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
+import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.google.gwt.user.client.Element;
 
 public class C105 extends MyGeneralForm {
-//
-//	private final static String PROCESS = "C105";
-//	private final static String ENTITY = "ProductAsessor";
-//	private final Integer PAGE_SIZE = 5;
-//
-//	public C105() {
-//		super(PROCESS, true);
-//		setReference(ENTITY);
-//	}
-//
-//	@Override
-//	protected void onRender(Element parent, int index) {
-//		super.onRender(parent, index);
-//
-//		// Configuration
-//		final ArrayColumnData cdata = new ArrayColumnData();
-//		cdata.add(new MyColumnData("pk_userId", "Asesor", 70, 20, false));
-//		cdata.add(new MyColumnData("pk_productId", "Producto", 70, 50, false));
-//		cdata.add(new MyColumnData("observations", "Observaciones", 200, 50, true));
-//		getConfig().setlDataSource(cdata.getDataSources());
-//
-//		// Columns
-//		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-//
-//		// Combo Asessor
-//		SpecialComboColumn spcComboCol = new SpecialComboColumn(cdata.get(0));
-//		spcComboCol.setPageSize(10);
-//		ArrayColumnData cdataCombo = new ArrayColumnData();
-//		cdataCombo = new ArrayColumnData();
-//		cdataCombo.add(new MyColumnData("pk_userId", "Asesor", 100));
-//		cdataCombo.add(new MyColumnData("name", "Nombre	", 220));
-//
-//		MyColumnData hidden = new MyColumnData("userTypeId", ColumnType.HIDDEN);
-//		hidden.setAssociatedField("userTypeId");
-//		cdataCombo.add(hidden);
-//
-//		spcComboCol.setRqData("UserAccount", cdataCombo);
-//		spcComboCol.setFilter("userTypeId", "ASE");
-//		configs.add(spcComboCol);
-//
-//		ComboColumn productComboColumn = new ComboColumn(cdata.get(1));
-//		Reference refProduct = new Reference("prod", "ProductMicrocredit");
-//		ArrayColumnData cdataComboPrduct = new ArrayColumnData();
-//		cdataComboPrduct.add(new MyColumnData("prod", "pk_productId", "Producto", 40));
-//		cdataComboPrduct.add(new MyColumnData("prod", "description", "Descripcion", 100));
-//		productComboColumn.setQueryData(refProduct, cdataComboPrduct);
-//		configs.add(productComboColumn);
-//
-//		configs.add(new NumericColumn(cdata.get(2)));
-//
-//		configs.add(new ExpireColumnConfig());
-//
-//		ColumnModel cm = new ColumnModel(configs);
-//
-//		// Content panel
-//		EntityContentPanel cp = new EntityContentPanel("Productos por Asesor", 400, 230);
-//
-//		// Grid
-//		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
-//		grid.setAutoExpandColumn("pk_userId");
-//		cp.add(grid);
-//		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
-//			public void handleEvent(BaseEvent be) {
-//				getStore().sort(cdata.getIdFields().get(0), SortDir.ASC);
-//			}
-//		});
-//
-//		// Top tool bar
-//		GridToolBar toolBar = new GridToolBar(grid, getStore());
-//		cp.setTopComponent(toolBar);
-//
-//		// Paging tool bar
-//		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(PAGE_SIZE, getLoader());
-//		cp.setBottomComponent(pagingToolBar);
-//
-//		add(cp);
-//	}
+	private final static String PROCESS = "C105";
+	private final static String ENTITY = "ProductAsessor";
+	private final Integer PAGE_SIZE = 5;
+
+	public C105() {
+		super(PROCESS, true);
+		setReference(ENTITY);
+	}
+
+	@Override
+	protected void onRender(Element parent, int index) {
+		// TODO Auto-generated method stub
+		super.onRender(parent, index);
+
+		// Configuration
+		final ArrayColumnData cdata = new ArrayColumnData();
+		cdata.add(new MyColumnData("pk_userId", "Asesor", 70, 20, false));
+		cdata.add(new MyColumnData("pk_productId", "Producto", 70, 50, false));
+		cdata.add(new MyColumnData("observations", "Observaciones", 200, 50, true));
+		getConfig().setlDataSource(cdata.getDataSources());
+
+		// Columns
+		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
+
+		// Combo Asessor
+		ComboColumn comboAsessor = new ComboColumn(cdata.get(0));
+		Reference refProfile = new Reference("ase", "UserAccount");
+		ArrayColumnData cdataCombo = new ArrayColumnData();
+		cdataCombo.add(new MyColumnData("ase", "pk_userId", "Id", 70));
+		cdataCombo.add(new MyColumnData("ase", "name", "Nombre", 150));
+		comboAsessor.setQueryData(refProfile, cdataCombo);
+		comboAsessor.getComboBox().setPageSize(5);
+		comboAsessor.getComboBox().addFilter("userTypeId", "ASE");
+		configs.add(comboAsessor);
+
+		// Combo product
+		ComboColumn productComboColumn = new ComboColumn(cdata.get(1));
+		Reference refProduct = new Reference("prod", "ProductMicrocredit");
+		ArrayColumnData cdataComboPrduct = new ArrayColumnData();
+		cdataComboPrduct.add(new MyColumnData("prod", "pk_productId", "Id", 40));
+		cdataComboPrduct.add(new MyColumnData("prod", "description", "Descripcion", 200));
+		productComboColumn.setQueryData(refProduct, cdataComboPrduct);
+		configs.add(productComboColumn);
+
+		configs.add(new NormalColumn(cdata.get(2)));
+
+		configs.add(new ExpireColumnConfig());
+
+		ColumnModel cm = new ColumnModel(configs);
+
+		// Content panel
+		EntityContentPanel cp = new EntityContentPanel("Productos por Asesor", 400, 230);
+
+		// Grid
+		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
+		grid.setAutoExpandColumn("pk_userId");
+		cp.add(grid);
+		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
+			public void handleEvent(BaseEvent be) {
+				getStore().sort(cdata.getIdFields().get(0), SortDir.ASC);
+			}
+		});
+
+		// Top tool bar
+		GridToolBar toolBar = new GridToolBar(grid, getStore());
+		cp.setTopComponent(toolBar);
+
+		// Paging tool bar
+		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(grid, PAGE_SIZE);
+		cp.setBottomComponent(pagingToolBar);
+
+		add(cp);
+
+	}
 }

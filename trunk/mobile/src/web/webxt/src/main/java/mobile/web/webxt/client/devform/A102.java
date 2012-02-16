@@ -13,7 +13,6 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
-import mobile.web.webxt.client.util.NumberType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -37,23 +36,23 @@ public class A102 extends MyGeneralForm {
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-				
+
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
 		cdata.add(new MyColumnData("pk_userTypeId", "Tipo", 80, 4, false));
 		cdata.add(new MyColumnData("name", "Nombre", 70, 40, false));
 		getConfig().setlDataSource(cdata.getDataSources());
-		
+
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-		configs.add(new NormalColumn(cdata.get(0),NumberType.TEXT,Validate.TEXT));
-		configs.add(new NormalColumn(cdata.get(1),NumberType.TEXT,Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(0), Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(1), Validate.TEXT));
 		configs.add(new ExpireColumnConfig());
 		ColumnModel cm = new ColumnModel(configs);
-		
+
 		// Content panel
 		EntityContentPanel cp = new EntityContentPanel("Tipos de Usuario", 400, 230);
-		
+
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
 		grid.setAutoExpandColumn("name");
