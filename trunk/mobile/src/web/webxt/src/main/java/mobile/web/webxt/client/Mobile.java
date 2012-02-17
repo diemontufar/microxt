@@ -11,10 +11,12 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.maps.client.Maps;
 
 public class Mobile implements EntryPoint {
+	
+	String key = "ABQIAAAAaNAkBjzcbXsAJ5HR69IHNhTvoZypEwrtth8tBAhhFnGc_4WvEBRMN-FPvc_3YxJ8mHFTzhUWscmFQw";
 
 	public void onModuleLoad() {
 
-		Maps.loadMapsApi("", "2", false, new Runnable() {
+		Maps.loadMapsApi(key, "2", false, new Runnable() {
 			public void run() {
 				createMVC();
 			}

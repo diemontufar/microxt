@@ -27,6 +27,7 @@ import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
 import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.grid.BufferView;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -41,7 +42,7 @@ public class C103 extends MyGeneralForm {
 	private final Integer PAGE_SIZE = 5;
 
 	EntityEditorGrid grid;
-	List<String> zonesList = new ArrayList<String>();
+	List<String> zonesList;
 
 	public C103() {
 		super(PROCESS, true);
@@ -70,6 +71,7 @@ public class C103 extends MyGeneralForm {
 		comboAsessor.setQueryData(refProfile, cdataCombo);
 		comboAsessor.getComboBox().setPageSize(5);
 		comboAsessor.getComboBox().addFilter("userTypeId", "ASE");
+
 		configs.add(comboAsessor);
 
 		ComboColumn profileGeoZone = new ComboColumn(cdata.get(1));
@@ -88,6 +90,7 @@ public class C103 extends MyGeneralForm {
 
 			public Object render(final ModelData model, String property, ColumnData config, final int rowIndex,
 					final int colIndex, ListStore<ModelData> store, final Grid<ModelData> grid) {
+				
 				if (!init) {
 					init = true;
 					grid.addListener(Events.ColumnResize, new Listener<GridEvent<ModelData>>() {
@@ -98,6 +101,7 @@ public class C103 extends MyGeneralForm {
 										&& be.getGrid().getView().getWidget(i, be.getColIndex()) instanceof BoxComponent) {
 									((BoxComponent) be.getGrid().getView().getWidget(i, be.getColIndex())).setWidth(be
 											.getWidth() - 10);
+								
 								}
 							}
 						}
@@ -107,37 +111,22 @@ public class C103 extends MyGeneralForm {
 				Button b = new Button("Ver", new SelectionListener<ButtonEvent>() {
 					@Override
 					public void componentSelected(ButtonEvent ce) {
-						Info.display("Prueba", model.get("pk_userId").toString());
-						// grid.getSelectionModel().deselectAll();
-						// grid.setSelectionModel(new
-						// GridSelectionModel<ModelData>());
-						//
-						//
-						// System.out.println(grid.getSelectionModel().getSelectedItem());
-						// grid.sets
 
-						// ModelData val = grid.getModel();
-						// System.out.println(grid.getView());
-						// String personCode = val.get("pk_userId");
-						zonesList.add("234");
-						// Info.display("Informacion","Cod. Usuario: "+personCode
-						// + " ; Asesor: "+ zonesList );
-						//ZonePreview zp = new ZonePreview("DIEGO", "2", zonesList);
-						//zp.show();
+						if (model.get("pk_geographicZoneId") != null && model.get("pk_userId").toString() != null) {
+							zonesList = new ArrayList<String>();
+							zonesList.add(model.get("pk_geographicZoneId").toString());
+							ZonePreview zp = new ZonePreview(model.get("pk_userId").toString(), zonesList);
+							zp.show();
+						} else {
+							Info.display("Error", "Debe colocar informacion completa");
+						}
+
 					}
 				});
+				
 				b.setWidth(grid.getColumnModel().getColumnWidth(colIndex) - 10);
+				b.setHeight("100%");
 				b.setToolTip("Ver Informacion de la Zona Asignada");
-
-				// final GridSelectionModel<ModelData> csm = new
-				// CellSelectionModel<ModelData>();
-				// grid.setSelectionModel(csm);
-				// grid.addListener(Events.CellClick, new Listener<GridEvent>()
-				// {
-				// public void handleEvent(GridEvent ge) {
-				// System.out.println(csm.getSelectedItem().getProperties());
-				// }
-				// });
 
 				return b;
 
@@ -162,6 +151,11 @@ public class C103 extends MyGeneralForm {
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
 		grid.setAutoExpandColumn("observations");
+		
+		BufferView view = new BufferView();  
+	    view.setRowHeight(23);  
+	    grid.setView(view); 
+	    
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
@@ -169,6 +163,7 @@ public class C103 extends MyGeneralForm {
 			}
 		});
 
+		
 		// Top tool bar
 		GridToolBar toolBar = new GridToolBar(grid, getStore());
 		cp.setTopComponent(toolBar);

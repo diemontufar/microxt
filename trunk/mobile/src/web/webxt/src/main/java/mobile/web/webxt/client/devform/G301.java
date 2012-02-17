@@ -5,6 +5,7 @@ import java.util.List;
 
 import mobile.web.webxt.client.form.EntityContentPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
+import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.EntityEditorGrid;
 import mobile.web.webxt.client.form.widgetsgrid.ExpireColumnConfig;
@@ -12,6 +13,7 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
+import mobile.web.webxt.client.util.NumberType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -27,7 +29,7 @@ public class G301 extends MyGeneralForm {
 
 	private final static String PROCESS = "G301";
 	private final static String ENTITY = "Country";
-	private final Integer PAGE_SIZE = 5;
+	private final Integer PAGE_SIZE = 10;
 
 	public G301() {
 		super(PROCESS, true);
@@ -47,8 +49,8 @@ public class G301 extends MyGeneralForm {
 		// Column model
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		configs.add(new NormalColumn(cdata.get(0)));
-		configs.add(new NormalColumn(cdata.get(1)));
+		configs.add(new NormalColumn(cdata.get(0),NumberType.TEXT,Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(1),NumberType.TEXT,Validate.TEXT));
 
 		configs.add(new ExpireColumnConfig());
 

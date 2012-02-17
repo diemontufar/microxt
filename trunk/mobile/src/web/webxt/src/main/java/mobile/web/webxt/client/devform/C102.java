@@ -34,6 +34,7 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
+import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
@@ -125,7 +126,6 @@ public class C102 extends MyGeneralForm {
 
 		// Form panel
 		form = new MyFormPanel(this, "Mantenimiento de Zonas Geográficas", FORM_WIDTH);
-		//form.setHeaderVisible(false);	
 		form.setLayout(new RowLayout(Orientation.HORIZONTAL));
 
 		ContentPanel left = new ContentPanel();
@@ -136,7 +136,9 @@ public class C102 extends MyGeneralForm {
 		right.setHeaderVisible(false);
 		right.setStyleAttribute("padding", "10");
 		right.setBorders(true);
-
+		right.setFrame(false);
+		right.setLayout(new CenterLayout());
+		
 		save = new Button("Guardar", new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
@@ -160,9 +162,9 @@ public class C102 extends MyGeneralForm {
 		left.add(createMap());
 		right.add(createForm());
 
-		form.add(left, new RowData(.72, 1, new Margins(3)));
-		form.add(right, new RowData(.28, 1, new Margins(3)));
-
+		form.add(left, new RowData(.75, 1, new Margins(3)));
+		form.add(right, new RowData(.25, 1, new Margins(3)));
+		
 		add(form);
 	}
 
@@ -171,6 +173,7 @@ public class C102 extends MyGeneralForm {
 		FieldSet fieldSet = new FieldSet();
 		fieldSet.setHeading("Datos de la Zona");
 		fieldSet.setCollapsible(false);
+		fieldSet.setWidth(240);
 
 		// Code
 		row = new RowContainer();
@@ -234,10 +237,18 @@ public class C102 extends MyGeneralForm {
 		radioGroup.add(pointRadio);
 		radioGroup.add(routeRadio);
 		radioGroup.add(polygonRadio);
-
+		
 		radioGroup.addListener(Events.Change, new Listener<FieldEvent>() {
 			public void handleEvent(FieldEvent fe) {
+				
+				if (routeRadio.getValue() || polygonRadio.getValue()) {
+					visualizeFields(true);
+				} else{
+					visualizeFields(false);
+				}
+				
 				clearFields();
+				map.clearOverlays();
 			}
 		});
 
@@ -362,11 +373,11 @@ public class C102 extends MyGeneralForm {
 				}
 			}
 		});
-
+		
 		row.add(latitude4);
 		row.add(longitude4);
 		fieldSet.add(row);
-
+		
 		return fieldSet;
 	}
 
@@ -659,6 +670,16 @@ public class C102 extends MyGeneralForm {
 		latitude4.setValue(points[3].getLatLng().getLatitude());
 		longitude4.setValue(points[3].getLatLng().getLongitude());
 
+	}
+	
+	public void visualizeFields(boolean state){
+
+			longitude2.setVisible(state);
+			latitude2.setVisible(state);
+			longitude3.setVisible(state);
+			latitude3.setVisible(state);
+			longitude4.setVisible(state);
+			latitude4.setVisible(state);
 	}
 
 	private void createPoints(String coordType) {
