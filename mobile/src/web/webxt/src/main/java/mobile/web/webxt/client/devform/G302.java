@@ -21,7 +21,7 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
-import mobile.web.webxt.client.util.NumberType;
+import mobile.web.webxt.client.util.TextType;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -96,9 +96,9 @@ public class G302 extends MyGeneralForm {
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		configs.add(new NormalColumn(cdata.get(0),NumberType.TEXT,Validate.TEXT));
-		configs.add(new NormalColumn(cdata.get(1),NumberType.TEXT,Validate.TEXT));
-		configs.add(new NormalColumn(cdata.get(2),NumberType.TEXT,Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(0),TextType.TEXT,Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(1),TextType.TEXT,Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(2),TextType.TEXT,Validate.TEXT));
 		configs.add(new ExpireColumnConfig());
 
 		ColumnModel cm = new ColumnModel(configs);
