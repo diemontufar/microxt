@@ -15,7 +15,7 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
-import mobile.web.webxt.client.util.NumberType;
+import mobile.web.webxt.client.util.TextType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -83,7 +83,7 @@ public class A203 extends MyGeneralForm {
 		languageComboColumn.setQueryData(refLanuage, langCdata);
 		configs.add(languageComboColumn);
 		
-		configs.add(new NormalColumn(cdata.get(5),NumberType.TEXT,Validate.EMAIL));
+		configs.add(new NormalColumn(cdata.get(5),TextType.TEXT,Validate.EMAIL));
 		
 		ComboColumn personComboColumn = new ComboColumn(cdata.get(6));
 		Reference refPerson = new Reference("per","Person");
