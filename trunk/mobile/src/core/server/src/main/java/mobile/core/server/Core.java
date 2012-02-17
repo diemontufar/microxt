@@ -3,6 +3,7 @@ package mobile.core.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,18 +28,28 @@ public class Core extends HttpServlet {
 			log.info(":::::::::::::::::::::::::");
 			// log.info("request: " + request);
 			log.info("content-type: " + request.getContentType());
+			log.info("character-encoding: " + request.getCharacterEncoding());
 			log.info("content-length: " + request.getContentLength());
+			log.info("remote-addr: " + request.getRemoteAddr());
 			// log.info("locale: " + request.getLocale());
 
 			BufferedReader reader = request.getReader();
 			log.info("Message");
 			message = reader.readLine();
-			// message = request.getParameter("message");
-			log.info("Input message: " + message);
+
+			log.info("Input message: ");
+			log.info(message);
+			// log.info("Input message UTF-8: " + new String(message.getBytes(),
+			// "UTF-8"));
+			// log.info("Input message ISO-8859-1: " + new
+			// String(message.getBytes(), "ISO-8859-1"));
+			log.info("Decode message :");
+			log.info(URLDecoder.decode(message, "UTF-8"));
+			message = URLDecoder.decode(message, "UTF-8");
 
 			if (message == null) {
 				setResponseProp(response);
-				
+
 				PrintWriter out = response.getWriter();
 
 				// Test message
@@ -69,6 +80,6 @@ public class Core extends HttpServlet {
 
 	private void setResponseProp(HttpServletResponse response) {
 		response.setContentType(CONTENT_TYPE);
-		//response.setHeader("Access-Control-Allow-Origin", ACCESS_CONTROL);
+		// response.setHeader("Access-Control-Allow-Origin", ACCESS_CONTROL);
 	}
 }
