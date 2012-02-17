@@ -3,12 +3,17 @@ package mobile.web.webxt.client.devform;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.web.webxt.client.data.MyPagingLoader;
-import mobile.web.webxt.client.data.MyProcessConfig;
+import mobile.web.webxt.client.data.form.DataSource;
+import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.form.EntityContentPanel;
+import mobile.web.webxt.client.form.MyFormPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
+import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgets.ComboForm;
+import mobile.web.webxt.client.form.widgets.InputBox;
+import mobile.web.webxt.client.form.widgets.MyLabel;
+import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.EntityEditorGrid;
 import mobile.web.webxt.client.form.widgetsgrid.ExpireColumnConfig;
@@ -16,23 +21,16 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
+import mobile.web.webxt.client.util.NumberType;
 
+import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.BaseModelData;
-import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
-import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
-import com.extjs.gxt.ui.client.store.Store;
-import com.extjs.gxt.ui.client.store.StoreEvent;
-import com.extjs.gxt.ui.client.store.StoreListener;
-import com.extjs.gxt.ui.client.widget.Info;
-import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.google.gwt.user.client.Element;
 
 public class G304 extends MyGeneralForm {
@@ -49,6 +47,105 @@ public class G304 extends MyGeneralForm {
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
+		
+		// Constants
+		final int FORM_WIDTH = 430;
+		final int LABEL_WIDTH = 50;
+		
+		// Super Form
+		final MyFormPanel form = new MyFormPanel(this, "Parroquias", FORM_WIDTH);
+		form.setLayout(new FlowLayout());
+		form.setButtonAlign(HorizontalAlignment.CENTER);
+		
+		// Header
+		// Filter: country
+		RowContainer row = new RowContainer();
+
+		MyLabel label = new MyLabel("Pais:", LABEL_WIDTH);
+		row.add(label);
+		
+		// Country combo
+		final ComboForm countryCombo = new ComboForm(60);
+		countryCombo.setDataSource(new DataSource("pk_countryId", DataSourceType.CRITERION));
+				
+		Reference refCountry = new Reference("cou", "Country");
+		final ArrayColumnData combodata = new ArrayColumnData();
+		combodata.add(new MyColumnData("cou", "pk_countryId", "Codigo", 70));
+		combodata.add(new MyColumnData("cou", "name", "Nombre", 150));
+		countryCombo.setQueryData(refCountry, combodata);
+		
+		// Country description
+		final InputBox countryName = new InputBox(150);
+		countryName.setDataSource(new DataSource("Country", "name", DataSourceType.CRITERION_DESCRIPTION));
+		countryName.setReadOnly(true);
+
+		countryCombo.linkWithField(countryName, "name");
+
+		row.add(countryCombo);
+		row.add(countryName);
+		
+		form.add(row);
+		
+		// Filter: province
+		row = new RowContainer();
+
+		label = new MyLabel("Provincia:", LABEL_WIDTH);
+		row.add(label);
+		
+		// Province combo
+		final ComboForm provinceCombo = new ComboForm(60);
+		provinceCombo.setDataSource(new DataSource("pk_provinceId", DataSourceType.CRITERION));
+				
+		Reference refProvince = new Reference("pro", "Province");
+		final ArrayColumnData combodata2 = new ArrayColumnData();
+		combodata2.add(new MyColumnData("pro", "pk_provinceId", "Codigo", 70));
+		combodata2.add(new MyColumnData("pro", "name", "Nombre", 150));
+		provinceCombo.setQueryData(refProvince, combodata2);
+		
+		// Country description
+		final InputBox provinceName = new InputBox(150);
+		provinceName.setDataSource(new DataSource("Province", "name", DataSourceType.CRITERION_DESCRIPTION));
+		provinceName.setReadOnly(true);
+
+		provinceCombo.linkWithField(provinceName, "name");
+		
+		provinceCombo.addDependency(countryCombo, "pk_countryId");
+
+		row.add(provinceCombo);
+		row.add(provinceName);
+		
+		form.add(row);
+		
+		// Filter: City
+		row = new RowContainer();
+
+		label = new MyLabel("Cantón:", LABEL_WIDTH);
+		row.add(label);
+		
+		// City combo
+		final ComboForm cityCombo = new ComboForm(60);
+		cityCombo.setDataSource(new DataSource("pk_cityId", DataSourceType.CRITERION));
+				
+		Reference refCity = new Reference("cit", "City");
+		final ArrayColumnData combodata3 = new ArrayColumnData();
+		combodata3.add(new MyColumnData("cit", "pk_cityId", "Codigo", 70));
+		combodata3.add(new MyColumnData("cit", "name", "Nombre", 150));
+		cityCombo.setQueryData(refCity, combodata3);
+		
+		// Country description
+		final InputBox cityName = new InputBox(150);
+		cityName.setDataSource(new DataSource("City", "name", DataSourceType.CRITERION_DESCRIPTION));
+		cityName.setReadOnly(true);
+
+		cityCombo.linkWithField(cityName, "name");
+		
+		cityCombo.addDependency(provinceCombo, "pk_provinceId");
+
+		row.add(cityCombo);
+		row.add(cityName);
+		
+		form.add(row);	
+		
 
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
@@ -62,199 +159,56 @@ public class G304 extends MyGeneralForm {
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		configs.add(new NormalColumn(cdata.get(0)));
-		configs.add(new NormalColumn(cdata.get(1)));
-		configs.add(new NormalColumn(cdata.get(2)));
-		configs.add(new NormalColumn(cdata.get(3)));
-		configs.add(new NormalColumn(cdata.get(4)));
+		configs.add(new NormalColumn(cdata.get(0),NumberType.TEXT,Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(1),NumberType.TEXT,Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(2),NumberType.TEXT,Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(3),NumberType.TEXT,Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(4),NumberType.TEXT,Validate.TEXT));
 		configs.add(new ExpireColumnConfig());
 
 		ColumnModel cm = new ColumnModel(configs);
 
 		// Grid panel
-		EntityContentPanel gridPanel = new EntityContentPanel(450, 230);
+		EntityContentPanel gridPanel = new EntityContentPanel(400, 230);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
 		grid.setAutoExpandColumn("name");
-		grid.getColumnModel().getColumn(0).getEditor().disable();
-		grid.getColumnModel().getColumn(1).getEditor().disable();
-		grid.getColumnModel().getColumn(2).getEditor().disable();
-
+		grid.setBorders(true);
+		grid.addDependency(countryCombo);
+		grid.addDependency(provinceCombo);
+		grid.addDependency(cityCombo);
+		
 		gridPanel.add(grid);
-
+		
 		// Top tool bar
 		ModelData newItem = new BaseModelData();
 		newItem.set(cdata.get(0).getId(), null);
 		newItem.set(cdata.get(1).getId(), null);
 		newItem.set(cdata.get(2).getId(), null);
 		newItem.set(cdata.get(3).getId(), null);
+		newItem.set(cdata.get(4).getId(), null);
 
 		GridToolBar toolBar = new GridToolBar(grid, getStore(), newItem);
-		toolBar.initColumnIndex = 3;
 		gridPanel.setTopComponent(toolBar);
 
 		// Paging tool bar
 		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(grid, PAGE_SIZE);
 		gridPanel.setBottomComponent(pagingToolBar);
-//		pagingToolBar.setWaitingFilter(true);
-//		pagingToolBar.setMessage("Seleccione un Pais y una Provincia");
 
-		// Father panel
-		EntityContentPanel panel = new EntityContentPanel("Parroquias", 440, 360);
-
-		// Country combo
-		final ComboForm countryCombo = new ComboForm("Pais");
-		Reference refCountry = new Reference("cou", "Country");
-		final ArrayColumnData combodata = new ArrayColumnData();
-		combodata.add(new MyColumnData("cou", "pk_countryId", "Pais", 70));
-		combodata.add(new MyColumnData("cou", "name", "Nombre", 150));
-		countryCombo.setQueryData(refCountry, combodata);
-		countryCombo.setDisplayField("name");
-
-		// Province combo
-		final ComboForm provinceCombo = new ComboForm("Provincia");
-		final ArrayColumnData combodata2 = new ArrayColumnData();
-		Reference refProvince = new Reference("prov", "Province");
-		combodata2.add(new MyColumnData("prov", "pk_provinceId", "Provincia", 70));
-		combodata2.add(new MyColumnData("prov", "name", "Nombre", 150));
-		// combodata2.add(new MyColumnData("prov", "pk_countryId",
-		// ColumnType.HIDDEN));
-		provinceCombo.setQueryData(refProvince, combodata2);
-		provinceCombo.setDisplayField("name");
-
-		// City combo
-		final ComboForm cityCombo = new ComboForm("Canton");
-		Reference refCity = new Reference("city", "City");
-		final ArrayColumnData combodata3 = new ArrayColumnData();
-		combodata3.add(new MyColumnData("city", "pk_cityId", "Codigo", 70));
-		combodata3.add(new MyColumnData("city", "name", "Nombre", 150));
-		// combodata3.add(new MyColumnData("city", "pk_countryId",
-		// ColumnType.HIDDEN));
-		// combodata3.add(new MyColumnData("city", "pk_provinceId",
-		// ColumnType.HIDDEN));
-		cityCombo.setQueryData(refCity, combodata3);
-		cityCombo.setDisplayField("name");
-
-		// Combo boxes and table interaction
-		countryCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-				String filterField = "pk_countryId";
-
-				FilterConfig filter = new BaseStringFilterConfig();
-				filter.setField(filterField);
-				filter.setComparison("=");
-				filter.setValue(countryCombo.getValue().get(filterField).toString());
-
-				//provinceCombo.addFilter(filter);
-				provinceCombo.setLoaded(false);
-				provinceCombo.setValue(null);
-				cityCombo.setLoaded(false);
-				cityCombo.setValue(null);
-
-				getStore().addFilter(filter);
-			}
-		});
-
-		provinceCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-
-				if (provinceCombo.getValue() == null) {
-					return;
-				}
-
-				String filterField = "pk_countryId";
-				String filterField2 = "pk_provinceId";
-
-				FilterConfig filter = new BaseStringFilterConfig();
-				filter.setField(filterField);
-				filter.setComparison("=");
-				filter.setValue(provinceCombo.getValue().get(filterField).toString());
-
-				FilterConfig filter2 = new BaseStringFilterConfig();
-				filter2.setField(filterField2);
-				filter2.setComparison("=");
-				filter2.setValue(provinceCombo.getValue().get(filterField2).toString());
-
-				//cityCombo.addFilter(filter);
-				//cityCombo.addFilter(filter2);
-				//cityCombo.setLoaded(false);
-				//cityCombo.setValue(null);
-
-				getStore().addFilter(filter);
-			}
-		});
-
-		provinceCombo.addListener(Events.BeforeQuery, new Listener<BaseEvent>() {
-			public void handleEvent(BaseEvent be) {
-				MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) provinceCombo.getStore().getLoader())
-						.getConfig();
-				if (config.getFilterConfigs() == null) {
-					be.setCancelled(true);
-					Info.display(PROCESS, "Seleccione un Pais");
-				}
-			}
-		});
-
-		cityCombo.addListener(Events.BeforeQuery, new Listener<BaseEvent>() {
-			public void handleEvent(BaseEvent be) {
-				MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) cityCombo.getStore().getLoader())
-						.getConfig();
-				if (config.getFilterConfigs() == null) {
-					be.setCancelled(true);
-					Info.display(PROCESS, "Seleccione una Provincia");
-				}
-			}
-		});
-
+		// Operations
 		cityCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-
-				if (cityCombo.getValue() == null) {
-					return;
-				}
-
-				String filterField = "pk_cityId";
-
-				FilterConfig filter = new BaseStringFilterConfig();
-				filter.setField(filterField);
-				filter.setComparison("=");
-				filter.setValue(cityCombo.getValue().get(filterField).toString());
-				getStore().addFilter(filter);
-
-				//pagingToolBar.setWaitingFilter(false);
-			}
-		});
-
-		getStore().addStoreListener(new StoreListener<ModelData>() {
-			public void handleEvent(StoreEvent<ModelData> se) {
-
-				String codCountry = countryCombo.getValue().get("pk_countryId").toString();
-				String codProvince = provinceCombo.getValue().get("pk_provinceId").toString();
-				String codCity = cityCombo.getValue().get("pk_cityId").toString();
-
-				if (se.getType() == Store.Add) {
-					grid.getStore().getAt(getStore().getCount() - 1).set("pk_countryId", codCountry);
-					grid.getStore().getAt(getStore().getCount() - 1).set("pk_provinceId", codProvince);
-					grid.getStore().getAt(getStore().getCount() - 1).set("pk_cityId", codCity);
+				if (((ComboForm) se.getSource()).isSomeSelected()) {
+					pagingToolBar.refresh();
+				}else{
+					grid.getStore().removeAll();
 				}
 			}
 		});
-
-		FormPanel headerPanel = new FormPanel();
-		headerPanel.setPadding(10);
-		headerPanel.setHeaderVisible(false);
-		headerPanel.setBodyBorder(true);
-		headerPanel.setFieldWidth(150);
-		headerPanel.add(countryCombo);
-		headerPanel.add(provinceCombo);
-		headerPanel.add(cityCombo);
-
-		panel.setTopComponent(headerPanel);
-		panel.add(gridPanel);
-		add(panel);
+	
+		form.add(gridPanel);
+		add(form);
 	}
 }

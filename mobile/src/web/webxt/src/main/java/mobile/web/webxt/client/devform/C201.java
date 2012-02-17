@@ -1,7 +1,6 @@
 package mobile.web.webxt.client.devform;
 
 import mobile.common.message.Item;
-import mobile.common.tools.Format;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
@@ -10,20 +9,18 @@ import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgets.ComboForm;
 import mobile.web.webxt.client.form.widgets.InputBox;
-import mobile.web.webxt.client.form.widgets.MyDateField;
 import mobile.web.webxt.client.form.widgets.MyLabel;
+import mobile.web.webxt.client.form.widgets.MyNumberField;
 import mobile.web.webxt.client.form.widgets.MyTextArea;
 import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
-import mobile.web.webxt.client.util.DatesManager;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
 import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
@@ -33,9 +30,9 @@ import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
-import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
@@ -48,7 +45,7 @@ public class C201 extends MyGeneralForm {
 	
 	// Constants
 	final int FORM_WIDTH = 620;
-	final int TAB_HEIGHT = 210;
+	final int TAB_HEIGHT = 180;
 	final int LABEL_WIDTH = 60;
 
 	MyFormPanel form;
@@ -60,11 +57,10 @@ public class C201 extends MyGeneralForm {
 	InputBox freqDescription;
 	MyTextArea activity;
 	ComboForm partnerCode,asessorCombo,freqCombo,personCombo;
-	SimpleComboBox<Integer> diaReunion;
+	MyNumberField meetingDay;
 	
 	//Person Fields:
-	InputBox identification,name,lastName,age,gender,civilStatus;
-	MyDateField birth;
+	InputBox identification,name,lastName,gender,civilStatus; 
 	ContentPanel principalPanel = new ContentPanel();
 	
 	Button save,clear;
@@ -82,16 +78,12 @@ public class C201 extends MyGeneralForm {
 	
 	private void createPanel(){
 		
-		ContentPanel left = new ContentPanel();
-		left.setHeaderVisible(false);
+		LayoutContainer left = new LayoutContainer();
 		left.setWidth(280);
-		left.setHeight(300);
 		left.setBorders(false);
 
-		ContentPanel right = new ContentPanel();
-		right.setHeaderVisible(false);
+		LayoutContainer right = new LayoutContainer();
 		right.setWidth(280);
-		right.setHeight(300);
 		right.setBorders(false);
 		
 		principalPanel.setFrame(false);
@@ -164,7 +156,6 @@ public class C201 extends MyGeneralForm {
 		fieldSet.setHeading("Datos Personales");
 		fieldSet.setCollapsible(false);
 		fieldSet.setWidth(270);
-		fieldSet.setHeight(200);
 		
 		row = new RowContainer();
 		label = new MyLabel("Identificacion:", LABEL_WIDTH+10);
@@ -174,7 +165,7 @@ public class C201 extends MyGeneralForm {
 		fieldSet.add(row);
 		
 		row = new RowContainer();
-		label = new MyLabel("Nombre:", LABEL_WIDTH+10);
+		label = new MyLabel("Nombres:", LABEL_WIDTH+10);
 		row.add(label);	
 		name = new InputBox(150,150,Validate.TEXT);
 		row.add(name);
@@ -186,17 +177,6 @@ public class C201 extends MyGeneralForm {
 		lastName= new InputBox(150,40,Validate.TEXT);
 		
 		row.add(lastName);
-		fieldSet.add(row);
-		
-		row = new RowContainer();
-		label = new MyLabel("Edad:", LABEL_WIDTH+10);
-		row.add(label);	
-		birth= new MyDateField(100);
-		birth.setVisible(false);
-		birth.setFireChangeEventOnSetValue(true);
-		age= new InputBox(100,40,Validate.TEXT);
-		row.add(age);
-		row.add(birth);
 		fieldSet.add(row);
 		
 		row = new RowContainer();
@@ -217,36 +197,20 @@ public class C201 extends MyGeneralForm {
 		identification.setReadOnly(true);
 		name.setReadOnly(true);
 		lastName.setReadOnly(true);
-		birth.setReadOnly(true);
-		age.setReadOnly(true);
 		gender.setReadOnly(true);
 		civilStatus.setReadOnly(true);
 		
-		identification.setDataSource(new DataSource("per", "identificationNumber", DataSourceType.DESCRIPTION));
-		name.setDataSource(new DataSource("per", "name", DataSourceType.DESCRIPTION));
-		lastName.setDataSource(new DataSource("per", "lastName", DataSourceType.DESCRIPTION));
-		birth.setDataSource(new DataSource("per", "dateOfBirth", DataSourceType.DESCRIPTION));
-		gender.setDataSource(new DataSource("per", "genderTypeId", DataSourceType.DESCRIPTION));
-		civilStatus.setDataSource(new DataSource("per", "civilStatusId", DataSourceType.DESCRIPTION));
+		identification.setDataSource(new DataSource("Person", "identificationNumber", DataSourceType.DESCRIPTION));
+		name.setDataSource(new DataSource("Person", "name", DataSourceType.DESCRIPTION));
+		lastName.setDataSource(new DataSource("Person", "lastName", DataSourceType.DESCRIPTION));
+		gender.setDataSource(new DataSource("Person", "genderTypeId", DataSourceType.DESCRIPTION));
+		civilStatus.setDataSource(new DataSource("Person", "civilStatusId", DataSourceType.DESCRIPTION));
 					
 		personCombo.linkWithField(identification, "identificationNumber");
 		personCombo.linkWithField(name, "name");
 		personCombo.linkWithField(lastName, "lastName");
-		personCombo.linkWithField(birth, "dateOfBirth");
 		personCombo.linkWithField(gender, "genderTypeId");
 		personCombo.linkWithField(civilStatus, "civilStatusId");
-		
-		
-		birth.addListener(Events.Change, new Listener<BaseEvent>() {
-		    public void handleEvent(BaseEvent be) {
-				if (birth.getValue() != null) {
-					int age1=0;
-					String date=DatesManager.dateToString(birth.getValue(), Format.DATE);
-					age1=DatesManager.calculateAge(date);
-					age.setValue(String.valueOf(age1));
-				}
-		    }
-		});
 						
 		return fieldSet;
 	}
@@ -257,7 +221,6 @@ public class C201 extends MyGeneralForm {
 		fieldSet.setHeading("Cliente");
 		fieldSet.setCollapsible(false);
 		fieldSet.setWidth(270);
-		fieldSet.setHeight(200);		
 		
 		row = new RowContainer();
 		label = new MyLabel("Codigo:", LABEL_WIDTH);
@@ -300,13 +263,14 @@ public class C201 extends MyGeneralForm {
 		// Person combo
 		personCombo = new ComboForm(70);
 		personCombo.setDataSource(new DataSource("par", "personId", DataSourceType.RECORD));
+		personCombo.setPageSize(10);
 
 		Reference refPerson = new Reference("per", "Person");
 		final ArrayColumnData cdataPerson = new ArrayColumnData();
 		cdataPerson.add(new MyColumnData("per","pk_personId", "Persona", 50));
 		cdataPerson.add(new MyColumnData("per","identificationNumber", "Identificacion", 80));
-		cdataPerson.add(new MyColumnData("per","name", "Nombre", 150));
-		cdataPerson.add(new MyColumnData("per","lastName", "Apellido", 150));
+		cdataPerson.add(new MyColumnData("per","name", "Nombre", 100));
+		cdataPerson.add(new MyColumnData("per","lastName", "Apellido", 200));
 		cdataPerson.add(new MyColumnData("per","dateOfBirth", false));
 		cdataPerson.add(new MyColumnData("per","genderTypeId", false));
 		cdataPerson.add(new MyColumnData("per","civilStatusId", false));
@@ -379,16 +343,14 @@ public class C201 extends MyGeneralForm {
 		label = new MyLabel("Dia reunion:", LABEL_WIDTH);
 		row.add(label);
 		
-		diaReunion=new SimpleComboBox<Integer>();
-		
-		for (int j=1;j<8;j++){
-			diaReunion.add(j);
-		}
-		
-		diaReunion.setAllowBlank(true);	
-		diaReunion.setWidth(70);
-		
-		row.add(diaReunion);
+		meetingDay = new MyNumberField(80);
+		meetingDay.setDataSource(new DataSource("par", "meetingDay", DataSourceType.RECORD));
+		meetingDay.setMaxValue(7);
+		meetingDay.setMinValue(1);
+		meetingDay.setToolTip("Dia de la semana entre 1-7");
+		meetingDay.setMaxLength(1);
+				
+		row.add(meetingDay);
 		fieldSet.add(row);
 		
 		row = new RowContainer();

@@ -51,6 +51,8 @@ import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.mvc.View;
 import com.extjs.gxt.ui.client.widget.TabItem;
+import com.extjs.gxt.ui.client.widget.layout.FillLayout;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 public class FormView extends View {
 	private final FormPanel formPanel = new FormPanel();
@@ -140,7 +142,7 @@ public class FormView extends View {
 		} else if (processId.compareTo("C101") == 0) {
 			tabItem.add(new C101());
 		} else if (processId.compareTo("C102") == 0) {
-			tabItem.add(new C102());
+				tabItem.add(new C102());
 		} else if (processId.compareTo("C103") == 0) {
 			tabItem.add(new C103());
 		} else if (processId.compareTo("C104") == 0) {

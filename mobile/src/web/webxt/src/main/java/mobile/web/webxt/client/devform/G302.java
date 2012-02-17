@@ -3,12 +3,17 @@ package mobile.web.webxt.client.devform;
 import java.util.ArrayList;
 import java.util.List;
 
-import mobile.web.webxt.client.data.MyPagingLoader;
-import mobile.web.webxt.client.data.MyProcessConfig;
+import mobile.web.webxt.client.data.form.DataSource;
+import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.form.EntityContentPanel;
+import mobile.web.webxt.client.form.MyFormPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
+import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgets.ComboForm;
+import mobile.web.webxt.client.form.widgets.InputBox;
+import mobile.web.webxt.client.form.widgets.MyLabel;
+import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.EntityEditorGrid;
 import mobile.web.webxt.client.form.widgetsgrid.ExpireColumnConfig;
@@ -16,22 +21,16 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
+import mobile.web.webxt.client.util.NumberType;
 
-import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
-import com.extjs.gxt.ui.client.data.FilterConfig;
-import com.extjs.gxt.ui.client.data.LoadEvent;
+import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.LoadListener;
-import com.extjs.gxt.ui.client.store.Store;
-import com.extjs.gxt.ui.client.store.StoreEvent;
-import com.extjs.gxt.ui.client.store.StoreListener;
-import com.extjs.gxt.ui.client.widget.Info;
-import com.extjs.gxt.ui.client.widget.form.FormPanel;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.google.gwt.user.client.Element;
 
 public class G302 extends MyGeneralForm {
@@ -48,8 +47,46 @@ public class G302 extends MyGeneralForm {
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
+		
+		// Constants
+		final int FORM_WIDTH = 430;
+		final int LABEL_WIDTH = 50;
+		
+		// Super Form
+		final MyFormPanel form = new MyFormPanel(this, "Provincias", FORM_WIDTH);
+		form.setLayout(new FlowLayout());
+		form.setButtonAlign(HorizontalAlignment.CENTER);
+		
+		// Header
+		// Filter: country
+		RowContainer row = new RowContainer();
 
-		// Configuration
+		MyLabel label = new MyLabel("Pais:", LABEL_WIDTH);
+		row.add(label);
+		
+		// Country combo
+		final ComboForm countryCombo = new ComboForm(60);
+		countryCombo.setDataSource(new DataSource("pk_countryId", DataSourceType.CRITERION));
+				
+		Reference refCountry = new Reference("cou", "Country");
+		final ArrayColumnData combodata = new ArrayColumnData();
+		combodata.add(new MyColumnData("cou", "pk_countryId", "Codigo", 70));
+		combodata.add(new MyColumnData("cou", "name", "Nombre", 150));
+		countryCombo.setQueryData(refCountry, combodata);
+		
+		// Country description
+		final InputBox countryName = new InputBox(150);
+		countryName.setDataSource(new DataSource("Country", "name", DataSourceType.CRITERION_DESCRIPTION));
+		countryName.setReadOnly(true);
+
+		countryCombo.linkWithField(countryName, "name");
+
+		row.add(countryCombo);
+		row.add(countryName);
+		
+		form.add(row);
+
+		// Grid Configurations
 		final ArrayColumnData cdata = new ArrayColumnData();
 		cdata.add(new MyColumnData("pk_countryId", "Pais", 70, 2, false));
 		cdata.add(new MyColumnData("pk_provinceId", "Codigo", 70, 2, false));
@@ -59,105 +96,51 @@ public class G302 extends MyGeneralForm {
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		configs.add(new NormalColumn(cdata.get(0)));
-		configs.add(new NormalColumn(cdata.get(1)));
-		configs.add(new NormalColumn(cdata.get(2)));
+		configs.add(new NormalColumn(cdata.get(0),NumberType.TEXT,Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(1),NumberType.TEXT,Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(2),NumberType.TEXT,Validate.TEXT));
 		configs.add(new ExpireColumnConfig());
 
 		ColumnModel cm = new ColumnModel(configs);
 
-		// Content panel
+		// Grid panel
 		EntityContentPanel gridPanel = new EntityContentPanel(400, 230);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
 		grid.setAutoExpandColumn("name");
-		grid.getColumnModel().getColumn(0).getEditor().disable();
-		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
-			public void handleEvent(BaseEvent be) {
-				// store.sort(cdata.getIdFields().get(0), SortDir.ASC);
-			}
-		});
+		grid.setBorders(true);
+		grid.addDependency(countryCombo);
+		
 		gridPanel.add(grid);
-
+		
 		// Top tool bar
-		GridToolBar toolBar = new GridToolBar(grid, getStore());
-		toolBar.initColumnIndex = 1;
+		ModelData newItem = new BaseModelData();
+		newItem.set(cdata.get(0).getId(), null);
+		newItem.set(cdata.get(1).getId(), null);
+		newItem.set(cdata.get(2).getId(), null);
+
+		GridToolBar toolBar = new GridToolBar(grid, getStore(), newItem);
 		gridPanel.setTopComponent(toolBar);
 
 		// Paging tool bar
 		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(grid, PAGE_SIZE);
 		gridPanel.setBottomComponent(pagingToolBar);
 
-		// Father panel
-		EntityContentPanel panel = new EntityContentPanel("Provincias", 400, 300);
-
-		// Subsystem combo
-		final ComboForm combo = new ComboForm("Pais", "name");
-		Reference refCountry = new Reference("cou", "Country");
-		final ArrayColumnData combodata = new ArrayColumnData();
-		combodata.add(new MyColumnData("cou", "pk_countryId", "Codigo", 70));
-		combodata.add(new MyColumnData("cou", "name", "Nombre", 150));
-		combo.setQueryData(refCountry, combodata);
-
-		FormPanel headerPanel = new FormPanel();
-		headerPanel.setPadding(10);
-		headerPanel.setHeaderVisible(false);
-		headerPanel.setBodyBorder(true);
-		headerPanel.setFieldWidth(150);
-		headerPanel.add(combo);
-
-		LoadListener filterListener = new LoadListener() {
-			public void loaderBeforeLoad(LoadEvent le) {
-				// Validate combo selected
-				if (combo.getValue() == null) {
-					le.setCancelled(true);
-					Info.display("G302", "Debe seleccionar un Pais");
-				}
-
-				MyProcessConfig config = le.getConfig();
-				String ffield = "pk_countryId";
-
-				List<FilterConfig> filters = config.getFilterConfigs();
-				if (filters == null) {
-					filters = new ArrayList<FilterConfig>();
-				}
-
-				boolean existe = false;
-				for (FilterConfig fil : filters) {
-					if (fil.getField().compareTo(ffield) == 0) {
-						existe = true;
-						fil.setValue(combo.getValue().get(ffield));
-					}
-				}
-
-				if (!existe) {
-					FilterConfig filter = new BaseStringFilterConfig();
-					filter.setField(ffield);
-					filter.setComparison("=");
-					filter.setValue(combo.getValue().get(ffield));
-					filters.add(filter);
-				}
-
-				config.setFilterConfigs(filters);
-			}
-		};
-
-		getStore().addStoreListener(new StoreListener<ModelData>() {
-			public void handleEvent(StoreEvent<ModelData> se) {
-
-				String codCountry = combo.getValue().get("pk_countryId").toString();
-
-				if (se.getType() == Store.Add) {
-					grid.getStore().getAt(getStore().getCount() - 1).set("pk_countryId", codCountry);
+		// Operations
+		countryCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+				if (((ComboForm) se.getSource()).isSomeSelected()) {
+					pagingToolBar.refresh();
+				}else{
+					grid.getStore().removeAll();
 				}
 			}
 		});
-
-		getLoader().addListener(MyPagingLoader.BeforeLoad, filterListener);
-
-		panel.setTopComponent(headerPanel);
-		panel.add(gridPanel);
-		add(panel);
+	
+		form.add(gridPanel);
+		add(form);
+		
 	}
 }

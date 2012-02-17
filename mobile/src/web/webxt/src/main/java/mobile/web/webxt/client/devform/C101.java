@@ -44,8 +44,9 @@ public class C101 extends MyGeneralForm {
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
 		cdata.add(new MyColumnData("pk_userId", "Asesor", 80, 20, false));
-		cdata.add(new MyColumnData("personId", "Persona", 80, 20, false));
+		cdata.add(new MyColumnData("name", "Nombre", 130, 40, false));
 		cdata.add(new MyColumnData("userTypeId", "Tipo", 80, 4, false));
+		cdata.add(new MyColumnData("personId", "Persona", 80, 20, false));
 		getConfig().setlDataSource(cdata.getDataSources());
 
 		// Column model
@@ -54,13 +55,14 @@ public class C101 extends MyGeneralForm {
 		configs.add(new NormalColumn(cdata.get(0)));
 		configs.add(new NormalColumn(cdata.get(1)));
 		configs.add(new NormalColumn(cdata.get(2)));
+		configs.add(new NormalColumn(cdata.get(3)));
 
 		configs.add(new ExpireColumnConfig());
 
 		ColumnModel cm = new ColumnModel(configs);
 
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Asesores de Microcredito", 400, 300);
+		EntityContentPanel cp = new EntityContentPanel("Asesores de Microcredito", 450, 300);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);

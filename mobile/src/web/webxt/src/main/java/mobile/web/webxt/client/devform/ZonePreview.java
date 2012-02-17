@@ -71,12 +71,11 @@ public class ZonePreview extends Dialog {
 	InputBox coornidateType, zoneCode;
 	MyTextArea description;
 	List<String> zonesList = new ArrayList<String>();
-	String cPerson, cAsessor;
-	ObtainPersonInformation personalInfo; 
+	String cAsessor;
 	Boolean isMultiPage = false;
 
 	Button prev, next;
-	int regNumber = 0;
+	int regNumber = 1;
 
 	private Polyline polyline;
 	private Polygon polygon;
@@ -97,10 +96,9 @@ public class ZonePreview extends Dialog {
 	final String FORM_WIDTH = "100%";
 	ContentPanel principalPanel = new ContentPanel();
 
-	public ZonePreview(String cAsessor, String cPerson, List<String> cZones) {
+	public ZonePreview(String cAsessor,List<String> cZones) {
 
 		this.zonesList = cZones; // List of zones for the current Asessor
-		this.cPerson = cPerson; // Person code for personal information
 		this.cAsessor = cAsessor; // Asessor code
 
 		if (zonesList.size() > 1) {
@@ -136,12 +134,13 @@ public class ZonePreview extends Dialog {
 		// center
 		ContentPanel panel = new ContentPanel();
 		panel = new ContentPanel();
-		panel.setHeaderVisible(false);
+		panel.setHeaderVisible(true);
+		panel.setBorders(false);
+		panel.setBodyBorder(false);
 		formZone.add(createZoneForm());
+		formZone.setBodyBorder(false);
+		formZone.setBorders(false);
 		panel.add(formZone);
-		personalInfo = new ObtainPersonInformation();
-		personalInfo.setVisible(false);
-		panel.add(personalInfo);
 		
 		BorderLayoutData data = new BorderLayoutData(LayoutRegion.CENTER, 300);
 		add(panel, data);
@@ -149,34 +148,31 @@ public class ZonePreview extends Dialog {
 		// west
 		panel = new ContentPanel();
 		panel.setHeaderVisible(false);
-
+		panel.setBorders(false);
 		panel.add(createMap());
 		data = new BorderLayoutData(LayoutRegion.WEST, 800);
 		data.setMargins(new Margins(0, 5, 0, 0));
-		data.setSplit(true);
-		data.setCollapsible(true);
 		add(panel, data);
 
 		prev = new Button("Anterior", new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				if (regNumber == 0) {
-					prev.disable();
-					zoneCode.setValue(zonesList.get(regNumber));
-				} else {
-					prev.enable();
-					regNumber--;
-					zoneCode.setValue(zonesList.get(regNumber));
-				}
-				labelAsessor.setText(cAsessor);
+				
+				regNumber--;
+				zoneCode.setValue(zonesList.get(regNumber-1));
 			}
 		});
 
 		next = new Button("Siguiente", new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				regNumber++;
+				
+				if(regNumber==zonesList.size()){
+					return;
+				}
+				
 				zoneCode.setValue(zonesList.get(regNumber));
+				regNumber++;
 			}
 		});
 		
@@ -196,9 +192,11 @@ public class ZonePreview extends Dialog {
 			next.disable();
 		}
 
-		if (regNumber == 0) {
-			zoneCode.setValue(zonesList.get(regNumber));
+		if (regNumber == 1) {
+			zoneCode.setValue(zonesList.get(0));
 			labelAsessor.setText(cAsessor);
+			prev.disable();
+			next.disable();
 		}
 
 	}
@@ -209,7 +207,6 @@ public class ZonePreview extends Dialog {
 		fieldSet.setHeading("Datos de la Zona");
 		fieldSet.setCollapsible(false);
 		fieldSet.setWidth(250);
-		fieldSet.setHeight(400);
 
 		// Asessor Name
 
@@ -218,18 +215,6 @@ public class ZonePreview extends Dialog {
 		labelAsessor = new MyLabel("", LABEL_WIDTH);
 		row.add(asesorHtml);
 		row.add(labelAsessor);
-		fieldSet.add(row);
-
-		// Person
-		row = new RowContainer();
-		Html nameHtml = new Html("<b>Nombre:</b>");
-		row.add(nameHtml);
-		fieldSet.add(row);
-
-		row = new RowContainer();
-		labelPerson = new MyLabel("", LABEL_WIDTH + 200);
-		labelPerson.enableEvents(true);
-		row.add(labelPerson);
 		fieldSet.add(row);
 
 		// Code
@@ -262,6 +247,18 @@ public class ZonePreview extends Dialog {
 		coornidateType.setReadOnly(true);
 		coornidateType.setFireChangeEventOnSetValue(true);
 		coornidateType.setDataSource(new DataSource("geo", "coordinateType", DataSourceType.RECORD));
+		
+		coornidateType.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent e) {
+				if (e.getValue() != null) {
+					if (coornidateType.getValue().toString().compareTo("RUTA")==0 || coornidateType.getValue().toString().compareTo("ZONA")==0) {
+						visualizeFields(true);
+					} else{
+						visualizeFields(false);
+					}
+				}
+			}
+		});
 
 		row.add(coornidateType);
 		fieldSet.add(row);
@@ -305,7 +302,26 @@ public class ZonePreview extends Dialog {
 				if (e.getValue() != null && coornidateType.getValue().compareTo("PUNTO") == 0) {
 					createPoints(coornidateType.getValue());
 					labelAsessor.setText(cAsessor);
-					personalInfo.setPersonId(cPerson);
+					
+					if (zonesList.size()==1){
+						return;
+					}
+					
+					if(zoneCode.getValue().compareTo(zonesList.get(0))==0){
+						prev.disable();
+						next.enable();
+					}else{
+						prev.enable();
+					}
+					
+					int last = zonesList.size()-1;
+					if(zoneCode.getValue().compareTo(zonesList.get(last))==0){
+						next.disable();
+						prev.enable();
+					}else{
+						next.enable();
+					}
+
 				}
 			}
 		});
@@ -358,14 +374,28 @@ public class ZonePreview extends Dialog {
 					createCoordinatePoints();
 					if (coornidateType.getValue().compareTo("RUTA") == 0) {
 						createRoute();
-						labelPerson.setText(personalInfo.getPersonName());
 					} else if (coornidateType.getValue().compareTo("ZONA") == 0) {
 						createPolygon();
-						labelPerson.setText(personalInfo.getPersonName());
 					}
-					personalInfo.setPersonId(cPerson);
-					System.out.println("Nombre: "+personalInfo.getPersonName());
-					labelPerson.setText(personalInfo.getPersonName());
+				}
+				
+				if (zonesList.size()==1){
+					return;
+				}
+				
+				if(zoneCode.getValue().compareTo(zonesList.get(0))==0){
+					prev.disable();
+					next.enable();
+				}else{
+					prev.enable();
+				}
+				
+				int last = zonesList.size()-1;
+				if(zoneCode.getValue().compareTo(zonesList.get(last))==0){
+					next.disable();
+					prev.enable();
+				}else{
+					next.enable();
 				}
 			}
 		});
@@ -488,7 +518,6 @@ public class ZonePreview extends Dialog {
 
 			public void onUpdate(PolylineLineUpdatedEvent event) {
 				System.out.println("Polyline Updated");
-				labelPerson.setText(personalInfo.getPersonName());
 			}
 		});
 
@@ -508,7 +537,6 @@ public class ZonePreview extends Dialog {
 
 			public void onUpdate(PolygonLineUpdatedEvent event) {
 				System.out.println("Polygon Updated");
-				labelPerson.setText(personalInfo.getPersonName());
 			}
 		});
 
@@ -518,4 +546,13 @@ public class ZonePreview extends Dialog {
 
 	}
 
+	public void visualizeFields(boolean state){
+
+		longitude2.setVisible(state);
+		latitude2.setVisible(state);
+		longitude3.setVisible(state);
+		latitude3.setVisible(state);
+		longitude4.setVisible(state);
+		latitude4.setVisible(state);
+	}
 }

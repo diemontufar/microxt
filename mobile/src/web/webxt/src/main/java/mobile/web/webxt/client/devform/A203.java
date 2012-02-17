@@ -15,6 +15,7 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
+import mobile.web.webxt.client.util.NumberType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -31,7 +32,7 @@ public class A203 extends MyGeneralForm {
 	private final static String PROCESS = "A203";
 	private final static String ENTITY = "UserAccount";
 	private final Integer PAGE_SIZE = 5;
-
+	
 	public A203() {
 		super(PROCESS, true);
 		setReference(ENTITY);
@@ -40,16 +41,16 @@ public class A203 extends MyGeneralForm {
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
-
+				
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_userId", "ID Usuario", 70, 20, false));
+		cdata.add(new MyColumnData("pk_userId", "ID Usuario", 70, 20,false));
 		cdata.add(new MyColumnData("name", "Nombre", 120, 40, false));
 		cdata.add(new MyColumnData("userTypeId", "Tipo", 70, 4, false));
 		cdata.add(new MyColumnData("userStatusId", "Estado", 70, 4, false));
-		cdata.add(new MyColumnData("languageId", "Idioma", 70, 4, false));
-		cdata.add(new MyColumnData("email", "Email", 120, 100, false));
-		cdata.add(new MyColumnData("personId", "ID persona", 70, 11, true));
+		cdata.add(new MyColumnData("languageId", "Idioma", 70, 4,false));
+		cdata.add(new MyColumnData("email", "Email", 120, 100,false));
+		cdata.add(new MyColumnData("personId", "ID persona", 70, 11,true));
 		getConfig().setlDataSource(cdata.getDataSources());
 
 		// Column model
@@ -57,7 +58,7 @@ public class A203 extends MyGeneralForm {
 
 		configs.add(new NormalColumn(cdata.get(0)));
 		configs.add(new NormalColumn(cdata.get(1)));
-
+		
 		ComboColumn usertypesComboColumn = new ComboColumn(cdata.get(2));
 		Reference refUserType = new Reference("usrTyp", "UserType");
 		ArrayColumnData utCdata = new ArrayColumnData();
@@ -65,7 +66,7 @@ public class A203 extends MyGeneralForm {
 		utCdata.add(new MyColumnData("usrTyp", "name", "Nombre", 150));
 		usertypesComboColumn.setQueryData(refUserType, utCdata);
 		configs.add(usertypesComboColumn);
-
+		
 		ComboColumn userstatusComboColumn = new ComboColumn(cdata.get(3));
 		Reference refUserStatus = new Reference("usrSta", "UserStatus");
 		ArrayColumnData usCdata = new ArrayColumnData();
@@ -73,40 +74,41 @@ public class A203 extends MyGeneralForm {
 		usCdata.add(new MyColumnData("usrSta", "name", "Nombre", 150));
 		userstatusComboColumn.setQueryData(refUserStatus, usCdata);
 		configs.add(userstatusComboColumn);
-
+		
 		ComboColumn languageComboColumn = new ComboColumn(cdata.get(4));
-		Reference refLanuage = new Reference("lang", "Language");
+		Reference refLanuage = new Reference("lang","Language");
 		ArrayColumnData langCdata = new ArrayColumnData();
-		langCdata.add(new MyColumnData("lang", "languageId", "ID", 40));
-		langCdata.add(new MyColumnData("lang", "name", "Nombre", 150));
+		langCdata.add(new MyColumnData("lang","languageId", "ID", 40));
+		langCdata.add(new MyColumnData("lang","name", "Nombre", 150));
 		languageComboColumn.setQueryData(refLanuage, langCdata);
 		configs.add(languageComboColumn);
-
-		configs.add(new NormalColumn(cdata.get(5), Validate.EMAIL));
-
+		
+		configs.add(new NormalColumn(cdata.get(5),NumberType.TEXT,Validate.EMAIL));
+		
 		ComboColumn personComboColumn = new ComboColumn(cdata.get(6));
-		Reference refPerson = new Reference("per", "Person");
+		Reference refPerson = new Reference("per","Person");
 		ArrayColumnData perCdata = new ArrayColumnData();
-		perCdata.add(new MyColumnData("per", "pk_personId", "Codigo", 40));
-		perCdata.add(new MyColumnData("per", "identificationNumber", "ID", 40));
-		perCdata.add(new MyColumnData("per", "name", "Nombre", 120));
-		perCdata.add(new MyColumnData("per", "lastName", "Apellido", 130));
+		perCdata.add(new MyColumnData("per","pk_personId", "Codigo", 40));
+		perCdata.add(new MyColumnData("per","identificationNumber", "ID", 40));
+		perCdata.add(new MyColumnData("per","name", "Nombre", 120));
+		perCdata.add(new MyColumnData("per","lastName", "Apellido", 130));
 		personComboColumn.setQueryData(refPerson, perCdata);
+		personComboColumn.getComboBox().setPageSize(10);
 		configs.add(personComboColumn);
-
+		
 		configs.add(new ExpireColumnConfig());
-
+		
 		ColumnModel cm = new ColumnModel(configs);
-
+		
 		// Filters
 		GridFilters filters = new GridFilters();
 		StringFilter parameterIdFilter = new StringFilter(cdata.getIdFields().get(0));
 		StringFilter subsystemFilter = new StringFilter(cdata.getIdFields().get(1));
 		filters.addFilter(parameterIdFilter);
 		filters.addFilter(subsystemFilter);
-
+		
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Usuarios", 650, 300);
+		EntityContentPanel cp = new EntityContentPanel("Usuarios",650,300);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
@@ -129,5 +131,6 @@ public class A203 extends MyGeneralForm {
 
 		add(cp);
 	}
-
+	
+	
 }

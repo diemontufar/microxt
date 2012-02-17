@@ -6,6 +6,7 @@ import java.util.List;
 import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.form.EntityContentPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
+import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.ComboColumn;
 import mobile.web.webxt.client.form.widgetsgrid.EntityEditorGrid;
@@ -55,8 +56,8 @@ public class C104 extends MyGeneralForm {
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		configs.add(new NormalColumn(cdata.get(0)));
-		configs.add(new NormalColumn(cdata.get(1)));
+		configs.add(new NormalColumn(cdata.get(0),NumberType.TEXT,Validate.TEXT));
+		configs.add(new NormalColumn(cdata.get(1),NumberType.TEXT,Validate.TEXT));
 
 		// Currency combo
 		ComboColumn currencyComboCol = new ComboColumn(cdata.get(2));
@@ -67,11 +68,11 @@ public class C104 extends MyGeneralForm {
 		currencyComboCol.setQueryData(refCurrency, cdataCombo);
 		configs.add(currencyComboCol);
 
-		configs.add(new NumericColumn(cdata.get(3), NumberType.DECIMAL));
-		configs.add(new NumericColumn(cdata.get(4), NumberType.DECIMAL));
-		configs.add(new NumericColumn(cdata.get(5)));
-		configs.add(new NumericColumn(cdata.get(6)));
-		configs.add(new NumericColumn(cdata.get(7), NumberType.DECIMAL));
+		configs.add(new NumericColumn(cdata.get(3),NumberType.DECIMAL));
+		configs.add(new NumericColumn(cdata.get(4),NumberType.DECIMAL));
+		configs.add(new NumericColumn(cdata.get(5),NumberType.INTEGER));
+		configs.add(new NumericColumn(cdata.get(6),NumberType.INTEGER));
+		configs.add(new NumericColumn(cdata.get(7),NumberType.DECIMAL));
 		configs.add(new ExpireColumnConfig());
 
 		ColumnModel cm = new ColumnModel(configs);
