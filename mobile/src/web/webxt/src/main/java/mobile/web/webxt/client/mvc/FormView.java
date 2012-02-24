@@ -36,6 +36,7 @@ import mobile.web.webxt.client.devform.C201;
 import mobile.web.webxt.client.devform.C202;
 import mobile.web.webxt.client.devform.C301;
 import mobile.web.webxt.client.devform.C302;
+import mobile.web.webxt.client.devform.C401;
 import mobile.web.webxt.client.devform.G101;
 import mobile.web.webxt.client.devform.G301;
 import mobile.web.webxt.client.devform.G302;
@@ -51,8 +52,6 @@ import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.mvc.View;
 import com.extjs.gxt.ui.client.widget.TabItem;
-import com.extjs.gxt.ui.client.widget.layout.FillLayout;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 public class FormView extends View {
 	private final FormPanel formPanel = new FormPanel();
@@ -157,6 +156,8 @@ public class FormView extends View {
 			tabItem.add(new C301());
 		} else if (processId.compareTo("C302") == 0) {
 			tabItem.add(new C302());
+		} else if (processId.compareTo("C401") == 0) {
+			tabItem.add(new C401());
 		} else if (processId.compareTo("G101") == 0) {
 			tabItem.add(new G101());
 		} else if (processId.compareTo("G301") == 0) {
