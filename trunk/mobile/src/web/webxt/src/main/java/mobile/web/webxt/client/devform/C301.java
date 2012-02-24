@@ -26,12 +26,15 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.Info;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.extjs.gxt.ui.client.widget.TabPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
+import com.extjs.gxt.ui.client.widget.layout.CardLayout;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.layout.HBoxLayoutData;
 import com.google.gwt.i18n.client.NumberFormat;
@@ -132,36 +135,79 @@ public class C301 extends MyGeneralForm {
 		Radio radio2 = new Radio();
 		radio2.setBoxLabel("Grupal");
 
-		RadioGroup radioGroup = new RadioGroup();
+		final RadioGroup radioGroup = new RadioGroup();
 		radioGroup.add(radio);
 		radioGroup.add(radio2);
 
 		row.add(radioGroup);
 		fieldSet.add(row);
 
-		// Debtor
-		row = new RowContainer();
-		row.setAutoHeight(true);
+		// Individual debtor
+		final CardLayout layout = new CardLayout();
+		final LayoutContainer debtorContainer = new LayoutContainer(layout);
+		final RowContainer row1 = new RowContainer();
+		row1.setAutoHeight(true);
 
 		label = new MyLabel("Deudor:", LABEL_WIDTH);
-		row.add(label);
+		row1.add(label);
 
-		final ComboForm clientId = new ComboForm(80);
-		clientId.setDataSource(new DataSource("sol", "partnerClientId", DataSourceType.RECORD));
+		final ComboForm individualId = new ComboForm(80);
+		individualId.setDataSource(new DataSource("sol", "partnerClientId", DataSourceType.RECORD));
 
 		Reference refPartner1 = new Reference("cli1", "Partner");
 		final ArrayColumnData combodata = new ArrayColumnData();
 		combodata.add(new MyColumnData("cli1", "pk_partnerId", "Id", 70));
 		combodata.add(new MyColumnData("cli1", "personId", "Nombre", 150));
-		clientId.setQueryData(refPartner1, combodata);
-		clientId.setDisplayField("pk_partnerId");
-		row.add(clientId);
+		individualId.setQueryData(refPartner1, combodata);
+		individualId.setDisplayField("pk_partnerId");
+		row1.add(individualId);
 
 		InputBox clientDescription = new InputBox(280);
 		clientDescription.setReadOnly(true);
-		row.add(clientDescription);
+		row1.add(clientDescription);
 
-		fieldSet.add(row);
+		debtorContainer.add(row1);
+
+		// Group debtor
+		final RowContainer row2 = new RowContainer();
+		row2.setAutoHeight(true);
+
+		label = new MyLabel("Deudor:", LABEL_WIDTH);
+		row2.add(label);
+
+		final ComboForm groupId = new ComboForm(80);
+		groupId.setDataSource(new DataSource("sol", "groupClientId", DataSourceType.RECORD));
+
+		Reference refGroup1 = new Reference("gru1", "PartnerGroup");
+		final ArrayColumnData combodata2 = new ArrayColumnData();
+		combodata2.add(new MyColumnData("gru1", "pk_partnerGroupId", "Id", 70));
+		combodata2.add(new MyColumnData("gru1", "groupDescription", "Descripción", 150));
+		groupId.setQueryData(refGroup1, combodata2);
+		groupId.setDisplayField("pk_partnerGroupId");
+		row2.add(groupId);
+
+		InputBox clientDescription2 = new InputBox(280);
+		clientDescription2.setReadOnly(true);
+		row2.add(clientDescription2);
+
+		individualId.linkWithField(clientDescription, "personId");
+		groupId.linkWithField(clientDescription2, "groupDescription");
+
+		debtorContainer.add(row2);
+
+		// Events radio buttons
+		radioGroup.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent fe) {
+				RadioGroup rg = (RadioGroup) fe.getField();
+				if (rg.getValue().getBoxLabel().compareTo("Individual") == 0) {
+					layout.setActiveItem(row1);
+				} else {
+					layout.setActiveItem(row2);
+				}
+			};
+		});
+
+		fieldSet.add(debtorContainer);
 
 		basic.add(fieldSet);
 
@@ -461,13 +507,20 @@ public class C301 extends MyGeneralForm {
 		form.addButton(new Button("Guardar", new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
+				if (radioGroup.getValue().getBoxLabel().compareTo("Individual") == 0 && individualId.getValue() == null) {
+					Info.display("Requerido", "Ingresar un cliente individual");
+					return;
+				} else if (radioGroup.getValue().getBoxLabel().compareTo("Grupal") == 0 && groupId.getValue() == null) {
+					Info.display("Requerido", "Ingresar un cliente grupal");
+					return;
+				}
+
+				if (radioGroup.getValue().getBoxLabel().compareTo("Individual") == 0) {
+					groupId.setValue(null);
+				} else {
+					individualId.setValue(null);
+				}
 				form.commitForm();
-			}
-		}));
-		form.addButton(new Button("Limpiar", new SelectionListener<ButtonEvent>() {
-			@Override
-			public void componentSelected(ButtonEvent ce) {
-				form.clear();
 			}
 		}));
 
