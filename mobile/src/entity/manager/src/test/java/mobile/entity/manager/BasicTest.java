@@ -1,13 +1,5 @@
 package mobile.entity.manager;
 
-import java.util.List;
-
-import javax.persistence.TypedQuery;
-
-import mobile.entity.microcredit.GeographicZone;
-
-import org.eclipse.persistence.config.HintValues;
-import org.eclipse.persistence.config.QueryHints;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -36,14 +28,14 @@ public class BasicTest {
 			JPManagerFactory.createEntityManagerFactory("central");
 			JPManager.createEntityManager();
 
-			TypedQuery<GeographicZone> query = JPManager.getEntityManager()
-					.createQuery("Select p from GeographicZone p",
-							GeographicZone.class);
-			query.setHint(QueryHints.READ_ONLY, HintValues.TRUE);
-			List<GeographicZone> list = query.getResultList();
-			for (GeographicZone ent : list) {
-				System.out.println(ent);
-			}
+//			TypedQuery<GeographicZone> query = JPManager.getEntityManager()
+//					.createQuery("Select p from GeographicZone p",
+//							GeographicZone.class);
+//			query.setHint(QueryHints.READ_ONLY, HintValues.TRUE);
+//			List<GeographicZone> list = query.getResultList();
+//			for (GeographicZone ent : list) {
+//				System.out.println(ent);
+//			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
