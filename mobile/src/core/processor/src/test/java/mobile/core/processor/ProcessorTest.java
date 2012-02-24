@@ -6,11 +6,9 @@ import javax.persistence.Query;
 
 import mobile.entity.manager.JPManager;
 import mobile.entity.manager.JPManagerFactory;
-import mobile.entity.microcredit.Recommendation;
 import mobile.tools.common.Log;
 import mobile.tools.common.param.LocalParameter;
 import mobile.tools.common.param.ParameterEnum;
-import mobile.tools.common.param.Timer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.persistence.config.HintValues;
