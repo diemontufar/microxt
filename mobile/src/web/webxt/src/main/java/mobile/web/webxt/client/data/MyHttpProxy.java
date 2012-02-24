@@ -1,5 +1,6 @@
 package mobile.web.webxt.client.data;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +10,14 @@ import mobile.common.message.Field;
 import mobile.common.message.Item;
 import mobile.common.message.Message;
 import mobile.common.message.ResponseData;
+import mobile.common.tools.Format;
 import mobile.common.tools.ProcessType;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.ConvertionManager;
+import mobile.web.webxt.client.util.DatesManager;
 import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.data.DataProxy;
@@ -54,7 +57,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
 		builder.setHeader("Content-Type", CONTENT_TYPE);
 		builder.setHeader("Accept", ACCEPT);
-		builder.setTimeoutMillis(10000);
+		builder.setTimeoutMillis(20000);
 		reader = new MyReader();
 	}
 
@@ -177,7 +180,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 			System.out.println("Conversion en json");
 			String data = convertMessage(msg);
-			
+
 			builder.sendRequest(data, new RequestCallback() {
 				public void onError(Request request, Throwable e) {
 					callback.onFailure(e);
@@ -359,7 +362,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					Field field = new Field(ds.getField());
 					if (modelData.get(ds.getField()) != null
 							&& modelData.get(ds.getField()).toString().trim().length() > 0) {
-						field.setValue(modelData.get(ds.getField()).toString());
+						String value = evalValue(modelData.get(ds.getField()));
+						field.setValue(value);
 					}
 					item.addField(field);
 				}
@@ -398,6 +402,21 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		} catch (Exception e) {
 			callback.onFailure(e);
 		}
+	}
+
+	private String evalValue(Object object) {
+		String value = null;
+
+		if (object == null) {
+			value = null;
+		} else {
+			if (object instanceof Date) {
+				value = DatesManager.dateToString((Date) object, Format.DATE);
+			} else {
+				value = object.toString();
+			}
+		}
+		return value;
 	}
 
 	private String validateNull(String in) {
@@ -521,10 +540,10 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		return msg;
 	}
 
-	private String convertMessage(Message msg){
+	private String convertMessage(Message msg) {
 		return URL.encode(msg.toJSON());
 	}
-	
+
 	protected String generateUrl(Object loadConfig) {
 		StringBuffer sb = new StringBuffer();
 		if (loadConfig instanceof ModelData) {
