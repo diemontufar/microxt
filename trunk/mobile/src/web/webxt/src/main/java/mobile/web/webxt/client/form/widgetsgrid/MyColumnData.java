@@ -1,35 +1,36 @@
 package mobile.web.webxt.client.form.widgetsgrid;
 
-
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 
-
-public class MyColumnData extends ColumnData{
+public class MyColumnData extends ColumnData {
 
 	private int width;
-	
+
 	private int maxLength;
-	
+
 	private boolean allowBlank;
-	
+
 	private String associatedField;
-	
+
+	private boolean readOnly = false;
+
 	private boolean visible = true;
-	
+
 	private DataSource dataSource;
-	
+
 	/**
-	 * Creates a data source RECORD with the alias in <code>null</code> and the provided field
+	 * Creates a data source RECORD with the alias in <code>null</code> and the
+	 * provided field
 	 */
 	public MyColumnData(String field) {
 		setId(field);
 		setDataSource(new DataSource(field));
 		setVisible(false);
 	}
-	
+
 	/**
 	 * Creates a data source RECORD with the provided alias and field<br/>
 	 * without visibility
@@ -41,7 +42,29 @@ public class MyColumnData extends ColumnData{
 	}
 
 	/**
-	 * Creates a data source with the provided alias, field and type<br/>
+	 * Creates a data source with the provided field
+	 */
+	public MyColumnData(String field, String title, int width) {
+		setId(field);
+		setDataSource(new DataSource(null, field, DataSourceType.RECORD));
+		setName(title);
+		setWidth(width);
+	}
+	
+	/**
+	 * Creates a data source with the provided field 
+	 * For read only columns
+	 */
+	public MyColumnData(String field, String title, int width, boolean readOnly) {
+		setId(field);
+		setDataSource(new DataSource(null, field, DataSourceType.RECORD));
+		setName(title);
+		setWidth(width);
+		setReadOnly(readOnly);
+	}
+
+	/**
+	 * Creates a data source with the provided alias, field
 	 */
 	public MyColumnData(String alias, String field, String title, int width) {
 		setId(field);
@@ -71,14 +94,14 @@ public class MyColumnData extends ColumnData{
 		setAllowBlank(allowBlank);
 		setDataSource(new DataSource(null, field, DataSourceType.RECORD));
 	}
-	
-	/** 
-	 * If type is DESCRIPTION applies a different model data property structure 
+
+	/**
+	 * If type is DESCRIPTION applies a different model data property structure
 	 */
 	public MyColumnData(DataSource ds, String title, int width, boolean allowBlank) {
-		if(ds.getType() != DataSourceType.DESCRIPTION ){
+		if (ds.getType() != DataSourceType.DESCRIPTION) {
 			setId(ds.getField());
-		}else{
+		} else {
 			setId(ds.getAlias() + "_" + ds.getField());
 		}
 		setDataSource(ds);
@@ -141,6 +164,14 @@ public class MyColumnData extends ColumnData{
 
 	public void setVisible(boolean visible) {
 		this.visible = visible;
+	}
+
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
 	}
 
 	public DataSource getDataSource() {

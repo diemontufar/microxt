@@ -24,10 +24,13 @@ public class NormalColumn extends ColumnConfig {
 		setHeader(columnData.getName());
 		setWidth(columnData.getWidth());
 
-		inputbox = new InputBox(columnData.getWidth(), columnData.getMaxLength(), Validate.TEXT);
-		inputbox.setValidateOnBlur(true);
-		setEditor(new CellEditor(inputbox));
-
+		// Read-only
+		if(!columnData.isReadOnly()){
+			inputbox = new InputBox(columnData.getWidth(), columnData.getMaxLength(), Validate.TEXT);
+			inputbox.setValidateOnBlur(true);
+			setEditor(new CellEditor(inputbox));
+		}
+		
 		// Visible
 		if (!columnData.isVisible()) {
 			setHidden(true);
