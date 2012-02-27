@@ -13,34 +13,36 @@ import mobile.entity.schema.GeneralEntityId;
 public class ZoneAsessorId extends AbstractEntityId implements GeneralEntityId {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private ZoneAsessorIdPk pk;
+	/**
+	 * User Id
+	 */
+	@Id
+	@Column(name = "USER_ID", nullable = false)
+	private String userId;
 
 	public ZoneAsessorId() {
 	}
 
-	public ZoneAsessorId(ZoneAsessorIdPk pk) {
-		this.pk = pk;
+	public ZoneAsessorId(String userId) {
+		this.userId = userId;
 	}
 
-	public ZoneAsessorIdPk getPk() {
-		return this.pk;
+	public String getUserId() {
+		return this.userId;
 	}
 
-	public void setPk(ZoneAsessorIdPk pk) {
-		this.pk = pk;
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	@Override
+	public Object getPk() {
+		return this.userId;
 	}
 
 	@Override
 	public void setPk(Object pk) {
-		this.pk = (ZoneAsessorIdPk) pk;
-	}
-
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		ZoneAsessorId copy = (ZoneAsessorId) super.clone();
-		copy.setPk((ZoneAsessorIdPk) this.pk.clone());
-		return copy;
+		this.userId = (String) pk;
 	}
 
 	@Override

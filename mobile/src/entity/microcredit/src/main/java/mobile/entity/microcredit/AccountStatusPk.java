@@ -7,10 +7,10 @@ import mobile.entity.schema.MulticompanyKey;
 import mobile.entity.schema.MultilanguageKey;
 
 /**
- * The primary key class for the SOLICITUDE_STATUS database table.
+ * The primary key class for the ACCOUNT_STATUS database table.
  */
 @Embeddable
-public class SolicitudeStatusPk extends AbstractCompanyLanguageKey implements MulticompanyKey, MultilanguageKey {
+public class AccountStatusPk extends AbstractCompanyLanguageKey implements MulticompanyKey, MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -19,10 +19,10 @@ public class SolicitudeStatusPk extends AbstractCompanyLanguageKey implements Mu
 	@Column(name = "STATUS_ID", nullable = false)
 	private String statusId;
 
-	public SolicitudeStatusPk() {
+	public AccountStatusPk() {
 	}
 
-	public SolicitudeStatusPk(String statusId) {
+	public AccountStatusPk(String statusId) {
 		this.statusId = statusId;
 	}
 

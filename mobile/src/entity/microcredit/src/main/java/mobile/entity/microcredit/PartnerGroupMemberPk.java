@@ -2,42 +2,54 @@ package mobile.entity.microcredit;
 
 import javax.persistence.*;
 
-import mobile.entity.schema.AbstractCompanyHistoricalKey;
-import mobile.entity.schema.MulticompanyKey;
-import mobile.entity.schema.HistoricalKey;
+import mobile.entity.schema.AbstractEntityKey;
+import mobile.entity.schema.GeneralEntityKey;
 
 /**
  * The primary key class for the PARTNER_GROUP_MEMBER database table.
  */
 @Embeddable
-public class PartnerGroupMemberPk extends AbstractCompanyHistoricalKey
-		implements MulticompanyKey, HistoricalKey {
+public class PartnerGroupMemberPk extends AbstractEntityKey implements GeneralEntityKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Group member id
+	 * Partner group id
 	 */
-	@Column(name = "PARTNER_GROUP_MEMBER_ID", nullable = false)
-	private String partnerGroupMemberId;
+	@Column(name = "PARTNER_GROUP_ID", nullable = false)
+	private Integer partnerGroupId;
+
+	/**
+	 * Person id
+	 */
+	@Column(name = "PERSON_ID", nullable = false)
+	private Integer personId;
 
 	public PartnerGroupMemberPk() {
 	}
 
-	public PartnerGroupMemberPk(String partnerGroupMemberId) {
-		this.partnerGroupMemberId = partnerGroupMemberId;
+	public PartnerGroupMemberPk(Integer partnerGroupId, Integer personId) {
+		this.partnerGroupId = partnerGroupId;
+		this.personId = personId;
 	}
 
-	public String getPartnerGroupMemberId() {
-		return this.partnerGroupMemberId;
+	public Integer getPartnerGroupId() {
+		return this.partnerGroupId;
 	}
 
-	public void setPartnerGroupMemberId(String partnerGroupMemberId) {
-		this.partnerGroupMemberId = partnerGroupMemberId;
+	public void setPartnerGroupId(Integer partnerGroupId) {
+		this.partnerGroupId = partnerGroupId;
+	}
+
+	public Integer getPersonId() {
+		return this.personId;
+	}
+
+	public void setPersonId(Integer personId) {
+		this.personId = personId;
 	}
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getExpired() + ", "
-				+ this.getPartnerGroupMemberId() + "]";
+		return "[" + this.getPartnerGroupId() + ", " + this.getPersonId() + "]";
 	}
 }

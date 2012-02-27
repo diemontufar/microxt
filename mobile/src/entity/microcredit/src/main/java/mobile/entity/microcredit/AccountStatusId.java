@@ -6,11 +6,11 @@ import mobile.entity.schema.AbstractEntityId;
 import mobile.entity.schema.GeneralEntityId;
 
 /**
- * The persistent class for the SOLICITUDE_STATUS_ID database table.
+ * The persistent class for the ACCOUNT_STATUS_ID database table.
  */
 @Entity
-@Table(name = "SOLICITUDE_STATUS_ID")
-public class SolicitudeStatusId extends AbstractEntityId implements GeneralEntityId {
+@Table(name = "ACCOUNT_STATUS_ID")
+public class AccountStatusId extends AbstractEntityId implements GeneralEntityId {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -20,10 +20,10 @@ public class SolicitudeStatusId extends AbstractEntityId implements GeneralEntit
 	@Column(name = "STATUS_ID", nullable = false)
 	private String statusId;
 
-	public SolicitudeStatusId() {
+	public AccountStatusId() {
 	}
 
-	public SolicitudeStatusId(String statusId) {
+	public AccountStatusId(String statusId) {
 		this.statusId = statusId;
 	}
 
@@ -47,6 +47,6 @@ public class SolicitudeStatusId extends AbstractEntityId implements GeneralEntit
 
 	@Override
 	public String toString() {
-		return "SOLICITUDE_STATUS_ID:[" + this.getPk().toString() + "]";
+		return "ACCOUNT_STATUS_ID:[" + this.getPk().toString() + "]";
 	}
 }

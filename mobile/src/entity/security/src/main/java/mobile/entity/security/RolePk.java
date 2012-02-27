@@ -40,7 +40,7 @@ public class RolePk extends AbstractCompanyHistoricalKey implements Multicompany
 	/**
 	 * Day Id
 	 */
-	@Column(name = "DAY_ID", nullable = false)
+	@Column(name = "DAY_ID", nullable = true)
 	private String dayId;
 
 	public RolePk() {

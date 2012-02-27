@@ -30,9 +30,9 @@ public class ProcessComponent extends AbstractEntity implements Multicompany {
 	private Boolean enable;
 
 	/**
-	 * Enable
+	 * Authorize
 	 */
-	@Column(name = "AUTHORIZE", nullable = false)
+	@Column(name = "AUTHORIZE", nullable = true)
 	private Boolean authorize;
 
 	public ProcessComponent() {
@@ -42,11 +42,10 @@ public class ProcessComponent extends AbstractEntity implements Multicompany {
 		this.pk = pk;
 	}
 
-	public ProcessComponent(ProcessComponentPk pk, String componentId, Boolean enable, Boolean authorize) {
+	public ProcessComponent(ProcessComponentPk pk, String componentId, Boolean enable) {
 		this.pk = pk;
 		this.componentId = componentId;
 		this.enable = enable;
-		this.authorize = authorize;
 	}
 
 	public ProcessComponentPk getPk() {

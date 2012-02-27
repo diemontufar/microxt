@@ -10,8 +10,7 @@ import mobile.entity.schema.GeneralEntityId;
  */
 @Entity
 @Table(name = "GEOGRAPHIC_ZONE_ID")
-public class GeographicZoneId extends AbstractEntityId implements
-		GeneralEntityId {
+public class GeographicZoneId extends AbstractEntityId implements GeneralEntityId {
 	private static final long serialVersionUID = 1L;
 
 	/**
