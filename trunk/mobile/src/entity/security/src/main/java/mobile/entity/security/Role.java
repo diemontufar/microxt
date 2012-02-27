@@ -18,6 +18,12 @@ public class Role extends AbstractHistorical implements Multicompany, Historical
 	private RolePk pk;
 
 	/**
+	 * Day
+	 */
+	@Column(name = "DAY_ID", nullable = true)
+	private String dayId;
+
+	/**
 	 * Hour From
 	 */
 	@Column(name = "HOUR_FROM", nullable = true)
@@ -53,6 +59,14 @@ public class Role extends AbstractHistorical implements Multicompany, Historical
 
 	public void setPk(RolePk pk) {
 		this.pk = pk;
+	}
+
+	public String getDayId() {
+		return this.dayId;
+	}
+
+	public void setDayId(String dayId) {
+		this.dayId = dayId;
 	}
 
 	public String getHourFrom() {
@@ -93,7 +107,7 @@ public class Role extends AbstractHistorical implements Multicompany, Historical
 
 	@Override
 	public String toString() {
-		return "ROLE:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getHourFrom() + ", "
-				+ this.getHourTo() + ", " + this.getEditable() + "]";
+		return "ROLE:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getDayId() + ", "
+				+ this.getHourFrom() + ", " + this.getHourTo() + ", " + this.getEditable() + "]";
 	}
 }
