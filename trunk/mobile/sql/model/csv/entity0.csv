@@ -38,7 +38,6 @@ ALL,ROLE,0,security,1,0,1,0,0,0,Values of roles
 ALL,SUBSYSTEM,1,security,1,1,0,0,1,0,Values of subsystems
 ALL,USER_ACCESS,0,security,1,0,1,0,0,0,Values of user access
 ALL,USER_ACCOUNT,1,security,1,0,1,1,0,0,Values of user accounts
-ALL,USER_AUTHORIZATION,0,security,1,0,1,0,0,0,Values of user authorizations
 ALL,USER_NOTIFICATION,0,security,1,0,1,0,0,0,Values of user notification
 ALL,USER_NOTIFICATION_TYPE,1,security,0,1,0,0,1,0,Values of user notification types
 ALL,USER_PROFILE,0,security,1,0,1,0,0,0,Values of user profiles

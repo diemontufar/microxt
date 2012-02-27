@@ -6,6 +6,9 @@ FK(I),COMPANY_ID,TABLE_ID,FIELD_ID,FIELD_ORDER,DATA_TYPE_ID,DATA_SIZE,DATA_SCALE
 ,ALL,SOLICITUDE_STATUS,STATUS_ID,1,String,3,0,1,0,0,(null),(null),(null),(null),Status
 ,ALL,SOLICITUDE_STATUS,DESCRIPTION,2,String,50,0,0,0,0,(null),(null),(null),(null),Description
 
+,ALL,ACCOUNT_STATUS,STATUS_ID,1,String,3,0,1,0,0,(null),(null),(null),(null),Status
+,ALL,ACCOUNT_STATUS,DESCRIPTION,2,String,50,0,0,0,0,(null),(null),(null),(null),Description
+
 ,ALL,QUOTA_TYPE,QUOTA_TYPE_ID,1,String,3,0,1,0,0,(null),(null),(null),(null),Fee type
 ,ALL,QUOTA_TYPE,DESCRIPTION,2,String,50,0,0,0,0,(null),(null),(null),(null),Description
 
@@ -24,7 +27,7 @@ FK(I),COMPANY_ID,TABLE_ID,FIELD_ID,FIELD_ORDER,DATA_TYPE_ID,DATA_SIZE,DATA_SCALE
 ,ALL,PRODUCT_MICROCREDIT,MAX_PERIOD,7,Long,0,0,0,0,0,(null),(null),(null),(null),Maximun period
 ,ALL,PRODUCT_MICROCREDIT,RATE,8,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Rate
 
-,ALL,GEOGRAPHIC_ZONE,GEOGRAPHIC_ZONE_ID,1,String,6,0,1,0,0,(null),(null),(null),(null),Geographic zone id
+,ALL,GEOGRAPHIC_ZONE,GEOGRAPHIC_ZONE_ID,1,Integer,0,0,1,0,0,(null),GEOZONE,(null),(null),Geographic zone id
 ,ALL,GEOGRAPHIC_ZONE,DESCRIPTION,2,String,100,0,0,0,1,(null),(null),(null),(null),Description of the zone
 1,ALL,GEOGRAPHIC_ZONE,COORDINATE_TYPE,3,String,20,0,0,0,0,(null),(null),(null),(null),"Type of coordinate: Point, Route, Polygon"
 ,ALL,GEOGRAPHIC_ZONE,P11,4,String,50,0,0,0,0,(null),(null),(null),(null),"Point of coordinate 1,1"
@@ -37,21 +40,21 @@ FK(I),COMPANY_ID,TABLE_ID,FIELD_ID,FIELD_ORDER,DATA_TYPE_ID,DATA_SIZE,DATA_SCALE
 ,ALL,GEOGRAPHIC_ZONE,P42,11,String,50,0,0,0,1,(null),(null),(null),(null),"Point of coordinate 4,2"
 
 1,ALL,ZONE_ASESSOR,USER_ID,1,String,20,0,1,0,0,(null),(null),(null),(null),User Id
-1,ALL,ZONE_ASESSOR,GEOGRAPHIC_ZONE_ID,2,String,6,0,1,0,0,(null),(null),(null),(null),Geographic zone id
+1,ALL,ZONE_ASESSOR,GEOGRAPHIC_ZONE_ID,2,Integer,0,0,1,0,0,(null),(null),(null),(null),Geographic zone id
 ,ALL,ZONE_ASESSOR,OBSERVATIONS,3,String,50,0,0,0,1,(null),(null),(null),(null),Observations
 
 1,ALL,PRODUCT_ASESSOR,USER_ID,1,String,20,0,1,0,0,(null),(null),(null),(null),Assessor
 1,ALL,PRODUCT_ASESSOR,PRODUCT_ID,2,String,3,0,1,0,0,(null),(null),(null),(null),Product id
 ,ALL,PRODUCT_ASESSOR,OBSERVATIONS,3,String,50,0,0,0,1,(null),(null),(null),(null),Observations
 
-,ALL,PARTNER,PARTNER_ID,1,String,10,0,1,0,0,(null),(null),(null),(null),Person id
+,ALL,PARTNER,PARTNER_ID,1,Integer,0,0,1,0,0,(null),PARTNER,(null),(null),Person id
 1,ALL,PARTNER,PERSON_ID,2,Long,10,0,0,0,0,(null),(null),(null),(null),Person id
 ,ALL,PARTNER,ACTIVITY,3,String,300,0,0,0,1,(null),(null),(null),(null),Activity
-1,ALL,PARTNER,USER_ID,4,String,20,0,1,0,0,(null),(null),(null),(null),User Id
+1,ALL,PARTNER,USER_ID,4,String,20,0,0,0,0,(null),(null),(null),(null),User Id
 1,ALL,PARTNER,FREQUENCY_ID,5,String,3,0,0,0,1,(null),(null),(null),(null),Meeting Frequency id
 ,ALL,PARTNER,MEETING_DAY,6,Integer,0,0,0,0,1,(null),(null),(null),(null),Meeting day
 
-,ALL,PARTNER_GROUP,PARTNER_GROUP_ID,1,String,15,0,1,0,0,(null),(null),(null),(null),Partner group id
+,ALL,PARTNER_GROUP,PARTNER_GROUP_ID,1,Integer,0,0,1,0,0,(null),PARTNERGRP,(null),(null),Partner group id
 ,ALL,PARTNER_GROUP,GROUP_DESCRIPTION,2,String,100,0,0,0,0,(null),(null),(null),(null),Group description
 ,ALL,PARTNER_GROUP,CREATION_DATE,3,Date,0,0,0,0,0,(null),(null),(null),(null),Creation date
 ,ALL,PARTNER_GROUP,ACTIVITY,4,String,300,0,0,0,1,(null),(null),(null),(null),Activity
@@ -59,40 +62,68 @@ FK(I),COMPANY_ID,TABLE_ID,FIELD_ID,FIELD_ORDER,DATA_TYPE_ID,DATA_SIZE,DATA_SCALE
 1,ALL,PARTNER_GROUP,FREQUENCY_ID,6,String,3,0,0,0,0,(null),(null),(null),(null),Meeting Frequency id
 ,ALL,PARTNER_GROUP,MEETING_DAY,7,Integer,0,0,0,0,1,(null),(null),(null),(null),Meeting day
 
-,ALL,PARTNER_GROUP_MEMBER,PARTNER_GROUP_MEMBER_ID,1,String,15,0,1,0,0,(null),(null),(null),(null),Group member id
-1,ALL,PARTNER_GROUP_MEMBER,PARTNER_GROUP_ID,2,String,15,0,0,0,0,(null),(null),(null),(null),Partner group id
-1,ALL,PARTNER_GROUP_MEMBER,PERSON_ID,3,Long,10,0,0,0,0,(null),(null),(null),(null),Person id
+1,ALL,PARTNER_GROUP_MEMBER,PARTNER_GROUP_ID,2,Integer,0,0,1,0,0,(null),(null),(null),(null),Partner group id
+1,ALL,PARTNER_GROUP_MEMBER,PERSON_ID,3,Integer,0,0,1,0,0,(null),(null),(null),(null),Person id
 1,ALL,PARTNER_GROUP_MEMBER,RESPONSABILITY_ID,4,String,3,0,0,0,0,(null),(null),(null),(null),Responsability id
-,ALL,PARTNER_GROUP_MEMBER,OBSERVATIONS,5,String,200,0,0,0,1,(null),(null),(null),(null),Activity
+,ALL,PARTNER_GROUP_MEMBER,OBSERVATIONS,5,String,200,0,0,0,1,(null),(null),(null),(null),Observations
 
 ,ALL,RESPONSABILITY,RESPONSABILITY_ID,1,String,3,0,1,0,0,(null),(null),(null),(null),Responsability id
 ,ALL,RESPONSABILITY,NAME,2,String,40,0,0,0,0,(null),(null),(null),(null),Name
 ,ALL,RESPONSABILITY,DESCRIPTION,3,String,60,0,0,0,1,(null),(null),(null),(null),Description
 
-,ALL,SOLICITUDE,SOLICITUDE_ID,1,String,25,0,1,0,0,(null),(null),(null),(null),Name
+,ALL,SOLICITUDE,SOLICITUDE_ID,1,Integer,0,0,1,0,0,(null),SOLICITUDE,(null),(null),Name
 ,ALL,SOLICITUDE,ACCOUNT,2,String,25,0,0,0,1,(null),(null),(null),(null),Generated account 
 1,ALL,SOLICITUDE,ASSESSOR,3,String,20,0,0,0,0,(null),(null),(null),(null),Assessor
-1,ALL,SOLICITUDE,PARTNER_CLIENT_ID,4,String,10,0,0,0,1,(null),(null),(null),(null),Client
-1,ALL,SOLICITUDE,GROUP_CLIENT_ID,5,String,10,0,0,0,1,(null),(null),(null),(null),Group
+1,ALL,SOLICITUDE,PARTNER_CLIENT_ID,4,Integer,0,0,0,0,1,(null),(null),(null),(null),Client
+1,ALL,SOLICITUDE,GROUP_CLIENT_ID,5,Integer,0,0,0,0,1,(null),(null),(null),(null),Group
 ,ALL,SOLICITUDE,SOLICITUDE_DATE,6,Date,0,0,0,0,0,(null),(null),(null),(null),Solicitud date
 ,ALL,SOLICITUDE,APPROVAL_DATE,7,Date,0,0,0,0,1,(null),(null),(null),(null),Approval date
 ,ALL,SOLICITUDE,DISBURSEMENT_DATE,8,Date,0,0,0,0,1,(null),(null),(null),(null),Disbursement date
-,ALL,SOLICITUDE,EXPIRATION_DATE,9,Date,0,0,0,0,0,(null),(null),(null),(null),Expiration date
-1,ALL,SOLICITUDE,PRODUCT_ID,10,String,3,0,0,0,0,(null),(null),(null),(null),Product id
-1,ALL,SOLICITUDE,STATUS_ID,11,String,3,0,0,0,0,(null),(null),(null),(null),Solicitude status id
-,ALL,SOLICITUDE,NUMBER_RENEWAL,12,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of renewal
-,ALL,SOLICITUDE,AMOUNT,13,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Amount
-,ALL,SOLICITUDE,TERM,14,Long,0,0,0,0,0,(null),(null),(null),(null),Term
-1,ALL,SOLICITUDE,QUOTA_TYPE_ID,15,String,3,0,0,0,0,(null),(null),(null),(null),Quota type id
-,ALL,SOLICITUDE,NUMBER_QUOTAS,16,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of fees
-1,ALL,SOLICITUDE,PAYMENT_FREQUENCY_ID,17,String,3,0,0,0,0,(null),(null),(null),(null),Frequency of payment
-1,ALL,SOLICITUDE,FUNDS_DESTINATION_ID,18,String,3,0,0,0,0,(null),(null),(null),(null),Destination of funds
-,ALL,SOLICITUDE,DESTINATION_DESCRIPTION,19,String,3,0,0,0,0,(null),(null),(null),(null),Description of destination
+,ALL,SOLICITUDE,INSTRUMENTATION_DATE,9,Date,0,0,0,0,1,(null),(null),(null),(null),Instrumentation date
+,ALL,SOLICITUDE,EXPIRATION_DATE,10,Date,0,0,0,0,1,(null),(null),(null),(null),Expiration date
+,ALL,SOLICITUDE,INITIAL_PAY_DATE,11,Date,0,0,0,0,1,(null),(null),(null),(null),Date for the first pay
+1,ALL,SOLICITUDE,PRODUCT_ID,12,String,3,0,0,0,0,(null),(null),(null),(null),Product id
+1,ALL,SOLICITUDE,STATUS_ID,13,String,3,0,0,0,0,(null),(null),(null),(null),Solicitude status id
+,ALL,SOLICITUDE,NUMBER_RENEWAL,14,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of renewal
+,ALL,SOLICITUDE,AMOUNT,15,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Amount
+,ALL,SOLICITUDE,TERM,16,Long,0,0,0,0,0,(null),(null),(null),(null),Term
+1,ALL,SOLICITUDE,QUOTA_TYPE_ID,17,String,3,0,0,0,0,(null),(null),(null),(null),Quota type id
+,ALL,SOLICITUDE,NUMBER_QUOTAS,18,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of fees
+1,ALL,SOLICITUDE,PAYMENT_FREQUENCY_ID,19,String,3,0,0,0,0,(null),(null),(null),(null),Frequency of payment
+1,ALL,SOLICITUDE,FUNDS_DESTINATION_ID,20,String,3,0,0,0,0,(null),(null),(null),(null),Destination of funds
+,ALL,SOLICITUDE,DESTINATION_DESCRIPTION,21,String,500,0,0,0,0,(null),(null),(null),(null),Description of destination
 
-1,ALL,RECOMMENDATION,SOLICITUDE_ID,1,String,25,0,1,0,0,(null),(null),(null),(null),Solicitude Id
+1,ALL,RECOMMENDATION,SOLICITUDE_ID,1,Integer,0,0,1,0,0,(null),(null),(null),(null),Solicitude Id
 ,ALL,RECOMMENDATION,DOCUMENTS,2,String,500,0,0,0,0,(null),(null),(null),(null),Comments about documents
 ,ALL,RECOMMENDATION,ECONOMIC_UNIT,3,String,500,0,0,0,0,(null),(null),(null),(null),Comments about economic unit
 ,ALL,RECOMMENDATION,FAMILY_UNIT,4,String,500,0,0,0,0,(null),(null),(null),(null),Comments about family unit
 ,ALL,RECOMMENDATION,PAYMENT_MORALE,5,String,500,0,0,0,0,(null),(null),(null),(null),Comments about payment morale
 ,ALL,RECOMMENDATION,CREDIT_HISTORY,6,String,500,0,0,0,0,(null),(null),(null),(null),Comments about credit history
 ,ALL,RECOMMENDATION,PROPOSAL,7,String,25,0,0,0,0,(null),(null),(null),(null),Proposal
+
+,ALL,MICRO_ACCOUNT,ACCOUNT_ID,1,String,25,0,1,0,0,(null),(null),(null),(null),Account number and id
+1,ALL,MICRO_ACCOUNT,SOLICITUDE_ID,2,Integer,0,0,0,0,0,(null),(null),(null),(null),Solicitude Id
+,ALL,MICRO_ACCOUNT,CLIENT_NAME,3,String,25,0,0,0,0,(null),(null),(null),(null),Client's name
+1,ALL,MICRO_ACCOUNT,ASSESSOR,4,String,20,0,0,0,0,(null),(null),(null),(null),Assessor
+1,ALL,MICRO_ACCOUNT,PARTNER_CLIENT_ID,5,Integer,0,0,0,0,1,(null),(null),(null),(null),Client
+1,ALL,MICRO_ACCOUNT,GROUP_CLIENT_ID,6,Integer,0,0,0,0,1,(null),(null),(null),(null),Group
+1,ALL,MICRO_ACCOUNT,PRODUCT_ID,7,String,3,0,0,0,0,(null),(null),(null),(null),Product id
+1,ALL,MICRO_ACCOUNT,STATUS_ID,8,String,3,0,0,0,0,(null),(null),(null),(null),Account status id
+,ALL,MICRO_ACCOUNT,NUMBER_RENEWAL,9,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of renewal
+1,ALL,MICRO_ACCOUNT,PREVIOUS_ACCOUNT,10,String,25,0,0,0,1,(null),(null),(null),(null),Renewed account 
+,ALL,MICRO_ACCOUNT,AMOUNT,11,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Amount
+,ALL,MICRO_ACCOUNT,TERM,12,Long,0,0,0,0,0,(null),(null),(null),(null),Term
+1,ALL,MICRO_ACCOUNT,QUOTA_TYPE_ID,13,String,3,0,0,0,0,(null),(null),(null),(null),Quota type id
+,ALL,MICRO_ACCOUNT,NUMBER_QUOTAS,14,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of fees
+1,ALL,MICRO_ACCOUNT,PAYMENT_FREQUENCY_ID,15,String,3,0,0,0,0,(null),(null),(null),(null),Frequency of payment
+
+
+1,ALL,MICRO_ACCOUNT_QUOTA,ACCOUNT_ID,1,String,25,0,1,0,0,(null),(null),(null),(null),Account number and id
+,ALL,MICRO_ACCOUNT_QUOTA,SUBACCOUNT,2,Integer,0,0,1,0,0,(null),(null),(null),(null),Quota number
+,ALL,MICRO_ACCOUNT_QUOTA,PROVISION_DAYS,3,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of provisioned days
+,ALL,MICRO_ACCOUNT_QUOTA,FROM_DATE,4,Date,0,0,0,0,0,(null),(null),(null),(null),Initial date for term
+,ALL,MICRO_ACCOUNT_QUOTA,EXPIRATION_DATE,5,Date,0,0,0,0,0,(null),(null),(null),(null),Expiration date
+,ALL,MICRO_ACCOUNT_QUOTA,PAYMENT_DATE,6,Date,0,0,0,0,1,(null),(null),(null),(null),Payment date
+,ALL,MICRO_ACCOUNT_QUOTA,CAPITAL,7,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Capital amount
+,ALL,MICRO_ACCOUNT_QUOTA,INTEREST,8,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Interest amount
+,ALL,MICRO_ACCOUNT_QUOTA,CHARGE,9,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Charge amount

@@ -85,7 +85,7 @@ ALL,GENDER_TYPE,GENDER_TYPE_ID,1,String,4,0,1,0,0,(null),(null),(null),(null),Ge
 ALL,GENDER_TYPE,NAME,2,String,40,0,0,0,0,(null),(null),(null),(null),Name of gender
 ALL,IDENTIFICATION_TYPE,IDENTIFICATION_TYPE_ID,1,String,4,0,1,0,0,(null),(null),(null),(null),Identification type Id
 ALL,IDENTIFICATION_TYPE,NAME,2,String,40,0,0,0,0,(null),(null),(null),(null),Name of identification type
-ALL,PERSON,PERSON_ID,1,Long,10,0,1,0,0,(null),(null),(null),(null),Person Id
+ALL,PERSON,PERSON_ID,1,Integer,0,0,1,0,0,(null),PERSON,(null),(null),Person Id
 ALL,PERSON,NAME,2,String,40,0,0,0,0,(null),(null),(null),(null),Name of person
 ALL,PERSON,LAST_NAME,3,String,40,0,0,0,0,(null),(null),(null),(null),Lastname of person
 ALL,PERSON,SECOND_LAST_NAME,4,String,40,0,0,0,1,(null),(null),(null),(null),Second lastname of person
@@ -145,7 +145,7 @@ ALL,PROCESS_COMPONENT,PROCESS_ID,4,String,2,0,1,0,0,(null),(null),(null),(null),
 ALL,PROCESS_COMPONENT,PROCESS_SEQUENCE,5,Integer,3,0,1,0,0,(null),(null),(null),(null),Process sequence
 ALL,PROCESS_COMPONENT,COMPONENT_ID,6,String,150,0,0,0,0,(null),(null),(null),(null),Component Id
 ALL,PROCESS_COMPONENT,ENABLE,7,Boolean,1,0,0,0,0,0,(null),(null),(null),Enable
-ALL,PROCESS_COMPONENT,AUTHORIZE,8,Boolean,1,0,0,0,0,0,(null),(null),(null),Enable
+ALL,PROCESS_COMPONENT,AUTHORIZE,8,Boolean,1,0,0,0,1,0,(null),(null),(null),Authorize
 ALL,PROFILE,PROFILE_ID,1,String,4,0,1,0,0,(null),(null),(null),(null),Profile Id
 ALL,PROFILE,NAME,2,String,40,0,0,0,0,(null),(null),(null),(null),Name of profile
 ALL,PROFILE,DESCRIPTION,3,String,150,0,0,0,1,(null),(null),(null),(null),Description of profile
@@ -153,14 +153,14 @@ ALL,ROLE,PROFILE_ID,1,String,4,0,1,0,0,(null),(null),(null),(null),Profile Id
 ALL,ROLE,SUBSYSTEM_ID,2,String,2,0,1,0,0,(null),(null),(null),(null),Subsystem Id
 ALL,ROLE,MODULE_ID,3,String,2,0,1,0,0,(null),(null),(null),(null),Module Id
 ALL,ROLE,PROCESS_ID,4,String,2,0,1,0,0,(null),(null),(null),(null),Process Id
-ALL,ROLE,DAY_ID,5,String,3,0,1,0,0,(null),(null),(null),(null),Day Id
+ALL,ROLE,DAY_ID,5,String,3,0,1,0,1,(null),(null),(null),(null),Day Id
 ALL,ROLE,HOUR_FROM,6,String,4,0,0,0,1,(null),(null),(null),(null),Hour From
 ALL,ROLE,HOUR_TO,7,String,4,0,0,0,1,(null),(null),(null),(null),Hour To
 ALL,ROLE,EDITABLE,8,Boolean,1,0,0,0,0,0,(null),(null),(null),Editable
 ALL,SUBSYSTEM,SUBSYSTEM_ID,1,String,2,0,1,0,0,(null),(null),(null),(null),Subsystem Id
 ALL,SUBSYSTEM,NAME,2,String,40,0,0,0,0,(null),(null),(null),(null),Name of subsystem
 ALL,USER_ACCESS,USER_ID,1,String,20,0,1,0,0,(null),(null),(null),(null),User Id
-ALL,USER_ACCESS,USER_KEY,2,String,20,0,0,0,0,(null),(null),(null),(null),User Key
+ALL,USER_ACCESS,USER_KEY,2,String,300,0,0,0,0,(null),(null),(null),(null),User Key
 ALL,USER_ACCESS,LAST_CHANGE,3,Date,0,0,0,0,0,(null),(null),(null),(null),Last change
 ALL,USER_ACCESS,QUESTION,4,String,100,0,0,0,1,(null),(null),(null),(null),Question
 ALL,USER_ACCESS,ANSWER,5,String,100,0,0,0,1,(null),(null),(null),(null),Answer
@@ -171,11 +171,6 @@ ALL,USER_ACCOUNT,USER_STATUS_ID,4,String,4,0,0,0,0,(null),(null),(null),(null),U
 ALL,USER_ACCOUNT,LANGUAGE_ID,5,String,4,0,0,0,0,(null),(null),(null),(null),Language Id
 ALL,USER_ACCOUNT,EMAIL,6,String,100,0,0,0,0,(null),(null),(null),(null),Email
 ALL,USER_ACCOUNT,PERSON_ID,7,Long,10,0,0,0,1,(null),(null),(null),(null),Person Id
-ALL,USER_AUTHORIZATION,USER_ID,1,String,20,0,1,0,0,(null),(null),(null),(null),User Id
-ALL,USER_AUTHORIZATION,AUTHORIZER_ID,2,String,20,0,1,0,0,(null),(null),(null),(null),Authorizer Id
-ALL,USER_AUTHORIZATION,SUBSYSTEM_ID,3,String,2,0,1,0,0,(null),(null),(null),(null),Subsystem Id
-ALL,USER_AUTHORIZATION,MODULE_ID,4,String,2,0,1,0,0,(null),(null),(null),(null),Module Id
-ALL,USER_AUTHORIZATION,PROCESS_ID,5,String,2,0,1,0,0,(null),(null),(null),(null),Process Id
 ALL,USER_NOTIFICATION,USER_ID,1,String,20,0,1,0,0,(null),(null),(null),(null),User Id
 ALL,USER_NOTIFICATION,USER_NOTIFICATION_TYPE_ID,2,String,4,0,0,0,0,(null),(null),(null),(null),User notification type Id
 ALL,USER_NOTIFICATION,SUBJECT,3,String,100,0,0,0,0,(null),(null),(null),(null),Subject
