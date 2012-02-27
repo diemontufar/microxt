@@ -12,8 +12,7 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "CURRENCY")
-public class Currency extends AbstractHistorical implements Multicompany,
-		Multilanguage, Historical {
+public class Currency extends AbstractHistorical implements Multicompany, Multilanguage, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -81,8 +80,7 @@ public class Currency extends AbstractHistorical implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "CURRENCY:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + ", " + this.getDescription() + ", "
+		return "CURRENCY:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getDescription() + ", "
 				+ this.getInitials() + "]";
 	}
 }

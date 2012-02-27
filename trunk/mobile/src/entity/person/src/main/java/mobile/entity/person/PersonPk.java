@@ -36,18 +36,17 @@ public class PersonPk extends AbstractCompanyHistoricalKey implements Multicompa
 	}
 
 	@Override
+	public Integer getId() {
+		return this.personId;
+	}
+
+	@Override
+	public void setId(Integer sequentialNumber) {
+		this.personId = sequentialNumber;
+	}
+
+	@Override
 	public String toString() {
 		return "[" + this.getCompanyId() + ", " + this.getExpired() + ", " + this.getPersonId() + "]";
-	}
-
-	@Override
-	public Integer getId() {
-		return personId;
-	}
-
-	@Override
-	public void setId(Integer arg0) {
-		this.personId=arg0;
-		
 	}
 }

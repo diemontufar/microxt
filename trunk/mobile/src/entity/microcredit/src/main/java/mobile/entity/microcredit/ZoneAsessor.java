@@ -3,16 +3,14 @@ package mobile.entity.microcredit;
 import javax.persistence.*;
 
 import mobile.entity.schema.AbstractEntity;
-import mobile.entity.schema.Multicompany;
-import mobile.entity.schema.Multilanguage;
+import mobile.entity.schema.GeneralEntity;
 
 /**
- * The persistent class for the ZONE_ASESSOR database table. Zones per Asessor
+ * The persistent class for the ZONE_ASESSOR database table. Zones per Assessor
  */
 @Entity
 @Table(name = "ZONE_ASESSOR")
-public class ZoneAsessor extends AbstractEntity implements Multicompany,
-		Multilanguage {
+public class ZoneAsessor extends AbstractEntity implements GeneralEntity {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -61,7 +59,6 @@ public class ZoneAsessor extends AbstractEntity implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "ZONE_ASESSOR:[" + this.getPk().toString() + ", "
-				+ this.getObservations() + "]";
+		return "ZONE_ASESSOR:[" + this.getPk().toString() + ", " + this.getObservations() + "]";
 	}
 }

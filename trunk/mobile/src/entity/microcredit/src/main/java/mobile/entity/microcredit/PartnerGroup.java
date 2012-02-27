@@ -14,8 +14,7 @@ import mobile.entity.schema.Historical;
  */
 @Entity
 @Table(name = "PARTNER_GROUP")
-public class PartnerGroup extends AbstractHistorical implements Multicompany,
-		Multilanguage, Historical {
+public class PartnerGroup extends AbstractHistorical implements Multicompany, Multilanguage, Historical {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -64,8 +63,7 @@ public class PartnerGroup extends AbstractHistorical implements Multicompany,
 		this.pk = pk;
 	}
 
-	public PartnerGroup(PartnerGroupPk pk, String groupDescription,
-			Date creationDate, String userId, String frequencyId) {
+	public PartnerGroup(PartnerGroupPk pk, String groupDescription, Date creationDate, String userId, String frequencyId) {
 		this.pk = pk;
 		this.groupDescription = groupDescription;
 		this.creationDate = creationDate;
@@ -143,10 +141,8 @@ public class PartnerGroup extends AbstractHistorical implements Multicompany,
 
 	@Override
 	public String toString() {
-		return "PARTNER_GROUP:[" + this.getPk().toString() + ", "
-				+ this.getCreated() + ", " + this.getGroupDescription() + ", "
-				+ this.getCreationDate() + ", " + this.getActivity() + ", "
-				+ this.getUserId() + ", " + this.getFrequencyId() + ", "
-				+ this.getMeetingDay() + "]";
+		return "PARTNER_GROUP:[" + this.getPk().toString() + ", " + this.getCreated() + ", "
+				+ this.getGroupDescription() + ", " + this.getCreationDate() + ", " + this.getActivity() + ", "
+				+ this.getUserId() + ", " + this.getFrequencyId() + ", " + this.getMeetingDay() + "]";
 	}
 }

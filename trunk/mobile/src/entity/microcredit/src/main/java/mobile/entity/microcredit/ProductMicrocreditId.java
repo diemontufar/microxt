@@ -10,8 +10,7 @@ import mobile.entity.schema.GeneralEntityId;
  */
 @Entity
 @Table(name = "PRODUCT_MICROCREDIT_ID")
-public class ProductMicrocreditId extends AbstractEntityId implements
-		GeneralEntityId {
+public class ProductMicrocreditId extends AbstractEntityId implements GeneralEntityId {
 	private static final long serialVersionUID = 1L;
 
 	/**

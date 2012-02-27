@@ -12,9 +12,8 @@ import mobile.entity.schema.SequentialKey;
  * The primary key class for the PARTNER_GROUP database table.
  */
 @Embeddable
-public class PartnerGroupPk extends AbstractCompanyLanguageHistoricalKey
-		implements MulticompanyKey, MultilanguageKey, HistoricalKey,
-		SequentialKey {
+public class PartnerGroupPk extends AbstractCompanyLanguageHistoricalKey implements MulticompanyKey, MultilanguageKey,
+		HistoricalKey, SequentialKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -50,7 +49,7 @@ public class PartnerGroupPk extends AbstractCompanyLanguageHistoricalKey
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
-				+ this.getExpired() + ", " + this.getPartnerGroupId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getExpired() + ", "
+				+ this.getPartnerGroupId() + "]";
 	}
 }

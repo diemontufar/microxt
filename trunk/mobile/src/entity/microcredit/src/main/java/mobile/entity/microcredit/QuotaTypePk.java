@@ -10,8 +10,7 @@ import mobile.entity.schema.MultilanguageKey;
  * The primary key class for the QUOTA_TYPE database table.
  */
 @Embeddable
-public class QuotaTypePk extends AbstractCompanyLanguageKey implements
-		MulticompanyKey, MultilanguageKey {
+public class QuotaTypePk extends AbstractCompanyLanguageKey implements MulticompanyKey, MultilanguageKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -37,7 +36,6 @@ public class QuotaTypePk extends AbstractCompanyLanguageKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
-				+ this.getQuotaTypeId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getQuotaTypeId() + "]";
 	}
 }

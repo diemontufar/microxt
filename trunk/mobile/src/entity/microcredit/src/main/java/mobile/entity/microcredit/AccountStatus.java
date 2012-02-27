@@ -7,15 +7,15 @@ import mobile.entity.schema.Multicompany;
 import mobile.entity.schema.Multilanguage;
 
 /**
- * The persistent class for the QUOTA_TYPE database table. Quota type
+ * The persistent class for the ACCOUNT_STATUS database table. Account status
  */
 @Entity
-@Table(name = "QUOTA_TYPE")
-public class QuotaType extends AbstractEntity implements Multicompany, Multilanguage {
+@Table(name = "ACCOUNT_STATUS")
+public class AccountStatus extends AbstractEntity implements Multicompany, Multilanguage {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private QuotaTypePk pk;
+	private AccountStatusPk pk;
 
 	/**
 	 * Description
@@ -23,23 +23,23 @@ public class QuotaType extends AbstractEntity implements Multicompany, Multilang
 	@Column(name = "DESCRIPTION", nullable = false)
 	private String description;
 
-	public QuotaType() {
+	public AccountStatus() {
 	}
 
-	public QuotaType(QuotaTypePk pk) {
+	public AccountStatus(AccountStatusPk pk) {
 		this.pk = pk;
 	}
 
-	public QuotaType(QuotaTypePk pk, String description) {
+	public AccountStatus(AccountStatusPk pk, String description) {
 		this.pk = pk;
 		this.description = description;
 	}
 
-	public QuotaTypePk getPk() {
+	public AccountStatusPk getPk() {
 		return this.pk;
 	}
 
-	public void setPk(QuotaTypePk pk) {
+	public void setPk(AccountStatusPk pk) {
 		this.pk = pk;
 	}
 
@@ -53,18 +53,18 @@ public class QuotaType extends AbstractEntity implements Multicompany, Multilang
 
 	@Override
 	public void setPk(Object pk) {
-		this.pk = (QuotaTypePk) pk;
+		this.pk = (AccountStatusPk) pk;
 	}
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		QuotaType copy = (QuotaType) super.clone();
-		copy.setPk((QuotaTypePk) this.pk.clone());
+		AccountStatus copy = (AccountStatus) super.clone();
+		copy.setPk((AccountStatusPk) this.pk.clone());
 		return copy;
 	}
 
 	@Override
 	public String toString() {
-		return "QUOTA_TYPE:[" + this.getPk().toString() + ", " + this.getDescription() + "]";
+		return "ACCOUNT_STATUS:[" + this.getPk().toString() + ", " + this.getDescription() + "]";
 	}
 }

@@ -11,8 +11,8 @@ import mobile.entity.schema.SequentialKey;
  * The primary key class for the GEOGRAPHIC_ZONE database table.
  */
 @Embeddable
-public class GeographicZonePk extends AbstractCompanyLanguageKey implements
-		MulticompanyKey, MultilanguageKey, SequentialKey {
+public class GeographicZonePk extends AbstractCompanyLanguageKey implements MulticompanyKey, MultilanguageKey,
+		SequentialKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -48,7 +48,6 @@ public class GeographicZonePk extends AbstractCompanyLanguageKey implements
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
-				+ this.getGeographicZoneId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", " + this.getGeographicZoneId() + "]";
 	}
 }

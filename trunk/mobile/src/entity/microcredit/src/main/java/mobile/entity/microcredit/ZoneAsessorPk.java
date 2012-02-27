@@ -2,16 +2,14 @@ package mobile.entity.microcredit;
 
 import javax.persistence.*;
 
-import mobile.entity.schema.AbstractCompanyLanguageKey;
-import mobile.entity.schema.MulticompanyKey;
-import mobile.entity.schema.MultilanguageKey;
+import mobile.entity.schema.AbstractEntityKey;
+import mobile.entity.schema.GeneralEntityKey;
 
 /**
  * The primary key class for the ZONE_ASESSOR database table.
  */
 @Embeddable
-public class ZoneAsessorPk extends AbstractCompanyLanguageKey implements
-		MulticompanyKey, MultilanguageKey {
+public class ZoneAsessorPk extends AbstractEntityKey implements GeneralEntityKey {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -24,12 +22,12 @@ public class ZoneAsessorPk extends AbstractCompanyLanguageKey implements
 	 * Geographic zone id
 	 */
 	@Column(name = "GEOGRAPHIC_ZONE_ID", nullable = false)
-	private String geographicZoneId;
+	private Integer geographicZoneId;
 
 	public ZoneAsessorPk() {
 	}
 
-	public ZoneAsessorPk(String userId, String geographicZoneId) {
+	public ZoneAsessorPk(String userId, Integer geographicZoneId) {
 		this.userId = userId;
 		this.geographicZoneId = geographicZoneId;
 	}
@@ -42,17 +40,16 @@ public class ZoneAsessorPk extends AbstractCompanyLanguageKey implements
 		this.userId = userId;
 	}
 
-	public String getGeographicZoneId() {
+	public Integer getGeographicZoneId() {
 		return this.geographicZoneId;
 	}
 
-	public void setGeographicZoneId(String geographicZoneId) {
+	public void setGeographicZoneId(Integer geographicZoneId) {
 		this.geographicZoneId = geographicZoneId;
 	}
 
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getLanguageId() + ", "
-				+ this.getUserId() + ", " + this.getGeographicZoneId() + "]";
+		return "[" + this.getUserId() + ", " + this.getGeographicZoneId() + "]";
 	}
 }

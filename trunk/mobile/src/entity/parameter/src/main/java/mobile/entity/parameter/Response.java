@@ -18,12 +18,6 @@ public class Response extends AbstractEntity implements Multicompany, Multilangu
 	private ResponsePk pk;
 
 	/**
-	 * Subsystem Id
-	 */
-	@Column(name = "SUBSYSTEM_ID", nullable = false)
-	private String subsystemId;
-
-	/**
 	 * Description of response
 	 */
 	@Column(name = "DESCRIPTION", nullable = false)
@@ -36,9 +30,8 @@ public class Response extends AbstractEntity implements Multicompany, Multilangu
 		this.pk = pk;
 	}
 
-	public Response(ResponsePk pk, String subsystemId, String description) {
+	public Response(ResponsePk pk, String description) {
 		this.pk = pk;
-		this.subsystemId = subsystemId;
 		this.description = description;
 	}
 
@@ -48,14 +41,6 @@ public class Response extends AbstractEntity implements Multicompany, Multilangu
 
 	public void setPk(ResponsePk pk) {
 		this.pk = pk;
-	}
-
-	public String getSubsystemId() {
-		return this.subsystemId;
-	}
-
-	public void setSubsystemId(String subsystemId) {
-		this.subsystemId = subsystemId;
 	}
 
 	public String getDescription() {
@@ -80,7 +65,6 @@ public class Response extends AbstractEntity implements Multicompany, Multilangu
 
 	@Override
 	public String toString() {
-		return "RESPONSE:[" + this.getPk().toString() + ", " + this.getSubsystemId() + ", " + this.getDescription()
-				+ "]";
+		return "RESPONSE:[" + this.getPk().toString() + ", " + this.getDescription() + "]";
 	}
 }
