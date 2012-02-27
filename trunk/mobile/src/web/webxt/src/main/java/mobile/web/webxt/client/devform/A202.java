@@ -17,8 +17,6 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
-import mobile.web.webxt.client.form.widgetsgrid.NumericColumn;
-import mobile.web.webxt.client.util.NumberType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -57,9 +55,9 @@ public class A202 extends MyGeneralForm {
 		cdata.add(new MyColumnData("pk_subsystemId"));
 		cdata.add(new MyColumnData("pk_moduleId"));
 		cdata.add(new MyColumnData("pk_processId"));
-		cdata.add(new MyColumnData("pk_dayId", "Día", 50, 1, false));
-		cdata.add(new MyColumnData("hourFrom", "Hora desde", 100, 4, true));
-		cdata.add(new MyColumnData("hourTo", "Hora hasta", 100, 4, true));
+		// cdata.add(new MyColumnData("dayId", "Día", 50, 1, false));
+		// cdata.add(new MyColumnData("hourFrom", "Hora desde", 100, 4, true));
+		// cdata.add(new MyColumnData("hourTo", "Hora hasta", 100, 4, true));
 		cdata.add(new MyColumnData("editable", "Editable", 60, 10, false));
 		getConfig().setlDataSource(cdata.getDataSources());
 
@@ -102,11 +100,11 @@ public class A202 extends MyGeneralForm {
 		comboProcess.linkWithColumn("pk_moduleId", modCol);
 		comboProcess.linkWithColumn("pk_processId", proCol);
 
-		configs.add(new NumericColumn(cdata.get(5),NumberType.INTEGER));
-		configs.add(new NumericColumn(cdata.get(6),NumberType.INTEGER));
-		configs.add(new NumericColumn(cdata.get(7),NumberType.INTEGER));
+		// configs.add(new NumericColumn(cdata.get(5),NumberType.INTEGER));
+		// configs.add(new NumericColumn(cdata.get(6),NumberType.INTEGER));
+		// configs.add(new NumericColumn(cdata.get(7),NumberType.INTEGER));
 
-		CheckColumnConfig a = new CheckColumn(cdata.get(8));
+		CheckColumnConfig a = new CheckColumn(cdata.get(5));
 		configs.add(a);
 
 		configs.add(new ExpireColumnConfig());
@@ -114,7 +112,7 @@ public class A202 extends MyGeneralForm {
 		ColumnModel cm = new ColumnModel(configs);
 
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Procesos por rol", 500, 340);
+		EntityContentPanel cp = new EntityContentPanel("Procesos por rol", 300, 340);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
@@ -133,10 +131,7 @@ public class A202 extends MyGeneralForm {
 		initModel.set(cdata.get(2).getId(), null);
 		initModel.set(cdata.get(3).getId(), null);
 		initModel.set(cdata.get(4).getId(), null);
-		initModel.set(cdata.get(5).getId(), null);
-		initModel.set(cdata.get(6).getId(), null);
-		initModel.set(cdata.get(7).getId(), null);
-		initModel.set(cdata.get(8).getId(), true);
+		initModel.set(cdata.get(5).getId(), true);
 		GridToolBar toolBar = new GridToolBar(grid, getStore(), initModel);
 		cp.setTopComponent(toolBar);
 
