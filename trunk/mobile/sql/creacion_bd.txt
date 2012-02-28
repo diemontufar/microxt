@@ -3,17 +3,16 @@
 2. Sobre "microxt_0" ejecutar 
    /sql/model/create_common.sql (modelo del paquete common)
    /sql/data/1.common.sql (parametrizacion del paquete common)
-3. Guardar los csv del modelo (entity.csv, field.csv, relationship.csv)
-4. Parametrizar la variable <OUTPUT_FOLDER> de la clase GeneratorFromCsv
-5. Ejecutar GeneratorFromCsv. 
-   Repetir pasos 3, 5 para los csv del modelo de microcredito
+3. Guardar los csv de los modelos: 
+   Modelo general: 	entity0.csv, field0.csv, relationship0.csv
+   Modelo microcredito: entity1.csv, field1.csv, relationship1.csv
+4. Ejecutar GeneratorFromCsv (Parametrizar la variable <OUTPUT_FOLDER>). 
    Esto creara en la carpeta <OUTPUT_FOLDER> los sql de generacion create.sql y drop.sql, ademas de las persistencias
-6. Crear BD de desarrollo "microxt"
-7. Sobre "microxt", ejecutar create.sql
-8. Ejecutar los scripts de parametrizacion que se encuentran dentro de /sql/data/*.sql
-9. Finalmente se debe llenar las tablas de generacion(EntityTable, EntityField, EntityRelationship) en la bd "microxt"
+5. Crear BD de desarrollo "microxt"
+6. Sobre "microxt", ejecutar create.sql
+7. Ejecutar los scripts de parametrizacion que se encuentran dentro de /sql/data/*.sql
+8. Finalmente se debe llenar las tablas de generacion(EntityTable, EntityField, EntityRelationship) en la bd "microxt"
    Para esto primero hacer que la unidad de persistencia "generator" apunte hacia la BD "microxt"
-   Ejecutar FillGeneratingEntitiesFromCsv
-   Hacer esto 2 veces (primero para los csv del modelo, y luego los csv del modelo de microcredito)
-10.Para que la applicacion funcione con la nueva bd que se acaba de crear "microxt" se debe cambiar central para que apunte hacia la misma.
+   Ejecutar FillGeneratingModelFromCsv
+9. Para que la applicacion funcione con la nueva bd que se acaba de crear "microxt" se debe cambiar central para que apunte hacia la misma.
 

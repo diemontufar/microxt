@@ -66,6 +66,12 @@ public class FillGeneratingEntitiesFromCsv {
 
 	public FillGeneratingEntitiesFromCsv() {
 	}
+	
+	public FillGeneratingEntitiesFromCsv(String entityFile, String fieldField, String relationshipFile) {
+		entityFilePath = entityFile;
+		fieldFilePath = fieldField;
+		relationshipFilePath = relationshipFile;
+	}
 
 	public void loadPersistence() {
 		log.info("Load persistence...");
