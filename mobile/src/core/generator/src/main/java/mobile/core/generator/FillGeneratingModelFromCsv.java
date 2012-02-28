@@ -6,9 +6,7 @@ import mobile.tools.common.Log;
 
 import org.apache.log4j.Logger;
 
-public class GeneratorFromCsv {
-
-	private final static String OUTPUT_FOLDER = "/home/ronald/TesisOutput";
+public class FillGeneratingModelFromCsv {
 
 	private final static String entityFilePath = "/home/ronald/Escritorio/entity0.csv";
 	private final static String fieldFilePath = "/home/ronald/Escritorio/field0.csv";
@@ -53,14 +51,6 @@ public class GeneratorFromCsv {
 			filler1.fillTables();
 			filler1.fillFields();
 			filler1.fillRelationships();
-
-			// Generate sql scripts
-			SqlGenerator sqlGenerator = new SqlGenerator(OUTPUT_FOLDER);
-			sqlGenerator.generateAllTables();
-
-			// Generate entities
-			EntityGenerator entityGenerator = new EntityGenerator(OUTPUT_FOLDER);
-			entityGenerator.generateAllEntities();
 
 			// Commit tx and close persistence
 			JPManager.commitTransaction();
