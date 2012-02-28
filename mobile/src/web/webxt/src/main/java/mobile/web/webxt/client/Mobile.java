@@ -1,5 +1,6 @@
 package mobile.web.webxt.client;
 
+import mobile.common.tools.Format;
 import mobile.web.webxt.client.mvc.AppController;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.mvc.FormController;
@@ -12,11 +13,9 @@ import com.google.gwt.maps.client.Maps;
 
 public class Mobile implements EntryPoint {
 	
-	String key = "ABQIAAAAaNAkBjzcbXsAJ5HR69IHNhTvoZypEwrtth8tBAhhFnGc_4WvEBRMN-FPvc_3YxJ8mHFTzhUWscmFQw";
-
 	public void onModuleLoad() {
 
-		Maps.loadMapsApi(key, "2", false, new Runnable() {
+		Maps.loadMapsApi(Format.mapsAPIKey, "2", false, new Runnable() {
 			public void run() {
 				createMVC();
 			}

@@ -1,9 +1,15 @@
 package mobile.web.webxt.client.form.widgets;
 
+import java.util.Date;
+
 import mobile.common.tools.Format;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.form.validations.Validate;
+import mobile.web.webxt.client.util.DatesManager;
 
+import com.extjs.gxt.ui.client.event.DatePickerEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.form.DateField;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Element;
@@ -69,21 +75,18 @@ public class MyDateField extends DateField implements PersistentField {
 
 		getInputEl().setElementAttribute("maxLength", getMaxLength());
 
-		// this.getDatePicker().addListener(Events.Select, new
-		// Listener<DatePickerEvent>() {
-		//
-		// public void handleEvent(DatePickerEvent be) {
-		// Date date = be.getDate();
-		//
-		// DateTimeFormat dformat =
-		// DateTimeFormat.getFormat(Format.DATE_PRESENTATION);
-		// getPropertyEditor().setFormat(dformat);
-		// Date dDate = dformat.parse(DatesManager.dateToString(date,
-		// Format.DATE_PRESENTATION));
-		// setValue(dDate);
-		// }
-		//
-		// });
+		this.getDatePicker().addListener(Events.Select, new Listener<DatePickerEvent>() {
+
+			public void handleEvent(DatePickerEvent be) {
+				Date date = be.getDate();
+
+				DateTimeFormat dformat = DateTimeFormat.getFormat(Format.DATE_PRESENTATION);
+				getPropertyEditor().setFormat(dformat);
+				Date dDate = dformat.parse(DatesManager.dateToString(date, Format.DATE_PRESENTATION));
+				setValue(dDate);
+			}
+
+		});
 	}
 
 	public void createValidator(Validate type) {
@@ -92,22 +95,6 @@ public class MyDateField extends DateField implements PersistentField {
 			setAllowBlank(false);
 		}
 	}
-
-	// public String getDateValue(){
-	//
-	// String dateString="";
-	//
-	// if (this.getValue() != null) {
-	// dateString = this.getRawValue().toString().substring(6, 10);
-	// dateString = dateString + "-" +
-	// this.getRawValue().toString().substring(3, 5) + "-";
-	// dateString = dateString + this.getRawValue().toString().substring(0, 2);
-	// return dateString;
-	// }else{
-	// forceInvalid("Escoja una Fecha");
-	// return null;
-	// }
-	// }
 
 	public DataSource getDataSource() {
 		return dataSource;

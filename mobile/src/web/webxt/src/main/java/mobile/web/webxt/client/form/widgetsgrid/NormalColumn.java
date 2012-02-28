@@ -3,6 +3,7 @@ package mobile.web.webxt.client.form.widgetsgrid;
 import mobile.common.tools.Format;
 import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgets.InputBox;
+import mobile.web.webxt.client.form.widgets.MyDateField;
 import mobile.web.webxt.client.util.TextType;
 
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
@@ -12,12 +13,14 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 public class NormalColumn extends ColumnConfig {
 
 	InputBox inputbox;
+	MyDateField dateField;
+	DateTimeFormat dformat;
 
 	private NormalColumn() {
 		super();
-		
+
 	}
-	
+
 	public NormalColumn(MyColumnData columnData) {
 		this();
 		setId(columnData.getId());
@@ -61,10 +64,17 @@ public class NormalColumn extends ColumnConfig {
 		setHeader(columnData.getName());
 		setWidth(columnData.getWidth());
 
-		// Create field and formatters
 		createField(columnData, type, vType);
-		inputbox.setValidateOnBlur(true);
-		setEditor(new CellEditor(inputbox));
+		
+		
+		if (type!=TextType.DATE){
+			inputbox.setValidateOnBlur(true);
+			setEditor(new CellEditor(inputbox));
+		}else{
+			setEditor(new CellEditor(dateField));
+			setDateTimeFormat(DateTimeFormat.getFormat(Format.DATE_PRESENTATION)); 
+		}
+		
 
 		// Visible
 		if (!columnData.isVisible()) {
@@ -88,7 +98,12 @@ public class NormalColumn extends ColumnConfig {
 	private void createField(MyColumnData columnData, TextType type, Validate vType) {
 
 		if (type == null && vType == null) {
-			inputbox = new InputBox(columnData.getWidth(), columnData.getMaxLength(), Validate.TEXT);
+			inputbox = new InputBox(columnData.getWidth(), columnData.getMaxLength(), Validate.ALPHANUMERIC);
+		}
+
+		if (type == TextType.TEXT && vType == Validate.PASSWORD) {
+			inputbox = new InputBox(columnData.getWidth(), columnData.getMaxLength(), Validate.ALPHANUMERIC);
+			inputbox.setPassword(true);
 		}
 
 		if (type == TextType.TEXT && vType != null) {
@@ -97,10 +112,9 @@ public class NormalColumn extends ColumnConfig {
 
 		if (type == TextType.DATE && vType == null) {
 
-			inputbox = new InputBox(columnData.getWidth(), columnData.getMaxLength());
-			DateTimeFormat dtFormat = DateTimeFormat.getFormat(Format.DATE_PRESENTATION);
-			setDateTimeFormat(dtFormat);
-
+			dateField = new MyDateField(columnData.getWidth(), columnData.getMaxLength());
+			dformat = DateTimeFormat.getFormat(Format.DATE_PRESENTATION);
+			dateField.getPropertyEditor().setFormat(dformat);
 		}
 	}
 
