@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mobile.common.message.Item;
-import mobile.web.webxt.client.data.MyPagingLoader;
-import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
@@ -36,13 +34,11 @@ import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
 import com.extjs.gxt.ui.client.data.FilterConfig;
-import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.LoadListener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -50,6 +46,7 @@ import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.store.StoreListener;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
@@ -65,7 +62,7 @@ public class C202 extends LayoutContainer {
 	private final static String PROCESS = "C202";
 	private final static String ENTITY_GROUP = "PartnerGroup";
 	private final static String ENTITY_MEMBER = "PartnerGroupMember";
-	
+
 	private int membersNumber = 0;
 
 	ContentPanel panelPrincipal = new ContentPanel();
@@ -76,14 +73,16 @@ public class C202 extends LayoutContainer {
 	MyTextArea activity, description;
 	ComboForm asessorCombo, freqCombo, partnerGroupCode;
 	MyNumberField meetingDay;
-	
+
 	MyFormPanel formMemebersGrid;
 	MyGeneralForm formContainerMembersGrid;
 	MyFormPanel formGroup;
 	MyGeneralForm formContainerGroup;
+	GridToolBar toolBar;
 
 	final int LABEL_WIDTH = 65;
 	final int FORM_WIDTH = 600;
+	int numberOfPresidents, numberOfDeletes;
 
 	Button save, cancel;
 
@@ -92,7 +91,7 @@ public class C202 extends LayoutContainer {
 		super.onRender(parent, index);
 		setLayout(new CenterLayout());
 		getAriaSupport().setPresentation(true);
-				
+
 		formContainerGroup = new MyGeneralForm(PROCESS);
 		formContainerGroup.setReference(new Reference("par", ENTITY_GROUP));
 		formContainerGroup.setBorders(false);
@@ -102,8 +101,8 @@ public class C202 extends LayoutContainer {
 		formGroup.setBorders(false);
 		formGroup.setBodyBorder(false);
 		formGroup.setStyleAttribute("padding", "0px");
-		
-		formContainerMembersGrid = new MyGeneralForm(PROCESS,true);
+
+		formContainerMembersGrid = new MyGeneralForm(PROCESS, true);
 		formContainerMembersGrid.setReference(ENTITY_MEMBER);
 		formContainerMembersGrid.setBorders(false);
 		formMemebersGrid = new MyFormPanel(formContainerMembersGrid, "", FORM_WIDTH);
@@ -111,15 +110,15 @@ public class C202 extends LayoutContainer {
 		formMemebersGrid.setFrame(false);
 		formMemebersGrid.setBodyBorder(false);
 		formMemebersGrid.setBorders(false);
-		
+
 		createPanel();
 	}
 
 	private void createPanel() {
-		
+
 		panelPrincipal.setWidth(FORM_WIDTH);
 		panelPrincipal.setHeading("Clientes Grupales");
-		panelPrincipal.setHeight(465);	
+		panelPrincipal.setHeight(465);
 		panelPrincipal.setFrame(true);
 
 		save = new Button("Guardar", new SelectionListener<ButtonEvent>() {
@@ -133,33 +132,33 @@ public class C202 extends LayoutContainer {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
 				formGroup.clear();
-				//clearFields();
+				enableToolBarButtons(toolBar, false);
+				save.enable();
+				formationDate.setValue(DatesManager.getCurrentDate());
 			}
 		});
 
 		panelPrincipal.addButton(save);
 		panelPrincipal.addButton(cancel);
 		panelPrincipal.setButtonAlign(HorizontalAlignment.CENTER);
-		
+
 		createHeaderForm();
 		createGrid();
-		
+
 		panelPrincipal.add(formGroup);
 		panelPrincipal.add(formMemebersGrid);
-		
-		add(panelPrincipal);
-		
-	}
 
+		add(panelPrincipal);
+
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void createGrid() {
-		
+
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_partnerGroupMemberId", "Codigo", 70, 20, false));
-		cdata.add(new MyColumnData("partnerGroupId", "Grupo", 70, 20, false));
-		cdata.add(new MyColumnData("personId", "Persona", 70, 40, false));
+		cdata.add(new MyColumnData("pk_partnerGroupId", "Grupo", 70, 20, false));
+		cdata.add(new MyColumnData("pk_personId", "Persona", 70, 40, false));
 		cdata.add(new MyColumnData("responsabilityId", "Responsabilidad", 100, 40, false));
 		cdata.add(new MyColumnData("observations", "Observaciones", 200, 40, true));
 		formContainerMembersGrid.getConfig().setlDataSource(cdata.getDataSources());
@@ -168,48 +167,48 @@ public class C202 extends LayoutContainer {
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
 		configs.add(new RowNumberer());
-		configs.add(new NormalColumn(cdata.get(0),TextType.TEXT,Validate.TEXT));
-		
-		NormalColumn groupColumn = new NormalColumn(cdata.get(1),TextType.TEXT,Validate.TEXT);
+
+		NormalColumn groupColumn = new NormalColumn(cdata.get(0), TextType.TEXT, Validate.TEXT);
 		groupColumn.setHidden(true);
 		configs.add(groupColumn);
 
-		ComboColumn personComboColumn = new ComboColumn(cdata.get(2));
-		Reference refPerson = new Reference("per","Person");
+		ComboColumn personComboColumn = new ComboColumn(cdata.get(1));
+		Reference refPerson = new Reference("per", "Person");
 		ArrayColumnData perCdata = new ArrayColumnData();
-		perCdata.add(new MyColumnData("per","pk_personId", "Codigo", 40));
-		perCdata.add(new MyColumnData("per","identificationNumber", "ID", 40));
-		perCdata.add(new MyColumnData("per","name", "Nombre", 120));
-		perCdata.add(new MyColumnData("per","lastName", "Apellido", 130));
+		perCdata.add(new MyColumnData("per", "pk_personId", "Codigo", 40));
+		perCdata.add(new MyColumnData("per", "identificationNumber", "ID", 40));
+		perCdata.add(new MyColumnData("per", "name", "Nombre", 120));
+		perCdata.add(new MyColumnData("per", "lastName", "Apellido", 130));
 		personComboColumn.setQueryData(refPerson, perCdata);
 		personComboColumn.getComboBox().setPageSize(10);
 		configs.add(personComboColumn);
-		
-		ComboColumn responsabilityColumn = new ComboColumn(cdata.get(3));
-		Reference refResponsa = new Reference("res","Responsability");
+
+		ComboColumn responsabilityColumn = new ComboColumn(cdata.get(2));
+		Reference refResponsa = new Reference("res", "Responsability");
 		ArrayColumnData resCdata = new ArrayColumnData();
-		resCdata.add(new MyColumnData("res","pk_responsabilityId", "Codigo", 40));
-		resCdata.add(new MyColumnData("res","name", "Nombre", 120));
+		resCdata.add(new MyColumnData("res", "pk_responsabilityId", "ID", 40));
+		resCdata.add(new MyColumnData("res", "name", "Nombre", 120));
 		responsabilityColumn.setQueryData(refResponsa, resCdata);
 		configs.add(responsabilityColumn);
 
-		configs.add(new NormalColumn(cdata.get(4)));
+		configs.add(new NormalColumn(cdata.get(3)));
 
 		configs.add(new ExpireColumnConfig());
 
 		ColumnModel cm = new ColumnModel(configs);
-		
+
 		// Grid panel
 		EntityContentPanel gridPanel = new EntityContentPanel(560, 200);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(formContainerMembersGrid.getStore(), cm);
-		grid.setAutoExpandColumn("pk_partnerGroupMemberId");
+		grid.setAutoExpandColumn("pk_personId");
 		grid.setBorders(true);
-		//grid.addDependency(partnerGroupCode);
-		
+		grid.addDependency(partnerGroupCode);
+		grid.getColumnModel().getColumn(1).getEditor().disable();
+
 		gridPanel.add(grid);
-		
+
 		// Top tool bar
 		ModelData newItem = new BaseModelData();
 		newItem.set(cdata.get(0).getId(), null);
@@ -218,93 +217,70 @@ public class C202 extends LayoutContainer {
 		newItem.set(cdata.get(3).getId(), null);
 		newItem.set(cdata.get(3).getId(), null);
 
-		final GridToolBar toolBar = new GridToolBar(grid, formContainerMembersGrid.getStore(), newItem);
-		enableToolBarButtons(toolBar,false);
+		toolBar = new GridToolBar(grid, formContainerMembersGrid.getStore(), newItem);
+		enableToolBarButtons(toolBar, false);
 		gridPanel.setTopComponent(toolBar);
+		toolBar.setSaveOverwritten(true);
+
+		Button saveGridChanges = new Button();
+		saveGridChanges = toolBar.getSaveButton();
+
+		saveGridChanges.addSelectionListener(new SelectionListener<ButtonEvent>() {
+			@Override
+			public void componentSelected(ButtonEvent ce) {
+
+				if (grid.getStore().getCount() >= 3 && grid.getStore().getCount() <= 15 && isMemberNumberOk(grid)) {
+
+					if (isOnePresident(grid)) {
+						grid.getStore().commitChanges();
+					} else {
+						Info.display("Informacion", "El grupo debe tener 1 Presidente");
+					}
+
+				} else {
+					Info.display("Informacion", "El grupo debe tener entre 3 y 15 miembros");
+				}
+
+			}
+		});
 
 		// Paging tool bar
 		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(grid, 10);
 		gridPanel.setBottomComponent(pagingToolBar);
-		
-		LoadListener filterListener = new LoadListener() {
-			public void loaderBeforeLoad(LoadEvent le) {
 
-				MyProcessConfig config = le.getConfig();
-				String ffield = "partnerGroupId";
-
-				List<FilterConfig> filters = config.getFilterConfigs();
-				if (filters == null) {
-					filters = new ArrayList<FilterConfig>();
-				}
-
-				boolean existe = false;
-				for (FilterConfig fil : filters) {
-					if (fil.getField().compareTo(ffield) == 0) {
-						existe = true;
-						fil.setValue(partnerGroupCode.getValue().get("pk_partnerGroupId"));
-					}
-				}
-
-				if (!existe) {
-					FilterConfig filter = new BaseStringFilterConfig();
-					filter.setField(ffield);
-					filter.setComparison("=");
-					filter.setValue(partnerGroupCode.getValue().get("pk_partnerGroupId"));
-					filters.add(filter);
-				}
-
-				config.setFilterConfigs(filters);
-			}
-		};
-
-		formContainerMembersGrid.getLoader().addListener(MyPagingLoader.BeforeLoad, filterListener);
-		
 		Store store = formContainerMembersGrid.getStore();
-		
+
 		store.addStoreListener(new StoreListener() {
-		public void handleEvent(StoreEvent se) {
-			if (se.getType() == Store.Add) {
-				membersNumber=grid.getStore().getCount();
-				grid.getStore().getAt(membersNumber-1).set("partnerGroupId", partnerGroupCode.getValue().get("pk_partnerGroupId"));
-				grid.getColumnModel().getColumn(2).getEditor().disable();
+			public void handleEvent(StoreEvent se) {
+				if (se.getType() == Store.Add) {
+					membersNumber = grid.getStore().getCount();
+					grid.getStore().getAt(membersNumber - 1)
+							.set("pk_partnerGroupId", partnerGroupCode.getValue().get("pk_partnerGroupId"));
+					System.out.println("Conteo de filas: " + grid.getStore().getCount());
+				}
 			}
-
-			if (se.getType() == Store.DataChanged) {
-				
-//				if(grid.getStore().getCount()>=3 && grid.getStore().getCount()<=15){
-//					grid.getStore().commitChanges();
-//					System.out.println("ES UN COMMIT!!!!!!!!!!!!!!");
-//				}else{
-//					grid.getStore().rejectChanges();
-//					AlertDialog alert = new AlertDialog("Error", "Debe ingresar entre 3 y 15 miembros al grupo");
-//					alert.show();
-//					System.out.println("NO ES UN COMMIT!!!!!!!!!!!!!!");
-//				}
-				
-			}
-			
-			
-		}
-	});
-
+		});
 
 		// Operations
 		partnerGroupCode.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-				if (((ComboForm) se.getSource()).isSomeSelected()) {
+
+				if (((ComboForm) se.getSource()).isSomeSelected() || partnerGroupCode.getValue() != null) {
 					formGroup.queryForm();
 					pagingToolBar.refresh();
-					enableToolBarButtons(toolBar,true);
-				}else{
+					enableToolBarButtons(toolBar, true);
+					save.disable();
+				} else {
 					grid.getStore().removeAll();
-					enableToolBarButtons(toolBar,false);
+					enableToolBarButtons(toolBar, false);
+					save.enable();
 				}
 			}
 		});
 
 		formMemebersGrid.add(gridPanel);
-		
+
 	}
 
 	private void createHeaderForm() {
@@ -314,7 +290,7 @@ public class C202 extends LayoutContainer {
 		layoutContainer.setHeight(160);
 		layoutContainer.setBorders(false);
 		layoutContainer.setLayout(new RowLayout(Orientation.HORIZONTAL));
-		
+
 		FieldSet fieldSetLeft = new FieldSet();
 		fieldSetLeft.setBorders(false);
 		fieldSetLeft.setWidth(280);
@@ -329,17 +305,18 @@ public class C202 extends LayoutContainer {
 
 		partnerGroupCode = new ComboForm(80);
 		partnerGroupCode.setDataSource(new DataSource("par", "pk_partnerGroupId", DataSourceType.CRITERION));
-		
+
 		Reference refPartner = new Reference("par1", "PartnerGroup");
 		final ArrayColumnData perCdata = new ArrayColumnData();
-		perCdata.add(new MyColumnData("par1", "pk_partnerGroupId", "Id", 100));
+		perCdata.add(new MyColumnData("par1", "pk_partnerGroupId", "Id", 70));
+		perCdata.add(new MyColumnData("par1", "groupDescription", "Descripcion", 200));
 		partnerGroupCode.setQueryData(refPartner, perCdata);
+		partnerGroupCode.setPageSize(10);
 		partnerGroupCode.setDisplayField("pk_partnerGroupId");
-		
+
 		row.add(partnerGroupCode);
 		fieldSetLeft.add(row);
-		
-		
+
 		// GeneratedId
 		final InputBox generatedId = new InputBox();
 		generatedId.setDataSource(new DataSource(Item.GENERATED_ID, DataSourceType.CONTROL));
@@ -350,29 +327,37 @@ public class C202 extends LayoutContainer {
 				if (e.getValue() != null) {
 					partnerGroupCode.setRawValue((String) e.getValue());
 					partnerGroupCode.setLoaded(false);
+					enableToolBarButtons(toolBar, true);
+					save.disable();
 				}
 			}
 		});
 		row.add(generatedId);
 		fieldSetLeft.add(row);
-		
-		//Description:
+
+		// Description:
 		row = new RowContainer();
 		label = new MyLabel("Descripción:", LABEL_WIDTH);
-		row.add(label);	
+		row.add(label);
 		row.setHeight(70);
-				
-		description=new MyTextArea(180,100);
+
+		description = new MyTextArea(180, 100);
 		description.setDataSource(new DataSource("par", "groupDescription", DataSourceType.RECORD));
 		description.setHeight(60);
 		description.setEmptyText("Ingrese una descripcion del grupo");
 		description.setAllowBlank(false);
-		
+
+		description.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent e) {
+				save.enable();
+				;
+			}
+		});
+
 		row.add(description);
 		fieldSetRight.add(row);
-				
-		
-		//Activity:
+
+		// Activity:
 		row = new RowContainer();
 		label = new MyLabel("Actividad:", LABEL_WIDTH);
 		row.add(label);
@@ -382,11 +367,18 @@ public class C202 extends LayoutContainer {
 		activity.setDataSource(new DataSource("par", "activity", DataSourceType.RECORD));
 		activity.setHeight(60);
 		activity.setEmptyText("Ingrese las actividades a las que se dedica el grupo");
-		
+
+		activity.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent e) {
+				save.enable();
+				;
+			}
+		});
+
 		row.add(activity);
 		fieldSetRight.add(row);
-		
-		//Asessor Combo:
+
+		// Asessor Combo:
 		row = new RowContainer();
 		label = new MyLabel("Asesor:", LABEL_WIDTH);
 		row.add(label);
@@ -400,8 +392,19 @@ public class C202 extends LayoutContainer {
 		uadata.add(new MyColumnData("usa", "name", "Nombre", 120));
 		asessorCombo.setQueryData(refUserAcco, uadata);
 		asessorCombo.setDisplayField("pk_userId");
+
+		asessorCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+
+				if (((ComboForm) se.getSource()).isSomeSelected()) {
+					save.enable();
+				}
+			}
+		});
+
 		row.add(asessorCombo);
-		
+
 		String filterField = "userTypeId";
 
 		FilterConfig filter = new BaseStringFilterConfig();
@@ -411,14 +414,13 @@ public class C202 extends LayoutContainer {
 
 		asessorCombo.addFilter(filter);
 		asessorCombo.setLoaded(false);
-		
+
 		asessorCombo.setAllowBlank(false);
-		
+
 		row.add(asessorCombo);
 		fieldSetLeft.add(row);
-		
-		
-		//Frecuency:
+
+		// Frecuency:
 		row = new RowContainer();
 		label = new MyLabel("Frecuencia:", LABEL_WIDTH);
 		row.add(label);
@@ -433,40 +435,57 @@ public class C202 extends LayoutContainer {
 		freqCombo.setQueryData(refFrec, frdata);
 		freqCombo.setDisplayField("pk_frequencyId");
 		freqCombo.setAllowBlank(false);
+
+		freqCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+
+				if (((ComboForm) se.getSource()).isSomeSelected()) {
+					save.enable();
+				}
+			}
+		});
+
 		row.add(freqCombo);
-		
+
 		freqDescription = new InputBox(80);
 		freqDescription.setReadOnly(true);
 		freqDescription.setDataSource(new DataSource("Frequency", "description", DataSourceType.DESCRIPTION));
 		row.add(freqDescription);
-		
+
 		freqCombo.linkWithField(freqDescription, "description");
-		
+
 		row.add(freqCombo);
 		row.add(freqDescription);
 		fieldSetLeft.add(row);
-		
-		//Reunion Day
+
+		// Reunion Day
 		row = new RowContainer();
 		label = new MyLabel("Dia reunion:", LABEL_WIDTH);
 		row.add(label);
 
-		//Reunion Day		
+		// Reunion Day
 		row = new RowContainer();
 		label = new MyLabel("Dia reunion:", LABEL_WIDTH);
 		row.add(label);
-		
+
 		meetingDay = new MyNumberField(80);
 		meetingDay.setDataSource(new DataSource("par", "meetingDay", DataSourceType.RECORD));
 		meetingDay.setMaxValue(7);
 		meetingDay.setMinValue(1);
 		meetingDay.setToolTip("Dia de la semana entre 1-7");
 		meetingDay.setMaxLength(1);
-				
+
+		meetingDay.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent e) {
+				save.enable();
+			}
+		});
+
 		row.add(meetingDay);
 		fieldSetLeft.add(row);
 
-		//Formation date
+		// Formation date
 		row = new RowContainer();
 		label = new MyLabel("Fecha Formación:", LABEL_WIDTH);
 		row.add(label);
@@ -486,12 +505,71 @@ public class C202 extends LayoutContainer {
 		formGroup.add(layoutContainer);
 	}
 
-	private void enableToolBarButtons(GridToolBar toolBar, boolean state){
-		
+	private void enableToolBarButtons(GridToolBar toolBar, boolean state) {
+
 		toolBar.enableAddButton(state);
 		toolBar.enableSaveButton(state);
 		toolBar.enableResetButton(state);
-		
+
+	}
+
+	private boolean isOnePresident(EntityEditorGrid grid) {
+
+		int numberOfRecords = grid.getStore().getCount();
+		numberOfPresidents = 0;
+
+		for (int i = 0; i < numberOfRecords; i++) {
+
+			String president = grid.getStore().getAt(i).get("responsabilityId").toString();
+
+			if (president.compareTo("1") == 0) {
+				numberOfPresidents++;
+			}
+		}
+
+		if (numberOfPresidents == 1) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	private boolean isSomeDeteled(EntityEditorGrid grid) {
+
+		int numberOfRecords = grid.getStore().getCount();
+		numberOfDeletes = 0;
+
+		for (int i = 0; i < numberOfRecords; i++) {
+			if (grid.getStore().getAt(i).get(Item.EXPIRE_ITEM) != null) {
+				boolean delete = Boolean.parseBoolean(grid.getStore().getAt(i).get(Item.EXPIRE_ITEM).toString());
+
+				if (delete) {
+					numberOfDeletes++;
+				}
+			}
+		}
+
+		if (numberOfDeletes > 0) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	private boolean isMemberNumberOk(EntityEditorGrid grid) {
+
+		if (isSomeDeteled(grid)) {
+			if (grid.getStore().getCount() - numberOfDeletes < 3) {
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			return true;
+		}
+
 	}
 
 }
