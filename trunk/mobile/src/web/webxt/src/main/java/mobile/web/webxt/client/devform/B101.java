@@ -299,6 +299,7 @@ public class B101 extends MyGeneralForm {
 		final InputBox identification = new InputBox(FIELD_WIDTH_2, 40, Validate.ALPHANUMERIC);
 		identification.setDataSource(new DataSource("per", "identificationNumber", DataSourceType.RECORD));
 		identification.setAllowBlank(false);
+		identification.setValidateOnBlur(true);
 		row.add(identification);
 
 		identification.addListener(Events.OnBlur, new Listener<FieldEvent>() {
@@ -312,14 +313,16 @@ public class B101 extends MyGeneralForm {
 				
 				if (!isValidId) {
 					identification.isValid(false);
-					identification.markInvalid("Identificacion Incorrecta");
+					identification.forceInvalid("Identificacion Incorrecta");
 				} else {
 					identification.isValid(true);
+					identification.clearInvalid();
 				}
 
 			}
 		});
-
+		
+		
 		idTypeCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
