@@ -1,5 +1,6 @@
 package mobile.core.processor;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,16 +8,16 @@ import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
 import mobile.common.message.Message;
-import mobile.common.tools.ProcessType;
 import mobile.entity.manager.JPManager;
 import mobile.entity.schema.GeneralEntity;
 import mobile.entity.schema.SequentialKey;
 import mobile.tools.common.Log;
-import mobile.tools.common.structure.GeneralProcessor;
+import mobile.tools.common.convertion.CoreConverter;
+import mobile.tools.common.structure.MaintenanceProcessor;
 
 import org.apache.log4j.Logger;
 
-public class MaintenanceProcessor implements GeneralProcessor {
+public class GeneralMaintenance implements MaintenanceProcessor {
 
 	Logger log = Log.getInstance();
 
@@ -27,19 +28,14 @@ public class MaintenanceProcessor implements GeneralProcessor {
 		this.msg = msg;
 		// Complete items with filters
 		for (EntityData data : msg.getEntityDataList()) {
-			if (data.getProcessType() != null
-					&& data.getProcessType().compareTo(ProcessType.MAINTENANCE.getShortName()) == 0
-					&& data.getFilters() != null) {
+			if (data.getFilters() != null) {
 				completeItemsWithFilters(data);
 			}
 		}
 
 		// Process maintenance
 		for (EntityData data : msg.getEntityDataList()) {
-			if (data.getProcessType() != null
-					&& data.getProcessType().compareTo(ProcessType.MAINTENANCE.getShortName()) == 0) {
-				persistOrUpdateOrDelete(data);
-			}
+			persistOrUpdateOrDelete(data);
 		}
 
 		return msg;
@@ -80,7 +76,7 @@ public class MaintenanceProcessor implements GeneralProcessor {
 		return (in == null || in.compareTo("") == 0) ? null : in;
 	}
 
-	private void completeItemsWithFilters(EntityData data) {
+	private void completeItemsWithFilters(EntityData data) throws ParseException {
 		// Get completed fields
 		List<Field> lfields = new ArrayList<Field>();
 		String strFilters = data.getFilters();
@@ -92,6 +88,9 @@ public class MaintenanceProcessor implements GeneralProcessor {
 			String value = null;
 			if (part.length > 2) {
 				value = validateNull(part[2]);
+			}
+			if(value != null){
+				value = CoreConverter.convertToType(value).toString();
 			}
 			Field completed = new Field(filteredField, value);
 			lfields.add(completed);

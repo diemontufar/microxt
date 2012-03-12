@@ -17,6 +17,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import mobile.common.message.Message;
 import mobile.common.message.ResponseData;
+import mobile.common.tools.ProcessType;
 import mobile.entity.manager.JPManager;
 import mobile.entity.security.ProcessComponent;
 import mobile.tools.common.Log;
@@ -26,6 +27,8 @@ import mobile.tools.common.param.ParameterEnum;
 import mobile.tools.common.structure.GeneralProcessor;
 
 import org.apache.log4j.Logger;
+import org.eclipse.persistence.config.HintValues;
+import org.eclipse.persistence.config.QueryHints;
 import org.eclipse.persistence.exceptions.DatabaseException;
 
 public class CoreProcessor {
@@ -34,7 +37,9 @@ public class CoreProcessor {
 
 	private final String QRY_PROCESSES = "Select p from ProcessComponent p " + "where p.pk.companyId = :companyId "
 			+ "and p.pk.subsystemId = :subsystemId " + "and p.pk.moduleId = :moduleId "
-			+ "and p.pk.processId = :processId " + "and p.enable = true " + "order by p.pk.processSequence";
+			+ "and p.pk.processId = :processId "
+			+ "and p.typeId = :processType "
+			+ "and p.enable = true " + "order by p.pk.processSequence";
 
 	public Message process(Message msg) {
 		log.info("Input message: \n" + formatXml(msg.toXML(), 2));
@@ -67,27 +72,33 @@ public class CoreProcessor {
 
 	private void executeProcesses(Message msg) throws Exception {
 		String strProcess = msg.getRequest().getProcess();
+		String strProcessType = msg.getRequest().getProcessType();
 
-		log.info("Process: " + strProcess);
+		log.info("Process: " + strProcess + " (" + strProcessType + ")");
 		String subsystem = strProcess.substring(0, 1);
 		String module = strProcess.substring(1, 2);
 		String process = strProcess.substring(2);
 
 		TypedQuery<ProcessComponent> query = JPManager.getEntityManager().createQuery(QRY_PROCESSES,
 				ProcessComponent.class);
+		query.setHint(QueryHints.READ_ONLY, HintValues.TRUE);
 		query.setParameter("companyId", LocalParameter.get(ParameterEnum.COMPANY, String.class));
 		query.setParameter("subsystemId", subsystem);
 		query.setParameter("moduleId", module);
 		query.setParameter("processId", process);
-
+		query.setParameter("processType", strProcessType);
+		
 		List<ProcessComponent> lProcesses = query.getResultList();
-		JPManager.detachList(lProcesses);
-
+		
 		if (lProcesses.size() == 0) {
-			new MaintenanceProcessor().process(msg);
-			new QueryProcessor().process(msg);
+			if(ProcessType.QUERY.getShortName().compareTo(strProcessType)==0){
+				new GeneralQuery().process(msg);
+			}else if(ProcessType.MAINTENANCE.getShortName().compareTo(strProcessType)==0){
+				new GeneralMaintenance().process(msg);
+			}
 		}
 
+		
 		for (ProcessComponent processComponent : lProcesses) {
 			log.info("Processing: " + processComponent.getComponentId());
 
