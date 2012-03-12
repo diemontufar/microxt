@@ -3,13 +3,11 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 28-02-2012 a las 03:25:09
+-- Tiempo de generación: 09-03-2012 a las 22:50:11
 -- Versión del servidor: 5.5.8
 -- Versión de PHP: 5.3.5
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT=0;
-START TRANSACTION;
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -79,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `ADDRESS_TYPE` (
 --
 
 INSERT INTO `ADDRESS_TYPE` (`COMPANY_ID`, `LANGUAGE_ID`, `ADDRESS_TYPE_ID`, `NAME`) VALUES
-('MXT', 'ES', 'CE', 'CORREO ELECTRONICO'),
+('MXT', 'ES', 'CE', 'CORREO ELECTRÓNICO'),
 ('MXT', 'ES', 'HA', 'DOMICILIO'),
 ('MXT', 'ES', 'ML', 'CORREO'),
 ('MXT', 'ES', 'OF', 'OFICINA'),
@@ -140,7 +138,6 @@ INSERT INTO `CITY` (`COMPANY_ID`, `LANGUAGE_ID`, `COUNTRY_ID`, `PROVINCE_ID`, `C
 ('MXT', 'ES', 'EC', 'AZ', 'OA', 'OÑA'),
 ('MXT', 'ES', 'EC', 'AZ', 'PA', 'PAUTE'),
 ('MXT', 'ES', 'EC', 'AZ', 'PO', 'CAMILO PONCE'),
-('MXT', 'ES', 'EC', 'AZ', 'PU', 'PUCARÁ'),
 ('MXT', 'ES', 'EC', 'AZ', 'SA', 'SAN FERNANDO'),
 ('MXT', 'ES', 'EC', 'AZ', 'SG', 'SIGSIG'),
 ('MXT', 'ES', 'EC', 'AZ', 'SI', 'SANTA ISABEL'),
@@ -174,7 +171,6 @@ INSERT INTO `CITY_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) VALUES
 ('EC', 'AZ', 'OA'),
 ('EC', 'AZ', 'PA'),
 ('EC', 'AZ', 'PO'),
-('EC', 'AZ', 'PU'),
 ('EC', 'AZ', 'SA'),
 ('EC', 'AZ', 'SG'),
 ('EC', 'AZ', 'SI'),
@@ -243,7 +239,7 @@ CREATE TABLE IF NOT EXISTS `COMPANY` (
   `DATAFILE_ID` int(11) DEFAULT NULL,
   `UPGRADE_NUMBER` decimal(4,2) DEFAULT NULL,
   `LICENSE_DATE` datetime DEFAULT NULL,
-  `ENABLE` varchar(1) NOT NULL DEFAULT '0',
+  `ENABLE` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`COMPANY_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -264,12 +260,14 @@ INSERT INTO `COMPANY` (`COMPANY_ID`, `NAME`, `DATAFILE_ID`, `UPGRADE_NUMBER`, `L
 CREATE TABLE IF NOT EXISTS `COMPONENT` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `COMPONENT_ID` varchar(150) NOT NULL,
+  `TYPE_ID` varchar(3) NOT NULL,
   `SUBSYSTEM_ID` varchar(2) NOT NULL,
   `CLASS_NAME` varchar(100) NOT NULL,
-  `METHOD_NAME` varchar(100) NOT NULL,
+  `METHOD_NAME` varchar(100) DEFAULT NULL,
   `DESCRIPTION` varchar(100) NOT NULL,
-  PRIMARY KEY (`COMPANY_ID`,`COMPONENT_ID`),
-  KEY `COMPONENT_ID_FK` (`COMPONENT_ID`),
+  PRIMARY KEY (`COMPANY_ID`,`COMPONENT_ID`,`TYPE_ID`),
+  KEY `COMPONENT_COM_TYPE_ID_FK` (`TYPE_ID`),
+  KEY `COMPONENT_ID_FK` (`COMPONENT_ID`,`TYPE_ID`),
   KEY `COMPONENT_SUBSYSTEM_ID_FK` (`SUBSYSTEM_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -277,11 +275,13 @@ CREATE TABLE IF NOT EXISTS `COMPONENT` (
 -- Volcar la base de datos para la tabla `COMPONENT`
 --
 
-INSERT INTO `COMPONENT` (`COMPANY_ID`, `COMPONENT_ID`, `SUBSYSTEM_ID`, `CLASS_NAME`, `METHOD_NAME`, `DESCRIPTION`) VALUES
-('MXT', 'mobile.bus.security.Loggin', 'A', 'Loggin', 'general', 'Process loggin'),
-('MXT', 'mobile.core.processor.MaintenanceProcessor', 'G', 'MaintenanceProcessor', 'general', 'General maintenance processor'),
-('MXT', 'mobile.core.processor.QueryProcessor', 'G', 'QueryProcessor', 'general', 'General query processor'),
-('MXT', 'mobile.logic.general.MenuGenerator', 'G', 'MenuGenerator', 'general', 'Query the menu items');
+INSERT INTO `COMPONENT` (`COMPANY_ID`, `COMPONENT_ID`, `TYPE_ID`, `SUBSYSTEM_ID`, `CLASS_NAME`, `METHOD_NAME`, `DESCRIPTION`) VALUES
+('MXT', 'mobile.bus.security.Loggin', 'QRY', 'A', 'Loggin', 'general', 'Process loggin'),
+('MXT', 'mobile.core.processor.MaintenanceProcessor', 'MNT', 'G', 'MaintenanceProcessor', 'general', 'General maintenance processor'),
+('MXT', 'mobile.core.processor.QueryProcessor', 'QRY', 'G', 'QueryProcessor', 'general', 'General query processor'),
+('MXT', 'mobile.logic.general.MenuGenerator', 'QRY', 'G', 'MenuGenerator', 'general', 'Query the menu items'),
+('MXT', 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', 'C', 'QueryPartnerInfo', NULL, 'CONSULTA INFORMACION DE CLIENTES INDIVIDUALES'),
+('MXT', 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 'C', 'QuerySolicitude', NULL, 'CONSULTA INFORMACION DE LAS SOLICITUDES');
 
 -- --------------------------------------------------------
 
@@ -291,19 +291,41 @@ INSERT INTO `COMPONENT` (`COMPANY_ID`, `COMPONENT_ID`, `SUBSYSTEM_ID`, `CLASS_NA
 
 CREATE TABLE IF NOT EXISTS `COMPONENT_ID` (
   `COMPONENT_ID` varchar(150) NOT NULL,
-  PRIMARY KEY (`COMPONENT_ID`)
+  `TYPE_ID` varchar(3) NOT NULL,
+  PRIMARY KEY (`COMPONENT_ID`,`TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcar la base de datos para la tabla `COMPONENT_ID`
 --
 
-INSERT INTO `COMPONENT_ID` (`COMPONENT_ID`) VALUES
-('mobile.bus.parameter.ParameterTest'),
-('mobile.bus.security.Loggin'),
-('mobile.core.processor.MaintenanceProcessor'),
-('mobile.core.processor.QueryProcessor'),
-('mobile.logic.general.MenuGenerator');
+INSERT INTO `COMPONENT_ID` (`COMPONENT_ID`, `TYPE_ID`) VALUES
+('mobile.bus.security.Loggin', 'QRY'),
+('mobile.core.processor.MaintenanceProcessor', 'MNT'),
+('mobile.core.processor.QueryProcessor', 'QRY'),
+('mobile.logic.general.MenuGenerator', 'QRY'),
+('mobile.logic.microxt.query.QueryPartnerInfo', 'QRY'),
+('mobile.logic.microxt.query.QuerySolicitude', 'QRY');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `COMPONENT_TYPE`
+--
+
+CREATE TABLE IF NOT EXISTS `COMPONENT_TYPE` (
+  `COMPONENT_TYPE_ID` varchar(3) NOT NULL,
+  `DESCRIPTION` varchar(50) NOT NULL,
+  PRIMARY KEY (`COMPONENT_TYPE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcar la base de datos para la tabla `COMPONENT_TYPE`
+--
+
+INSERT INTO `COMPONENT_TYPE` (`COMPONENT_TYPE_ID`, `DESCRIPTION`) VALUES
+('MNT', 'MANTENIMIENTO'),
+('QRY', 'CONSULTA');
 
 -- --------------------------------------------------------
 
@@ -550,6 +572,105 @@ CREATE TABLE IF NOT EXISTS `DISTRICT` (
 -- Volcar la base de datos para la tabla `DISTRICT`
 --
 
+INSERT INTO `DISTRICT` (`COMPANY_ID`, `LANGUAGE_ID`, `COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`, `NAME`) VALUES
+('MXT', 'ES', 'EC', 'AZ', 'CH', 'CHO', 'CHORDELEG'),
+('MXT', 'ES', 'EC', 'AZ', 'CH', 'MAR', 'SAN MARTIN DE PUZHIO'),
+('MXT', 'ES', 'EC', 'AZ', 'CH', 'PRI', 'PRINCIPAL'),
+('MXT', 'ES', 'EC', 'AZ', 'CH', 'UNI', 'LA UNION'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'ANA', 'SANTA ANA'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'BAÑ', 'BAÑOS'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'BAT', 'EL BATAN'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'BEL', 'BELLAVISTA'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'BLA', 'SAN BLAS'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'CAÑ', 'CAÑARIBAMBA'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'CAP', 'SAN CAPAC'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'CHA', 'CHAUCHA'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'CHE', 'CHECA (JIDCAY)'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'CHI', 'CHIQUINTAD'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'CUE', 'CUENCA'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'CUM', 'CUMBE'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'GIL', 'GIL RAMIREZ DAVALOS'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'HER', 'HERMANO MIGUEL'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'HUA', 'HUAYNACAPAC'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'JOA', 'SAN JOAQUIN'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'LLA', 'LLACAO'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'MAC', 'MACHANGARA'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'MOL', 'MOLLETURO'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'MON', 'MONAY'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'NUL', 'NULTI'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'OCT', 'OCTAVIO CORDERO(SANTA ROSA)'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'PAC', 'PACCHA'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'QUI', 'QUINGEO'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'RIC', 'RICAURTE'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'SAG', 'EL SAGRARIO'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'SAY', 'SAYAUSI'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'SEB', 'SAN SEBASTIAN'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'SID', 'SIDCAY'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'SIN', 'SININCAY'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'SUC', 'SUCRE'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'TAR', 'TARQUI'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'TOT', 'TOTORACOCHA'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'TUR', 'TURI'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'VAL', 'VALLE'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'VEC', 'EL VECINO'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'VIC', 'VICTORIA DEL PORTETE (IRQUIS)'),
+('MXT', 'ES', 'EC', 'AZ', 'CU', 'YAN', 'YANUNCAY'),
+('MXT', 'ES', 'EC', 'AZ', 'EL', 'AML', '*AMALUZA'),
+('MXT', 'ES', 'EC', 'AZ', 'EL', 'ELP', 'EL PAN'),
+('MXT', 'ES', 'EC', 'AZ', 'EL', 'PLM', '*PALMAS'),
+('MXT', 'ES', 'EC', 'AZ', 'EL', 'VIC', 'SAN VICENTE'),
+('MXT', 'ES', 'EC', 'AZ', 'GI', 'ASU', 'ASUNCION'),
+('MXT', 'ES', 'EC', 'AZ', 'GI', 'GER', 'SAN GERARDO'),
+('MXT', 'ES', 'EC', 'AZ', 'GI', 'GIR', 'GIRON'),
+('MXT', 'ES', 'EC', 'AZ', 'GL', 'CHO', 'CHORDELEG'),
+('MXT', 'ES', 'EC', 'AZ', 'GL', 'GUA', 'GUALACEO'),
+('MXT', 'ES', 'EC', 'AZ', 'GL', 'JAD', 'JADAN'),
+('MXT', 'ES', 'EC', 'AZ', 'GL', 'JUA', 'SAN JUAN'),
+('MXT', 'ES', 'EC', 'AZ', 'GL', 'MAR', 'MARIANO MORENO'),
+('MXT', 'ES', 'EC', 'AZ', 'GL', 'PRI', 'PRINCIPAL'),
+('MXT', 'ES', 'EC', 'AZ', 'GL', 'REM', 'REMIGIO CRESPO TORAL (GULAG)'),
+('MXT', 'ES', 'EC', 'AZ', 'GL', 'VEG', 'LUIS CORDERO VEGA'),
+('MXT', 'ES', 'EC', 'AZ', 'GL', 'ZHI', 'ZHIDMAD'),
+('MXT', 'ES', 'EC', 'AZ', 'GU', 'GUA', 'GUACHAPALA'),
+('MXT', 'ES', 'EC', 'AZ', 'NA', 'COC', 'COCHAPATA'),
+('MXT', 'ES', 'EC', 'AZ', 'NA', 'NAB', 'NABON'),
+('MXT', 'ES', 'EC', 'AZ', 'NA', 'NIE', 'LAS NIEVES (CHAYA)'),
+('MXT', 'ES', 'EC', 'AZ', 'NA', 'OÑA', 'OÑA'),
+('MXT', 'ES', 'EC', 'AZ', 'NA', 'PRO', 'EL PROGRESO (CAB.EN ZHOTA)'),
+('MXT', 'ES', 'EC', 'AZ', 'OA', 'OÑA', '*OÑA'),
+('MXT', 'ES', 'EC', 'AZ', 'OA', 'SUS', 'SUSUDEL'),
+('MXT', 'ES', 'EC', 'AZ', 'PA', 'AMA', '*AMALUZA'),
+('MXT', 'ES', 'EC', 'AZ', 'PA', 'BUL', 'BULAN (JOSE VICTOR IZQUIERDO)'),
+('MXT', 'ES', 'EC', 'AZ', 'PA', 'CAB', 'EL CABO'),
+('MXT', 'ES', 'EC', 'AZ', 'PA', 'CHA', '*GUACHAPALA'),
+('MXT', 'ES', 'EC', 'AZ', 'PA', 'CHI', 'CHICAN (GUILLERMO ORTEGA)'),
+('MXT', 'ES', 'EC', 'AZ', 'PA', 'CRI', 'SAN CRISTOBAL(CARLOS ORDO?EZ )'),
+('MXT', 'ES', 'EC', 'AZ', 'PA', 'DUG', 'DUG DUG'),
+('MXT', 'ES', 'EC', 'AZ', 'PA', 'NAG', 'GUARAINAG'),
+('MXT', 'ES', 'EC', 'AZ', 'PA', 'ORO', '*SEVILLA DE ORO'),
+('MXT', 'ES', 'EC', 'AZ', 'PA', 'PAL', '*PALMAS'),
+('MXT', 'ES', 'EC', 'AZ', 'PA', 'PAN', '*PAN'),
+('MXT', 'ES', 'EC', 'AZ', 'PA', 'PAU', 'PAUTE'),
+('MXT', 'ES', 'EC', 'AZ', 'PA', 'TOM', 'TOMEBAMBA'),
+('MXT', 'ES', 'EC', 'AZ', 'PO', 'PON', 'CAMILO PONCE ENRIQUEZ'),
+('MXT', 'ES', 'EC', 'AZ', 'PO', 'PUC', 'PUCARA'),
+('MXT', 'ES', 'EC', 'AZ', 'PO', 'RAF', 'SAN RAFAEL DE SHARUG'),
+('MXT', 'ES', 'EC', 'AZ', 'SA', 'CHU', 'CHUMBLIN'),
+('MXT', 'ES', 'EC', 'AZ', 'SA', 'FER', 'SAN FERNANDO'),
+('MXT', 'ES', 'EC', 'AZ', 'SG', 'BAR', 'SAN BARTOLOME'),
+('MXT', 'ES', 'EC', 'AZ', 'SG', 'CUC', 'CUCHIL (CUTCHIL)'),
+('MXT', 'ES', 'EC', 'AZ', 'SG', 'GIM', 'GIMA'),
+('MXT', 'ES', 'EC', 'AZ', 'SG', 'GUE', 'GUEL'),
+('MXT', 'ES', 'EC', 'AZ', 'SG', 'JOS', 'SAN JOSE DE RARANGA'),
+('MXT', 'ES', 'EC', 'AZ', 'SG', 'LUD', 'LUDO'),
+('MXT', 'ES', 'EC', 'AZ', 'SG', 'SIG', 'SIGSIG'),
+('MXT', 'ES', 'EC', 'AZ', 'SI', 'CAL', 'ABDON CALDERON  (LA UNION)'),
+('MXT', 'ES', 'EC', 'AZ', 'SI', 'CAR', 'EL CARMEN DE PIJILI'),
+('MXT', 'ES', 'EC', 'AZ', 'SI', 'ISA', 'SANTA ISABEL (CHAGUARURCO)'),
+('MXT', 'ES', 'EC', 'AZ', 'SI', 'ZHA', 'ZHAGLLI (SHAGLLI)'),
+('MXT', 'ES', 'EC', 'AZ', 'SO', 'AMA', 'AMALUZA'),
+('MXT', 'ES', 'EC', 'AZ', 'SO', 'PAL', 'PALMAS'),
+('MXT', 'ES', 'EC', 'AZ', 'SO', 'SEV', 'SEVILLA DE ORO');
 
 -- --------------------------------------------------------
 
@@ -569,6 +690,105 @@ CREATE TABLE IF NOT EXISTS `DISTRICT_ID` (
 -- Volcar la base de datos para la tabla `DISTRICT_ID`
 --
 
+INSERT INTO `DISTRICT_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`) VALUES
+('EC', 'AZ', 'CH', 'CHO'),
+('EC', 'AZ', 'CH', 'MAR'),
+('EC', 'AZ', 'CH', 'PRI'),
+('EC', 'AZ', 'CH', 'UNI'),
+('EC', 'AZ', 'CU', 'ANA'),
+('EC', 'AZ', 'CU', 'BAÑ'),
+('EC', 'AZ', 'CU', 'BAT'),
+('EC', 'AZ', 'CU', 'BEL'),
+('EC', 'AZ', 'CU', 'BLA'),
+('EC', 'AZ', 'CU', 'CAÑ'),
+('EC', 'AZ', 'CU', 'CAP'),
+('EC', 'AZ', 'CU', 'CHA'),
+('EC', 'AZ', 'CU', 'CHE'),
+('EC', 'AZ', 'CU', 'CHI'),
+('EC', 'AZ', 'CU', 'CUE'),
+('EC', 'AZ', 'CU', 'CUM'),
+('EC', 'AZ', 'CU', 'GIL'),
+('EC', 'AZ', 'CU', 'HER'),
+('EC', 'AZ', 'CU', 'HUA'),
+('EC', 'AZ', 'CU', 'JOA'),
+('EC', 'AZ', 'CU', 'LLA'),
+('EC', 'AZ', 'CU', 'MAC'),
+('EC', 'AZ', 'CU', 'MOL'),
+('EC', 'AZ', 'CU', 'MON'),
+('EC', 'AZ', 'CU', 'NUL'),
+('EC', 'AZ', 'CU', 'OCT'),
+('EC', 'AZ', 'CU', 'PAC'),
+('EC', 'AZ', 'CU', 'QUI'),
+('EC', 'AZ', 'CU', 'RIC'),
+('EC', 'AZ', 'CU', 'SAG'),
+('EC', 'AZ', 'CU', 'SAY'),
+('EC', 'AZ', 'CU', 'SEB'),
+('EC', 'AZ', 'CU', 'SID'),
+('EC', 'AZ', 'CU', 'SIN'),
+('EC', 'AZ', 'CU', 'SUC'),
+('EC', 'AZ', 'CU', 'TAR'),
+('EC', 'AZ', 'CU', 'TOT'),
+('EC', 'AZ', 'CU', 'TUR'),
+('EC', 'AZ', 'CU', 'VAL'),
+('EC', 'AZ', 'CU', 'VEC'),
+('EC', 'AZ', 'CU', 'VIC'),
+('EC', 'AZ', 'CU', 'YAN'),
+('EC', 'AZ', 'EL', 'AML'),
+('EC', 'AZ', 'EL', 'ELP'),
+('EC', 'AZ', 'EL', 'PLM'),
+('EC', 'AZ', 'EL', 'VIC'),
+('EC', 'AZ', 'GI', 'ASU'),
+('EC', 'AZ', 'GI', 'GER'),
+('EC', 'AZ', 'GI', 'GIR'),
+('EC', 'AZ', 'GL', 'CHO'),
+('EC', 'AZ', 'GL', 'GUA'),
+('EC', 'AZ', 'GL', 'JAD'),
+('EC', 'AZ', 'GL', 'JUA'),
+('EC', 'AZ', 'GL', 'MAR'),
+('EC', 'AZ', 'GL', 'PRI'),
+('EC', 'AZ', 'GL', 'REM'),
+('EC', 'AZ', 'GL', 'VEG'),
+('EC', 'AZ', 'GL', 'ZHI'),
+('EC', 'AZ', 'GU', 'GUA'),
+('EC', 'AZ', 'NA', 'COC'),
+('EC', 'AZ', 'NA', 'NAB'),
+('EC', 'AZ', 'NA', 'NIE'),
+('EC', 'AZ', 'NA', 'OÑA'),
+('EC', 'AZ', 'NA', 'PRO'),
+('EC', 'AZ', 'OA', 'OÑA'),
+('EC', 'AZ', 'OA', 'SUS'),
+('EC', 'AZ', 'PA', 'AMA'),
+('EC', 'AZ', 'PA', 'BUL'),
+('EC', 'AZ', 'PA', 'CAB'),
+('EC', 'AZ', 'PA', 'CHA'),
+('EC', 'AZ', 'PA', 'CHI'),
+('EC', 'AZ', 'PA', 'CRI'),
+('EC', 'AZ', 'PA', 'DUG'),
+('EC', 'AZ', 'PA', 'NAG'),
+('EC', 'AZ', 'PA', 'ORO'),
+('EC', 'AZ', 'PA', 'PAL'),
+('EC', 'AZ', 'PA', 'PAN'),
+('EC', 'AZ', 'PA', 'PAU'),
+('EC', 'AZ', 'PA', 'TOM'),
+('EC', 'AZ', 'PO', 'PON'),
+('EC', 'AZ', 'PO', 'PUC'),
+('EC', 'AZ', 'PO', 'RAF'),
+('EC', 'AZ', 'SA', 'CHU'),
+('EC', 'AZ', 'SA', 'FER'),
+('EC', 'AZ', 'SG', 'BAR'),
+('EC', 'AZ', 'SG', 'CUC'),
+('EC', 'AZ', 'SG', 'GIM'),
+('EC', 'AZ', 'SG', 'GUE'),
+('EC', 'AZ', 'SG', 'JOS'),
+('EC', 'AZ', 'SG', 'LUD'),
+('EC', 'AZ', 'SG', 'SIG'),
+('EC', 'AZ', 'SI', 'CAL'),
+('EC', 'AZ', 'SI', 'CAR'),
+('EC', 'AZ', 'SI', 'ISA'),
+('EC', 'AZ', 'SI', 'ZHA'),
+('EC', 'AZ', 'SO', 'AMA'),
+('EC', 'AZ', 'SO', 'PAL'),
+('EC', 'AZ', 'SO', 'SEV');
 
 -- --------------------------------------------------------
 
@@ -584,9 +804,9 @@ CREATE TABLE IF NOT EXISTS `ENTITY_FIELD` (
   `DATA_TYPE_ID` varchar(30) NOT NULL,
   `DATA_SIZE` smallint(6) NOT NULL,
   `DATA_SCALE` tinyint(4) NOT NULL DEFAULT '0',
-  `PRIMARY_KEY` varchar(1) NOT NULL DEFAULT '0',
-  `UNIQUE_KEY` varchar(1) NOT NULL DEFAULT '0',
-  `NULLABLE` varchar(1) NOT NULL DEFAULT '0',
+  `PRIMARY_KEY` bit(1) NOT NULL DEFAULT b'0',
+  `UNIQUE_KEY` bit(1) NOT NULL DEFAULT b'0',
+  `NULLABLE` bit(1) NOT NULL DEFAULT b'0',
   `DEFAULT_VALUE` varchar(30) DEFAULT NULL,
   `SEQUENTIAL_ID` varchar(30) DEFAULT NULL,
   `MINIMUM_VALUE` varchar(30) DEFAULT NULL,
@@ -615,15 +835,18 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'CIVIL_STATUS', 'NAME', 2, 'String', 40, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Name of civil status'),
 ('ALL', 'COMPANY', 'COMPANY_ID', 1, 'String', 4, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Company Id'),
 ('ALL', 'COMPANY', 'DATAFILE_ID', 3, 'Long', 10, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Document Id'),
-('ALL', 'COMPANY', 'ENABLE', 6, 'Boolean', 1, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Enable'),
+('ALL', 'COMPANY', 'ENABLE', 6, 'Boolean', 0, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Enable'),
 ('ALL', 'COMPANY', 'LICENSE_DATE', 5, 'Date', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'License date of company'),
 ('ALL', 'COMPANY', 'NAME', 2, 'String', 40, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Name of company'),
 ('ALL', 'COMPANY', 'UPGRADE_NUMBER', 4, 'BigDecimal', 4, 2, '0', '0', '1', NULL, NULL, NULL, NULL, 'Upgrade number of company'),
-('ALL', 'COMPONENT', 'CLASS_NAME', 3, 'String', 100, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Class name'),
+('ALL', 'COMPONENT', 'CLASS_NAME', 4, 'String', 100, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Class name'),
 ('ALL', 'COMPONENT', 'COMPONENT_ID', 1, 'String', 150, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Component Id'),
-('ALL', 'COMPONENT', 'DESCRIPTION', 5, 'String', 100, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Description'),
-('ALL', 'COMPONENT', 'METHOD_NAME', 4, 'String', 100, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Method name'),
-('ALL', 'COMPONENT', 'SUBSYSTEM_ID', 2, 'String', 2, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Subsystem Id'),
+('ALL', 'COMPONENT', 'DESCRIPTION', 6, 'String', 100, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Description'),
+('ALL', 'COMPONENT', 'METHOD_NAME', 5, 'String', 100, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Method name'),
+('ALL', 'COMPONENT', 'SUBSYSTEM_ID', 3, 'String', 2, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Subsystem Id'),
+('ALL', 'COMPONENT', 'TYPE_ID', 2, 'String', 3, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Component type Id'),
+('ALL', 'COMPONENT_TYPE', 'COMPONENT_TYPE_ID', 1, 'String', 3, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Component type Id'),
+('ALL', 'COMPONENT_TYPE', 'DESCRIPTION', 2, 'String', 50, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Component type description'),
 ('ALL', 'COUNTRY', 'AREA_CODE', 3, 'String', 4, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Area code'),
 ('ALL', 'COUNTRY', 'COUNTRY_ID', 1, 'String', 2, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Country Id'),
 ('ALL', 'COUNTRY', 'NAME', 2, 'String', 40, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Name of country'),
@@ -658,25 +881,25 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'ENTITY_FIELD', 'FIELD_ORDER', 3, 'Integer', 3, 0, '0', '1', '0', NULL, NULL, NULL, NULL, 'Field order'),
 ('ALL', 'ENTITY_FIELD', 'MAXIMUM_VALUE', 13, 'String', 30, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Maximum value of field'),
 ('ALL', 'ENTITY_FIELD', 'MINIMUM_VALUE', 12, 'String', 30, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Minimum value of field'),
-('ALL', 'ENTITY_FIELD', 'NULLABLE', 9, 'Boolean', 1, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Nullable'),
-('ALL', 'ENTITY_FIELD', 'PRIMARY_KEY', 7, 'Boolean', 1, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Primary key'),
+('ALL', 'ENTITY_FIELD', 'NULLABLE', 9, 'Boolean', 0, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Nullable'),
+('ALL', 'ENTITY_FIELD', 'PRIMARY_KEY', 7, 'Boolean', 0, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Primary key'),
 ('ALL', 'ENTITY_FIELD', 'SEQUENTIAL_ID', 11, 'String', 30, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Sequential Id of field'),
 ('ALL', 'ENTITY_FIELD', 'TABLE_ID', 1, 'String', 30, 0, '1', '1', '0', NULL, NULL, NULL, NULL, 'Table Id'),
-('ALL', 'ENTITY_FIELD', 'UNIQUE_KEY', 8, 'Boolean', 1, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Unique key'),
+('ALL', 'ENTITY_FIELD', 'UNIQUE_KEY', 8, 'Boolean', 0, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Unique key'),
 ('ALL', 'ENTITY_RELATIONSHIP', 'FIELD_FROM', 4, 'String', 30, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Field from'),
 ('ALL', 'ENTITY_RELATIONSHIP', 'FIELD_TO', 6, 'String', 30, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Filed to'),
 ('ALL', 'ENTITY_RELATIONSHIP', 'RELATIONSHIP_ID', 1, 'String', 30, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Relationship order'),
 ('ALL', 'ENTITY_RELATIONSHIP', 'RELATIONSHIP_ORDER', 2, 'Integer', 3, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Field order'),
 ('ALL', 'ENTITY_RELATIONSHIP', 'TABLE_FROM', 3, 'String', 30, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Table from'),
 ('ALL', 'ENTITY_RELATIONSHIP', 'TABLE_TO', 5, 'String', 30, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Table to'),
-('ALL', 'ENTITY_TABLE', 'CACHE_MEMORY', 9, 'Boolean', 1, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Cache memory of entity'),
+('ALL', 'ENTITY_TABLE', 'CACHE_MEMORY', 9, 'Boolean', 0, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Cache memory of entity'),
 ('ALL', 'ENTITY_TABLE', 'DESCRIPTION', 10, 'String', 100, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Description of entity'),
-('ALL', 'ENTITY_TABLE', 'ENUMERATED_TYPES', 8, 'Boolean', 1, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Enumerated type of entity'),
-('ALL', 'ENTITY_TABLE', 'HAS_TABLE_ID', 2, 'Boolean', 1, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Order of fields'),
-('ALL', 'ENTITY_TABLE', 'HISTORICAL_DATA', 6, 'Boolean', 1, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Historical data of entity'),
-('ALL', 'ENTITY_TABLE', 'MULTI_COMPANY', 4, 'Boolean', 1, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Multi company of entity'),
-('ALL', 'ENTITY_TABLE', 'MULTI_LANGUAGE', 5, 'Boolean', 1, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Multi language of entity'),
-('ALL', 'ENTITY_TABLE', 'OPTIMISTIC_LOCKING', 7, 'Boolean', 1, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Optimistic locking of entity'),
+('ALL', 'ENTITY_TABLE', 'ENUMERATED_TYPES', 8, 'Boolean', 0, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Enumerated type of entity'),
+('ALL', 'ENTITY_TABLE', 'HAS_TABLE_ID', 2, 'Boolean', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Order of fields'),
+('ALL', 'ENTITY_TABLE', 'HISTORICAL_DATA', 6, 'Boolean', 0, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Historical data of entity'),
+('ALL', 'ENTITY_TABLE', 'MULTI_COMPANY', 4, 'Boolean', 0, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Multi company of entity'),
+('ALL', 'ENTITY_TABLE', 'MULTI_LANGUAGE', 5, 'Boolean', 0, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Multi language of entity'),
+('ALL', 'ENTITY_TABLE', 'OPTIMISTIC_LOCKING', 7, 'Boolean', 0, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Optimistic locking of entity'),
 ('ALL', 'ENTITY_TABLE', 'PACKAGE_NAME', 3, 'String', 30, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Package name of entity'),
 ('ALL', 'ENTITY_TABLE', 'TABLE_ID', 1, 'String', 30, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Table Id'),
 ('ALL', 'FREQUENCY', 'DESCRIPTION', 2, 'String', 50, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Description'),
@@ -784,20 +1007,21 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'PHONE_TYPE', 'NAME', 2, 'String', 40, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Name of phone'),
 ('ALL', 'PHONE_TYPE', 'PHONE_TYPE_ID', 1, 'String', 4, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Phone type Id'),
 ('ALL', 'PROCESS', 'DATAFILE_ID', 8, 'Long', 10, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Datafile Id'),
-('ALL', 'PROCESS', 'ENABLE', 5, 'Boolean', 1, 0, '0', '0', '0', '1', NULL, NULL, NULL, 'Enable'),
-('ALL', 'PROCESS', 'MENU', 6, 'Boolean', 1, 0, '0', '0', '0', '1', NULL, NULL, NULL, 'Show in app  menu'),
+('ALL', 'PROCESS', 'ENABLE', 5, 'Boolean', 0, 0, '0', '0', '0', '1', NULL, NULL, NULL, 'Enable'),
+('ALL', 'PROCESS', 'MENU', 6, 'Boolean', 0, 0, '0', '0', '0', '1', NULL, NULL, NULL, 'Show in app  menu'),
 ('ALL', 'PROCESS', 'MODULE_ID', 2, 'String', 2, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Module Id'),
 ('ALL', 'PROCESS', 'NAME', 4, 'String', 40, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Name of process'),
 ('ALL', 'PROCESS', 'PROCESS_ID', 3, 'String', 2, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Process Id'),
 ('ALL', 'PROCESS', 'SUBSYSTEM_ID', 1, 'String', 2, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Subsystem Id'),
 ('ALL', 'PROCESS', 'URL', 7, 'String', 100, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'URL'),
-('ALL', 'PROCESS_COMPONENT', 'AUTHORIZE', 8, 'Boolean', 1, 0, '0', '0', '1', '0', NULL, NULL, NULL, 'Authorize'),
+('ALL', 'PROCESS_COMPONENT', 'AUTHORIZE', 9, 'Boolean', 0, 0, '0', '0', '1', '0', NULL, NULL, NULL, 'Authorize'),
 ('ALL', 'PROCESS_COMPONENT', 'COMPONENT_ID', 6, 'String', 150, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Component Id'),
-('ALL', 'PROCESS_COMPONENT', 'ENABLE', 7, 'Boolean', 1, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Enable'),
+('ALL', 'PROCESS_COMPONENT', 'ENABLE', 8, 'Boolean', 0, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Enable'),
 ('ALL', 'PROCESS_COMPONENT', 'MODULE_ID', 3, 'String', 2, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Module Id'),
 ('ALL', 'PROCESS_COMPONENT', 'PROCESS_ID', 4, 'String', 2, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Process Id'),
 ('ALL', 'PROCESS_COMPONENT', 'PROCESS_SEQUENCE', 5, 'Integer', 3, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Process sequence'),
 ('ALL', 'PROCESS_COMPONENT', 'SUBSYSTEM_ID', 2, 'String', 2, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Subsystem Id'),
+('ALL', 'PROCESS_COMPONENT', 'TYPE_ID', 7, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Component type Id'),
 ('ALL', 'PRODUCT_ASESSOR', 'OBSERVATIONS', 3, 'String', 50, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Observations'),
 ('ALL', 'PRODUCT_ASESSOR', 'PRODUCT_ID', 2, 'String', 3, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Product id'),
 ('ALL', 'PRODUCT_ASESSOR', 'USER_ID', 1, 'String', 20, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Assessor'),
@@ -832,7 +1056,7 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'RESPONSE', 'DESCRIPTION', 2, 'String', 100, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Description of response'),
 ('ALL', 'RESPONSE', 'RESPONSE_ID', 1, 'String', 8, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Response Id'),
 ('ALL', 'ROLE', 'DAY_ID', 5, 'String', 3, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Day Id'),
-('ALL', 'ROLE', 'EDITABLE', 8, 'Boolean', 1, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Editable'),
+('ALL', 'ROLE', 'EDITABLE', 8, 'Boolean', 0, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Editable'),
 ('ALL', 'ROLE', 'HOUR_FROM', 6, 'String', 4, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Hour From'),
 ('ALL', 'ROLE', 'HOUR_TO', 7, 'String', 4, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Hour To'),
 ('ALL', 'ROLE', 'MODULE_ID', 3, 'String', 2, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Module Id'),
@@ -852,7 +1076,7 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'SOLICITUDE', 'GROUP_CLIENT_ID', 5, 'Integer', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Group'),
 ('ALL', 'SOLICITUDE', 'INITIAL_PAY_DATE', 11, 'Date', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Date for the first pay'),
 ('ALL', 'SOLICITUDE', 'INSTRUMENTATION_DATE', 9, 'Date', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Instrumentation date'),
-('ALL', 'SOLICITUDE', 'NUMBER_QUOTAS', 18, 'Integer', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Number of fees'),
+('ALL', 'SOLICITUDE', 'NUMBER_QUOTAS', 18, 'Integer', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Number of fees'),
 ('ALL', 'SOLICITUDE', 'NUMBER_RENEWAL', 14, 'Integer', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Number of renewal'),
 ('ALL', 'SOLICITUDE', 'PARTNER_CLIENT_ID', 4, 'Integer', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Client'),
 ('ALL', 'SOLICITUDE', 'PAYMENT_FREQUENCY_ID', 19, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Frequency of payment'),
@@ -879,7 +1103,7 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'USER_ACCOUNT', 'USER_STATUS_ID', 4, 'String', 4, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'User status Id'),
 ('ALL', 'USER_ACCOUNT', 'USER_TYPE_ID', 3, 'String', 4, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'User type Id'),
 ('ALL', 'USER_NOTIFICATION', 'MESSAGE', 4, 'String', 4000, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Message'),
-('ALL', 'USER_NOTIFICATION', 'READ_', 5, 'Boolean', 1, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Read'),
+('ALL', 'USER_NOTIFICATION', 'READ_', 5, 'Boolean', 0, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Read'),
 ('ALL', 'USER_NOTIFICATION', 'SUBJECT', 3, 'String', 100, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Subject'),
 ('ALL', 'USER_NOTIFICATION', 'USER_ID', 1, 'String', 20, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'User Id'),
 ('ALL', 'USER_NOTIFICATION', 'USER_NOTIFICATION_TYPE_ID', 2, 'String', 4, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'User notification type Id'),
@@ -951,7 +1175,11 @@ INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
 ('COMPONENT', 'DESCRIPTION'),
 ('COMPONENT', 'METHOD_NAME'),
 ('COMPONENT', 'SUBSYSTEM_ID'),
+('COMPONENT', 'TYPE_ID'),
 ('COMPONENT_ID', 'COMPONENT_ID'),
+('COMPONENT_ID', 'TYPE_ID'),
+('COMPONENT_TYPE', 'COMPONENT_TYPE_ID'),
+('COMPONENT_TYPE', 'DESCRIPTION'),
 ('COUNTRY', 'AREA_CODE'),
 ('COUNTRY', 'COMPANY_ID'),
 ('COUNTRY', 'COUNTRY_ID'),
@@ -1216,6 +1444,7 @@ INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
 ('PROCESS_COMPONENT', 'PROCESS_ID'),
 ('PROCESS_COMPONENT', 'PROCESS_SEQUENCE'),
 ('PROCESS_COMPONENT', 'SUBSYSTEM_ID'),
+('PROCESS_COMPONENT', 'TYPE_ID'),
 ('PROCESS_ID', 'MODULE_ID'),
 ('PROCESS_ID', 'PROCESS_ID'),
 ('PROCESS_ID', 'SUBSYSTEM_ID'),
@@ -1420,6 +1649,7 @@ CREATE TABLE IF NOT EXISTS `ENTITY_RELATIONSHIP` (
 INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHIP_ORDER`, `TABLE_FROM`, `FIELD_FROM`, `TABLE_TO`, `FIELD_TO`) VALUES
 ('ALL', 'CITY_ID_PROVINCE_ID_FK', 1, 'CITY_ID', 'COUNTRY_ID', 'PROVINCE_ID', 'COUNTRY_ID'),
 ('ALL', 'CITY_ID_PROVINCE_ID_FK', 2, 'CITY_ID', 'PROVINCE_ID', 'PROVINCE_ID', 'PROVINCE_ID'),
+('ALL', 'COMPONENT_COM_TYPE_ID_FK', 1, 'COMPONENT', 'TYPE_ID', 'COMPONENT_TYPE', 'COMPONENT_TYPE_ID'),
 ('ALL', 'COMPONENT_SUBSYSTEM_ID_FK', 1, 'COMPONENT', 'SUBSYSTEM_ID', 'SUBSYSTEM_ID', 'SUBSYSTEM_ID'),
 ('ALL', 'DATABASE_TYPE_DATA_TYPE_FK', 1, 'DATABASE_TYPE', 'DATA_TYPE_ID', 'DATA_TYPE', 'DATA_TYPE_ID'),
 ('ALL', 'DATAFILE_DATAFILE_TYPE_FK', 1, 'DATAFILE', 'DATAFILE_TYPE_ID', 'DATAFILE_TYPE', 'DATAFILE_TYPE_ID'),
@@ -1466,6 +1696,7 @@ INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHI
 ('ALL', 'PERSON_IDENTIF_TYPE_ID_FK', 1, 'PERSON', 'IDENTIFICATION_TYPE_ID', 'IDENTIFICATION_TYPE_ID', 'IDENTIFICATION_TYPE_ID'),
 ('ALL', 'PERSON_PROFESSION_TYPE_ID_FK', 1, 'PERSON', 'PROFESSION_TYPE_ID', 'PROFESSION_TYPE_ID', 'PROFESSION_TYPE_ID'),
 ('ALL', 'PROCESS_COMP_COMPONENT_ID_FK', 1, 'PROCESS_COMPONENT', 'COMPONENT_ID', 'COMPONENT_ID', 'COMPONENT_ID'),
+('ALL', 'PROCESS_COMP_COMPONENT_ID_FK', 2, 'PROCESS_COMPONENT', 'TYPE_ID', 'COMPONENT_ID', 'TYPE_ID'),
 ('ALL', 'PROCESS_COMP_PROCESS_ID_FK', 1, 'PROCESS_COMPONENT', 'SUBSYSTEM_ID', 'PROCESS_ID', 'SUBSYSTEM_ID'),
 ('ALL', 'PROCESS_COMP_PROCESS_ID_FK', 2, 'PROCESS_COMPONENT', 'MODULE_ID', 'PROCESS_ID', 'MODULE_ID'),
 ('ALL', 'PROCESS_COMP_PROCESS_ID_FK', 3, 'PROCESS_COMPONENT', 'PROCESS_ID', 'PROCESS_ID', 'PROCESS_ID'),
@@ -1515,6 +1746,7 @@ INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHI
 ('MXT', 'CIVIL_STATUS_LANGUAGE_FK', 1, 'CIVIL_STATUS', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
 ('MXT', 'COMPONENT_COMPANY_FK', 1, 'COMPONENT', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
 ('MXT', 'COMPONENT_ID_FK', 1, 'COMPONENT', 'COMPONENT_ID', 'COMPONENT_ID', 'COMPONENT_ID'),
+('MXT', 'COMPONENT_ID_FK', 2, 'COMPONENT', 'TYPE_ID', 'COMPONENT_ID', 'TYPE_ID'),
 ('MXT', 'COUNTRY_COMPANY_FK', 1, 'COUNTRY', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
 ('MXT', 'COUNTRY_ID_FK', 1, 'COUNTRY', 'COUNTRY_ID', 'COUNTRY_ID', 'COUNTRY_ID'),
 ('MXT', 'COUNTRY_LANGUAGE_FK', 1, 'COUNTRY', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
@@ -1649,14 +1881,14 @@ INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHI
 CREATE TABLE IF NOT EXISTS `ENTITY_TABLE` (
   `COMPANY_ID` varchar(4) NOT NULL,
   `TABLE_ID` varchar(30) NOT NULL,
-  `HAS_TABLE_ID` varchar(1) NOT NULL,
+  `HAS_TABLE_ID` bit(1) NOT NULL,
   `PACKAGE_NAME` varchar(30) NOT NULL,
-  `MULTI_COMPANY` varchar(1) NOT NULL DEFAULT '0',
-  `MULTI_LANGUAGE` varchar(1) NOT NULL DEFAULT '0',
-  `HISTORICAL_DATA` varchar(1) NOT NULL DEFAULT '0',
-  `OPTIMISTIC_LOCKING` varchar(1) NOT NULL DEFAULT '0',
-  `ENUMERATED_TYPES` varchar(1) NOT NULL DEFAULT '0',
-  `CACHE_MEMORY` varchar(1) NOT NULL DEFAULT '0',
+  `MULTI_COMPANY` bit(1) NOT NULL DEFAULT b'0',
+  `MULTI_LANGUAGE` bit(1) NOT NULL DEFAULT b'0',
+  `HISTORICAL_DATA` bit(1) NOT NULL DEFAULT b'0',
+  `OPTIMISTIC_LOCKING` bit(1) NOT NULL DEFAULT b'0',
+  `ENUMERATED_TYPES` bit(1) NOT NULL DEFAULT b'0',
+  `CACHE_MEMORY` bit(1) NOT NULL DEFAULT b'0',
   `DESCRIPTION` varchar(100) NOT NULL,
   PRIMARY KEY (`COMPANY_ID`,`TABLE_ID`),
   KEY `ENTITY_TABLE_ID_FK` (`TABLE_ID`)
@@ -1673,6 +1905,7 @@ INSERT INTO `ENTITY_TABLE` (`COMPANY_ID`, `TABLE_ID`, `HAS_TABLE_ID`, `PACKAGE_N
 ('ALL', 'CIVIL_STATUS', '1', 'person', '1', '1', '0', '0', '0', '0', 'Values of civil statuses'),
 ('ALL', 'COMPANY', '0', 'common', '0', '0', '0', '0', '0', '0', 'Values of companies'),
 ('ALL', 'COMPONENT', '1', 'security', '1', '0', '0', '0', '0', '1', 'Values of components'),
+('ALL', 'COMPONENT_TYPE', '0', 'security', '0', '0', '0', '0', '0', '0', 'Values of component types'),
 ('ALL', 'COUNTRY', '1', 'parameter', '1', '1', '0', '0', '0', '0', 'Values of countries'),
 ('ALL', 'CURRENCY', '1', 'microcredit', '1', '1', '1', '0', '0', '0', 'Currency'),
 ('ALL', 'DATABASE_TYPE', '0', 'common', '0', '0', '0', '0', '0', '0', 'Values of database types'),
@@ -1755,6 +1988,7 @@ INSERT INTO `ENTITY_TABLE_ID` (`TABLE_ID`) VALUES
 ('COMPANY'),
 ('COMPONENT'),
 ('COMPONENT_ID'),
+('COMPONENT_TYPE'),
 ('COUNTRY'),
 ('COUNTRY_ID'),
 ('CURRENCY'),
@@ -2340,6 +2574,8 @@ CREATE TABLE IF NOT EXISTS `PARAMETER` (
 -- Volcar la base de datos para la tabla `PARAMETER`
 --
 
+INSERT INTO `PARAMETER` (`COMPANY_ID`, `EXPIRED`, `PARAMETER_ID`, `CREATED`, `SUBSYSTEM_ID`, `DATA_TYPE_ID`, `PARAMETER_VALUE`, `DESCRIPTION`) VALUES
+('MXT', '9999-12-31 00:00:00', 'DEFAULT_PASSWORD', '2012-02-24 00:00:00', 'A', 'String', 'b34d7dbecec802e49a6cdb0d0a9334a5', 'CONTRASEÑA POR DEFECTO PARA USUARIOS');
 
 -- --------------------------------------------------------
 
@@ -2356,6 +2592,8 @@ CREATE TABLE IF NOT EXISTS `PARAMETER_ID` (
 -- Volcar la base de datos para la tabla `PARAMETER_ID`
 --
 
+INSERT INTO `PARAMETER_ID` (`PARAMETER_ID`) VALUES
+('DEFAULT_PASSWORD');
 
 -- --------------------------------------------------------
 
@@ -2690,8 +2928,8 @@ CREATE TABLE IF NOT EXISTS `PROCESS` (
   `PROCESS_ID` varchar(2) NOT NULL,
   `CREATED` datetime NOT NULL,
   `NAME` varchar(40) NOT NULL,
-  `ENABLE` varchar(1) NOT NULL DEFAULT '1',
-  `MENU` varchar(1) NOT NULL DEFAULT '1',
+  `ENABLE` bit(1) NOT NULL DEFAULT b'1',
+  `MENU` bit(1) NOT NULL DEFAULT b'1',
   `URL` varchar(100) NOT NULL,
   `DATAFILE_ID` int(11) DEFAULT NULL,
   PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`EXPIRED`,`SUBSYSTEM_ID`,`MODULE_ID`,`PROCESS_ID`),
@@ -2711,12 +2949,15 @@ INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '03', '2011-11-27 00:00:00', 'SUBSISTEMAS', '1', '1', 'A103', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '04', '2011-11-27 00:00:00', 'MODULOS', '1', '1', 'A104', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '05', '2011-11-27 00:00:00', 'PROCESOS', '1', '1', 'A105', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '06', '2012-03-03 12:08:36', 'COMPONENTES', '1', '1', 'A106', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '07', '2012-03-03 12:08:36', 'COMPONENTES POR PROCESO', '1', '1', 'A107', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '01', '2011-10-14 00:00:00', 'ROLES', '1', '1', 'A201', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '02', '2011-11-29 00:00:00', 'PROCESOS POR ROL', '1', '1', 'A202', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '03', '2011-11-30 00:00:00', 'USUARIOS', '1', '1', 'A203', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '04', '2011-11-30 00:00:00', 'ROLES POR USUARIO', '1', '1', 'A204', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '05', '2011-11-30 00:00:00', 'PASSWORD USUARIOS', '1', '1', 'A205', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '06', '2011-12-07 00:00:00', 'TERMINALES', '1', '1', 'A206', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '05', '2011-11-30 00:00:00', 'CAMBIO CONTRASEÑA', '1', '1', 'A205', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '06', '2011-11-30 00:00:00', 'RESETEO CONTRASEÑA', '1', '1', 'A205', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '07', '2011-12-07 00:00:00', 'TERMINALES', '1', '1', 'A206', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '01', '2012-01-21 19:34:18', 'TIPOS DE PERSONA', '1', '1', 'B001', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '02', '2012-01-21 19:34:18', 'TIPOS DE IDENTIFICACION', '1', '1', 'B002', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '03', '2012-01-21 19:34:18', 'GENEROS', '1', '1', 'B003', NULL),
@@ -2742,9 +2983,17 @@ INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '2', '02', '2012-01-14 16:57:28', 'SOCIOS GRUPALES', '1', '1', 'C202', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '3', '01', '2012-01-14 16:58:40', 'SOLICITUD DE MICROCREDITO', '1', '1', 'C301', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '3', '02', '2012-01-14 16:58:41', 'RECOMENDACION', '1', '1', 'C302', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '4', '01', '2012-02-29 14:14:17', 'CONSULTA SOLICITUDES', '1', '1', 'C401', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '4', '02', '2012-02-29 14:14:17', 'INSTRUMENTACIÓN CORE', '1', '1', 'C402', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '5', '01', '2012-02-29 14:15:47', 'VERIFICACIÓN DESTINO', '1', '1', 'C501', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '5', '02', '2012-02-29 14:15:47', 'CONSUTA CUOTAS', '1', '1', 'C502', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '5', '03', '2012-02-29 14:15:47', 'PAGO CUOTAS', '1', '1', 'C503', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '5', '04', '2012-02-29 14:15:47', 'ABONO EXTRAORDINARIO', '1', '1', 'C504', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '5', '05', '2012-02-29 14:15:47', 'PRECANCELACIÓN', '1', '1', 'C505', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '0', '01', '2011-10-14 00:00:00', 'MENU PRINCIPAL', '1', '0', 'G001', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '1', '01', '2011-10-14 00:00:00', 'PARAMETROS GENERALES', '1', '1', 'G101', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '01', '2011-10-14 00:00:00', 'LISTA DE VALORES PARA LOS COMBOS', '1', '0', 'G201', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '02', '2012-03-03 12:09:42', 'LOV PARA SOCIOS INDIVIDUALES', '1', '0', 'G202', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '01', '2011-10-14 00:00:00', 'PAISES', '1', '1', 'G301', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '02', '2011-10-14 00:00:00', 'PROVINCIAS', '1', '1', 'G302', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '03', '2011-10-14 00:00:00', 'CANTONES', '1', '1', 'G303', NULL),
@@ -2763,10 +3012,11 @@ CREATE TABLE IF NOT EXISTS `PROCESS_COMPONENT` (
   `PROCESS_ID` varchar(2) NOT NULL,
   `PROCESS_SEQUENCE` tinyint(4) NOT NULL,
   `COMPONENT_ID` varchar(150) NOT NULL,
-  `ENABLE` varchar(1) NOT NULL DEFAULT '0',
-  `AUTHORIZE` varchar(1) DEFAULT '0',
+  `TYPE_ID` varchar(3) NOT NULL,
+  `ENABLE` bit(1) NOT NULL DEFAULT b'0',
+  `AUTHORIZE` bit(1) DEFAULT b'0',
   PRIMARY KEY (`COMPANY_ID`,`SUBSYSTEM_ID`,`MODULE_ID`,`PROCESS_ID`,`PROCESS_SEQUENCE`),
-  KEY `PROCESS_COMP_COMPONENT_ID_FK` (`COMPONENT_ID`),
+  KEY `PROCESS_COMP_COMPONENT_ID_FK` (`COMPONENT_ID`,`TYPE_ID`),
   KEY `PROCESS_COMP_PROCESS_ID_FK` (`SUBSYSTEM_ID`,`MODULE_ID`,`PROCESS_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -2774,10 +3024,11 @@ CREATE TABLE IF NOT EXISTS `PROCESS_COMPONENT` (
 -- Volcar la base de datos para la tabla `PROCESS_COMPONENT`
 --
 
-INSERT INTO `PROCESS_COMPONENT` (`COMPANY_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`, `PROCESS_SEQUENCE`, `COMPONENT_ID`, `ENABLE`, `AUTHORIZE`) VALUES
-('MXT', 'A', '0', '01', 1, 'mobile.bus.security.Loggin', '1', '0'),
-('MXT', 'A', '0', '02', 1, 'mobile.bus.parameter.ParameterTest', '1', '0'),
-('MXT', 'G', '0', '01', 1, 'mobile.logic.general.MenuGenerator', '1', '0');
+INSERT INTO `PROCESS_COMPONENT` (`COMPANY_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`, `PROCESS_SEQUENCE`, `COMPONENT_ID`, `TYPE_ID`, `ENABLE`, `AUTHORIZE`) VALUES
+('MXT', 'A', '0', '01', 1, 'mobile.bus.security.Loggin', 'QRY', '1', '0'),
+('MXT', 'C', '4', '01', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', '1', NULL),
+('MXT', 'G', '0', '01', 1, 'mobile.logic.general.MenuGenerator', 'QRY', '1', '0'),
+('MXT', 'G', '2', '02', 1, 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', '1', NULL);
 
 -- --------------------------------------------------------
 
@@ -2804,12 +3055,15 @@ INSERT INTO `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) VALUES
 ('A', '1', '03'),
 ('A', '1', '04'),
 ('A', '1', '05'),
+('A', '1', '06'),
+('A', '1', '07'),
 ('A', '2', '01'),
 ('A', '2', '02'),
 ('A', '2', '03'),
 ('A', '2', '04'),
 ('A', '2', '05'),
 ('A', '2', '06'),
+('A', '2', '07'),
 ('B', '0', '01'),
 ('B', '0', '02'),
 ('B', '0', '03'),
@@ -2835,9 +3089,17 @@ INSERT INTO `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) VALUES
 ('C', '2', '02'),
 ('C', '3', '01'),
 ('C', '3', '02'),
+('C', '4', '01'),
+('C', '4', '02'),
+('C', '5', '01'),
+('C', '5', '02'),
+('C', '5', '03'),
+('C', '5', '04'),
+('C', '5', '05'),
 ('G', '0', '01'),
 ('G', '1', '01'),
 ('G', '2', '01'),
+('G', '2', '02'),
 ('G', '3', '01'),
 ('G', '3', '02'),
 ('G', '3', '03'),
@@ -3344,7 +3606,7 @@ CREATE TABLE IF NOT EXISTS `QUOTA_TYPE` (
 --
 
 INSERT INTO `QUOTA_TYPE` (`COMPANY_ID`, `LANGUAGE_ID`, `QUOTA_TYPE_ID`, `DESCRIPTION`) VALUES
-('MXT', 'ES', 'AMR', 'AMORTIZACION GRADUAL'),
+('MXT', 'ES', 'AMR', 'AMORTIZACIÓN GRADUAL'),
 ('MXT', 'ES', 'MNL', 'MANUAL');
 
 -- --------------------------------------------------------
@@ -3521,7 +3783,7 @@ CREATE TABLE IF NOT EXISTS `ROLE` (
   `DAY_ID` varchar(3) DEFAULT NULL,
   `HOUR_FROM` varchar(4) DEFAULT NULL,
   `HOUR_TO` varchar(4) DEFAULT NULL,
-  `EDITABLE` varchar(1) NOT NULL DEFAULT '0',
+  `EDITABLE` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`PROFILE_ID`,`SUBSYSTEM_ID`,`MODULE_ID`,`PROCESS_ID`),
   KEY `ROLE_PROCESS_ID_FK` (`SUBSYSTEM_ID`,`MODULE_ID`,`PROCESS_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -3607,7 +3869,7 @@ CREATE TABLE IF NOT EXISTS `SOLICITUDE` (
   `AMOUNT` decimal(19,6) NOT NULL,
   `TERM` bigint(20) NOT NULL,
   `QUOTA_TYPE_ID` varchar(3) NOT NULL,
-  `NUMBER_QUOTAS` int(11) NOT NULL,
+  `NUMBER_QUOTAS` int(11) DEFAULT NULL,
   `PAYMENT_FREQUENCY_ID` varchar(3) NOT NULL,
   `FUNDS_DESTINATION_ID` varchar(3) NOT NULL,
   `DESTINATION_DESCRIPTION` varchar(500) NOT NULL,
@@ -3826,7 +4088,7 @@ CREATE TABLE IF NOT EXISTS `USER_NOTIFICATION` (
   `USER_NOTIFICATION_TYPE_ID` varchar(4) NOT NULL,
   `SUBJECT` varchar(100) NOT NULL,
   `MESSAGE` varchar(4000) NOT NULL,
-  `READ_` varchar(1) NOT NULL DEFAULT '0',
+  `READ_` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`),
   KEY `USER_NOTIF_USER_ACCOUNT_ID_FK` (`USER_ID`),
   KEY `USER_NOTIF_USER_NOT_TYPE_ID_FK` (`USER_NOTIFICATION_TYPE_ID`)
@@ -3984,7 +4246,7 @@ CREATE TABLE IF NOT EXISTS `USER_TYPE` (
 
 INSERT INTO `USER_TYPE` (`COMPANY_ID`, `LANGUAGE_ID`, `USER_TYPE_ID`, `NAME`) VALUES
 ('MXT', 'ES', 'ADM', 'ADMINISTRADOR'),
-('MXT', 'ES', 'ASE', 'ASESOR CREDITO'),
+('MXT', 'ES', 'ASE', 'ASESOR CRÉDITO'),
 ('MXT', 'ES', 'OPE', 'OPERADOR'),
 ('MXT', 'ES', 'SYS', 'SISTEMAS');
 
@@ -4036,25 +4298,25 @@ CREATE TABLE IF NOT EXISTS `ZONE_ASESSOR` (
 -- Filtros para la tabla `ACCOUNT_STATUS`
 --
 ALTER TABLE `ACCOUNT_STATUS`
+  ADD CONSTRAINT `ACCOUNT_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `ACCOUNT_STATUS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ACCOUNT_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `ACCOUNT_STATUS_ID` (`STATUS_ID`),
-  ADD CONSTRAINT `ACCOUNT_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `ACCOUNT_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `ACCOUNT_STATUS_ID` (`STATUS_ID`);
 
 --
 -- Filtros para la tabla `ADDRESS_TYPE`
 --
 ALTER TABLE `ADDRESS_TYPE`
+  ADD CONSTRAINT `ADDRESS_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `ADDRESS_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ADDRESS_TYPE_ID_FK` FOREIGN KEY (`ADDRESS_TYPE_ID`) REFERENCES `ADDRESS_TYPE_ID` (`ADDRESS_TYPE_ID`),
-  ADD CONSTRAINT `ADDRESS_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `ADDRESS_TYPE_ID_FK` FOREIGN KEY (`ADDRESS_TYPE_ID`) REFERENCES `ADDRESS_TYPE_ID` (`ADDRESS_TYPE_ID`);
 
 --
 -- Filtros para la tabla `CITY`
 --
 ALTER TABLE `CITY`
+  ADD CONSTRAINT `CITY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `CITY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `CITY_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) REFERENCES `CITY_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`),
-  ADD CONSTRAINT `CITY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `CITY_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) REFERENCES `CITY_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`);
 
 --
 -- Filtros para la tabla `CITY_ID`
@@ -4066,33 +4328,34 @@ ALTER TABLE `CITY_ID`
 -- Filtros para la tabla `CIVIL_STATUS`
 --
 ALTER TABLE `CIVIL_STATUS`
+  ADD CONSTRAINT `CIVIL_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `CIVIL_STATUS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `CIVIL_STATUS_ID_FK` FOREIGN KEY (`CIVIL_STATUS_ID`) REFERENCES `CIVIL_STATUS_ID` (`CIVIL_STATUS_ID`),
-  ADD CONSTRAINT `CIVIL_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `CIVIL_STATUS_ID_FK` FOREIGN KEY (`CIVIL_STATUS_ID`) REFERENCES `CIVIL_STATUS_ID` (`CIVIL_STATUS_ID`);
 
 --
 -- Filtros para la tabla `COMPONENT`
 --
 ALTER TABLE `COMPONENT`
+  ADD CONSTRAINT `COMPONENT_SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `SUBSYSTEM_ID` (`SUBSYSTEM_ID`),
   ADD CONSTRAINT `COMPONENT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `COMPONENT_ID_FK` FOREIGN KEY (`COMPONENT_ID`) REFERENCES `COMPONENT_ID` (`COMPONENT_ID`),
-  ADD CONSTRAINT `COMPONENT_SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `SUBSYSTEM_ID` (`SUBSYSTEM_ID`);
+  ADD CONSTRAINT `COMPONENT_COM_TYPE_ID_FK` FOREIGN KEY (`TYPE_ID`) REFERENCES `COMPONENT_TYPE` (`COMPONENT_TYPE_ID`),
+  ADD CONSTRAINT `COMPONENT_ID_FK` FOREIGN KEY (`COMPONENT_ID`, `TYPE_ID`) REFERENCES `COMPONENT_ID` (`COMPONENT_ID`, `TYPE_ID`);
 
 --
 -- Filtros para la tabla `COUNTRY`
 --
 ALTER TABLE `COUNTRY`
+  ADD CONSTRAINT `COUNTRY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `COUNTRY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `COUNTRY_ID_FK` FOREIGN KEY (`COUNTRY_ID`) REFERENCES `COUNTRY_ID` (`COUNTRY_ID`),
-  ADD CONSTRAINT `COUNTRY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `COUNTRY_ID_FK` FOREIGN KEY (`COUNTRY_ID`) REFERENCES `COUNTRY_ID` (`COUNTRY_ID`);
 
 --
 -- Filtros para la tabla `CURRENCY`
 --
 ALTER TABLE `CURRENCY`
+  ADD CONSTRAINT `CURRENCY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `CURRENCY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `CURRENCY_ID_FK` FOREIGN KEY (`CURRENCY_ID`) REFERENCES `CURRENCY_ID` (`CURRENCY_ID`),
-  ADD CONSTRAINT `CURRENCY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `CURRENCY_ID_FK` FOREIGN KEY (`CURRENCY_ID`) REFERENCES `CURRENCY_ID` (`CURRENCY_ID`);
 
 --
 -- Filtros para la tabla `DATABASE_TYPE`
@@ -4104,17 +4367,17 @@ ALTER TABLE `DATABASE_TYPE`
 -- Filtros para la tabla `DATAFILE`
 --
 ALTER TABLE `DATAFILE`
+  ADD CONSTRAINT `DATAFILE_ID_FK` FOREIGN KEY (`DATAFILE_ID`) REFERENCES `DATAFILE_ID` (`DATAFILE_ID`),
   ADD CONSTRAINT `DATAFILE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `DATAFILE_DATAFILE_TYPE_FK` FOREIGN KEY (`DATAFILE_TYPE_ID`) REFERENCES `DATAFILE_TYPE` (`DATAFILE_TYPE_ID`),
-  ADD CONSTRAINT `DATAFILE_ID_FK` FOREIGN KEY (`DATAFILE_ID`) REFERENCES `DATAFILE_ID` (`DATAFILE_ID`);
+  ADD CONSTRAINT `DATAFILE_DATAFILE_TYPE_FK` FOREIGN KEY (`DATAFILE_TYPE_ID`) REFERENCES `DATAFILE_TYPE` (`DATAFILE_TYPE_ID`);
 
 --
 -- Filtros para la tabla `DISTRICT`
 --
 ALTER TABLE `DISTRICT`
+  ADD CONSTRAINT `DISTRICT_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `DISTRICT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `DISTRICT_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`) REFERENCES `DISTRICT_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`),
-  ADD CONSTRAINT `DISTRICT_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `DISTRICT_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`) REFERENCES `DISTRICT_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`);
 
 --
 -- Filtros para la tabla `DISTRICT_ID`
@@ -4126,10 +4389,10 @@ ALTER TABLE `DISTRICT_ID`
 -- Filtros para la tabla `ENTITY_FIELD`
 --
 ALTER TABLE `ENTITY_FIELD`
+  ADD CONSTRAINT `ENTITY_FIELD_SEQUENTIAL_ID_FK` FOREIGN KEY (`SEQUENTIAL_ID`) REFERENCES `SEQUENTIAL_ID` (`SEQUENTIAL_ID`),
   ADD CONSTRAINT `ENTITY_FIELD_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `ENTITY_FIELD_DATA_TYPE_FK` FOREIGN KEY (`DATA_TYPE_ID`) REFERENCES `DATA_TYPE` (`DATA_TYPE_ID`),
-  ADD CONSTRAINT `ENTITY_FIELD_ID_FK` FOREIGN KEY (`TABLE_ID`, `FIELD_ID`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`),
-  ADD CONSTRAINT `ENTITY_FIELD_SEQUENTIAL_ID_FK` FOREIGN KEY (`SEQUENTIAL_ID`) REFERENCES `SEQUENTIAL_ID` (`SEQUENTIAL_ID`);
+  ADD CONSTRAINT `ENTITY_FIELD_ID_FK` FOREIGN KEY (`TABLE_ID`, `FIELD_ID`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`);
 
 --
 -- Filtros para la tabla `ENTITY_FIELD_ID`
@@ -4141,67 +4404,68 @@ ALTER TABLE `ENTITY_FIELD_ID`
 -- Filtros para la tabla `ENTITY_RELATIONSHIP`
 --
 ALTER TABLE `ENTITY_RELATIONSHIP`
+  ADD CONSTRAINT `ENTITY_RELATIONSHIP_TO_FK` FOREIGN KEY (`TABLE_TO`, `FIELD_TO`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`),
   ADD CONSTRAINT `ENTITY_RELATIONSHIP_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ENTITY_RELATIONSHIP_FROM_FK` FOREIGN KEY (`TABLE_FROM`, `FIELD_FROM`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`),
-  ADD CONSTRAINT `ENTITY_RELATIONSHIP_TO_FK` FOREIGN KEY (`TABLE_TO`, `FIELD_TO`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`);
+  ADD CONSTRAINT `ENTITY_RELATIONSHIP_FROM_FK` FOREIGN KEY (`TABLE_FROM`, `FIELD_FROM`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`);
 
 --
 -- Filtros para la tabla `ENTITY_TABLE`
 --
 ALTER TABLE `ENTITY_TABLE`
-  ADD CONSTRAINT `ENTITY_TABLE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ENTITY_TABLE_ID_FK` FOREIGN KEY (`TABLE_ID`) REFERENCES `ENTITY_TABLE_ID` (`TABLE_ID`);
+  ADD CONSTRAINT `ENTITY_TABLE_ID_FK` FOREIGN KEY (`TABLE_ID`) REFERENCES `ENTITY_TABLE_ID` (`TABLE_ID`),
+  ADD CONSTRAINT `ENTITY_TABLE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `FREQUENCY`
 --
 ALTER TABLE `FREQUENCY`
+  ADD CONSTRAINT `FREQUENCY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `FREQUENCY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `FREQUENCY_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
-  ADD CONSTRAINT `FREQUENCY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `FREQUENCY_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`);
 
 --
 -- Filtros para la tabla `FUNDS_DESTINATION`
 --
 ALTER TABLE `FUNDS_DESTINATION`
+  ADD CONSTRAINT `FUNDS_DESTINATION_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `FUNDS_DESTINATION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `FUNDS_DESTINATION_ID_FK` FOREIGN KEY (`FUNDS_DESTINATION_ID`) REFERENCES `FUNDS_DESTINATION_ID` (`FUNDS_DESTINATION_ID`),
-  ADD CONSTRAINT `FUNDS_DESTINATION_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `FUNDS_DESTINATION_ID_FK` FOREIGN KEY (`FUNDS_DESTINATION_ID`) REFERENCES `FUNDS_DESTINATION_ID` (`FUNDS_DESTINATION_ID`);
 
 --
 -- Filtros para la tabla `GENDER_TYPE`
 --
 ALTER TABLE `GENDER_TYPE`
-  ADD CONSTRAINT `GENDER_TYPE_ID_FK` FOREIGN KEY (`GENDER_TYPE_ID`) REFERENCES `GENDER_TYPE_ID` (`GENDER_TYPE_ID`),
-  ADD CONSTRAINT `GENDER_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `GENDER_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
+  ADD CONSTRAINT `GENDER_TYPE_ID_FK` FOREIGN KEY (`GENDER_TYPE_ID`) REFERENCES `GENDER_TYPE_ID` (`GENDER_TYPE_ID`);
 
 --
 -- Filtros para la tabla `GEOGRAPHIC_ZONE`
 --
 ALTER TABLE `GEOGRAPHIC_ZONE`
+  ADD CONSTRAINT `GEOGRAPHIC_ZONE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `GEOGRAPHIC_ZONE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `GEOGRAPHIC_ZONE_ID_FK` FOREIGN KEY (`GEOGRAPHIC_ZONE_ID`) REFERENCES `GEOGRAPHIC_ZONE_ID` (`GEOGRAPHIC_ZONE_ID`),
-  ADD CONSTRAINT `GEOGRAPHIC_ZONE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `GEOGRAPHIC_ZONE_ID_FK` FOREIGN KEY (`GEOGRAPHIC_ZONE_ID`) REFERENCES `GEOGRAPHIC_ZONE_ID` (`GEOGRAPHIC_ZONE_ID`);
 
 --
 -- Filtros para la tabla `HOST`
 --
 ALTER TABLE `HOST`
-  ADD CONSTRAINT `HOST_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `HOST_ID_FK` FOREIGN KEY (`HOST_ID`) REFERENCES `HOST_ID` (`HOST_ID`);
+  ADD CONSTRAINT `HOST_ID_FK` FOREIGN KEY (`HOST_ID`) REFERENCES `HOST_ID` (`HOST_ID`),
+  ADD CONSTRAINT `HOST_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `IDENTIFICATION_TYPE`
 --
 ALTER TABLE `IDENTIFICATION_TYPE`
+  ADD CONSTRAINT `IDENT_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `IDENTIFICATION_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `IDENTIFICATION_TYPE_ID_FK` FOREIGN KEY (`IDENTIFICATION_TYPE_ID`) REFERENCES `IDENTIFICATION_TYPE_ID` (`IDENTIFICATION_TYPE_ID`),
-  ADD CONSTRAINT `IDENT_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `IDENTIFICATION_TYPE_ID_FK` FOREIGN KEY (`IDENTIFICATION_TYPE_ID`) REFERENCES `IDENTIFICATION_TYPE_ID` (`IDENTIFICATION_TYPE_ID`);
 
 --
 -- Filtros para la tabla `MICRO_ACCOUNT`
 --
 ALTER TABLE `MICRO_ACCOUNT`
+  ADD CONSTRAINT `MIC_ACC_USER_ID_FK` FOREIGN KEY (`ASSESSOR`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
   ADD CONSTRAINT `MICRO_ACCOUNT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `MICRO_ACCOUNT_ID_FK` FOREIGN KEY (`ACCOUNT_ID`) REFERENCES `MICRO_ACCOUNT_ID` (`ACCOUNT_ID`),
   ADD CONSTRAINT `MIC_ACC_FREQ_ID_FK` FOREIGN KEY (`PAYMENT_FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
@@ -4211,24 +4475,23 @@ ALTER TABLE `MICRO_ACCOUNT`
   ADD CONSTRAINT `MIC_ACC_PRODUCT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`),
   ADD CONSTRAINT `MIC_ACC_QUOTA_TYPE_ID_FK` FOREIGN KEY (`QUOTA_TYPE_ID`) REFERENCES `QUOTA_TYPE_ID` (`QUOTA_TYPE_ID`),
   ADD CONSTRAINT `MIC_ACC_SOLICITUDE_ID_FK` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `SOLICITUDE_ID` (`SOLICITUDE_ID`),
-  ADD CONSTRAINT `MIC_ACC_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `ACCOUNT_STATUS_ID` (`STATUS_ID`),
-  ADD CONSTRAINT `MIC_ACC_USER_ID_FK` FOREIGN KEY (`ASSESSOR`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `MIC_ACC_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `ACCOUNT_STATUS_ID` (`STATUS_ID`);
 
 --
 -- Filtros para la tabla `MICRO_ACCOUNT_QUOTA`
 --
 ALTER TABLE `MICRO_ACCOUNT_QUOTA`
+  ADD CONSTRAINT `MIC_ACC_QUO_ACC_ID_FK` FOREIGN KEY (`ACCOUNT_ID`) REFERENCES `MICRO_ACCOUNT_ID` (`ACCOUNT_ID`),
   ADD CONSTRAINT `MICRO_ACCOUNT_QUOTA_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `MICRO_ACCOUNT_QUOTA_ID_FK` FOREIGN KEY (`ACCOUNT_ID`, `SUBACCOUNT`) REFERENCES `MICRO_ACCOUNT_QUOTA_ID` (`ACCOUNT_ID`, `SUBACCOUNT`),
-  ADD CONSTRAINT `MIC_ACC_QUO_ACC_ID_FK` FOREIGN KEY (`ACCOUNT_ID`) REFERENCES `MICRO_ACCOUNT_ID` (`ACCOUNT_ID`);
+  ADD CONSTRAINT `MICRO_ACCOUNT_QUOTA_ID_FK` FOREIGN KEY (`ACCOUNT_ID`, `SUBACCOUNT`) REFERENCES `MICRO_ACCOUNT_QUOTA_ID` (`ACCOUNT_ID`, `SUBACCOUNT`);
 
 --
 -- Filtros para la tabla `MODULE`
 --
 ALTER TABLE `MODULE`
+  ADD CONSTRAINT `MODULE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `MODULE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `MODULE_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`) REFERENCES `MODULE_ID` (`SUBSYSTEM_ID`, `MODULE_ID`),
-  ADD CONSTRAINT `MODULE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `MODULE_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`) REFERENCES `MODULE_ID` (`SUBSYSTEM_ID`, `MODULE_ID`);
 
 --
 -- Filtros para la tabla `MODULE_ID`
@@ -4240,58 +4503,58 @@ ALTER TABLE `MODULE_ID`
 -- Filtros para la tabla `PARAMETER`
 --
 ALTER TABLE `PARAMETER`
+  ADD CONSTRAINT `PARAMETER_ID_FK` FOREIGN KEY (`PARAMETER_ID`) REFERENCES `PARAMETER_ID` (`PARAMETER_ID`),
   ADD CONSTRAINT `PARAMETER_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PARAMETER_DATA_TYPE_FK` FOREIGN KEY (`DATA_TYPE_ID`) REFERENCES `DATA_TYPE` (`DATA_TYPE_ID`),
-  ADD CONSTRAINT `PARAMETER_ID_FK` FOREIGN KEY (`PARAMETER_ID`) REFERENCES `PARAMETER_ID` (`PARAMETER_ID`);
+  ADD CONSTRAINT `PARAMETER_DATA_TYPE_FK` FOREIGN KEY (`DATA_TYPE_ID`) REFERENCES `DATA_TYPE` (`DATA_TYPE_ID`);
 
 --
 -- Filtros para la tabla `PARTNER`
 --
 ALTER TABLE `PARTNER`
+  ADD CONSTRAINT `PARTNER_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
   ADD CONSTRAINT `PARTNER_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `PARTNER_FREQ_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
   ADD CONSTRAINT `PARTNER_ID_FK` FOREIGN KEY (`PARTNER_ID`) REFERENCES `PARTNER_ID` (`PARTNER_ID`),
   ADD CONSTRAINT `PARTNER_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `PARTNER_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`),
-  ADD CONSTRAINT `PARTNER_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `PARTNER_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`);
 
 --
 -- Filtros para la tabla `PARTNER_GROUP`
 --
 ALTER TABLE `PARTNER_GROUP`
+  ADD CONSTRAINT `PARTNER_GROUP_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
   ADD CONSTRAINT `PARTNER_GROUP_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `PARTNER_GROUP_FREQ_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
   ADD CONSTRAINT `PARTNER_GROUP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`),
   ADD CONSTRAINT `PARTNER_GROUP_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `PARTNER_GROUP_PAR_GRP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`),
-  ADD CONSTRAINT `PARTNER_GROUP_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `PARTNER_GROUP_PAR_GRP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`);
 
 --
 -- Filtros para la tabla `PARTNER_GROUP_MEMBER`
 --
 ALTER TABLE `PARTNER_GROUP_MEMBER`
+  ADD CONSTRAINT `PARTNER_GRP_MEM_RESP_ID_FK` FOREIGN KEY (`RESPONSABILITY_ID`) REFERENCES `RESPONSABILITY_ID` (`RESPONSABILITY_ID`),
   ADD CONSTRAINT `PARTNER_GRP_MEM_GRP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`),
-  ADD CONSTRAINT `PARTNER_GRP_MEM_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`),
-  ADD CONSTRAINT `PARTNER_GRP_MEM_RESP_ID_FK` FOREIGN KEY (`RESPONSABILITY_ID`) REFERENCES `RESPONSABILITY_ID` (`RESPONSABILITY_ID`);
+  ADD CONSTRAINT `PARTNER_GRP_MEM_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`);
 
 --
 -- Filtros para la tabla `PERSON`
 --
 ALTER TABLE `PERSON`
+  ADD CONSTRAINT `PERSON_PROFESSION_TYPE_ID_FK` FOREIGN KEY (`PROFESSION_TYPE_ID`) REFERENCES `PROFESSION_TYPE_ID` (`PROFESSION_TYPE_ID`),
   ADD CONSTRAINT `PERSON_CITY_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) REFERENCES `CITY_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`),
   ADD CONSTRAINT `PERSON_CIVIL_STATUS_ID_FK` FOREIGN KEY (`CIVIL_STATUS_ID`) REFERENCES `CIVIL_STATUS_ID` (`CIVIL_STATUS_ID`),
   ADD CONSTRAINT `PERSON_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `PERSON_GENDER_TYPE_ID_FK` FOREIGN KEY (`GENDER_TYPE_ID`) REFERENCES `GENDER_TYPE_ID` (`GENDER_TYPE_ID`),
   ADD CONSTRAINT `PERSON_IDENTIF_TYPE_ID_FK` FOREIGN KEY (`IDENTIFICATION_TYPE_ID`) REFERENCES `IDENTIFICATION_TYPE_ID` (`IDENTIFICATION_TYPE_ID`),
-  ADD CONSTRAINT `PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`),
-  ADD CONSTRAINT `PERSON_PROFESSION_TYPE_ID_FK` FOREIGN KEY (`PROFESSION_TYPE_ID`) REFERENCES `PROFESSION_TYPE_ID` (`PROFESSION_TYPE_ID`);
+  ADD CONSTRAINT `PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`);
 
 --
 -- Filtros para la tabla `PERSON_ADDRESS`
 --
 ALTER TABLE `PERSON_ADDRESS`
-  ADD CONSTRAINT `PERSON_ADDRESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PERSON_ADDRESS_DISTRICT_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`) REFERENCES `DISTRICT_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`);
+  ADD CONSTRAINT `PERSON_ADDRESS_DISTRICT_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`) REFERENCES `DISTRICT_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`),
+  ADD CONSTRAINT `PERSON_ADDRESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `PERSON_PHONE`
@@ -4303,34 +4566,34 @@ ALTER TABLE `PERSON_PHONE`
 -- Filtros para la tabla `PERSON_TYPE`
 --
 ALTER TABLE `PERSON_TYPE`
+  ADD CONSTRAINT `PERSON_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PERSON_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PERSON_TYPE_ID_FK` FOREIGN KEY (`PERSON_TYPE_ID`) REFERENCES `PERSON_TYPE_ID` (`PERSON_TYPE_ID`),
-  ADD CONSTRAINT `PERSON_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PERSON_TYPE_ID_FK` FOREIGN KEY (`PERSON_TYPE_ID`) REFERENCES `PERSON_TYPE_ID` (`PERSON_TYPE_ID`);
 
 --
 -- Filtros para la tabla `PHONE_TYPE`
 --
 ALTER TABLE `PHONE_TYPE`
+  ADD CONSTRAINT `PHONE_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PHONE_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PHONE_TYPE_ID_FK` FOREIGN KEY (`PHONE_TYPE_ID`) REFERENCES `PHONE_TYPE_ID` (`PHONE_TYPE_ID`),
-  ADD CONSTRAINT `PHONE_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PHONE_TYPE_ID_FK` FOREIGN KEY (`PHONE_TYPE_ID`) REFERENCES `PHONE_TYPE_ID` (`PHONE_TYPE_ID`);
 
 --
 -- Filtros para la tabla `PROCESS`
 --
 ALTER TABLE `PROCESS`
+  ADD CONSTRAINT `PROCESS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PROCESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `PROCESS_DATAFILE_ID_FK` FOREIGN KEY (`DATAFILE_ID`) REFERENCES `DATAFILE_ID` (`DATAFILE_ID`),
-  ADD CONSTRAINT `PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`),
-  ADD CONSTRAINT `PROCESS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`);
 
 --
 -- Filtros para la tabla `PROCESS_COMPONENT`
 --
 ALTER TABLE `PROCESS_COMPONENT`
+  ADD CONSTRAINT `PROCESS_COMP_PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`),
   ADD CONSTRAINT `PROCESS_COMPONENT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PROCESS_COMP_COMPONENT_ID_FK` FOREIGN KEY (`COMPONENT_ID`) REFERENCES `COMPONENT_ID` (`COMPONENT_ID`),
-  ADD CONSTRAINT `PROCESS_COMP_PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`);
+  ADD CONSTRAINT `PROCESS_COMP_COMPONENT_ID_FK` FOREIGN KEY (`COMPONENT_ID`, `TYPE_ID`) REFERENCES `COMPONENT_ID` (`COMPONENT_ID`, `TYPE_ID`);
 
 --
 -- Filtros para la tabla `PROCESS_ID`
@@ -4342,44 +4605,44 @@ ALTER TABLE `PROCESS_ID`
 -- Filtros para la tabla `PRODUCT_ASESSOR`
 --
 ALTER TABLE `PRODUCT_ASESSOR`
+  ADD CONSTRAINT `PROD_ASSESSOR_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
   ADD CONSTRAINT `PRODUCT_ASESSOR_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `PRODUCT_ASESSOR_ID_FK` FOREIGN KEY (`USER_ID`, `PRODUCT_ID`) REFERENCES `PRODUCT_ASESSOR_ID` (`USER_ID`, `PRODUCT_ID`),
   ADD CONSTRAINT `PRODUCT_ASESSOR_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `PROD_ASSESSOR_PRODUCT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`),
-  ADD CONSTRAINT `PROD_ASSESSOR_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `PROD_ASSESSOR_PRODUCT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`);
 
 --
 -- Filtros para la tabla `PRODUCT_MICROCREDIT`
 --
 ALTER TABLE `PRODUCT_MICROCREDIT`
+  ADD CONSTRAINT `PRODU_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PRODUCT_MICROCREDIT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `PRODUCT_MICROCREDIT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`),
-  ADD CONSTRAINT `PRODUCT_MIC_CURRENCY_ID_FK` FOREIGN KEY (`CURRENCY_ID`) REFERENCES `CURRENCY_ID` (`CURRENCY_ID`),
-  ADD CONSTRAINT `PRODU_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PRODUCT_MIC_CURRENCY_ID_FK` FOREIGN KEY (`CURRENCY_ID`) REFERENCES `CURRENCY_ID` (`CURRENCY_ID`);
 
 --
 -- Filtros para la tabla `PROFESSION_TYPE`
 --
 ALTER TABLE `PROFESSION_TYPE`
+  ADD CONSTRAINT `PROFESSION_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PROFESSION_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PROFESSION_TYPE_ID_FK` FOREIGN KEY (`PROFESSION_TYPE_ID`) REFERENCES `PROFESSION_TYPE_ID` (`PROFESSION_TYPE_ID`),
-  ADD CONSTRAINT `PROFESSION_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PROFESSION_TYPE_ID_FK` FOREIGN KEY (`PROFESSION_TYPE_ID`) REFERENCES `PROFESSION_TYPE_ID` (`PROFESSION_TYPE_ID`);
 
 --
 -- Filtros para la tabla `PROFILE`
 --
 ALTER TABLE `PROFILE`
+  ADD CONSTRAINT `PROFILE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PROFILE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PROFILE_ID_FK` FOREIGN KEY (`PROFILE_ID`) REFERENCES `PROFILE_ID` (`PROFILE_ID`),
-  ADD CONSTRAINT `PROFILE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PROFILE_ID_FK` FOREIGN KEY (`PROFILE_ID`) REFERENCES `PROFILE_ID` (`PROFILE_ID`);
 
 --
 -- Filtros para la tabla `PROVINCE`
 --
 ALTER TABLE `PROVINCE`
+  ADD CONSTRAINT `PROVINCE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PROVINCE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PROVINCE_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`) REFERENCES `PROVINCE_ID` (`COUNTRY_ID`, `PROVINCE_ID`),
-  ADD CONSTRAINT `PROVINCE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PROVINCE_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`) REFERENCES `PROVINCE_ID` (`COUNTRY_ID`, `PROVINCE_ID`);
 
 --
 -- Filtros para la tabla `PROVINCE_ID`
@@ -4391,53 +4654,54 @@ ALTER TABLE `PROVINCE_ID`
 -- Filtros para la tabla `QUOTA_TYPE`
 --
 ALTER TABLE `QUOTA_TYPE`
+  ADD CONSTRAINT `QUOTA_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `QUOTA_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `QUOTA_TYPE_ID_FK` FOREIGN KEY (`QUOTA_TYPE_ID`) REFERENCES `QUOTA_TYPE_ID` (`QUOTA_TYPE_ID`),
-  ADD CONSTRAINT `QUOTA_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `QUOTA_TYPE_ID_FK` FOREIGN KEY (`QUOTA_TYPE_ID`) REFERENCES `QUOTA_TYPE_ID` (`QUOTA_TYPE_ID`);
 
 --
 -- Filtros para la tabla `RECOMMENDATION`
 --
 ALTER TABLE `RECOMMENDATION`
+  ADD CONSTRAINT `RECOMMENDATION_SOLICITUDE_ID` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `SOLICITUDE_ID` (`SOLICITUDE_ID`),
   ADD CONSTRAINT `RECOMMENDATION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `RECOMMENDATION_ID_FK` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `RECOMMENDATION_ID` (`SOLICITUDE_ID`),
-  ADD CONSTRAINT `RECOMMENDATION_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `RECOMMENDATION_SOLICITUDE_ID` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `SOLICITUDE_ID` (`SOLICITUDE_ID`);
+  ADD CONSTRAINT `RECOMMENDATION_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
 
 --
 -- Filtros para la tabla `RESPONSABILITY`
 --
 ALTER TABLE `RESPONSABILITY`
+  ADD CONSTRAINT `RESPONSABILITY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `RESPONSABILITY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `RESPONSABILITY_ID_FK` FOREIGN KEY (`RESPONSABILITY_ID`) REFERENCES `RESPONSABILITY_ID` (`RESPONSABILITY_ID`),
-  ADD CONSTRAINT `RESPONSABILITY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `RESPONSABILITY_ID_FK` FOREIGN KEY (`RESPONSABILITY_ID`) REFERENCES `RESPONSABILITY_ID` (`RESPONSABILITY_ID`);
 
 --
 -- Filtros para la tabla `RESPONSE`
 --
 ALTER TABLE `RESPONSE`
+  ADD CONSTRAINT `RESPONSE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `RESPONSE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `RESPONSE_ID_FK` FOREIGN KEY (`RESPONSE_ID`) REFERENCES `RESPONSE_ID` (`RESPONSE_ID`),
-  ADD CONSTRAINT `RESPONSE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `RESPONSE_ID_FK` FOREIGN KEY (`RESPONSE_ID`) REFERENCES `RESPONSE_ID` (`RESPONSE_ID`);
 
 --
 -- Filtros para la tabla `ROLE`
 --
 ALTER TABLE `ROLE`
-  ADD CONSTRAINT `ROLE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ROLE_PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`);
+  ADD CONSTRAINT `ROLE_PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`),
+  ADD CONSTRAINT `ROLE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `SEQUENTIAL`
 --
 ALTER TABLE `SEQUENTIAL`
-  ADD CONSTRAINT `SEQUENTIAL_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `SEQUENTIAL_ID_FK` FOREIGN KEY (`SEQUENTIAL_ID`) REFERENCES `SEQUENTIAL_ID` (`SEQUENTIAL_ID`);
+  ADD CONSTRAINT `SEQUENTIAL_ID_FK` FOREIGN KEY (`SEQUENTIAL_ID`) REFERENCES `SEQUENTIAL_ID` (`SEQUENTIAL_ID`),
+  ADD CONSTRAINT `SEQUENTIAL_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `SOLICITUDE`
 --
 ALTER TABLE `SOLICITUDE`
+  ADD CONSTRAINT `SOLICITUDE_USER_ACCOUNT_ID_FK` FOREIGN KEY (`ASSESSOR`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
   ADD CONSTRAINT `SOLICITUDE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `SOLICITUDE_FUNDS_DEST_ID_FK` FOREIGN KEY (`FUNDS_DESTINATION_ID`) REFERENCES `FUNDS_DESTINATION_ID` (`FUNDS_DESTINATION_ID`),
   ADD CONSTRAINT `SOLICITUDE_GROUP_CLIENT_ID_FK` FOREIGN KEY (`GROUP_CLIENT_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`),
@@ -4447,92 +4711,90 @@ ALTER TABLE `SOLICITUDE`
   ADD CONSTRAINT `SOLICITUDE_PAY_FREQ_ID_FK` FOREIGN KEY (`PAYMENT_FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
   ADD CONSTRAINT `SOLICITUDE_PRODUCT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`),
   ADD CONSTRAINT `SOLICITUDE_QUOTA_TYPE_ID_FK` FOREIGN KEY (`QUOTA_TYPE_ID`) REFERENCES `QUOTA_TYPE_ID` (`QUOTA_TYPE_ID`),
-  ADD CONSTRAINT `SOLICITUDE_SOL_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `SOLICITUDE_STATUS_ID` (`STATUS_ID`),
-  ADD CONSTRAINT `SOLICITUDE_USER_ACCOUNT_ID_FK` FOREIGN KEY (`ASSESSOR`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `SOLICITUDE_SOL_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `SOLICITUDE_STATUS_ID` (`STATUS_ID`);
 
 --
 -- Filtros para la tabla `SOLICITUDE_STATUS`
 --
 ALTER TABLE `SOLICITUDE_STATUS`
+  ADD CONSTRAINT `SOLICITUDE_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `SOLICITUDE_STATUS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `SOLICITUDE_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `SOLICITUDE_STATUS_ID` (`STATUS_ID`),
-  ADD CONSTRAINT `SOLICITUDE_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `SOLICITUDE_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `SOLICITUDE_STATUS_ID` (`STATUS_ID`);
 
 --
 -- Filtros para la tabla `SUBSYSTEM`
 --
 ALTER TABLE `SUBSYSTEM`
+  ADD CONSTRAINT `SUBSYSTEM_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `SUBSYSTEM_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `SUBSYSTEM_ID` (`SUBSYSTEM_ID`),
-  ADD CONSTRAINT `SUBSYSTEM_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `SUBSYSTEM_ID` (`SUBSYSTEM_ID`);
 
 --
 -- Filtros para la tabla `USER_ACCESS`
 --
 ALTER TABLE `USER_ACCESS`
-  ADD CONSTRAINT `USER_ACCESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_ACCESS_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `USER_ACCESS_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
+  ADD CONSTRAINT `USER_ACCESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `USER_ACCOUNT`
 --
 ALTER TABLE `USER_ACCOUNT`
+  ADD CONSTRAINT `USER_ACCOUNT_USER_TYPE_ID_FK` FOREIGN KEY (`USER_TYPE_ID`) REFERENCES `USER_TYPE_ID` (`USER_TYPE_ID`),
   ADD CONSTRAINT `USER_ACCOUNT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
   ADD CONSTRAINT `USER_ACCOUNT_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`),
-  ADD CONSTRAINT `USER_ACCOUNT_USER_STATUS_ID_FK` FOREIGN KEY (`USER_STATUS_ID`) REFERENCES `USER_STATUS_ID` (`USER_STATUS_ID`),
-  ADD CONSTRAINT `USER_ACCOUNT_USER_TYPE_ID_FK` FOREIGN KEY (`USER_TYPE_ID`) REFERENCES `USER_TYPE_ID` (`USER_TYPE_ID`);
+  ADD CONSTRAINT `USER_ACCOUNT_USER_STATUS_ID_FK` FOREIGN KEY (`USER_STATUS_ID`) REFERENCES `USER_STATUS_ID` (`USER_STATUS_ID`);
 
 --
 -- Filtros para la tabla `USER_NOTIFICATION`
 --
 ALTER TABLE `USER_NOTIFICATION`
+  ADD CONSTRAINT `USER_NOTIF_USER_NOT_TYPE_ID_FK` FOREIGN KEY (`USER_NOTIFICATION_TYPE_ID`) REFERENCES `USER_NOTIFICATION_TYPE_ID` (`USER_NOTIFICATION_TYPE_ID`),
   ADD CONSTRAINT `USER_NOTIFICATION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_NOTIF_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
-  ADD CONSTRAINT `USER_NOTIF_USER_NOT_TYPE_ID_FK` FOREIGN KEY (`USER_NOTIFICATION_TYPE_ID`) REFERENCES `USER_NOTIFICATION_TYPE_ID` (`USER_NOTIFICATION_TYPE_ID`);
+  ADD CONSTRAINT `USER_NOTIF_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
 
 --
 -- Filtros para la tabla `USER_NOTIFICATION_TYPE`
 --
 ALTER TABLE `USER_NOTIFICATION_TYPE`
-  ADD CONSTRAINT `USER_NOTIFICATION_TYPE_ID_FK` FOREIGN KEY (`USER_NOTIFICATION_TYPE_ID`) REFERENCES `USER_NOTIFICATION_TYPE_ID` (`USER_NOTIFICATION_TYPE_ID`),
-  ADD CONSTRAINT `USER__LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `USER__LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
+  ADD CONSTRAINT `USER_NOTIFICATION_TYPE_ID_FK` FOREIGN KEY (`USER_NOTIFICATION_TYPE_ID`) REFERENCES `USER_NOTIFICATION_TYPE_ID` (`USER_NOTIFICATION_TYPE_ID`);
 
 --
 -- Filtros para la tabla `USER_PROFILE`
 --
 ALTER TABLE `USER_PROFILE`
-  ADD CONSTRAINT `USER_PROFILE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_PROF_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `USER_PROF_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
+  ADD CONSTRAINT `USER_PROFILE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `USER_SESSION`
 --
 ALTER TABLE `USER_SESSION`
+  ADD CONSTRAINT `USER_SESS_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
   ADD CONSTRAINT `USER_SESSION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_SESSION_HOST_ID_FK` FOREIGN KEY (`HOST_ID`) REFERENCES `HOST_ID` (`HOST_ID`),
-  ADD CONSTRAINT `USER_SESS_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `USER_SESSION_HOST_ID_FK` FOREIGN KEY (`HOST_ID`) REFERENCES `HOST_ID` (`HOST_ID`);
 
 --
 -- Filtros para la tabla `USER_STATUS`
 --
 ALTER TABLE `USER_STATUS`
+  ADD CONSTRAINT `USER_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `USER_STATUS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_STATUS_ID_FK` FOREIGN KEY (`USER_STATUS_ID`) REFERENCES `USER_STATUS_ID` (`USER_STATUS_ID`),
-  ADD CONSTRAINT `USER_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `USER_STATUS_ID_FK` FOREIGN KEY (`USER_STATUS_ID`) REFERENCES `USER_STATUS_ID` (`USER_STATUS_ID`);
 
 --
 -- Filtros para la tabla `USER_TYPE`
 --
 ALTER TABLE `USER_TYPE`
+  ADD CONSTRAINT `USER_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `USER_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_TYPE_ID_FK` FOREIGN KEY (`USER_TYPE_ID`) REFERENCES `USER_TYPE_ID` (`USER_TYPE_ID`),
-  ADD CONSTRAINT `USER_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `USER_TYPE_ID_FK` FOREIGN KEY (`USER_TYPE_ID`) REFERENCES `USER_TYPE_ID` (`USER_TYPE_ID`);
 
 --
 -- Filtros para la tabla `ZONE_ASESSOR`
 --
 ALTER TABLE `ZONE_ASESSOR`
-  ADD CONSTRAINT `ZONE_ASE_GEO_ZONE_ID_FK` FOREIGN KEY (`GEOGRAPHIC_ZONE_ID`) REFERENCES `GEOGRAPHIC_ZONE_ID` (`GEOGRAPHIC_ZONE_ID`),
-  ADD CONSTRAINT `ZONE_ASE_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
-COMMIT;
+  ADD CONSTRAINT `ZONE_ASE_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
+  ADD CONSTRAINT `ZONE_ASE_GEO_ZONE_ID_FK` FOREIGN KEY (`GEOGRAPHIC_ZONE_ID`) REFERENCES `GEOGRAPHIC_ZONE_ID` (`GEOGRAPHIC_ZONE_ID`);
