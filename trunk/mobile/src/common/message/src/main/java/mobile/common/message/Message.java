@@ -8,7 +8,7 @@ public class Message {
 	public final static String XML = "XML";
 	public final static String JSON = "JSON";
 
-	public final static String controlData = "control";
+	public final static String CONTROL_DATA = "control";
 
 	private List<Data> dataList = new ArrayList<Data>();
 
@@ -80,24 +80,17 @@ public class Message {
 	}
 
 	public List<EntityData> getEntityDataList() {
-		List<Data> specialDatas = new ArrayList<Data>();
 		List<Data> datas = getDataList();
+		List<EntityData> edatas = new ArrayList<EntityData>();
 
-		specialDatas.add(getRequest());
-		specialDatas.add(getResponse());
-		specialDatas.add(new Data(controlData));
-
-		datas.removeAll(specialDatas);
-		return toEntityData(datas);
-	}
-
-	private List<EntityData> toEntityData(List<Data> ldatas) {
-		List<EntityData> lentities = new ArrayList<EntityData>();
-		for (Data data : ldatas) {
-			lentities.add(toEntityData(data));
+		for (Data d : datas) {
+			if (!(d.getDataId().compareTo(RequestData.REQUEST) == 0
+					|| d.getDataId().compareTo(ResponseData.RESPONSE) == 0 || d.getDataId().compareTo(CONTROL_DATA) == 0)) {
+				edatas.add(toEntityData(d));
+			}
 		}
 
-		return lentities;
+		return edatas;
 	}
 
 	private EntityData toEntityData(Data data) {
@@ -133,22 +126,22 @@ public class Message {
 
 		return responseData;
 	}
-	
+
 	public void setControlFieldValue(String name, String value) {
-		Data control = getData(controlData); 
-		if ( control == null) {
-			control = new Data(controlData);
+		Data control = getData(CONTROL_DATA);
+		if (control == null) {
+			control = new Data(CONTROL_DATA);
 			addData(control);
 		}
 		control.setFieldValue(name, value);
 	}
-	
+
 	public String getControlFieldValue(String name) {
-		Data control = getData(controlData); 
-		if ( control == null) {
+		Data control = getData(CONTROL_DATA);
+		if (control == null) {
 			return null;
 		}
 		return control.getFieldValue(name);
 	}
-	
+
 }

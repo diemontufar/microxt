@@ -4,6 +4,7 @@ public class RequestData extends Data {
 
 	public final static String REQUEST = "request";
 
+	public final static String REQUEST_PROCESS_TYPE = "type";
 	public final static String REQUEST_PROCESS = "process";
 	public final static String REQUEST_USER = "user";
 	public final static String REQUEST_HOST = "host";
@@ -23,6 +24,17 @@ public class RequestData extends Data {
 		this.setFieldList(data.getFieldList());
 	}
 
+	// -------------------------------------------
+	// Special fields
+	// -------------------------------------------
+	public String getProcessType() {
+		return (String) getFieldValue(REQUEST_PROCESS_TYPE);
+	}
+
+	public void setProcessType(String processType) {
+		setFieldValue(REQUEST_PROCESS_TYPE, processType);
+	}
+
 	public String getProcess() {
 		return (String) getFieldValue(REQUEST_PROCESS);
 	}
@@ -30,5 +42,4 @@ public class RequestData extends Data {
 	public void setProcess(String processId) {
 		setFieldValue(REQUEST_PROCESS, processId);
 	}
-
 }
