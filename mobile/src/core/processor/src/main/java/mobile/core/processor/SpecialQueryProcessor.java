@@ -12,20 +12,19 @@ import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
 import mobile.common.message.Message;
-import mobile.common.tools.ProcessType;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityTable;
 import mobile.entity.manager.JPManager;
 import mobile.tools.common.Log;
-import mobile.tools.common.convertion.Converter;
+import mobile.tools.common.convertion.CoreConverter;
 import mobile.tools.common.param.LocalParameter;
 import mobile.tools.common.param.ParameterEnum;
 import mobile.tools.common.param.Timer;
-import mobile.tools.common.structure.GeneralProcessor;
+import mobile.tools.common.structure.QueryProcessor;
 
 import org.apache.log4j.Logger;
 
-public class SpecialQueryProcessor implements GeneralProcessor {
+public class SpecialQueryProcessor implements QueryProcessor {
 	private final Logger log = Log.getInstance();
 
 	private final String ORDER_DIR_DESC = "DESC";
@@ -33,9 +32,7 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 	@Override
 	public Message process(Message msg) throws Exception {
 		for (EntityData data : msg.getEntityDataList()) {
-			if (data.getProcessType() != null && data.getProcessType().compareTo(ProcessType.QUERY.getShortName()) == 0) {
-				processQuery(data);
-			}
+			processQuery(data);
 		}
 
 		return msg;
@@ -59,7 +56,7 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 					continue;
 				}
 				// Description field
-				if (strField.indexOf(":")>0) {
+				if (strField.indexOf(":") > 0) {
 					createInnerSelect(sql, queryFields, fieldCounter, strField);
 					continue;
 				}
@@ -97,7 +94,7 @@ public class SpecialQueryProcessor implements GeneralProcessor {
 				} else {
 					if (mtypes.get(part[0]) != null && mtypes.get(part[0]).compareTo("Boolean") == 0) {
 						sql.append("a." + part[0].replaceAll("pk_", "pk.") + part[1] + " ?" + (filtersCounter + 1));
-						lParameters.add(Converter.convertObject(part[2], Boolean.class));
+						lParameters.add(CoreConverter.convertObject(part[2], Boolean.class));
 					} else {
 						sql.append("a." + part[0].replaceAll("pk_", "pk.") + part[1] + " ?" + (filtersCounter + 1));
 						lParameters.add(part[2]);
