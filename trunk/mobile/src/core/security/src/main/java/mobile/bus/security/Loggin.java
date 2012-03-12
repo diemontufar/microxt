@@ -9,11 +9,11 @@ import mobile.entity.security.UserAccessPk;
 import mobile.entity.security.UserAccount;
 import mobile.entity.security.UserAccountPk;
 import mobile.tools.common.Log;
-import mobile.tools.common.structure.GeneralProcessor;
+import mobile.tools.common.structure.QueryProcessor;
 
 import org.apache.log4j.Logger;
 
-public class Loggin implements GeneralProcessor{
+public class Loggin implements QueryProcessor{
 
 	private final String LOGGIN_DATA = "loggin";
 
