@@ -73,16 +73,16 @@ public class Generator {
 			// ************************************************
 			// Generators for all tables
 			// ************************************************
-			// generateSqlScriptsForAllTables();
+			generateSqlScriptsForAllTables();
 			// generateClasesForAllEntities();
 
 			// ************************************************
 			// Generators for a list of tables
 			// ************************************************
-			 List<String> ltables = new ArrayList<String>();
-			 ltables.add("SOLICITUDE");
-			 //generateSqlScriptsForListOfTables(ltables);
-			 generateClasesForListOfTables(ltables);
+//			 List<String> ltables = new ArrayList<String>();
+//			 ltables.add("PROCESS_COMPONENT");
+//			 generateSqlScriptsForListOfTables(ltables);
+//			 generateClasesForListOfTables(ltables);
 
 			// ************************************************
 			// Generators for a list of tables taken from entity.csv

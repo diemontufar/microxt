@@ -7,8 +7,6 @@ import java.util.Map;
 
 import javax.persistence.TypedQuery;
 
-import org.apache.log4j.Logger;
-
 import mobile.core.generator.util.SpecialField;
 import mobile.entity.common.DatabaseType;
 import mobile.entity.common.EntityField;
@@ -17,6 +15,8 @@ import mobile.entity.common.EntityTable;
 import mobile.entity.manager.JPManager;
 import mobile.tools.common.FileUtil;
 import mobile.tools.common.Log;
+
+import org.apache.log4j.Logger;
 
 public class SqlGenerator {
 
@@ -30,8 +30,7 @@ public class SqlGenerator {
 	private String outputFolder;
 
 	// Sql for data type
-	private String DATA_TYPE_SQL = "Select d from DatabaseType d where "
-			+ "d.pk.databaseId = :databaseId ";
+	private String DATA_TYPE_SQL = "Select d from DatabaseType d where " + "d.pk.databaseId = :databaseId ";
 
 	// QL for entities
 	private String ENTITY_QL = "Select e from EntityTable e where e.pk.companyId in ('ALL',:company) "
@@ -43,23 +42,18 @@ public class SqlGenerator {
 
 	// QL for fields
 	private String FIELD_QL = "Select f from EntityField f where "
-			+ "f.pk.companyId in ('ALL',:company) and f.pk.tableId=:tableId "
-			+ "order by f.fieldOrder";
+			+ "f.pk.companyId in ('ALL',:company) and f.pk.tableId=:tableId " + "order by f.fieldOrder";
 
 	// QL for remove relationships
 	private String RELATIONSHIP1_QL = "select r from EntityRelationship r where "
-			+ "r.pk.companyId in ('ALL', :company) "
-			+ "and r.pk.relationshipOrder = 1 "
-			+ "and ( r.tableFrom in :tables "
-			+ "or r.tableTo in :tables ) "
+			+ "r.pk.companyId in ('ALL', :company) " + "and r.pk.relationshipOrder = 1 "
+			+ "and ( r.tableFrom in :tables " + "or r.tableTo in :tables ) "
 			+ "order by r.tableFrom, r.pk.relationshipId";
-	
+
 	// QL for relationships
 	private String RELATIONSHIP_QL = "select r from EntityRelationship r where "
-				+ "r.pk.companyId in ('ALL', :company) "
-				+ "and ( r.tableFrom in :tables "
-				+ "or r.tableTo in :tables ) "
-				+ "order by r.tableFrom, r.pk.relationshipId, r.pk.relationshipOrder";
+			+ "r.pk.companyId in ('ALL', :company) " + "and ( r.tableFrom in :tables " + "or r.tableTo in :tables ) "
+			+ "order by r.tableFrom, r.pk.relationshipId, r.pk.relationshipOrder";
 
 	// String constants
 	private final String NEW_LINE = "\n";
@@ -81,7 +75,7 @@ public class SqlGenerator {
 
 	// Map for data types
 	private Map<String, String> mDataType;
-	
+
 	// Logger
 	private final static Logger log = Log.getInstance();
 
@@ -115,8 +109,7 @@ public class SqlGenerator {
 	private void fillDataTypes() {
 		// Query data types
 		List<DatabaseType> lTypes;
-		TypedQuery<DatabaseType> query = JPManager.getEntityManager()
-				.createQuery(DATA_TYPE_SQL, DatabaseType.class);
+		TypedQuery<DatabaseType> query = JPManager.getEntityManager().createQuery(DATA_TYPE_SQL, DatabaseType.class);
 		query.setParameter("databaseId", DATABASE_NAME);
 		lTypes = query.getResultList();
 
@@ -124,16 +117,14 @@ public class SqlGenerator {
 		for (DatabaseType d : lTypes) {
 			String dataBaseType = "";
 			dataBaseType = d.getDatabaseType();
-			mDataType.put(d.getPk().getDataTypeId() + UNION
-					+ d.getPk().getDataSize(), dataBaseType);
+			mDataType.put(d.getPk().getDataTypeId() + UNION + d.getPk().getDataSize(), dataBaseType);
 		}
 
 	}
 
 	public void generateAllTables() throws Exception {
 		// Query all entities
-		TypedQuery<EntityTable> query = JPManager.getEntityManager()
-				.createQuery(ENTITY_QL, EntityTable.class);
+		TypedQuery<EntityTable> query = JPManager.getEntityManager().createQuery(ENTITY_QL, EntityTable.class);
 		query.setParameter("company", COMPANY);
 		List<EntityTable> lEntity = query.getResultList();
 
@@ -164,8 +155,8 @@ public class SqlGenerator {
 	private void dropForeignKeys(List<String> ltables) {
 		// Query relationships
 		List<EntityRelationship> lRelationship;
-		TypedQuery<EntityRelationship> query = JPManager.getEntityManager()
-				.createQuery(RELATIONSHIP1_QL, EntityRelationship.class);
+		TypedQuery<EntityRelationship> query = JPManager.getEntityManager().createQuery(RELATIONSHIP1_QL,
+				EntityRelationship.class);
 		query.setParameter("company", COMPANY);
 		query.setParameter("tables", completeIdTables(ltables));
 		lRelationship = query.getResultList();
@@ -182,7 +173,7 @@ public class SqlGenerator {
 	private List<String> completeIdTables(List<String> ltables) {
 		List<String> lIdTables = new ArrayList<String>();
 		for (String table : ltables) {
-			lIdTables.add(table+"_ID");
+			lIdTables.add(table + "_ID");
 		}
 		List<String> finalList = new ArrayList<String>();
 		finalList.addAll(ltables);
@@ -192,8 +183,7 @@ public class SqlGenerator {
 
 	private void dropTables(List<String> ltables) {
 		// Query entities
-		TypedQuery<EntityTable> query = JPManager.getEntityManager()
-				.createQuery(ENTITY2_QL, EntityTable.class);
+		TypedQuery<EntityTable> query = JPManager.getEntityManager().createQuery(ENTITY2_QL, EntityTable.class);
 		query.setParameter("company", COMPANY);
 		query.setParameter("tables", ltables);
 		List<EntityTable> lEntity = query.getResultList();
@@ -201,19 +191,16 @@ public class SqlGenerator {
 		sbDropSql.append(NEW_LINE);
 		for (EntityTable ent : lEntity) {
 			if (ent.getHasTableId()) {
-				sbDropSql.append("DROP TABLE " + ent.getPk().getTableId()
-						+ "_ID;" + NEW_LINE);
+				sbDropSql.append("DROP TABLE " + ent.getPk().getTableId() + "_ID;" + NEW_LINE);
 			}
-			sbDropSql.append("DROP TABLE " + ent.getPk().getTableId() + ";"
-					+ NEW_LINE);
+			sbDropSql.append("DROP TABLE " + ent.getPk().getTableId() + ";" + NEW_LINE);
 		}
 	}
 
 	private void createTables(List<String> ltables) throws Exception {
 		// Query entities
 		List<EntityTable> lEntity;
-		TypedQuery<EntityTable> query = JPManager.getEntityManager()
-				.createQuery(ENTITY2_QL, EntityTable.class);
+		TypedQuery<EntityTable> query = JPManager.getEntityManager().createQuery(ENTITY2_QL, EntityTable.class);
 		query.setParameter("company", COMPANY);
 		query.setParameter("tables", ltables);
 		lEntity = query.getResultList();
@@ -226,8 +213,7 @@ public class SqlGenerator {
 	private void generateFields(EntityTable ent) throws Exception {
 		// Query fields
 		List<EntityField> lFields;
-		TypedQuery<EntityField> query = JPManager.getEntityManager()
-				.createQuery(FIELD_QL, EntityField.class);
+		TypedQuery<EntityField> query = JPManager.getEntityManager().createQuery(FIELD_QL, EntityField.class);
 		query.setParameter("company", COMPANY);
 		query.setParameter("tableId", ent.getPk().getTableId());
 		lFields = query.getResultList();
@@ -235,14 +221,12 @@ public class SqlGenerator {
 		if (lFields.size() == 0) {
 			// sbSql.append("--ERROR. TABLE: " + ent.getPk().getTableId() +
 			// ". NO FIELDS DEFINED" + NEW_LINE+NEW_LINE);
-			throw new Exception("ERROR. TABLE: " + ent.getPk().getTableId()
-					+ ". NO FIELDS DEFINED");
+			throw new Exception("ERROR. TABLE: " + ent.getPk().getTableId() + ". NO FIELDS DEFINED");
 		} else {
 			// Create ID TABLE
 			if (ent.getHasTableId()) {
 				sbSql.append(NEW_LINE);
-				sbSql.append("CREATE TABLE " + ent.getPk().getTableId()
-						+ "_ID (" + NEW_LINE);
+				sbSql.append("CREATE TABLE " + ent.getPk().getTableId() + "_ID (" + NEW_LINE);
 				// Fields
 				for (EntityField f : lFields) {
 					if (f.getPrimaryKey()) {
@@ -258,8 +242,7 @@ public class SqlGenerator {
 			// Create NORMAL TABLE
 			sbSql.append(NEW_LINE);
 
-			sbSql.append("CREATE TABLE " + ent.getPk().getTableId() + " ("
-					+ NEW_LINE);
+			sbSql.append("CREATE TABLE " + ent.getPk().getTableId() + " (" + NEW_LINE);
 
 			// For completing all fields including inherited fields
 			List<EntityField> lFieldsComplete = new ArrayList<EntityField>();
@@ -333,9 +316,8 @@ public class SqlGenerator {
 
 		// Special types
 		String t = field.getDataTypeId();
-		if (t.compareTo("BigDecimal") == 0 || t.compareTo("Blov") == 0
-				|| t.compareTo("Boolean") == 0 || t.compareTo("Clob") == 0
-				|| t.compareTo("Date") == 0 || t.compareTo("Timestamp") == 0
+		if (t.compareTo("BigDecimal") == 0 || t.compareTo("Blov") == 0 || t.compareTo("Boolean") == 0
+				|| t.compareTo("Clob") == 0 || t.compareTo("Date") == 0 || t.compareTo("Timestamp") == 0
 				|| t.compareTo("String") == 0) {
 			dataTypeKey = field.getDataTypeId() + UNION + '0';
 		} else {
@@ -348,16 +330,12 @@ public class SqlGenerator {
 			sbField.append(" " + dataBaseType);
 			// Data type size-scale
 			String dataTypeSizeScale = "";
-			if (field.getDataTypeId().compareTo("String") == 0
-					|| field.getDataTypeId().compareTo("BigDecimal") == 0
-					|| field.getDataTypeId().compareTo("Boolean") == 0) {
+			if (field.getDataTypeId().compareTo("String") == 0 || field.getDataTypeId().compareTo("BigDecimal") == 0) {
 				if (field.getDataSize() != null && field.getDataSize() != 0L) {
-					dataTypeSizeScale = dataTypeSizeScale
-							+ field.getDataSize().toString();
+					dataTypeSizeScale = dataTypeSizeScale + field.getDataSize().toString();
 				}
 				if (field.getDataScale() != null && field.getDataScale() != 0L) {
-					dataTypeSizeScale = dataTypeSizeScale + ","
-							+ field.getDataScale().toString();
+					dataTypeSizeScale = dataTypeSizeScale + "," + field.getDataScale().toString();
 				}
 			}
 
@@ -366,8 +344,7 @@ public class SqlGenerator {
 			}
 		} else {
 			// sbField.append(" XXXXX");
-			throw new Exception("DATA TYPE ERROR. TABLE "
-					+ field.getPk().getTableId() + " FIELD "
+			throw new Exception("DATA TYPE ERROR. TABLE " + field.getPk().getTableId() + " FIELD "
 					+ field.getPk().getFieldId());
 		}
 
@@ -378,9 +355,14 @@ public class SqlGenerator {
 
 		// Default
 		if (field.getDefaultValue() != null
-				&& !(field.getDefaultValue().compareToIgnoreCase("null") == 0 || field
-						.getDefaultValue().compareToIgnoreCase("(null)") == 0)) {
-			sbField.append(" DEFAULT '" + field.getDefaultValue() + "'");
+				&& !(field.getDefaultValue().compareToIgnoreCase("null") == 0 || field.getDefaultValue()
+						.compareToIgnoreCase("(null)") == 0)) {
+			if (!(field.getDataTypeId().compareTo("Boolean") == 0)) {
+				sbField.append(" DEFAULT '" + field.getDefaultValue() + "'");
+			} else {
+				sbField.append(" DEFAULT " + field.getDefaultValue() + "");
+			}
+
 		}
 
 		// End
@@ -412,8 +394,8 @@ public class SqlGenerator {
 	private void createForeignKeys(List<String> ltables) {
 		// Query relationships
 		List<EntityRelationship> lRelationship;
-		TypedQuery<EntityRelationship> query = JPManager.getEntityManager()
-				.createQuery(RELATIONSHIP_QL, EntityRelationship.class);
+		TypedQuery<EntityRelationship> query = JPManager.getEntityManager().createQuery(RELATIONSHIP_QL,
+				EntityRelationship.class);
 		query.setParameter("company", COMPANY);
 		query.setParameter("tables", completeIdTables(ltables));
 		lRelationship = query.getResultList();
@@ -428,17 +410,15 @@ public class SqlGenerator {
 
 			EntityRelationship nextRel;
 			while ((i + 1) < lRelationship.size()
-					&& (nextRel = lRelationship.get(i + 1)).getPk()
-							.getRelationshipOrder() > 1) {
+					&& (nextRel = lRelationship.get(i + 1)).getPk().getRelationshipOrder() > 1) {
 				strFieldsFrom = strFieldsFrom + ", " + nextRel.getFieldFrom();
 				strFieldsTo = strFieldsTo + ", " + nextRel.getFieldTo();
 				i++;
 			}
 
-			sbSql.append("ALTER TABLE " + rel.getTableFrom()
-					+ " ADD CONSTRAINT " + rel.getPk().getRelationshipId()
-					+ " FOREIGN KEY (" + strFieldsFrom + ") REFERENCES "
-					+ rel.getTableTo() + " (" + strFieldsTo + ");" + NEW_LINE);
+			sbSql.append("ALTER TABLE " + rel.getTableFrom() + " ADD CONSTRAINT " + rel.getPk().getRelationshipId()
+					+ " FOREIGN KEY (" + strFieldsFrom + ") REFERENCES " + rel.getTableTo() + " (" + strFieldsTo + ");"
+					+ NEW_LINE);
 		}
 	}
 

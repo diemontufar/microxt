@@ -10,11 +10,11 @@ public class GeneratorFromCsv {
 
 	private final static String OUTPUT_FOLDER = "/home/ronald/TesisOutput";
 
-	private final static String entityFilePath = "/home/ronald/Escritorio/entity0.csv";
-	private final static String fieldFilePath = "/home/ronald/Escritorio/field0.csv";
-	private final static String relationshipFilePath = "/home/ronald/Escritorio/relationship0.csv";
+	private final static String entityFilePath0 = "/home/ronald/Escritorio/entity0.csv";
 	private final static String entityFilePath1 = "/home/ronald/Escritorio/entity1.csv";
+	private final static String fieldFilePath0 = "/home/ronald/Escritorio/field0.csv";
 	private final static String fieldFilePath1 = "/home/ronald/Escritorio/field1.csv";
+	private final static String relationshipFilePath0 = "/home/ronald/Escritorio/relationship0.csv";
 	private final static String relationshipFilePath1 = "/home/ronald/Escritorio/relationship1.csv";
 
 	// Logger
@@ -41,8 +41,8 @@ public class GeneratorFromCsv {
 			JPManager.beginTransaction();
 
 			// Fill generating entities <Model>
-			FillGeneratingEntitiesFromCsv filler = new FillGeneratingEntitiesFromCsv(entityFilePath, fieldFilePath,
-					relationshipFilePath);
+			FillGeneratingEntitiesFromCsv filler = new FillGeneratingEntitiesFromCsv(entityFilePath0, fieldFilePath0,
+					relationshipFilePath0);
 			filler.fillTables();
 			filler.fillFields();
 			filler.fillRelationships();
