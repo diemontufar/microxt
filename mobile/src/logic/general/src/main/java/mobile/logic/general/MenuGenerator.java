@@ -15,9 +15,9 @@ import mobile.entity.security.Subsystem;
 import mobile.tools.common.param.LocalParameter;
 import mobile.tools.common.param.ParameterEnum;
 import mobile.tools.common.param.Timer;
-import mobile.tools.common.structure.GeneralProcessor;
+import mobile.tools.common.structure.QueryProcessor;
 
-public class MenuGenerator implements GeneralProcessor {
+public class MenuGenerator implements QueryProcessor {
 
 	private final String QRY_SUBSYSTEMS = "Select s from Subsystem s where "
 			+ "s.pk.subsystemId in "
