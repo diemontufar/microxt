@@ -18,11 +18,18 @@ public class ComponentPk extends AbstractCompanyKey implements MulticompanyKey {
 	@Column(name = "COMPONENT_ID", nullable = false)
 	private String componentId;
 
+	/**
+	 * Component type Id
+	 */
+	@Column(name = "TYPE_ID", nullable = false)
+	private String typeId;
+
 	public ComponentPk() {
 	}
 
-	public ComponentPk(String componentId) {
+	public ComponentPk(String componentId, String typeId) {
 		this.componentId = componentId;
+		this.typeId = typeId;
 	}
 
 	public String getComponentId() {
@@ -33,8 +40,16 @@ public class ComponentPk extends AbstractCompanyKey implements MulticompanyKey {
 		this.componentId = componentId;
 	}
 
+	public String getTypeId() {
+		return this.typeId;
+	}
+
+	public void setTypeId(String typeId) {
+		this.typeId = typeId;
+	}
+
 	@Override
 	public String toString() {
-		return "[" + this.getCompanyId() + ", " + this.getComponentId() + "]";
+		return "[" + this.getCompanyId() + ", " + this.getComponentId() + ", " + this.getTypeId() + "]";
 	}
 }

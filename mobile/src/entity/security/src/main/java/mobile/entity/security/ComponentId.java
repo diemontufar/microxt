@@ -13,36 +13,34 @@ import mobile.entity.schema.GeneralEntityId;
 public class ComponentId extends AbstractEntityId implements GeneralEntityId {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Component Id
-	 */
-	@Id
-	@Column(name = "COMPONENT_ID", nullable = false)
-	private String componentId;
+	@EmbeddedId
+	private ComponentIdPk pk;
 
 	public ComponentId() {
 	}
 
-	public ComponentId(String componentId) {
-		this.componentId = componentId;
+	public ComponentId(ComponentIdPk pk) {
+		this.pk = pk;
 	}
 
-	public String getComponentId() {
-		return this.componentId;
+	public ComponentIdPk getPk() {
+		return this.pk;
 	}
 
-	public void setComponentId(String componentId) {
-		this.componentId = componentId;
-	}
-
-	@Override
-	public Object getPk() {
-		return this.componentId;
+	public void setPk(ComponentIdPk pk) {
+		this.pk = pk;
 	}
 
 	@Override
 	public void setPk(Object pk) {
-		this.componentId = (String) pk;
+		this.pk = (ComponentIdPk) pk;
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		ComponentId copy = (ComponentId) super.clone();
+		copy.setPk((ComponentIdPk) this.pk.clone());
+		return copy;
 	}
 
 	@Override

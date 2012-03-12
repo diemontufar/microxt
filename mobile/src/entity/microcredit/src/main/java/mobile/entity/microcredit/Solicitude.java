@@ -123,7 +123,7 @@ public class Solicitude extends AbstractHistoricalLocking implements Multicompan
 	/**
 	 * Number of fees
 	 */
-	@Column(name = "NUMBER_QUOTAS", nullable = false)
+	@Column(name = "NUMBER_QUOTAS", nullable = true)
 	private Integer numberQuotas;
 
 	/**
@@ -152,8 +152,8 @@ public class Solicitude extends AbstractHistoricalLocking implements Multicompan
 	}
 
 	public Solicitude(SolicitudePk pk, String assessor, Date solicitudeDate, String productId, String statusId,
-			Integer numberRenewal, BigDecimal amount, Long term, String quotaTypeId, Integer numberQuotas,
-			String paymentFrequencyId, String fundsDestinationId, String destinationDescription) {
+			Integer numberRenewal, BigDecimal amount, Long term, String quotaTypeId, String paymentFrequencyId,
+			String fundsDestinationId, String destinationDescription) {
 		this.pk = pk;
 		this.assessor = assessor;
 		this.solicitudeDate = solicitudeDate;
@@ -163,7 +163,6 @@ public class Solicitude extends AbstractHistoricalLocking implements Multicompan
 		this.amount = amount;
 		this.term = term;
 		this.quotaTypeId = quotaTypeId;
-		this.numberQuotas = numberQuotas;
 		this.paymentFrequencyId = paymentFrequencyId;
 		this.fundsDestinationId = fundsDestinationId;
 		this.destinationDescription = destinationDescription;
