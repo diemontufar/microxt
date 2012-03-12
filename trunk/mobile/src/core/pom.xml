@@ -16,5 +16,6 @@
         <module>server</module>
 	<module>security</module>
 	<module>parameter</module>
+	<module>simulator</module>
     </modules>
 </project>
