@@ -22,11 +22,11 @@ public class SequentialTest {
 			JPManager.beginTransaction();
 			
 			SolicitudePk pk = new SolicitudePk();
-			Solicitude a = new Solicitude(pk, "ADM", Timer.getCurrentDate(), "M01", "001", 0, new BigDecimal("100"), 90L, "MNL", 3, "4", "PRO", "ASD");
-			
-			JPManager.persist(a);
-			
-			JPManager.commitTransaction();
+//			Solicitude a = new Solicitude(pk, "ADM", Timer.getCurrentDate(), "M01", "001", 0, new BigDecimal("100"), 90L, "MNL", 3, "4", "PRO", "ASD");
+//			
+//			JPManager.persist(a);
+//			
+//			JPManager.commitTransaction();
 		} catch (Exception e) {
 			JPManager.rollbackTransaction();
 			e.printStackTrace();

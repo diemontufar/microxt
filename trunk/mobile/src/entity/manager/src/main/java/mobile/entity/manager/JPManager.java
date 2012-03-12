@@ -25,7 +25,7 @@ import mobile.entity.schema.MultilanguageKey;
 import mobile.entity.schema.OptimisticLocking;
 import mobile.entity.schema.SequentialKey;
 import mobile.tools.common.Log;
-import mobile.tools.common.convertion.Converter;
+import mobile.tools.common.convertion.CoreConverter;
 import mobile.tools.common.param.LocalParameter;
 import mobile.tools.common.param.ParameterEnum;
 import mobile.tools.common.param.Timer;
@@ -546,7 +546,7 @@ public class JPManager {
 					Method setterMethod = entityClass.getMethod("set"
 							+ classField.getName().substring(0, 1).toUpperCase() + classField.getName().substring(1),
 							classField.getType());
-					pk = Converter.convertObject(item.getField("pk_" + classField.getName()).getValue(),
+					pk = CoreConverter.convertObject(item.getField("pk_" + classField.getName()).getValue(),
 							classField.getType());
 					setterMethod.invoke(entity, pk);
 					break;
@@ -571,7 +571,7 @@ public class JPManager {
 			if (item.getField(classField.getName()) != null) {
 				Method setterMethod = entityClass.getMethod("set" + classField.getName().substring(0, 1).toUpperCase()
 						+ classField.getName().substring(1), classField.getType());
-				Object val = Converter.convertObject(item.getField(classField.getName()).getValue(),
+				Object val = CoreConverter.convertObject(item.getField(classField.getName()).getValue(),
 						classField.getType());
 				// System.out.println("Seteando...");
 				// System.out.println(classField.getName());
@@ -599,7 +599,7 @@ public class JPManager {
 			if (itemField != null) {
 				Method setterMethod = entityKeyClass.getMethod("set" + field.getName().substring(0, 1).toUpperCase()
 						+ field.getName().substring(1), field.getType());
-				Object val = Converter.convertObject(itemField.getValue(), field.getType());
+				Object val = CoreConverter.convertObject(itemField.getValue(), field.getType());
 				setterMethod.invoke(pk, val);
 			}
 		}

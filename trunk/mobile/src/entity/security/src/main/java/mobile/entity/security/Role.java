@@ -18,7 +18,7 @@ public class Role extends AbstractHistorical implements Multicompany, Historical
 	private RolePk pk;
 
 	/**
-	 * Day
+	 * Day Id
 	 */
 	@Column(name = "DAY_ID", nullable = true)
 	private String dayId;
