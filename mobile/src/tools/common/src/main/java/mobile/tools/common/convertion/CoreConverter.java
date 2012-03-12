@@ -3,6 +3,7 @@ package mobile.tools.common.convertion;
 import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Date;
@@ -10,12 +11,13 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import mobile.common.tools.CommonConverter;
 import mobile.common.tools.Format;
 import mobile.tools.common.Log;
 
-public class Converter {
-	
-	private Converter(){
+public class CoreConverter {
+
+	private CoreConverter() {
 		Log.getInstance().info("Create instace of Converter class");
 	}
 
@@ -33,18 +35,18 @@ public class Converter {
 	public static <T> T convertObject(Object value, String type) {
 		try {
 			Class c = null;
-	        try {
-	            c = Class.forName(type);
-	        } catch (ClassNotFoundException e) {
-	            c = String.class;
-	        }
-	        
-	        return (T) Converter.convertObject(value, c);
+			try {
+				c = Class.forName(type);
+			} catch (ClassNotFoundException e) {
+				c = String.class;
+			}
+
+			return (T) CoreConverter.convertObject(value, c);
 		} catch (Exception e) {
 			throw new Error(e);
 		}
 	}
-	
+
 	/**
 	 * Metodo Encargado de la conversión del tipo de Dato de un Objeto
 	 * 
@@ -57,20 +59,19 @@ public class Converter {
 	 */
 	public static <T> T convertObject(Object pValue, Class<T> pType) {
 		try {
-			return Converter.convertObject(pValue, pType, false);
+			return CoreConverter.convertObject(pValue, pType, false);
 		} catch (Exception e) {
 			throw new Error(e);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T convertObject(Object pValue, Class<T> pType,
-			boolean pUpper) throws Exception {
+	public static <T> T convertObject(Object pValue, Class<T> pType, boolean pUpper) throws Exception {
 		Object value = pValue;
 		if (value == null) {
 			return null;
 		}
-		
+
 		if ((pType.getName().compareTo("java.lang.String") == 0) && pUpper) {
 			value = value.toString().toUpperCase();
 		}
@@ -81,11 +82,10 @@ public class Converter {
 		if ((value.getClass().getName().compareTo(pType.getName()) == 0)) {
 			return (T) value;
 		}
-		if ((pType.getName().compareTo("java.lang.String") != 0)
-				&& (pValue.toString().compareTo("") == 0)) {
+		if ((pType.getName().compareTo("java.lang.String") != 0) && (pValue.toString().compareTo("") == 0)) {
 			return null;
 		}
-		
+
 		if ((value.getClass().getName().compareTo("java.lang.String") == 0)
 				&& (pType.getName().compareTo("java.lang.Boolean") == 0)) {
 			String val = String.valueOf(value).trim();
@@ -97,9 +97,9 @@ public class Converter {
 			}
 			return oVal;
 		}
-		
+
 		try {
-			T oVal = Converter.convertValueByType(value, pType);
+			T oVal = CoreConverter.convertValueByType(value, pType);
 			if (oVal != null) {
 				return oVal;
 			}
@@ -110,8 +110,7 @@ public class Converter {
 		return (T) value;
 	}
 
-	private static Timestamp convertTimestamp(String sValue)
-			throws ParseException {
+	private static Timestamp convertTimestamp(String sValue) throws ParseException {
 		String val = sValue;
 		if (val.indexOf('.') < 0) {
 			val += ".0";
@@ -145,27 +144,25 @@ public class Converter {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T> T convertValueByType(Object value, Class<T> pType)
-			throws Exception {
+	private static <T> T convertValueByType(Object value, Class<T> pType) throws Exception {
 		try {
 			return pType.cast(value);
 		} catch (ClassCastException e) {
 		}
-		if ((pType.getName().compareTo(Blob.class.getName()) == 0)
-				|| (value instanceof byte[])) {
-			return (T) Converter.manageBlob(value);
+		if ((pType.getName().compareTo(Blob.class.getName()) == 0) || (value instanceof byte[])) {
+			return (T) CoreConverter.manageBlob(value);
 		}
 		String sValue = value.toString();
-		sValue = Converter.correctNumberValue(sValue, pType);
-		T oVal = Converter.valFromConstructor(pType, sValue);
+		sValue = CoreConverter.correctNumberValue(sValue, pType);
+		T oVal = CoreConverter.valFromConstructor(pType, sValue);
 		if (oVal != null) {
 			return oVal;
 		}
 		if (pType.getName().compareTo(Timestamp.class.getName()) == 0) {
-			return (T) Converter.convertTimestamp(sValue);
+			return (T) CoreConverter.convertTimestamp(sValue);
 		}
 		if (pType.getName().compareTo(Date.class.getName()) == 0) {
-			return (T) Converter.convertDate(sValue);
+			return (T) CoreConverter.convertDate(sValue);
 		}
 
 		if (pType.getName().compareTo(Clob.class.getName()) == 0) {
@@ -232,13 +229,11 @@ public class Converter {
 
 	private static String correctNumberValue(String pValue, Class<?> pType) {
 		String sValue = pValue;
-		if ((pType.getName().compareTo("java.math.BigDecimal") == 0)
-				&& (sValue.indexOf(',') > 0)) {
+		if ((pType.getName().compareTo("java.math.BigDecimal") == 0) && (sValue.indexOf(',') > 0)) {
 			sValue = sValue.replaceAll("\\.", "");
 			sValue = sValue.replace(',', '.');
 		}
-		if (((pType.getName().compareTo("java.lang.Integer") == 0) || (pType
-				.getName().compareTo("java.lang.Long") == 0))
+		if (((pType.getName().compareTo("java.lang.Integer") == 0) || (pType.getName().compareTo("java.lang.Long") == 0))
 				&& (sValue.indexOf('.') > 0)) {
 			// if (sValue.indexOf('.') > 0) {
 			sValue = sValue.substring(0, sValue.indexOf('.'));
@@ -264,16 +259,16 @@ public class Converter {
 		}
 		return sVal;
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <T> T valFromConstructor(String type, String sValue){
+	public static <T> T valFromConstructor(String type, String sValue) {
 		try {
 			Class c = Class.forName("org.hibernate.engine.jdbc.BlobProxy");
 			return (T) valFromConstructor(c, sValue);
 		} catch (Exception e) {
 			return null;
 		}
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -289,6 +284,73 @@ public class Converter {
 			}
 		}
 		return null;
+	}
+
+	public static String completeValue(Object value) {
+		String completeValue = null;
+
+		if (value instanceof String) {
+			completeValue = value.toString();
+		} else if (value instanceof Integer) {
+			completeValue = "((Integer))" + value.toString();
+		} else if (value instanceof BigDecimal) {
+			BigDecimal bd = (BigDecimal) value;
+			bd = bd.setScale(2);
+			completeValue = "((BigDecimal))" + bd.toString();
+		} else if (value instanceof Boolean) {
+			completeValue = "((Boolean))" + value.toString();
+		} else if (value instanceof Long) {
+			completeValue = "((Long))" + value.toString();
+		} else if (value instanceof Date || value instanceof Timestamp) {
+			completeValue = "((Date))" + FormatDates.getDateFormat().format(value);
+			// completeValue = "((Timestamp))" +
+			// FormatDates.getTimestampFormat().format(value);
+		} else {
+			completeValue = value.toString();
+		}
+
+		return completeValue;
+	}
+
+	public static Object convertToType(String value) throws ParseException {
+		final String INTEGER = "\\(\\(Integer\\)\\)";
+		final String BIG_DECIMAL = "\\(\\(BigDecimal\\)\\)";
+		final String BOOLEAN = "\\(\\(Boolean\\)\\)";
+		final String LONG = "\\(\\(Long\\)\\)";
+		final String DATE = "\\(\\(Date\\)\\)";
+		final String TIMESTAMP = "\\(\\(Timestamp\\)\\)";
+
+		Object cValue = null;
+
+		if (value == null) {
+			return cValue;
+		}
+
+		if (value.matches("^(" + INTEGER + "|" + BIG_DECIMAL + "|" + BOOLEAN + "|" + LONG + "|" + DATE + "|"
+				+ TIMESTAMP + ").*")) {
+			if (value.matches("^(" + INTEGER + ").*")) {
+				value = value.replaceAll("(" + INTEGER + ")", "");
+				cValue = Integer.parseInt(value);
+			} else if (value.matches("^(" + BIG_DECIMAL + ").*")) {
+				value = value.replaceAll("(" + BIG_DECIMAL + ")", "");
+				cValue = new BigDecimal(value);
+			} else if (value.matches("^(" + BOOLEAN + ").*")) {
+				value = value.replaceAll("(" + BOOLEAN + ")", "");
+				cValue = CommonConverter.parseBoolean(value);
+			} else if (value.matches("^(" + LONG + ").*")) {
+				value = value.replaceAll("(" + LONG + ")", "");
+				cValue = Long.parseLong(value);
+			} else if (value.matches("^(" + DATE + ").*")) {
+				value = value.replaceAll("(" + DATE + ")", "");
+				cValue = FormatDates.getDateFormat().parse(value);
+			} else if (value.matches("^(" + TIMESTAMP + ").*")) {
+				value = value.replaceAll("(" + TIMESTAMP + ")", "");
+				cValue = FormatDates.getTimestampFormat().parse(value);
+			}
+		} else {
+			cValue = value;
+		}
+		return cValue;
 	}
 
 }
