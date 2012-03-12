@@ -56,7 +56,7 @@ public class AppView extends View {
 
 	private void createNorth() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("</div><div id=mobile-title>Mobile - Microcreditos</div>");
+		sb.append("</div><div id=mobile-title>Mobile - Microcréditos</div>");
 
 		northPanel = new HtmlContainer(sb.toString());
 		northPanel.setStateful(false);

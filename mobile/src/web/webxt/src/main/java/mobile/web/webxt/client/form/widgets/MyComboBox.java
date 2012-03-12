@@ -23,19 +23,23 @@ import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
+import com.extjs.gxt.ui.client.event.KeyEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
+import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.Field;
+import com.google.gwt.event.dom.client.KeyCodes;
 
 public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 	private String process = "G201";
 	private int listWidth = 0;
 	private DataSource dataSource;
-	private Map<String,Field<?>> mdependency;
+	private Map<String, Field<?>> mdependency;
 	private Map<String, Field<?>> mlinks;
 	private boolean isLoaded = false;
+	private String filteredField = null;
 
 	public MyComboBox() {
 		setForceSelection(true);
@@ -45,6 +49,8 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 
 		initLinks();
 		initValidateDependencies();
+
+		resetFunction();
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -55,12 +61,33 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 			return;
 		}
 
-		if (!isLoaded) {
-			((PagingLoader) getStore().getLoader()).load(0, getPageSize());
-			isLoaded = true;
+		if (isEditable()) {
+			if (!q.equals(lastQuery)) {
+				lastQuery = q;
+				if (filteredField == null) {
+					filteredField = getDisplayField();
+				}
+				getStore().filter(filteredField, q);
+				((PagingLoader) getStore().getLoader()).load(0, getPageSize());
+			}
+		} else {
+			if (!isLoaded) {
+				((PagingLoader) getStore().getLoader()).load(0, getPageSize());
+				isLoaded = true;
+			} else {
+				expand();
+			}
 		}
-		expand();
 	}
+
+	@Override
+	protected void onKeyDown(FieldEvent fe) {
+		if (fe.getKeyCode() == KeyCodes.KEY_DELETE) {
+			isLoaded = false;
+		} else {
+			super.onKeyDown(fe);
+		}
+	};
 
 	@Override
 	public ModelData findModel(String property, String value) {
@@ -189,21 +216,20 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 		for (String criterion : mdependency.keySet()) {
 			Field<?> f = mdependency.get(criterion);
 			if (f.getValue() == null && f instanceof Dependent) {
-				((Dependent)f).validateDependencies();
+				((Dependent) f).validateDependencies();
 			}
 		}
 
 		return valid;
 	}
 
-	
 	public Map<DataSource, String> getDsDependencies() {
 		if (mdependency == null || mdependency.size() < 1) {
 			return null;
 		}
 
 		Map<DataSource, String> mDependencies = new HashMap<DataSource, String>();
-		
+
 		// Directly related
 		for (String criterion : mdependency.keySet()) {
 			Field<?> f = mdependency.get(criterion);
@@ -213,19 +239,19 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 				mDependencies.put(ds, value);
 			}
 		}
-		
+
 		return mDependencies;
 	}
-	
+
 	public void getIterativeDsDependencies(Map<DataSource, String> mOriginal) {
 		if (mdependency == null || mdependency.size() < 1) {
 			return;
 		}
-		
-		if(mOriginal == null){
+
+		if (mOriginal == null) {
 			mOriginal = new HashMap<DataSource, String>();
 		}
-		
+
 		mOriginal.putAll(getDsDependencies());
 
 		// Indirectly related
@@ -236,7 +262,7 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 			}
 		}
 	}
-	
+
 	public Map<DataSource, String> getDeepDsDependencies() {
 		Map<DataSource, String> mDependencies = new HashMap<DataSource, String>();
 		getIterativeDsDependencies(mDependencies);
@@ -248,7 +274,7 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 			public void handleEvent(BaseEvent be) {
 				if (validateDependencies()) {
 					MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) getStore().getLoader()).getConfig();
-					//Map<DataSource, String> map = getDsDependencies();
+					// Map<DataSource, String> map = getDsDependencies();
 					Map<DataSource, String> map = getDeepDsDependencies();
 					if (map != null) {
 						for (DataSource ds : map.keySet()) {
@@ -265,6 +291,16 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 				} else {
 					be.setCancelled(true);
 				}
+			}
+		});
+
+	}
+
+	private void resetFunction() {
+		addListener(Events.KeyPress, new Listener<KeyEvent>() {
+			public void handleEvent(KeyEvent ke) {
+				Info.display("KeyCode", String.valueOf(ke.getKeyCode()));
+				// setLoaded(false);
 			}
 		});
 
@@ -349,6 +385,14 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 
 	public void setMdependency(Map<String, Field<?>> mdependency) {
 		this.mdependency = mdependency;
+	}
+
+	public String getFilteredField() {
+		return filteredField;
+	}
+
+	public void setFilteredField(String filteredField) {
+		this.filteredField = filteredField;
 	}
 
 }

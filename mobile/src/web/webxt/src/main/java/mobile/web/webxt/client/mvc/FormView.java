@@ -6,6 +6,8 @@ import mobile.web.webxt.client.devform.A102;
 import mobile.web.webxt.client.devform.A103;
 import mobile.web.webxt.client.devform.A104;
 import mobile.web.webxt.client.devform.A105;
+import mobile.web.webxt.client.devform.A106;
+import mobile.web.webxt.client.devform.A107;
 import mobile.web.webxt.client.devform.A201;
 import mobile.web.webxt.client.devform.A202;
 import mobile.web.webxt.client.devform.A203;
@@ -37,11 +39,14 @@ import mobile.web.webxt.client.devform.C202;
 import mobile.web.webxt.client.devform.C301;
 import mobile.web.webxt.client.devform.C302;
 import mobile.web.webxt.client.devform.C401;
+import mobile.web.webxt.client.devform.C402_;
+import mobile.web.webxt.client.devform.C502;
 import mobile.web.webxt.client.devform.G101;
 import mobile.web.webxt.client.devform.G301;
 import mobile.web.webxt.client.devform.G302;
 import mobile.web.webxt.client.devform.G303;
 import mobile.web.webxt.client.devform.G304;
+import mobile.web.webxt.client.form.MyGeneralForm;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.EventType;
@@ -55,6 +60,7 @@ import com.extjs.gxt.ui.client.widget.TabItem;
 
 public class FormView extends View {
 	private final FormPanel formPanel = new FormPanel();
+	private String actualProcess = null;
 
 	public FormView(FormController feedController) {
 		super(feedController);
@@ -67,6 +73,10 @@ public class FormView extends View {
 			onInit(event);
 		} else if (eventType.equals(AppEvents.ProcessSelected)) {
 			onProcessSelected(event);
+		} else if (eventType.equals(AppEvents.TabSelected)) {
+			onTabSelected(event);
+		} else if (eventType.equals(AppEvents.ProcessReloaded)) {
+			onProcessReloaded(event);
 		}
 	}
 
@@ -74,109 +84,136 @@ public class FormView extends View {
 		Dispatcher.forwardEvent(new AppEvent(AppEvents.FormPanelReady, formPanel));
 	}
 
+	private void onTabSelected(AppEvent event) {
+		actualProcess = ((ModelData) event.getData()).get("id");
+	}
+
 	private void onProcessSelected(AppEvent event) {
 		final ModelData process = event.getData();
-		TabItem tabItem = new TabItem((String) process.get("id"));
-		tabItem.setId((String) process.get("id"));
-		tabItem.setData("process", process);
-		tabItem.setClosable(true);
-
-		// Load the form
 		String processId = process.get("id");
+		actualProcess = processId;
 
 		System.out.println("Process seleced>>" + processId);
+		MyGeneralForm form = getForm(processId);
 
+		if (form != null) {
+			TabItem tabItem = new TabItem(processId);
+			tabItem.setId(processId);
+			tabItem.setData("process", process);
+			tabItem.setClosable(true);
+			tabItem.add(form);
+			formPanel.addTab(tabItem);
+			tabItem.addListener(Events.Select, new Listener<TabPanelEvent>() {
+				public void handleEvent(TabPanelEvent be) {
+					Dispatcher.forwardEvent(new AppEvent(AppEvents.TabSelected, process));
+				}
+			});
+		} else {
+			Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification, "El formulario del proceso " + processId
+					+ " no esta definido"));
+		}
+	}
+
+	private void onProcessReloaded(AppEvent event) {
+		if (actualProcess != null) {
+			formPanel.reloadTab();
+		}
+	}
+
+	private MyGeneralForm getForm(String processId) {
+		MyGeneralForm form = null;
 		if (processId.compareTo("A101") == 0) {
-			tabItem.add(new A101());
+			form = new A101();
 		} else if (processId.compareTo("A102") == 0) {
-			tabItem.add(new A102());
+			form = new A102();
 		} else if (processId.compareTo("A103") == 0) {
-			tabItem.add(new A103());
+			form = new A103();
 		} else if (processId.compareTo("A104") == 0) {
-			tabItem.add(new A104());
+			form = new A104();
 		} else if (processId.compareTo("A105") == 0) {
-			tabItem.add(new A105());
+			form = new A105();
+		} else if (processId.compareTo("A106") == 0) {
+			form = new A106();
+		} else if (processId.compareTo("A107") == 0) {
+			form = new A107();
 		} else if (processId.compareTo("A201") == 0) {
-			tabItem.add(new A201());
+			form = new A201();
 		} else if (processId.compareTo("A202") == 0) {
-			tabItem.add(new A202());
+			form = new A202();
 		} else if (processId.compareTo("A203") == 0) {
-			tabItem.add(new A203());
+			form = new A203();
 		} else if (processId.compareTo("A204") == 0) {
-			tabItem.add(new A204());
+			form = new A204();
 		} else if (processId.compareTo("A205") == 0) {
-			tabItem.add(new A205());
+			form = new A205();
 		} else if (processId.compareTo("A206") == 0) {
-			tabItem.add(new A206());
+			form = new A206();
 		} else if (processId.compareTo("B001") == 0) {
-			tabItem.add(new B001());
+			form = new B001();
 		} else if (processId.compareTo("B002") == 0) {
-			tabItem.add(new B002());
+			form = new B002();
 		} else if (processId.compareTo("B003") == 0) {
-			tabItem.add(new B003());
+			form = new B003();
 		} else if (processId.compareTo("B004") == 0) {
-			tabItem.add(new B004());
+			form = new B004();
 		} else if (processId.compareTo("B005") == 0) {
-			tabItem.add(new B005());
+			form = new B005();
 		} else if (processId.compareTo("B006") == 0) {
-			tabItem.add(new B006());
+			form = new B006();
 		} else if (processId.compareTo("B007") == 0) {
-			tabItem.add(new B007());
+			form = new B007();
 		} else if (processId.compareTo("B101") == 0) {
-			tabItem.add(new B101());
+			form = new B101();
 		} else if (processId.compareTo("B102") == 0) {
-			tabItem.add(new B102());
+			form = new B102();
 		} else if (processId.compareTo("B103") == 0) {
-			tabItem.add(new B103());
+			form = new B103();
 		} else if (processId.compareTo("C001") == 0) {
-			tabItem.add(new C001());
+			form = new C001();
 		} else if (processId.compareTo("C002") == 0) {
-			tabItem.add(new C002());
+			form = new C002();
 		} else if (processId.compareTo("C003") == 0) {
-			tabItem.add(new C003());
+			form = new C003();
 		} else if (processId.compareTo("C004") == 0) {
-			tabItem.add(new C004());
+			form = new C004();
 		} else if (processId.compareTo("C005") == 0) {
-			tabItem.add(new C005());
+			form = new C005();
 		} else if (processId.compareTo("C101") == 0) {
-			tabItem.add(new C101());
+			form = new C101();
 		} else if (processId.compareTo("C102") == 0) {
-				tabItem.add(new C102());
+			form = new C102();
 		} else if (processId.compareTo("C103") == 0) {
-			tabItem.add(new C103());
+			form = new C103();
 		} else if (processId.compareTo("C104") == 0) {
-			tabItem.add(new C104());
+			form = new C104();
 		} else if (processId.compareTo("C105") == 0) {
-			tabItem.add(new C105());
+			form = new C105();
 		} else if (processId.compareTo("C201") == 0) {
-			tabItem.add(new C201());
+			form = new C201();
 		} else if (processId.compareTo("C202") == 0) {
-			tabItem.add(new C202());
+			form = new C202();
 		} else if (processId.compareTo("C301") == 0) {
-			tabItem.add(new C301());
+			form = new C301();
 		} else if (processId.compareTo("C302") == 0) {
-			tabItem.add(new C302());
+			form = new C302();
 		} else if (processId.compareTo("C401") == 0) {
-			tabItem.add(new C401());
+			form = new C401();
+		} else if (processId.compareTo("C402") == 0) {
+			form = new C402_();
+		} else if (processId.compareTo("C502") == 0) {
+			form = new C502();
 		} else if (processId.compareTo("G101") == 0) {
-			tabItem.add(new G101());
+			form = new G101();
 		} else if (processId.compareTo("G301") == 0) {
-			tabItem.add(new G301());
+			form = new G301();
 		} else if (processId.compareTo("G302") == 0) {
-			tabItem.add(new G302());
+			form = new G302();
 		} else if (processId.compareTo("G303") == 0) {
-			tabItem.add(new G303());
+			form = new G303();
 		} else if (processId.compareTo("G304") == 0) {
-			tabItem.add(new G304());
+			form = new G304();
 		}
 
-		formPanel.addTab(tabItem);
-
-		tabItem.addListener(Events.Select, new Listener<TabPanelEvent>() {
-			public void handleEvent(TabPanelEvent be) {
-				Dispatcher.forwardEvent(new AppEvent(AppEvents.TabSelected, process));
-			}
-		});
-
+		return form;
 	}
 }

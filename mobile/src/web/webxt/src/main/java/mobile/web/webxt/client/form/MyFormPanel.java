@@ -110,7 +110,7 @@ public class MyFormPanel extends FormPanel {
 
 	private void validateOverwrite(String key) {
 		if (rqField.containsKey(key)) {
-			new RuntimeException("Trying to overwrite key: " + key);
+			new Exception("Trying to overwrite key: " + key);
 		}
 	}
 
@@ -272,7 +272,7 @@ public class MyFormPanel extends FormPanel {
 			Map<String, String> mNewFields = new HashMap<String, String>();
 			for (String key : rqField.keySet()) {
 				String[] pk = key.split(":");
-				if (DataSourceType.valueOf(pk[2]) != DataSourceType.CRITERION) {
+				if (DataSourceType.valueOf(pk[2]) == DataSourceType.RECORD) {
 					mNewFields.put(pk[0] + ":" + Item.NEW_ITEM + ":" + pk[2], "1");
 				}
 			}

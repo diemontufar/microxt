@@ -12,5 +12,6 @@ public class AppEvents {
 	
 	public static final EventType ProcessSelected = new EventType();
 	public static final EventType TabSelected = new EventType();
+	public static final EventType ProcessReloaded = new EventType();
 	public static final EventType UserNotification = new EventType();
 }

@@ -29,7 +29,7 @@ public class NormalColumn extends ColumnConfig {
 
 		// Read-only
 		if(!columnData.isReadOnly()){
-			inputbox = new InputBox(columnData.getWidth(), columnData.getMaxLength(), Validate.TEXT);
+			inputbox = new InputBox(columnData.getWidth(), columnData.getMaxLength());
 			inputbox.setValidateOnBlur(true);
 			setEditor(new CellEditor(inputbox));
 		}

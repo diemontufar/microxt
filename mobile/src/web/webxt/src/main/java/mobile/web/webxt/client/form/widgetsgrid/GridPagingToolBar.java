@@ -28,12 +28,12 @@ public class GridPagingToolBar extends PagingToolBar {
 
 	@Override
 	protected void doLoadRequest(int offset, int limit) {
-		if (grid instanceof EntityEditorGrid) {
-			if(((EntityEditorGrid) grid).validateDependencies()){
-				EntityEditorGrid grid = (EntityEditorGrid) this.grid;
+		if (grid instanceof DependentGrid) {
+			if(((DependentGrid) grid).validateDependencies()){
+				DependentGrid dgrid = (DependentGrid) this.grid;
 				try {
 					MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) grid.getStore().getLoader()).getConfig();
-					Map<DataSource, String> map = grid.getDsDependencies();
+					Map<DataSource, String> map = dgrid.getDsDependencies();
 					if (map != null) {
 						for (DataSource ds : map.keySet()) {
 							String value = map.get(ds);
@@ -53,6 +53,8 @@ public class GridPagingToolBar extends PagingToolBar {
 			}else{
 				Info.display("Campos requeridos", "Existe campos requeridos que no han sido ingresados");
 			}
+		}else{
+			super.doLoadRequest(offset, limit);
 		}
 	}
 }

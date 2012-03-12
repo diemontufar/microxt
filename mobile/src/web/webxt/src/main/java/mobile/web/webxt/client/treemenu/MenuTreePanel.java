@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import mobile.common.message.Message;
+import mobile.common.tools.ProcessType;
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyMessageReader;
 import mobile.web.webxt.client.data.MyProcessConfig;
@@ -58,7 +59,8 @@ public class MenuTreePanel extends LayoutContainer {
 				Dispatcher.forwardEvent(AppEvents.UserNotification, "Cargando menu");
 				AsyncCallback<Message> callback = new AsyncCallback<Message>() {
 					public void onFailure(Throwable caught) {
-						new AlertDialog("FilterTreePanel", caught.getMessage()).show();
+						//new AlertDialog("FilterTreePanel", caught.getMessage()).show();
+						new AlertDialog("Error", "Error al cargfar el menu").show();
 					}
 
 					public void onSuccess(Message result) {
@@ -66,6 +68,7 @@ public class MenuTreePanel extends LayoutContainer {
 					}
 				};
 				MyProcessConfig config = new MyProcessConfig(PROCESS);
+				config.setProcessType(ProcessType.QUERY);
 				MyHttpProxy proxy = new MyHttpProxy();
 				proxy.requestMsg(config, callback);
 				return true;
@@ -75,12 +78,6 @@ public class MenuTreePanel extends LayoutContainer {
 				List<ModelData> subsystemModels = MyMessageReader.getModels(result, "Subsystem");
 				List<ModelData> moduleModels = MyMessageReader.getModels(result, "Module");
 				List<ModelData> processModels = MyMessageReader.getModels(result, "Process");
-
-				if (subsystemModels.size() == 0 && moduleModels.size() == 0 && processModels.size() == 0) {
-					new AlertDialog("Menu Principal", "Error al consultar los elementos del menu.").show();
-					Dispatcher.forwardEvent(AppEvents.UserNotification, "Error al cargar el menu");
-					return;
-				}
 
 				Map<String, Folder> mN1 = new HashMap<String, Folder>();
 				Map<String, Folder> mN2 = new HashMap<String, Folder>();
@@ -149,8 +146,8 @@ public class MenuTreePanel extends LayoutContainer {
 		filter.bind(store);
 
 		// Add listener
-		tree.addListener(Events.OnDoubleClick, new Listener<TreePanelEvent<ModelData>>() {
-		//tree.addListener(Events.OnClick, new Listener<TreePanelEvent<ModelData>>() {
+		//tree.addListener(Events.OnDoubleClick, new Listener<TreePanelEvent<ModelData>>() {
+		tree.addListener(Events.OnClick, new Listener<TreePanelEvent<ModelData>>() {
 			public void handleEvent(TreePanelEvent<ModelData> be) {
 				// If node is leaf (is a process)
 				if (be.getNode().isLeaf()) {

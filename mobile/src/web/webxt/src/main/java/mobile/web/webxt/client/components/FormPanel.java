@@ -1,23 +1,14 @@
 package mobile.web.webxt.client.components;
 
 import mobile.web.webxt.client.MobileConfig;
-import mobile.web.webxt.client.devform.A105;
 import mobile.web.webxt.client.devform.B101;
-import mobile.web.webxt.client.devform.B102;
-import mobile.web.webxt.client.devform.B103;
-import mobile.web.webxt.client.devform.C102;
-import mobile.web.webxt.client.devform.C103;
-import mobile.web.webxt.client.devform.C201;
-import mobile.web.webxt.client.devform.C202;
-import mobile.web.webxt.client.devform.C301;
-import mobile.web.webxt.client.devform.G302;
-import mobile.web.webxt.client.devform.G303;
-import mobile.web.webxt.client.devform.G304;
-import mobile.web.webxt.client.devform.ObtainPersonInformation;
-import mobile.web.webxt.client.devform.ZonePreview;
+import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.resources.Resources;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
+import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.mvc.AppEvent;
+import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.extjs.gxt.ui.client.widget.TabPanel;
@@ -31,19 +22,20 @@ public class FormPanel extends ContentPanel {
 		setHeaderVisible(false);
 		setBorders(false);
 		setLayout(new FitLayout());
+		tabPanel.setTabScroll(true);
+		tabPanel.setAnimScroll(true);
+
 		if (!MobileConfig.FORM_DEVELOPMENT) {
 			add(tabPanel);
 		} else {
-			// Add here the tested form
-			//add(new B103());
-			add(new C103());
+			// Put here the tested form
+			add(new B101());
 		}
 
 	}
 
 	public void addTab(TabItem tabItem) {
 		tabItem.setLayout(new FitLayout());
-		// tabItem.setIcon(Resources.ICONS.rss());
 		tabItem.setIcon(Resources.ICONS.form());
 		tabItem.setScrollMode(Scroll.AUTO);
 		String tabId = tabItem.getId();
@@ -53,6 +45,15 @@ public class FormPanel extends ContentPanel {
 			tabPanel.setSelection(tabItem);
 		} else {
 			tabPanel.setSelection(existingTab);
+		}
+	}
+
+	public void reloadTab() {
+		TabItem actual = tabPanel.getSelectedItem();
+		if (actual != null) {
+			ModelData actualProcess = actual.getData("process"); 
+			tabPanel.remove(actual);
+			Dispatcher.forwardEvent(new AppEvent(AppEvents.ProcessSelected, actualProcess));
 		}
 	}
 }
