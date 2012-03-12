@@ -54,6 +54,7 @@ public class PersonHeader extends RowContainer {
 		cdataPerson.add(new MyColumnData("per1", "lastName", "Apellido", 100));
 		personCombo.setQueryData(refPerson, cdataPerson);
 		personCombo.setDisplayField("pk_personId");
+		personCombo.setData("mobile-type", Long.class);
 		personCombo.setPageSize(COMBO_PAGE_SIZE);
 		add(personCombo, new HBoxLayoutData(new Margins(0, 0, 0, 0)));
 

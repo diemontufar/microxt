@@ -3,8 +3,12 @@ package mobile.web.webxt.client.devform;
 import java.util.ArrayList;
 import java.util.List;
 
+import mobile.web.webxt.client.data.form.DataSource;
+import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.form.EntityContentPanel;
+import mobile.web.webxt.client.form.MyFormPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
+import mobile.web.webxt.client.form.widgets.InputBox;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.DateColumn;
 import mobile.web.webxt.client.form.widgetsgrid.EntityGrid;
@@ -18,9 +22,12 @@ import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.filters.DateFilter;
@@ -28,15 +35,16 @@ import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
 import com.extjs.gxt.ui.client.widget.grid.filters.ListFilter;
 import com.extjs.gxt.ui.client.widget.grid.filters.NumericFilter;
 import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
+import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.user.client.Element;
 
-public class C401 extends MyGeneralForm {
+public class C402 extends MyGeneralForm {
 
-	private final static String PROCESS = "C401";
+	private final static String PROCESS = "C402";
 	private final static String ENTITY = "Solicitude";
 	private final Integer PAGE_SIZE = 10;
 
-	public C401() {
+	public C402() {
 		super(PROCESS, true);
 		setReference(ENTITY);
 	}
@@ -45,6 +53,13 @@ public class C401 extends MyGeneralForm {
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
 
+		// Form
+		final MyFormPanel form = new MyFormPanel(this, "");
+		InputBox user = new InputBox();
+		user.setDataSource(new DataSource("user", DataSourceType.CONTROL));
+		user.setValue("JPEREZ");
+		form.add(user);
+		
 		// Columns configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
 		cdata.add(new MyColumnData("solicitudeId", "Cod", 50, true));
@@ -132,6 +147,18 @@ public class C401 extends MyGeneralForm {
 				getStore().sort(cdata.getIdFields().get(0), SortDir.ASC);
 			}
 		});
+
+		// Top tool bar
+		Button instButton = new Button("Intrumentación");
+		instButton.addSelectionListener(new SelectionListener<ButtonEvent>() {
+			@Override
+			public void componentSelected(ButtonEvent ce) {
+				form.commitForm();
+			}
+		});
+		ToolBar toolBar = new ToolBar();
+		toolBar.add(instButton);
+		cp.setTopComponent(toolBar);
 
 		// Paging tool bar
 		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(grid, PAGE_SIZE);

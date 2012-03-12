@@ -1,6 +1,5 @@
 package mobile.web.webxt.client.mvc;
 
-
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
@@ -24,15 +23,15 @@ public class StatusView extends View {
 		if (eventType.equals(AppEvents.Init)) {
 			onInit();
 			setStatus("Listo");
+		} else if (eventType.equals(AppEvents.UserNotification)) {
+			String message = event.getData();
+			setStatus(message);
 		} else if (eventType.equals(AppEvents.ProcessSelected)) {
 			ModelData model = event.getData();
 			setStatus("Proceso seleccionado - (" + model.get("id") + ")");
 		} else if (eventType.equals(AppEvents.TabSelected)) {
 			ModelData model = event.getData();
 			setStatus("Proceso seleccionado - (" + model.get("id") + ")");
-		} else if (eventType.equals(AppEvents.UserNotification)) {
-			String message = event.getData();
-			setStatus(message);
 		}
 	}
 
@@ -40,8 +39,7 @@ public class StatusView extends View {
 		status.setWidth("100%");
 		status.setBox(true);
 		toolBar.add(status);
-		Dispatcher.forwardEvent(new AppEvent(AppEvents.StatusToolbarReady,
-				toolBar));
+		Dispatcher.forwardEvent(new AppEvent(AppEvents.StatusToolbarReady, toolBar));
 	}
 
 	public void setStatus(String message) {

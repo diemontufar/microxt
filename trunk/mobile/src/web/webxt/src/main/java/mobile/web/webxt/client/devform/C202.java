@@ -57,7 +57,7 @@ import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.user.client.Element;
 
-public class C202 extends LayoutContainer {
+public class C202 extends MyGeneralForm {
 
 	private final static String PROCESS = "C202";
 	private final static String ENTITY_GROUP = "PartnerGroup";
@@ -452,6 +452,7 @@ public class C202 extends LayoutContainer {
 		freqDescription.setReadOnly(true);
 		freqDescription.setDataSource(new DataSource("Frequency", "description", DataSourceType.DESCRIPTION));
 		row.add(freqDescription);
+		
 
 		freqCombo.linkWithField(freqDescription, "description");
 

@@ -1,5 +1,6 @@
 package mobile.web.webxt.client.data;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,8 +17,8 @@ import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.mvc.AppEvents;
-import mobile.web.webxt.client.util.ConvertionManager;
 import mobile.web.webxt.client.util.DatesManager;
+import mobile.web.webxt.client.util.WebConverter;
 import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.data.DataProxy;
@@ -76,13 +77,13 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			// Request
 			Message msg = new Message();
 			msg.getRequest().setProcess(config.getProcess());
+			msg.getRequest().setProcessType(ProcessType.QUERY.getShortName());
 
 			// Entity
 			EntityData entityData = new EntityData(config.getReference().getEntity());
 			if (config.getReference().getAlias() != null) {
 				entityData.setAlias(config.getReference().getAlias());
 			}
-			entityData.setProcessType(ProcessType.QUERY.getShortName());
 
 			String queryFields = "";
 			int queryFieldsCounter = 0;
@@ -114,10 +115,16 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			entityData.setLimit(paginationConfig.getLimit());
 
 			// Entity.ordering
-			System.out.println("Order:" + paginationConfig.getSortField() + ":" + paginationConfig.getSortDir());
-			if (paginationConfig.getSortField() != null) {
-				entityData.setOrderBy(paginationConfig.getSortField());
-				entityData.setOrderDir(paginationConfig.getSortDir().toString());
+			String orderField = paginationConfig.getSortField();
+			if (orderField != null) {
+				if (orderField.substring(0, 1).matches("[A-Z]") && orderField.indexOf("_") > 0) {
+					orderField = orderField.replaceAll("_", ".");
+				}
+				System.out.println("Order:" + orderField + ":" + paginationConfig.getSortDir());
+				if (paginationConfig.getSortField() != null) {
+					entityData.setOrderBy(orderField);
+					entityData.setOrderDir(paginationConfig.getSortDir().toString());
+				}
 			}
 
 			// Entity.filtering
@@ -127,10 +134,21 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 				String strFilters = "";
 				int filtersCounter = 0;
 				for (FilterConfig filter : filters) {
-					System.out.println("Filter:" + filter.getField() + ":" + filter.getComparison() + ":"
-							+ filter.getValue());
-					String strFilter = filter.getField() + ":"
-							+ (filter.getComparison() == null ? "" : filter.getComparison()) + ":" + filter.getValue();
+					String filterField = filter.getField();
+					if (filterField.substring(0, 1).matches("[A-Z]") && filterField.indexOf("_") > 0) {
+						filterField = filterField.replaceAll("_", ".");
+					}
+					String filterComp = (filter.getComparison() == null) ? "" : filter.getComparison();
+					String filterValue = null;
+					if (!(filter.getValue() instanceof ArrayList)) {
+						filterValue = WebConverter.completeValue(filter.getValue());
+					} else {
+						Object filterValue0 = ((ArrayList) filter.getValue()).get(0);
+						filterValue = WebConverter.completeValue(filterValue0);
+
+					}
+					System.out.println("Filter:" + filterField + ":" + filterComp + ":" + filterValue);
+					String strFilter = filterField + ":" + filterComp + ":" + filterValue;
 					if (filtersCounter > 0) {
 						strFilters = strFilters + ";";
 					}
@@ -170,13 +188,11 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	public void requestMsg(final MyProcessConfig config, final AsyncCallback<Message> callback) {
 		System.out.println("MyHttpProxy.requestMsg: " + config.toString());
 
-		GWT.log("Host page base URL: " + GWT.getHostPageBaseURL());
-		GWT.log("Module base URL: " + GWT.getModuleBaseURL());
-
 		try {
 			// Request
 			Message msg = new Message();
 			msg.getRequest().setProcess(config.getProcess());
+			msg.getRequest().setProcessType(config.getProcessType().getShortName());
 
 			System.out.println("Conversion en json");
 			String data = convertMessage(msg);
@@ -210,6 +226,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			// Request
 			Message msg = new Message();
 			msg.getRequest().setProcess(config.getProcess());
+			msg.getRequest().setProcessType(ProcessType.QUERY.getShortName());
 
 			// References
 			Reference ref = config.getReference();
@@ -220,7 +237,6 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			// Data
 			EntityData data = new EntityData(ref.getEntity());
 			data.setAlias(ref.getAlias());
-			data.setProcessType(ProcessType.QUERY.getShortName());
 			data.setOffset(0);
 			mdata.put(ref.getAlias(), data);
 
@@ -322,6 +338,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			// Request
 			Message msg = new Message();
 			msg.getRequest().setProcess(config.getProcess());
+			msg.getRequest().setProcessType(ProcessType.MAINTENANCE.getShortName());
 
 			if (lModified.size() <= 0) {
 				return;
@@ -329,7 +346,6 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 			// Entity changes
 			EntityData entityData = new EntityData(config.getReference().getEntity());
-			entityData.setProcessType(ProcessType.MAINTENANCE.getShortName());
 			entityData.setAlias(config.getReference().getAlias());
 
 			// Filters
@@ -368,11 +384,10 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					item.addField(field);
 				}
 				if (modelData.get(Item.EXPIRE_ITEM) != null
-						&& ConvertionManager.parseBoolean(modelData.get(Item.EXPIRE_ITEM))) {
+						&& WebConverter.parseBoolean(modelData.get(Item.EXPIRE_ITEM))) {
 					item.setExpireItem(true);
 				}
-				if (modelData.get(Item.NEW_ITEM) != null
-						&& ConvertionManager.parseBoolean(modelData.get(Item.NEW_ITEM))) {
+				if (modelData.get(Item.NEW_ITEM) != null && WebConverter.parseBoolean(modelData.get(Item.NEW_ITEM))) {
 					item.setNewItem(true);
 				}
 				entityData.addItem(item);
@@ -382,7 +397,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 			System.out.println("Set message in json format...");
 			String data = convertMessage(msg);
-			System.out.println("Mensaje: " + data);
+
 			System.out.println("Send request...");
 			builder.sendRequest(data, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
@@ -431,13 +446,13 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			// Request
 			Message msg = new Message();
 			msg.getRequest().setProcess(config.getProcess());
+			msg.getRequest().setProcessType(ProcessType.MAINTENANCE.getShortName());
 
 			// Data map
 			Map<String, EntityData> mdata = new HashMap<String, EntityData>();
 
 			// Fill data
 			EntityData data = new EntityData(config.getReference().getEntity());
-			data.setProcessType(ProcessType.MAINTENANCE.getShortName());
 			data.setAlias(config.getReference().getAlias());
 			mdata.put(config.getReference().getAlias(), data);
 
@@ -472,6 +487,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					System.out.println("filter: " + filter);
 					filters = filters + filter;
 					data.setFilter(filters);
+				} else if (DataSourceType.valueOf(fieldtype) == DataSourceType.CONTROL) {
+					msg.setControlFieldValue(fieldName, value);
 				}
 			}
 
@@ -481,9 +498,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 			// Send message
 			System.out.println("Set message in json format...");
-			String message = "";
-			message = convertMessage(msg);
-			System.out.println("Message: " + message);
+			String message = convertMessage(msg);
+
 			System.out.println("Send request...");
 			builder.sendRequest(message, new RequestCallback() {
 				public void onError(Request request, Throwable exception) {
@@ -541,6 +557,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	}
 
 	private String convertMessage(Message msg) {
+		System.out.println("Convert message in json format...");
+		System.out.println("Mensaje. " + msg.toJSON());
 		return URL.encode(msg.toJSON());
 	}
 

@@ -30,7 +30,7 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.google.gwt.user.client.Element;
 
 /**
- * Processes by role
+ * Processes per role
  */
 public class A202 extends MyGeneralForm {
 

@@ -109,6 +109,19 @@ public class MyColumnData extends ColumnData {
 		setWidth(width);
 		setAllowBlank(allowBlank);
 	}
+	/**
+	 * If type is DESCRIPTION applies a different model data property structure
+	 */
+	public MyColumnData(DataSource ds, String title, int width) {
+		if (ds.getType() != DataSourceType.DESCRIPTION) {
+			setId(ds.getField());
+		} else {
+			setId(ds.getAlias() + "_" + ds.getField());
+		}
+		setDataSource(ds);
+		setName(title);
+		setWidth(width);
+	}
 
 	public String getId() {
 		return id;

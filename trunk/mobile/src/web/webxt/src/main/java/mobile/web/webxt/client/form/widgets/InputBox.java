@@ -108,7 +108,7 @@ public class InputBox extends TextField<String> implements PersistentField {
 		this.addListener(Events.OnBlur, new Listener<FieldEvent>() {
 			public void handleEvent(FieldEvent e) {
 				if (getValue()!=null && getType()!=Validate.EMAIL && getType()!=Validate.PASSWORD){
-					setValue(getValue().toString().toUpperCase());
+					//setValue(getValue().toString().toUpperCase());
 				}
 			}
 		});
@@ -133,7 +133,8 @@ public class InputBox extends TextField<String> implements PersistentField {
 	@Override
 	public String getValue() {
 		if (super.getValue()!=null && getType()!=Validate.EMAIL && getType()!=Validate.PASSWORD){
-			return super.getValue().toUpperCase();
+			//return super.getValue().toUpperCase();
+			return super.getValue();
 		}else{
 			return super.getValue();
 		}
@@ -145,5 +146,11 @@ public class InputBox extends TextField<String> implements PersistentField {
 
 	public void setType(Validate type) {
 		this.type = type;
+	}
+	
+	@Override
+	public void setReadOnly(boolean readOnly) {
+		super.setReadOnly(readOnly);
+		setTabIndex(-1);
 	}
 }

@@ -18,7 +18,6 @@ public class AppController extends Controller {
 		registerEventTypes(AppEvents.NavPanelReady);
 		registerEventTypes(AppEvents.FormPanelReady);
 		registerEventTypes(AppEvents.StatusToolbarReady);
-		
 	}
 
 	@Override

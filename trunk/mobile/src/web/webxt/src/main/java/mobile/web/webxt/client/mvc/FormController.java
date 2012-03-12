@@ -11,6 +11,8 @@ public class FormController extends Controller {
 	public FormController() {
 		registerEventTypes(AppEvents.Init);
 		registerEventTypes(AppEvents.ProcessSelected);
+		registerEventTypes(AppEvents.TabSelected);
+		registerEventTypes(AppEvents.ProcessReloaded);
 	}
 
 	@Override

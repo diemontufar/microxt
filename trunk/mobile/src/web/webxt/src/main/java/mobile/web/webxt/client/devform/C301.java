@@ -18,6 +18,8 @@ import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.util.DatesManager;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
+import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -47,7 +49,15 @@ public class C301 extends MyGeneralForm {
 	public C301() {
 		super(PROCESS);
 		setReference(new Reference("sol", ENTITY));
+
 	}
+
+	MyFormPanel form;
+	RadioGroup debtorRadioGroup;
+	Radio individualRadio;
+	Radio groupalRadio;
+	ComboForm individualId;
+	ComboForm groupId;
 
 	@Override
 	protected void onRender(Element parent, int index) {
@@ -55,13 +65,21 @@ public class C301 extends MyGeneralForm {
 
 		// Constants
 		final int FORM_WIDTH = 540;
-		final int TAB_HEIGHT = 350;
+		final int TAB_HEIGHT = 360;
 		final int LABEL_WIDTH = 65;
 
+		// ///////////////////////////
 		// Form panel
-		final MyFormPanel form = new MyFormPanel(this, "Solicitud de Microcrédito", FORM_WIDTH);
+		form = new MyFormPanel(this, "Solicitud de Microcrédito", FORM_WIDTH) {
+			@Override
+			protected boolean postQuery() {
+				doPostQuery();
+				return true;
+			}
+		};
 		form.setLayout(new FlowLayout());
 
+		// ///////////////////////////
 		// Header
 		// Solicitude id
 		RowContainer row = new RowContainer();
@@ -106,11 +124,12 @@ public class C301 extends MyGeneralForm {
 		});
 		form.add(generatedId);
 
+		// ///////////////////////////
 		// Tab panel
 		final TabPanel tabPanel = new TabPanel();
 		tabPanel.setHeight(TAB_HEIGHT);
-		// tabPanel.setDeferredRender(false);
 
+		// ///////////////////////////
 		// Basic tab
 		TabItem basic = new TabItem();
 		basic.setStyleAttribute("padding", "10px");
@@ -118,6 +137,8 @@ public class C301 extends MyGeneralForm {
 		basic.setLayout(new FlowLayout());
 		basic.setBorders(true);
 
+		// ///////////////////////////
+		// Debtor FieldSet
 		FieldSet fieldSet = new FieldSet();
 		fieldSet.setHeading("Deudor");
 		fieldSet.setCollapsible(true);
@@ -128,18 +149,21 @@ public class C301 extends MyGeneralForm {
 		label = new MyLabel("Tipo:", LABEL_WIDTH);
 		row.add(label);
 
-		Radio radio = new Radio();
-		radio.setBoxLabel("Individual");
-		radio.setValue(true);
+		individualRadio = new Radio();
+		individualRadio.setId("individualRadio");
+		individualRadio.setBoxLabel("Individual");
+		individualRadio.setValue(true);
 
-		Radio radio2 = new Radio();
-		radio2.setBoxLabel("Grupal");
+		groupalRadio = new Radio();
+		groupalRadio.setId("groupalRadio");
+		groupalRadio.setBoxLabel("Grupal");
 
-		final RadioGroup radioGroup = new RadioGroup();
-		radioGroup.add(radio);
-		radioGroup.add(radio2);
+		debtorRadioGroup = new RadioGroup();
+		debtorRadioGroup.setId("debtorRadioGroup");
+		debtorRadioGroup.add(individualRadio);
+		debtorRadioGroup.add(groupalRadio);
 
-		row.add(radioGroup);
+		row.add(debtorRadioGroup);
 		fieldSet.add(row);
 
 		// Individual debtor
@@ -151,21 +175,28 @@ public class C301 extends MyGeneralForm {
 		label = new MyLabel("Deudor:", LABEL_WIDTH);
 		row1.add(label);
 
-		final ComboForm individualId = new ComboForm(80);
+		individualId = new ComboForm(80);
 		individualId.setDataSource(new DataSource("sol", "partnerClientId", DataSourceType.RECORD));
+		individualId.setProcess("G202");
+		individualId.setPageSize(5);
+		individualId.setEditable(true);
 
 		Reference refPartner1 = new Reference("cli1", "Partner");
 		final ArrayColumnData combodata = new ArrayColumnData();
-		combodata.add(new MyColumnData("cli1", "pk_partnerId", "Id", 70));
-		combodata.add(new MyColumnData("cli1", "personId", "Nombre", 150));
+		combodata.add(new MyColumnData("cli1", "partnerId", "Id", 50));
+		combodata.add(new MyColumnData("cli1", "identificationNumber", "Identificación", 100));
+		combodata.add(new MyColumnData("cli1", "name", "Nombre", 200));
 		individualId.setQueryData(refPartner1, combodata);
-		individualId.setDisplayField("pk_partnerId");
+		individualId.setDisplayField("partnerId");
+		individualId.setFilteredField("identificationNumber");
 		row1.add(individualId);
 
 		InputBox clientDescription = new InputBox(280);
 		clientDescription.setReadOnly(true);
 		row1.add(clientDescription);
 
+		individualId.linkWithField(clientDescription, "name");
+		
 		debtorContainer.add(row1);
 
 		// Group debtor
@@ -175,8 +206,11 @@ public class C301 extends MyGeneralForm {
 		label = new MyLabel("Deudor:", LABEL_WIDTH);
 		row2.add(label);
 
-		final ComboForm groupId = new ComboForm(80);
+		groupId = new ComboForm(80);
+		groupId.setId("groupId");
 		groupId.setDataSource(new DataSource("sol", "groupClientId", DataSourceType.RECORD));
+		groupId.setPageSize(5);
+		groupId.setEditable(true);
 
 		Reference refGroup1 = new Reference("gru1", "PartnerGroup");
 		final ArrayColumnData combodata2 = new ArrayColumnData();
@@ -184,19 +218,19 @@ public class C301 extends MyGeneralForm {
 		combodata2.add(new MyColumnData("gru1", "groupDescription", "Descripción", 150));
 		groupId.setQueryData(refGroup1, combodata2);
 		groupId.setDisplayField("pk_partnerGroupId");
+		groupId.setFilteredField("pk_partnerGroupId");
 		row2.add(groupId);
 
 		InputBox clientDescription2 = new InputBox(280);
 		clientDescription2.setReadOnly(true);
 		row2.add(clientDescription2);
 
-		individualId.linkWithField(clientDescription, "personId");
 		groupId.linkWithField(clientDescription2, "groupDescription");
 
 		debtorContainer.add(row2);
 
 		// Events radio buttons
-		radioGroup.addListener(Events.Change, new Listener<FieldEvent>() {
+		debtorRadioGroup.addListener(Events.Change, new Listener<FieldEvent>() {
 			public void handleEvent(FieldEvent fe) {
 				RadioGroup rg = (RadioGroup) fe.getField();
 				if (rg.getValue().getBoxLabel().compareTo("Individual") == 0) {
@@ -211,56 +245,7 @@ public class C301 extends MyGeneralForm {
 
 		basic.add(fieldSet);
 
-		// Status FieldSet
-		fieldSet = new FieldSet();
-		fieldSet.setHeading("Estado");
-		fieldSet.setCollapsible(true);
-		fieldSet.setLayout(new FlowLayout());
-
-		row = new RowContainer();
-
-		label = new MyLabel("Estado:", LABEL_WIDTH);
-		row.add(label);
-
-		final InputBox estado = new InputBox(50);
-		estado.setReadOnly(true);
-		estado.setDataSource(new DataSource("sol", "statusId", DataSourceType.RECORD));
-		// estado.setOriginalValue("001");
-		estado.setValue("001");
-		row.add(estado);
-
-		final InputBox estadoDes = new InputBox(150);
-		estadoDes.setReadOnly(true);
-		estadoDes.setDataSource(new DataSource("SolicitudeStatus", "description", DataSourceType.DESCRIPTION));
-		row.add(estadoDes);
-
-		fieldSet.add(row);
-
-		row = new RowContainer();
-		row.setAutoHeight(true);
-
-		label = new MyLabel("Asesor:", LABEL_WIDTH);
-		row.add(label);
-
-		final InputBox assessor = new InputBox(100);
-		assessor.setReadOnly(true);
-		assessor.setDataSource(new DataSource("sol", "assessor", DataSourceType.RECORD));
-		assessor.setValue("ADM");
-		row.add(assessor);
-
-		label = new MyLabel("Fecha:", LABEL_WIDTH);
-		row.add(label, new HBoxLayoutData(0, 10, 0, 20));
-
-		final MyDateField solicitudDate = new MyDateField(100);
-		solicitudDate.setReadOnly(true);
-		solicitudDate.setValue(DatesManager.getCurrentDate());
-		solicitudDate.setDataSource(new DataSource("sol", "solicitudeDate", DataSourceType.RECORD));
-		row.add(solicitudDate);
-
-		fieldSet.add(row);
-
-		basic.add(fieldSet);
-
+		// ////////////////////////
 		// Product data FieldSet
 		fieldSet = new FieldSet();
 		fieldSet.setHeading("Datos del Producto");
@@ -354,13 +339,8 @@ public class C301 extends MyGeneralForm {
 
 		basic.add(fieldSet);
 
-		// Loan tab
-		TabItem loan = new TabItem();
-		loan.setStyleAttribute("padding", "10px");
-		loan.setText("Microcrédito");
-		loan.setLayout(new FlowLayout());
-		loan.setBorders(true);
-
+		// /////////////////////
+		// Credit data FieldSet
 		fieldSet = new FieldSet();
 		fieldSet.setHeading("Datos del Crédito");
 		fieldSet.setCollapsible(true);
@@ -379,43 +359,14 @@ public class C301 extends MyGeneralForm {
 		amount.setFormat(NumberFormat.getFormat("#,##0.00"));
 		row.add(amount);
 
-		label = new MyLabel("Tipo cuota:", LABEL_WIDTH);
-		row.add(label, new HBoxLayoutData(0, 10, 0, 30));
-
-		// Quota type combo
-		final ComboForm quotaTypeCombo = new ComboForm(80);
-		quotaTypeCombo.setDataSource(new DataSource("sol", "quotaTypeId", DataSourceType.RECORD));
-
-		Reference refQuotaType = new Reference("qt", "QuotaType");
-		final ArrayColumnData qtCdata = new ArrayColumnData();
-		qtCdata.add(new MyColumnData("qt", "pk_quotaTypeId", "Id", 50));
-		qtCdata.add(new MyColumnData("qt", "description", "Descripcion", 200));
-		quotaTypeCombo.setQueryData(refQuotaType, qtCdata);
-		quotaTypeCombo.setDisplayField("pk_quotaTypeId");
-		row.add(quotaTypeCombo);
-
-		fieldSet.add(row);
-
-		row = new RowContainer();
-
 		label = new MyLabel("Plazo:", LABEL_WIDTH);
-		row.add(label);
+		row.add(label, new HBoxLayoutData(0, 10, 0, 30));
 
 		MyNumberField term = new MyNumberField();
 		term.setWidth(80);
 		term.setDataSource(new DataSource("sol", "term", DataSourceType.RECORD));
 		term.setPropertyEditorType(Integer.class);
 		row.add(term);
-
-		label = new MyLabel("Nro cuotas:", LABEL_WIDTH);
-		row.add(label, new HBoxLayoutData(0, 10, 0, 30));
-
-		MyNumberField numberQuotas = new MyNumberField();
-		numberQuotas.setWidth(80);
-		numberQuotas.setDataSource(new DataSource("sol", "numberQuotas", DataSourceType.RECORD));
-		numberQuotas.setPropertyEditorType(Integer.class);
-		numberQuotas.setRegex("(\\d){1,9}");
-		row.add(numberQuotas);
 
 		fieldSet.add(row);
 
@@ -444,8 +395,18 @@ public class C301 extends MyGeneralForm {
 
 		fieldSet.add(row);
 
-		loan.add(fieldSet);
+		basic.add(fieldSet);
 
+		// //////////////////////
+		// Destiny tab
+		TabItem destiny = new TabItem();
+		// Loan tab
+		destiny.setStyleAttribute("padding", "10px");
+		destiny.setText("Destino");
+		destiny.setLayout(new FlowLayout());
+		destiny.setBorders(true);
+
+		// /////////////////////
 		// Destination of funds
 		fieldSet = new FieldSet();
 		fieldSet.setHeading("Destino de los fondos");
@@ -463,7 +424,7 @@ public class C301 extends MyGeneralForm {
 
 		Reference refFundsDest = new Reference("fd", "FundsDestination");
 		final ArrayColumnData fdCdata = new ArrayColumnData();
-		fdCdata.add(new MyColumnData("fd", "pk_fundsDestinationId", "Id", 50));
+		fdCdata.add(new MyColumnData("fd", "pk_fundsDestinationId", "Id", 100));
 		fdCdata.add(new MyColumnData("fd", "description", "Descripcion", 200));
 		fundsDestinationCombo.setQueryData(refFundsDest, fdCdata);
 		fundsDestinationCombo.setDisplayField("pk_fundsDestinationId");
@@ -482,11 +443,82 @@ public class C301 extends MyGeneralForm {
 		row.add(fundsDescription);
 
 		fieldSet.add(row);
-		loan.add(fieldSet);
+		destiny.add(fieldSet);
+
+		// ////////////////
+		// Decision fieldSet
+		fieldSet = new FieldSet();
+		fieldSet.setHeading("Estado");
+		fieldSet.setCollapsible(true);
+		fieldSet.setLayout(new FlowLayout());
+
+		row = new RowContainer();
+
+		// Status
+		label = new MyLabel("Estado:", LABEL_WIDTH);
+		row.add(label);
+
+		final ComboForm statusCombo = new ComboForm(80);
+		statusCombo.setDataSource(new DataSource("sol", "statusId", DataSourceType.RECORD));
+
+		Reference statusRef = new Reference("sta", "SolicitudeStatus");
+		final ArrayColumnData statCdata = new ArrayColumnData();
+		statCdata.add(new MyColumnData("sta", "pk_statusId", "Id", 50));
+		statCdata.add(new MyColumnData("sta", "description", "Descripcion", 200));
+		statusCombo.setQueryData(statusRef, statCdata);
+		statusCombo.setDisplayField("pk_statusId");
+		row.add(statusCombo);
+
+		final InputBox statusDes = new InputBox(150);
+		statusDes.setReadOnly(true);
+		statusDes.setDataSource(new DataSource("SolicitudeStatus", "description", DataSourceType.DESCRIPTION));
+		statusCombo.linkWithField(statusDes, "description");
+		row.add(statusDes);
+
+		fieldSet.add(row);
+
+		row = new RowContainer();
+		row.setAutoHeight(true);
+
+		label = new MyLabel("Asesor:", LABEL_WIDTH);
+		row.add(label);
+
+		ComboForm assessorCombo = new ComboForm(80);
+		assessorCombo.setDataSource(new DataSource("sol", "assessor", DataSourceType.RECORD));
+
+		Reference refUserAcco = new Reference("usa", "UserAccount");
+		final ArrayColumnData uadata = new ArrayColumnData();
+		uadata.add(new MyColumnData("usa", "pk_userId", "Id", 40));
+		uadata.add(new MyColumnData("usa", "name", "Nombre", 120));
+		assessorCombo.setQueryData(refUserAcco, uadata);
+		assessorCombo.setDisplayField("pk_userId");
+
+		FilterConfig filter = new BaseStringFilterConfig();
+		filter.setField("userTypeId");
+		filter.setComparison("=");
+		filter.setValue("ASE");
+		assessorCombo.addFilter(filter);
+
+		row.add(assessorCombo);
+
+		label = new MyLabel("Fecha:", LABEL_WIDTH);
+		label.setVisible(false);
+		row.add(label, new HBoxLayoutData(0, 10, 0, 20));
+
+		final MyDateField solicitudDate = new MyDateField(100);
+		solicitudDate.setReadOnly(true);
+		solicitudDate.setValue(DatesManager.getCurrentDate());
+		solicitudDate.setDataSource(new DataSource("sol", "solicitudeDate", DataSourceType.RECORD));
+		solicitudDate.setVisible(false);
+		row.add(solicitudDate);
+
+		fieldSet.add(row);
+
+		destiny.add(fieldSet);
 
 		// Add div components
 		tabPanel.add(basic);
-		tabPanel.add(loan);
+		tabPanel.add(destiny);
 
 		form.add(tabPanel);
 
@@ -503,19 +535,25 @@ public class C301 extends MyGeneralForm {
 		numberRenewal.setValue("0");
 		form.add(numberRenewal);
 
+		InputBox quotaType = new InputBox();
+		quotaType.setDataSource(new DataSource("sol", "quotaTypeId", DataSourceType.RECORD));
+		quotaType.setVisible(false);
+		quotaType.setValue("AMR");
+		form.add(quotaType);
+
 		form.setButtonAlign(HorizontalAlignment.CENTER);
 		form.addButton(new Button("Guardar", new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				if (radioGroup.getValue().getBoxLabel().compareTo("Individual") == 0 && individualId.getValue() == null) {
+				if (debtorRadioGroup.getValue().getBoxLabel().compareTo("Individual") == 0 && individualId.getValue() == null) {
 					Info.display("Requerido", "Ingresar un cliente individual");
 					return;
-				} else if (radioGroup.getValue().getBoxLabel().compareTo("Grupal") == 0 && groupId.getValue() == null) {
+				} else if (debtorRadioGroup.getValue().getBoxLabel().compareTo("Grupal") == 0 && groupId.getValue() == null) {
 					Info.display("Requerido", "Ingresar un cliente grupal");
 					return;
 				}
 
-				if (radioGroup.getValue().getBoxLabel().compareTo("Individual") == 0) {
+				if (debtorRadioGroup.getValue().getBoxLabel().compareTo("Individual") == 0) {
 					groupId.setValue(null);
 				} else {
 					individualId.setValue(null);
@@ -525,5 +563,13 @@ public class C301 extends MyGeneralForm {
 		}));
 
 		add(form);
+	}
+
+	private void doPostQuery() {
+		if ( individualId.getRawValue() != null) {
+			debtorRadioGroup.setValue(individualRadio);
+		} else if (groupId.getRawValue() != null) {
+			debtorRadioGroup.setValue(groupalRadio);
+		}
 	}
 }

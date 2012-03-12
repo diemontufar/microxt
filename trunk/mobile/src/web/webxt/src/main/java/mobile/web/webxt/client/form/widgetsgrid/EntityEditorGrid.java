@@ -8,6 +8,7 @@ import java.util.Map;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.form.MyFormPanel;
 import mobile.web.webxt.client.form.widgets.PersistentField;
+import mobile.web.webxt.client.util.WebConverter;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.store.ListStore;
@@ -18,7 +19,7 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
 import com.extjs.gxt.ui.client.widget.grid.EditorSupport;
 
-public class EntityEditorGrid extends EditorGrid<ModelData> {
+public class EntityEditorGrid extends EditorGrid<ModelData> implements DependentGrid {
 
 	private List<Field<?>> ldependency;
 
@@ -86,6 +87,9 @@ public class EntityEditorGrid extends EditorGrid<ModelData> {
 				PersistentField pf = (PersistentField) f;
 				if (pf.getDataSource() != null) {
 					String value = MyFormPanel.getValueFromField(f);
+					if (f.getData("mobile-type") != null) {
+						value = WebConverter.completeValue(value, f.getData("mobile-type"));
+					}
 					mDependencies.put(pf.getDataSource(), value);
 				}
 			}

@@ -13,6 +13,7 @@ import mobile.common.message.Message;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Dependency;
+import mobile.web.webxt.client.util.WebConverter;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -97,7 +98,7 @@ public final class MyMessageReader {
 					if (part.length > 2)
 						value = part[2];
 
-					Object cValue = MyReader.convertToType(value);
+					Object cValue = WebConverter.convertToType(value);
 					mrfields.put(data.getAlias() + FS + field + FS + DataSourceType.CRITERION + FS + comparator, cValue);
 				}
 			}
@@ -107,11 +108,11 @@ public final class MyMessageReader {
 				hasAtLeastOneItem = true;
 				for (Field field : item.getFieldList()) {
 					// RECORD | DESCRIPTION
-					Object cValue = MyReader.convertToType(field.getValue());
-					if (field.getName().indexOf(".") < 0) {
+					Object cValue = WebConverter.convertToType(field.getValue());
+					if (field.getName().indexOf("_") < 0 && !field.getName().substring(0,1).matches("[A-Z]")) {
 						mrfields.put(data.getAlias() + FS + field.getName() + FS + DataSourceType.RECORD, cValue);
 					} else {
-						String[] part = field.getName().split("\\.");
+						String[] part = field.getName().split("_");
 						String entity = part[0];
 						String dfield = part[1];
 						mrfields.put(entity + FS + dfield + FS + DataSourceType.DESCRIPTION, cValue);
@@ -121,11 +122,11 @@ public final class MyMessageReader {
 		}
 
 		// Control fields
-		Data controlData = msg.getData(Message.controlData);
+		Data controlData = msg.getData(Message.CONTROL_DATA);
 		if (controlData != null) {
 			if (controlData.getFieldList() != null) {
 				for (Field field : controlData.getFieldList()) {
-					Object cValue = MyReader.convertToType(field.getValue());
+					Object cValue = WebConverter.convertToType(field.getValue());
 					mrfields.put("" + FS + field.getName() + FS + DataSourceType.CONTROL, cValue);
 				}
 			}
