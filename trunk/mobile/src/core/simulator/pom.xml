@@ -20,8 +20,21 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>mobile.entity</groupId>
-			<artifactId>mobile.entity.manager</artifactId>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.9</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>mobile.tools</groupId>
+			<artifactId>mobile.tools.common</artifactId>
+			<version>2.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>mobile.common</groupId>
+			<artifactId>mobile.common.message</artifactId>
 			<version>2.0</version>
 		</dependency>
 	</dependencies>
@@ -52,29 +65,13 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
-<!-- 					<execution>
-						<id>copy-simulator-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/dependencies-simulator</outputDirectory>
-							<includeGroupIds>simulator</includeGroupIds>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-external-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/applib</outputDirectory>
-							<excludeGroupIds>mobile</excludeGroupIds>
-							<excludeScope>provided</excludeScope>
-						</configuration>
-					</execution> -->
+					<!-- <execution> <id>copy-simulator-dependencies</id> <phase>package</phase> 
+						<goals> <goal>copy-dependencies</goal> </goals> <configuration> <outputDirectory>${project.build.directory}/dependencies-simulator</outputDirectory> 
+						<includeGroupIds>simulator</includeGroupIds> </configuration> </execution> 
+						<execution> <id>copy-external-dependencies</id> <phase>package</phase> <goals> 
+						<goal>copy-dependencies</goal> </goals> <configuration> <outputDirectory>${project.build.directory}/applib</outputDirectory> 
+						<excludeGroupIds>mobile</excludeGroupIds> <excludeScope>provided</excludeScope> 
+						</configuration> </execution> -->
 				</executions>
 			</plugin>
 		</plugins>
