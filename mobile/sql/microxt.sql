@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 09-03-2012 a las 22:50:11
+-- Tiempo de generación: 14-03-2012 a las 06:15:24
 -- Versión del servidor: 5.5.8
 -- Versión de PHP: 5.3.5
 
@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `microxt4`
+-- Base de datos: `microxt2`
 --
 
 -- --------------------------------------------------------
@@ -281,7 +281,8 @@ INSERT INTO `COMPONENT` (`COMPANY_ID`, `COMPONENT_ID`, `TYPE_ID`, `SUBSYSTEM_ID`
 ('MXT', 'mobile.core.processor.QueryProcessor', 'QRY', 'G', 'QueryProcessor', 'general', 'General query processor'),
 ('MXT', 'mobile.logic.general.MenuGenerator', 'QRY', 'G', 'MenuGenerator', 'general', 'Query the menu items'),
 ('MXT', 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', 'C', 'QueryPartnerInfo', NULL, 'CONSULTA INFORMACION DE CLIENTES INDIVIDUALES'),
-('MXT', 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 'C', 'QuerySolicitude', NULL, 'CONSULTA INFORMACION DE LAS SOLICITUDES');
+('MXT', 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 'C', 'QuerySolicitude', NULL, 'CONSULTA INFORMACION DE LAS SOLICITUDES'),
+('MXT', 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', 'C', 'RemoteInstrumentation', NULL, 'REALIZA LA INSTRUMENTACIÓN CONECTANDOSE CON EL CORE BANCARIO');
 
 -- --------------------------------------------------------
 
@@ -305,7 +306,8 @@ INSERT INTO `COMPONENT_ID` (`COMPONENT_ID`, `TYPE_ID`) VALUES
 ('mobile.core.processor.QueryProcessor', 'QRY'),
 ('mobile.logic.general.MenuGenerator', 'QRY'),
 ('mobile.logic.microxt.query.QueryPartnerInfo', 'QRY'),
-('mobile.logic.microxt.query.QuerySolicitude', 'QRY');
+('mobile.logic.microxt.query.QuerySolicitude', 'QRY'),
+('mobile.logic.microxt.RemoteInstrumentation', 'MNT');
 
 -- --------------------------------------------------------
 
@@ -438,7 +440,7 @@ INSERT INTO `DATABASE_TYPE` (`DATA_TYPE_ID`, `DATABASE_ID`, `DATA_SIZE`, `DATABA
 ('BigDecimal', 'ORACLE', 0, 'NUMBER'),
 ('Blob', 'MYSQL', 0, 'BLOB'),
 ('Blob', 'ORACLE', 0, 'BLOB'),
-('Boolean', 'MYSQL', 0, 'VARCHAR'),
+('Boolean', 'MYSQL', 0, 'BIT'),
 ('Boolean', 'ORACLE', 0, 'VARCHAR2'),
 ('Clob', 'MYSQL', 0, 'TEXT'),
 ('Clob', 'ORACLE', 0, 'CLOB'),
@@ -942,17 +944,20 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'MICRO_ACCOUNT', 'STATUS_ID', 8, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Account status id'),
 ('ALL', 'MICRO_ACCOUNT', 'TERM', 12, 'Long', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Term'),
 ('ALL', 'MICRO_ACCOUNT_QUOTA', 'ACCOUNT_ID', 1, 'String', 25, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Account number and id'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 'CAPITAL', 7, 'BigDecimal', 19, 6, '0', '0', '0', NULL, NULL, NULL, NULL, 'Capital amount'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 'CHARGE', 9, 'BigDecimal', 19, 6, '0', '0', '0', NULL, NULL, NULL, NULL, 'Charge amount'),
+('ALL', 'MICRO_ACCOUNT_QUOTA', 'CAPITAL', 8, 'BigDecimal', 19, 6, '0', '0', '0', NULL, NULL, NULL, NULL, 'Capital amount'),
+('ALL', 'MICRO_ACCOUNT_QUOTA', 'CHARGE', 10, 'BigDecimal', 19, 6, '0', '0', '0', NULL, NULL, NULL, NULL, 'Charge amount'),
 ('ALL', 'MICRO_ACCOUNT_QUOTA', 'EXPIRATION_DATE', 5, 'Date', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Expiration date'),
 ('ALL', 'MICRO_ACCOUNT_QUOTA', 'FROM_DATE', 4, 'Date', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Initial date for term'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 'INTEREST', 8, 'BigDecimal', 19, 6, '0', '0', '0', NULL, NULL, NULL, NULL, 'Interest amount'),
+('ALL', 'MICRO_ACCOUNT_QUOTA', 'INTEREST', 9, 'BigDecimal', 19, 6, '0', '0', '0', NULL, NULL, NULL, NULL, 'Interest amount'),
 ('ALL', 'MICRO_ACCOUNT_QUOTA', 'PAYMENT_DATE', 6, 'Date', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Payment date'),
 ('ALL', 'MICRO_ACCOUNT_QUOTA', 'PROVISION_DAYS', 3, 'Integer', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Number of provisioned days'),
+('ALL', 'MICRO_ACCOUNT_QUOTA', 'REDUCED_CAPITAL', 7, 'BigDecimal', 19, 6, '0', '0', '0', NULL, NULL, NULL, NULL, 'Reduced capital'),
 ('ALL', 'MICRO_ACCOUNT_QUOTA', 'SUBACCOUNT', 2, 'Integer', 0, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Quota number'),
 ('ALL', 'MODULE', 'MODULE_ID', 2, 'String', 2, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Module Id'),
 ('ALL', 'MODULE', 'NAME', 3, 'String', 40, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Name of module'),
 ('ALL', 'MODULE', 'SUBSYSTEM_ID', 1, 'String', 2, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Subsystem Id'),
+('ALL', 'OPERATIVE_CONDITION', 'DESCRIPTION', 2, 'String', 50, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Description'),
+('ALL', 'OPERATIVE_CONDITION', 'OPERATIVE_CONDITION_ID', 1, 'String', 3, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Operative condition'),
 ('ALL', 'PARAMETER', 'DATA_TYPE_ID', 3, 'String', 30, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Data type of parameter'),
 ('ALL', 'PARAMETER', 'DESCRIPTION', 5, 'String', 100, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Description of parameter'),
 ('ALL', 'PARAMETER', 'PARAMETER_ID', 1, 'String', 40, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Parameter Id'),
@@ -1066,26 +1071,27 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'SEQUENTIAL', 'SEQUENTIAL_ID', 1, 'String', 40, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Sequential Id'),
 ('ALL', 'SEQUENTIAL', 'SEQUENTIAL_VALUE', 2, 'Long', 10, 0, '0', '0', '0', '0', NULL, NULL, NULL, 'Value of sequential'),
 ('ALL', 'SOLICITUDE', 'ACCOUNT', 2, 'String', 25, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Generated account'),
-('ALL', 'SOLICITUDE', 'AMOUNT', 15, 'BigDecimal', 19, 6, '0', '0', '0', NULL, NULL, NULL, NULL, 'Amount'),
+('ALL', 'SOLICITUDE', 'AMOUNT', 16, 'BigDecimal', 19, 6, '0', '0', '0', NULL, NULL, NULL, NULL, 'Amount'),
 ('ALL', 'SOLICITUDE', 'APPROVAL_DATE', 7, 'Date', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Approval date'),
 ('ALL', 'SOLICITUDE', 'ASSESSOR', 3, 'String', 20, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Assessor'),
-('ALL', 'SOLICITUDE', 'DESTINATION_DESCRIPTION', 21, 'String', 500, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Description of destination'),
+('ALL', 'SOLICITUDE', 'DESTINATION_DESCRIPTION', 22, 'String', 500, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Description of destination'),
 ('ALL', 'SOLICITUDE', 'DISBURSEMENT_DATE', 8, 'Date', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Disbursement date'),
 ('ALL', 'SOLICITUDE', 'EXPIRATION_DATE', 10, 'Date', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Expiration date'),
-('ALL', 'SOLICITUDE', 'FUNDS_DESTINATION_ID', 20, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Destination of funds'),
+('ALL', 'SOLICITUDE', 'FUNDS_DESTINATION_ID', 21, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Destination of funds'),
 ('ALL', 'SOLICITUDE', 'GROUP_CLIENT_ID', 5, 'Integer', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Group'),
 ('ALL', 'SOLICITUDE', 'INITIAL_PAY_DATE', 11, 'Date', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Date for the first pay'),
 ('ALL', 'SOLICITUDE', 'INSTRUMENTATION_DATE', 9, 'Date', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Instrumentation date'),
-('ALL', 'SOLICITUDE', 'NUMBER_QUOTAS', 18, 'Integer', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Number of fees'),
-('ALL', 'SOLICITUDE', 'NUMBER_RENEWAL', 14, 'Integer', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Number of renewal'),
+('ALL', 'SOLICITUDE', 'NUMBER_QUOTAS', 19, 'Integer', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Number of fees'),
+('ALL', 'SOLICITUDE', 'NUMBER_RENEWAL', 15, 'Integer', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Number of renewal'),
+('ALL', 'SOLICITUDE', 'OPERATIVE_CONDITION_ID', 14, 'String', 3, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Operative condition'),
 ('ALL', 'SOLICITUDE', 'PARTNER_CLIENT_ID', 4, 'Integer', 0, 0, '0', '0', '1', NULL, NULL, NULL, NULL, 'Client'),
-('ALL', 'SOLICITUDE', 'PAYMENT_FREQUENCY_ID', 19, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Frequency of payment'),
+('ALL', 'SOLICITUDE', 'PAYMENT_FREQUENCY_ID', 20, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Frequency of payment'),
 ('ALL', 'SOLICITUDE', 'PRODUCT_ID', 12, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Product id'),
-('ALL', 'SOLICITUDE', 'QUOTA_TYPE_ID', 17, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Quota type id'),
+('ALL', 'SOLICITUDE', 'QUOTA_TYPE_ID', 18, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Quota type id'),
 ('ALL', 'SOLICITUDE', 'SOLICITUDE_DATE', 6, 'Date', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Solicitud date'),
 ('ALL', 'SOLICITUDE', 'SOLICITUDE_ID', 1, 'Integer', 0, 0, '1', '0', '0', NULL, 'SOLICITUDE', NULL, NULL, 'Name'),
 ('ALL', 'SOLICITUDE', 'STATUS_ID', 13, 'String', 3, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Solicitude status id'),
-('ALL', 'SOLICITUDE', 'TERM', 16, 'Long', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Term'),
+('ALL', 'SOLICITUDE', 'TERM', 17, 'Long', 0, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Term'),
 ('ALL', 'SOLICITUDE_STATUS', 'DESCRIPTION', 2, 'String', 50, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Description'),
 ('ALL', 'SOLICITUDE_STATUS', 'STATUS_ID', 1, 'String', 3, 0, '1', '0', '0', NULL, NULL, NULL, NULL, 'Status'),
 ('ALL', 'SUBSYSTEM', 'NAME', 2, 'String', 40, 0, '0', '0', '0', NULL, NULL, NULL, NULL, 'Name of subsystem'),
@@ -1331,6 +1337,7 @@ INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
 ('MICRO_ACCOUNT_QUOTA', 'INTEREST'),
 ('MICRO_ACCOUNT_QUOTA', 'PAYMENT_DATE'),
 ('MICRO_ACCOUNT_QUOTA', 'PROVISION_DAYS'),
+('MICRO_ACCOUNT_QUOTA', 'REDUCED_CAPITAL'),
 ('MICRO_ACCOUNT_QUOTA', 'SUBACCOUNT'),
 ('MICRO_ACCOUNT_QUOTA_ID', 'ACCOUNT_ID'),
 ('MICRO_ACCOUNT_QUOTA_ID', 'SUBACCOUNT'),
@@ -1341,6 +1348,11 @@ INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
 ('MODULE', 'SUBSYSTEM_ID'),
 ('MODULE_ID', 'MODULE_ID'),
 ('MODULE_ID', 'SUBSYSTEM_ID'),
+('OPERATIVE_CONDITION', 'COMPANY_ID'),
+('OPERATIVE_CONDITION', 'DESCRIPTION'),
+('OPERATIVE_CONDITION', 'LANGUAGE_ID'),
+('OPERATIVE_CONDITION', 'OPERATIVE_CONDITION_ID'),
+('OPERATIVE_CONDITION_ID', 'OPERATIVE_CONDITION_ID'),
 ('PARAMETER', 'COMPANY_ID'),
 ('PARAMETER', 'CREATED'),
 ('PARAMETER', 'DATA_TYPE_ID'),
@@ -1548,6 +1560,7 @@ INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
 ('SOLICITUDE', 'LANGUAGE_ID'),
 ('SOLICITUDE', 'NUMBER_QUOTAS'),
 ('SOLICITUDE', 'NUMBER_RENEWAL'),
+('SOLICITUDE', 'OPERATIVE_CONDITION_ID'),
 ('SOLICITUDE', 'PARTNER_CLIENT_ID'),
 ('SOLICITUDE', 'PAYMENT_FREQUENCY_ID'),
 ('SOLICITUDE', 'PRODUCT_ID'),
@@ -1713,6 +1726,7 @@ INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHI
 ('ALL', 'ROLE_PROCESS_ID_FK', 3, 'ROLE', 'PROCESS_ID', 'PROCESS_ID', 'PROCESS_ID'),
 ('ALL', 'SOLICITUDE_FUNDS_DEST_ID_FK', 1, 'SOLICITUDE', 'FUNDS_DESTINATION_ID', 'FUNDS_DESTINATION_ID', 'FUNDS_DESTINATION_ID'),
 ('ALL', 'SOLICITUDE_GROUP_CLIENT_ID_FK', 1, 'SOLICITUDE', 'GROUP_CLIENT_ID', 'PARTNER_GROUP_ID', 'PARTNER_GROUP_ID'),
+('ALL', 'SOLICITUDE_OPE_COND_ID_FK', 1, 'SOLICITUDE', 'OPERATIVE_CONDITION_ID', 'OPERATIVE_CONDITION_ID', 'OPERATIVE_CONDITION_ID'),
 ('ALL', 'SOLICITUDE_PARTNER_CLIE_ID_FK', 1, 'SOLICITUDE', 'PARTNER_CLIENT_ID', 'PARTNER_ID', 'PARTNER_ID'),
 ('ALL', 'SOLICITUDE_PAY_FREQ_ID_FK', 1, 'SOLICITUDE', 'PAYMENT_FREQUENCY_ID', 'FREQUENCY_ID', 'FREQUENCY_ID'),
 ('ALL', 'SOLICITUDE_PRODUCT_ID_FK', 1, 'SOLICITUDE', 'PRODUCT_ID', 'PRODUCT_MICROCREDIT_ID', 'PRODUCT_ID'),
@@ -1792,6 +1806,9 @@ INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHI
 ('MXT', 'MODULE_ID_FK', 1, 'MODULE', 'SUBSYSTEM_ID', 'MODULE_ID', 'SUBSYSTEM_ID'),
 ('MXT', 'MODULE_ID_FK', 2, 'MODULE', 'MODULE_ID', 'MODULE_ID', 'MODULE_ID'),
 ('MXT', 'MODULE_LANGUAGE_FK', 1, 'MODULE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
+('MXT', 'OPERATIVE_CONDITION_COMPANY_FK', 1, 'OPERATIVE_CONDITION', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
+('MXT', 'OPERATIVE_CONDITION_ID_FK', 1, 'OPERATIVE_CONDITION', 'OPERATIVE_CONDITION_ID', 'OPERATIVE_CONDITION_ID', 'OPERATIVE_CONDITION_ID'),
+('MXT', 'OPERA_LANGUAGE_FK', 1, 'OPERATIVE_CONDITION', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
 ('MXT', 'PARAMETER_COMPANY_FK', 1, 'PARAMETER', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
 ('MXT', 'PARAMETER_ID_FK', 1, 'PARAMETER', 'PARAMETER_ID', 'PARAMETER_ID', 'PARAMETER_ID'),
 ('MXT', 'PARTNER_COMPANY_FK', 1, 'PARTNER', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
@@ -1926,6 +1943,7 @@ INSERT INTO `ENTITY_TABLE` (`COMPANY_ID`, `TABLE_ID`, `HAS_TABLE_ID`, `PACKAGE_N
 ('ALL', 'MICRO_ACCOUNT', '1', 'microcredit', '1', '0', '1', '1', '0', '0', 'Microcredit accounts'),
 ('ALL', 'MICRO_ACCOUNT_QUOTA', '1', 'microcredit', '1', '0', '1', '1', '0', '0', 'Microcredit quotas associated to a account'),
 ('ALL', 'MODULE', '1', 'security', '1', '1', '0', '0', '0', '0', 'Values of modules'),
+('ALL', 'OPERATIVE_CONDITION', '1', 'microcredit', '1', '1', '0', '0', '0', '0', 'Operative conditions'),
 ('ALL', 'PARAMETER', '1', 'parameter', '1', '0', '1', '0', '1', '1', 'Values of parameters'),
 ('ALL', 'PARTNER', '1', 'microcredit', '1', '1', '1', '0', '0', '0', 'Partners'),
 ('ALL', 'PARTNER_GROUP', '1', 'microcredit', '1', '1', '1', '0', '0', '0', 'Partner groups'),
@@ -2024,6 +2042,8 @@ INSERT INTO `ENTITY_TABLE_ID` (`TABLE_ID`) VALUES
 ('MICRO_ACCOUNT_QUOTA_ID'),
 ('MODULE'),
 ('MODULE_ID'),
+('OPERATIVE_CONDITION'),
+('OPERATIVE_CONDITION_ID'),
 ('PARAMETER'),
 ('PARAMETER_ID'),
 ('PARTNER'),
@@ -2449,6 +2469,7 @@ CREATE TABLE IF NOT EXISTS `MICRO_ACCOUNT_QUOTA` (
   `FROM_DATE` datetime NOT NULL,
   `EXPIRATION_DATE` datetime NOT NULL,
   `PAYMENT_DATE` datetime DEFAULT NULL,
+  `REDUCED_CAPITAL` decimal(19,6) NOT NULL,
   `CAPITAL` decimal(19,6) NOT NULL,
   `INTEREST` decimal(19,6) NOT NULL,
   `CHARGE` decimal(19,6) NOT NULL,
@@ -2501,21 +2522,21 @@ CREATE TABLE IF NOT EXISTS `MODULE` (
 --
 
 INSERT INTO `MODULE` (`COMPANY_ID`, `LANGUAGE_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, `NAME`) VALUES
-('MXT', 'ES', 'A', '0', 'AUTENTITICACION'),
+('MXT', 'ES', 'A', '0', 'AUTENTITICACIÓN'),
 ('MXT', 'ES', 'A', '1', 'DATOS GENERALES'),
 ('MXT', 'ES', 'A', '2', 'ROLES Y USUARIOS'),
-('MXT', 'ES', 'B', '0', 'PARAMETRIZACION'),
+('MXT', 'ES', 'B', '0', 'PARAMETRIZACIÓN'),
 ('MXT', 'ES', 'B', '1', 'PERSONAS NATURALES'),
-('MXT', 'ES', 'C', '0', 'PARAMETRIZACION'),
-('MXT', 'ES', 'C', '1', 'PLANIFICACION'),
-('MXT', 'ES', 'C', '2', 'COMERCIALIZACION'),
+('MXT', 'ES', 'C', '0', 'PARAMETRIZACIÓN'),
+('MXT', 'ES', 'C', '1', 'PLANIFICACIÓN'),
+('MXT', 'ES', 'C', '2', 'COMERCIALIZACIÓN'),
 ('MXT', 'ES', 'C', '3', 'SOLICITUD'),
-('MXT', 'ES', 'C', '4', 'APROBACION CORE'),
-('MXT', 'ES', 'C', '5', 'SEGUIMIENTO Y RECUPERACION'),
+('MXT', 'ES', 'C', '4', 'INSTRUMENTACIÓN CORE BANCARIO'),
+('MXT', 'ES', 'C', '5', 'SEGUIMIENTO Y RECUPERACIÓN'),
 ('MXT', 'ES', 'G', '0', 'MENU'),
 ('MXT', 'ES', 'G', '1', 'PARAMETROS'),
 ('MXT', 'ES', 'G', '2', 'LISTAS PARA LOS COMBOS'),
-('MXT', 'ES', 'G', '3', 'LOCALIZACION');
+('MXT', 'ES', 'G', '3', 'LOCALIZACIÓN');
 
 -- --------------------------------------------------------
 
@@ -2549,6 +2570,49 @@ INSERT INTO `MODULE_ID` (`SUBSYSTEM_ID`, `MODULE_ID`) VALUES
 ('G', '1'),
 ('G', '2'),
 ('G', '3');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `OPERATIVE_CONDITION`
+--
+
+CREATE TABLE IF NOT EXISTS `OPERATIVE_CONDITION` (
+  `COMPANY_ID` varchar(4) NOT NULL,
+  `LANGUAGE_ID` varchar(2) NOT NULL,
+  `OPERATIVE_CONDITION_ID` varchar(3) NOT NULL,
+  `DESCRIPTION` varchar(50) NOT NULL,
+  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`OPERATIVE_CONDITION_ID`),
+  KEY `OPERATIVE_CONDITION_ID_FK` (`OPERATIVE_CONDITION_ID`),
+  KEY `OPERA_LANGUAGE_FK` (`LANGUAGE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcar la base de datos para la tabla `OPERATIVE_CONDITION`
+--
+
+INSERT INTO `OPERATIVE_CONDITION` (`COMPANY_ID`, `LANGUAGE_ID`, `OPERATIVE_CONDITION_ID`, `DESCRIPTION`) VALUES
+('MXT', 'ES', 'INS', 'INSTRUMENTACIÓN PENDIENTE'),
+('MXT', 'ES', 'NOR', 'NORMAL');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `OPERATIVE_CONDITION_ID`
+--
+
+CREATE TABLE IF NOT EXISTS `OPERATIVE_CONDITION_ID` (
+  `OPERATIVE_CONDITION_ID` varchar(3) NOT NULL,
+  PRIMARY KEY (`OPERATIVE_CONDITION_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcar la base de datos para la tabla `OPERATIVE_CONDITION_ID`
+--
+
+INSERT INTO `OPERATIVE_CONDITION_ID` (`OPERATIVE_CONDITION_ID`) VALUES
+('INS'),
+('NOR');
 
 -- --------------------------------------------------------
 
@@ -2624,6 +2688,9 @@ CREATE TABLE IF NOT EXISTS `PARTNER` (
 -- Volcar la base de datos para la tabla `PARTNER`
 --
 
+INSERT INTO `PARTNER` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `PARTNER_ID`, `CREATED`, `PERSON_ID`, `ACTIVITY`, `USER_ID`, `FREQUENCY_ID`, `MEETING_DAY`) VALUES
+('MXT', 'ES', '9999-12-31 00:00:00', 1, '2012-03-13 23:50:53', 1, 'PRUEBAS DE EDSARROLLO', 'JPEREZ', '4', 6),
+('MXT', 'ES', '9999-12-31 00:00:00', 2, '2012-03-14 00:09:55', 2, 'PRUEBA', 'JPEREZ', '4', 5);
 
 -- --------------------------------------------------------
 
@@ -2654,6 +2721,8 @@ CREATE TABLE IF NOT EXISTS `PARTNER_GROUP` (
 -- Volcar la base de datos para la tabla `PARTNER_GROUP`
 --
 
+INSERT INTO `PARTNER_GROUP` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `PARTNER_GROUP_ID`, `CREATED`, `GROUP_DESCRIPTION`, `CREATION_DATE`, `ACTIVITY`, `USER_ID`, `FREQUENCY_ID`, `MEETING_DAY`) VALUES
+('MXT', 'ES', '9999-12-31 00:00:00', 1, '2012-03-13 23:51:42', 'TAMBO - CHECA', '2012-03-13 00:00:00', 'GANADERIA', 'JPEREZ', '4', 6);
 
 -- --------------------------------------------------------
 
@@ -2670,6 +2739,8 @@ CREATE TABLE IF NOT EXISTS `PARTNER_GROUP_ID` (
 -- Volcar la base de datos para la tabla `PARTNER_GROUP_ID`
 --
 
+INSERT INTO `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`) VALUES
+(1);
 
 -- --------------------------------------------------------
 
@@ -2707,6 +2778,9 @@ CREATE TABLE IF NOT EXISTS `PARTNER_ID` (
 -- Volcar la base de datos para la tabla `PARTNER_ID`
 --
 
+INSERT INTO `PARTNER_ID` (`PARTNER_ID`) VALUES
+(1),
+(2);
 
 -- --------------------------------------------------------
 
@@ -2746,6 +2820,9 @@ CREATE TABLE IF NOT EXISTS `PERSON` (
 -- Volcar la base de datos para la tabla `PERSON`
 --
 
+INSERT INTO `PERSON` (`COMPANY_ID`, `EXPIRED`, `PERSON_ID`, `CREATED`, `NAME`, `LAST_NAME`, `SECOND_LAST_NAME`, `IDENTIFICATION_TYPE_ID`, `IDENTIFICATION_NUMBER`, `DATE_OF_BIRTH`, `GENDER_TYPE_ID`, `CIVIL_STATUS_ID`, `COUNTRY_ID`, `CITY_ID`, `PROVINCE_ID`, `DISTRICT_ID`, `PROFESSION_TYPE_ID`, `VERSION`) VALUES
+('MXT', '9999-12-31 00:00:00', 1, '2012-03-13 23:46:56', 'RONALD MARCELO', 'GUALÁN', 'SAAVEDRA', 'CED', '1400658611', '1988-09-28 00:00:00', 'M', 'SOL', 'EC', 'CU', 'AZ', 'RIC', '101', 1),
+('MXT', '9999-12-31 00:00:00', 2, '2012-03-13 23:48:24', 'DIEGO FABIAN', 'MONTUFAR', NULL, 'CED', '0105362651', '1988-12-05 00:00:00', 'M', 'SOL', 'EC', 'CU', 'AZ', 'TOT', '103', 1);
 
 -- --------------------------------------------------------
 
@@ -2790,6 +2867,9 @@ CREATE TABLE IF NOT EXISTS `PERSON_ID` (
 -- Volcar la base de datos para la tabla `PERSON_ID`
 --
 
+INSERT INTO `PERSON_ID` (`PERSON_ID`) VALUES
+(1),
+(2);
 
 -- --------------------------------------------------------
 
@@ -2974,6 +3054,7 @@ INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '03', '2012-01-14 16:55:34', 'TIPOS DE CUOTA', '1', '1', 'C003', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '04', '2012-01-14 16:55:35', 'FRECUENCIAS', '1', '1', 'C004', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '05', '2012-01-14 16:55:35', 'DESTINOS DE FONDOS', '1', '1', 'C005', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '06', '2012-03-13 23:53:53', 'CONDICIONES OPERATIVAS', '1', '1', 'C006', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '01', '2012-01-08 00:00:00', 'ASESOR DE CREDITO', '1', '1', 'C001', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '02', '2012-01-08 00:00:00', 'ZONAS GEOGRAFICAS', '1', '1', 'C102', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '03', '2012-01-08 00:00:00', 'ZONAS POR ASESOR', '1', '1', 'C003', NULL),
@@ -3027,6 +3108,8 @@ CREATE TABLE IF NOT EXISTS `PROCESS_COMPONENT` (
 INSERT INTO `PROCESS_COMPONENT` (`COMPANY_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`, `PROCESS_SEQUENCE`, `COMPONENT_ID`, `TYPE_ID`, `ENABLE`, `AUTHORIZE`) VALUES
 ('MXT', 'A', '0', '01', 1, 'mobile.bus.security.Loggin', 'QRY', '1', '0'),
 ('MXT', 'C', '4', '01', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', '1', NULL),
+('MXT', 'C', '4', '02', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', '1', NULL),
+('MXT', 'C', '4', '02', 2, 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', '1', NULL),
 ('MXT', 'G', '0', '01', 1, 'mobile.logic.general.MenuGenerator', 'QRY', '1', '0'),
 ('MXT', 'G', '2', '02', 1, 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', '1', NULL);
 
@@ -3080,6 +3163,7 @@ INSERT INTO `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) VALUES
 ('C', '0', '03'),
 ('C', '0', '04'),
 ('C', '0', '05'),
+('C', '0', '06'),
 ('C', '1', '01'),
 ('C', '1', '02'),
 ('C', '1', '03'),
@@ -3174,6 +3258,10 @@ CREATE TABLE IF NOT EXISTS `PRODUCT_MICROCREDIT` (
 -- Volcar la base de datos para la tabla `PRODUCT_MICROCREDIT`
 --
 
+INSERT INTO `PRODUCT_MICROCREDIT` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `PRODUCT_ID`, `CREATED`, `DESCRIPTION`, `CURRENCY_ID`, `MIN_AMOUNT`, `MAX_AMOUNT`, `MIN_PERIOD`, `MAX_PERIOD`, `RATE`) VALUES
+('MXT', 'ES', '9999-12-31 00:00:00', 'M01', '2012-03-14 00:01:31', 'MICROCREDITO DE PRUEBA', 'USD', 10.000000, 500.000000, 7, 620, 10.000000),
+('MXT', 'ES', '9999-12-31 00:00:00', 'M02', '2012-03-14 00:01:31', 'MICROCREDITO SOLIDARIO', 'USD', 10.000000, 50.000000, 7, 60, 9.450000),
+('MXT', 'ES', '9999-12-31 00:00:00', 'M03', '2012-03-14 00:01:31', 'MICROCREDITO GANADERO', 'USD', 50.000000, 150.000000, 30, 360, 10.650000);
 
 -- --------------------------------------------------------
 
@@ -3190,6 +3278,10 @@ CREATE TABLE IF NOT EXISTS `PRODUCT_MICROCREDIT_ID` (
 -- Volcar la base de datos para la tabla `PRODUCT_MICROCREDIT_ID`
 --
 
+INSERT INTO `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`) VALUES
+('M01'),
+('M02'),
+('M03');
 
 -- --------------------------------------------------------
 
@@ -3483,6 +3575,9 @@ CREATE TABLE IF NOT EXISTS `PROFILE` (
 -- Volcar la base de datos para la tabla `PROFILE`
 --
 
+INSERT INTO `PROFILE` (`COMPANY_ID`, `LANGUAGE_ID`, `PROFILE_ID`, `NAME`, `DESCRIPTION`) VALUES
+('MXT', 'ES', 'ADM', 'ADMINISTRADOR', 'ADMINISTRADOR DEL SISTEMA'),
+('MXT', 'ES', 'ASE', 'ASESOR', 'ASESOR DE MICROCRÉDITO');
 
 -- --------------------------------------------------------
 
@@ -3499,6 +3594,9 @@ CREATE TABLE IF NOT EXISTS `PROFILE_ID` (
 -- Volcar la base de datos para la tabla `PROFILE_ID`
 --
 
+INSERT INTO `PROFILE_ID` (`PROFILE_ID`) VALUES
+('ADM'),
+('ASE');
 
 -- --------------------------------------------------------
 
@@ -3814,10 +3912,10 @@ CREATE TABLE IF NOT EXISTS `SEQUENTIAL` (
 
 INSERT INTO `SEQUENTIAL` (`COMPANY_ID`, `SEQUENTIAL_ID`, `SEQUENTIAL_VALUE`, `VERSION`) VALUES
 ('MXT', 'GEOZONE', 1, 0),
-('MXT', 'PARTNER', 1, 0),
-('MXT', 'PARTNERGRP', 1, 0),
-('MXT', 'PERSON', 1, 0),
-('MXT', 'SOLICITUDE', 1000, 2);
+('MXT', 'PARTNER', 3, 2),
+('MXT', 'PARTNERGRP', 2, 1),
+('MXT', 'PERSON', 3, 2),
+('MXT', 'SOLICITUDE', 1003, 5);
 
 -- --------------------------------------------------------
 
@@ -3865,6 +3963,7 @@ CREATE TABLE IF NOT EXISTS `SOLICITUDE` (
   `INITIAL_PAY_DATE` datetime DEFAULT NULL,
   `PRODUCT_ID` varchar(3) NOT NULL,
   `STATUS_ID` varchar(3) NOT NULL,
+  `OPERATIVE_CONDITION_ID` varchar(3) DEFAULT NULL,
   `NUMBER_RENEWAL` int(11) NOT NULL,
   `AMOUNT` decimal(19,6) NOT NULL,
   `TERM` bigint(20) NOT NULL,
@@ -3879,6 +3978,7 @@ CREATE TABLE IF NOT EXISTS `SOLICITUDE` (
   KEY `SOLICITUDE_GROUP_CLIENT_ID_FK` (`GROUP_CLIENT_ID`),
   KEY `SOLICITUDE_ID_FK` (`SOLICITUDE_ID`),
   KEY `SOLICITUDE_LANGUAGE_FK` (`LANGUAGE_ID`),
+  KEY `SOLICITUDE_OPE_COND_ID_FK` (`OPERATIVE_CONDITION_ID`),
   KEY `SOLICITUDE_PARTNER_CLIE_ID_FK` (`PARTNER_CLIENT_ID`),
   KEY `SOLICITUDE_PAY_FREQ_ID_FK` (`PAYMENT_FREQUENCY_ID`),
   KEY `SOLICITUDE_PRODUCT_ID_FK` (`PRODUCT_ID`),
@@ -3891,6 +3991,10 @@ CREATE TABLE IF NOT EXISTS `SOLICITUDE` (
 -- Volcar la base de datos para la tabla `SOLICITUDE`
 --
 
+INSERT INTO `SOLICITUDE` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SOLICITUDE_ID`, `CREATED`, `ACCOUNT`, `ASSESSOR`, `PARTNER_CLIENT_ID`, `GROUP_CLIENT_ID`, `SOLICITUDE_DATE`, `APPROVAL_DATE`, `DISBURSEMENT_DATE`, `INSTRUMENTATION_DATE`, `EXPIRATION_DATE`, `INITIAL_PAY_DATE`, `PRODUCT_ID`, `STATUS_ID`, `OPERATIVE_CONDITION_ID`, `NUMBER_RENEWAL`, `AMOUNT`, `TERM`, `QUOTA_TYPE_ID`, `NUMBER_QUOTAS`, `PAYMENT_FREQUENCY_ID`, `FUNDS_DESTINATION_ID`, `DESTINATION_DESCRIPTION`, `VERSION`) VALUES
+('MXT', 'ES', '9999-12-31 00:00:00', 1000, '2012-03-14 00:09:08', NULL, 'JPEREZ', 1, NULL, '2012-03-14 00:00:00', NULL, NULL, NULL, '9999-12-31 00:00:00', NULL, 'M01', '002', NULL, 0, 100.000000, 360, 'AMR', NULL, '4', 'PRO', 'ASDFASDFASFASDF', 1),
+('MXT', 'ES', '9999-12-31 00:00:00', 1001, '2012-03-14 00:10:47', NULL, 'JPEREZ', 2, NULL, '2012-03-14 00:00:00', NULL, NULL, NULL, '9999-12-31 00:00:00', NULL, 'M01', '002', NULL, 0, 100.000000, 300, 'AMR', NULL, '4', 'PRO', 'ASDASDFASDF', 1),
+('MXT', 'ES', '9999-12-31 00:00:00', 1002, '2012-03-14 00:11:18', NULL, 'JPEREZ', NULL, 1, '2012-03-14 00:00:00', NULL, NULL, NULL, '9999-12-31 00:00:00', NULL, 'M03', '003', NULL, 0, 150.000000, 360, 'AMR', NULL, '4', 'CON', 'ADFASDFASDF', 1);
 
 -- --------------------------------------------------------
 
@@ -3907,6 +4011,10 @@ CREATE TABLE IF NOT EXISTS `SOLICITUDE_ID` (
 -- Volcar la base de datos para la tabla `SOLICITUDE_ID`
 --
 
+INSERT INTO `SOLICITUDE_ID` (`SOLICITUDE_ID`) VALUES
+(1000),
+(1001),
+(1002);
 
 -- --------------------------------------------------------
 
@@ -3976,7 +4084,7 @@ CREATE TABLE IF NOT EXISTS `SUBSYSTEM` (
 INSERT INTO `SUBSYSTEM` (`COMPANY_ID`, `LANGUAGE_ID`, `SUBSYSTEM_ID`, `NAME`) VALUES
 ('MXT', 'ES', 'A', 'SEGURIDADES'),
 ('MXT', 'ES', 'B', 'PERSONAS'),
-('MXT', 'ES', 'C', 'MICROCREDITO'),
+('MXT', 'ES', 'C', 'MICROCRÉDITO'),
 ('MXT', 'ES', 'G', 'GENERALES');
 
 -- --------------------------------------------------------
@@ -4054,7 +4162,8 @@ CREATE TABLE IF NOT EXISTS `USER_ACCOUNT` (
 --
 
 INSERT INTO `USER_ACCOUNT` (`COMPANY_ID`, `EXPIRED`, `USER_ID`, `CREATED`, `NAME`, `USER_TYPE_ID`, `USER_STATUS_ID`, `LANGUAGE_ID`, `EMAIL`, `PERSON_ID`, `VERSION`) VALUES
-('MXT', '9999-12-31 00:00:00', 'ADMIN', '2012-01-20 20:46:12', 'ADMINISTRATOR', 'SYS', 'ACT', 'ES', 'admin@mobile.com', NULL, 1);
+('MXT', '9999-12-31 00:00:00', 'ADMIN', '2012-01-20 20:46:12', 'ADMINISTRATOR', 'SYS', 'ACT', 'ES', 'admin@mobile.com', NULL, 1),
+('MXT', '9999-12-31 00:00:00', 'JPEREZ', '2012-03-13 23:43:15', 'JUAN PEREZ', 'ASE', 'ACT', 'ES', 'jperez@mobile.com', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -4072,7 +4181,8 @@ CREATE TABLE IF NOT EXISTS `USER_ACCOUNT_ID` (
 --
 
 INSERT INTO `USER_ACCOUNT_ID` (`USER_ID`) VALUES
-('ADMIN');
+('ADMIN'),
+('JPEREZ');
 
 -- --------------------------------------------------------
 
@@ -4500,6 +4610,14 @@ ALTER TABLE `MODULE_ID`
   ADD CONSTRAINT `MODULE_ID_SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `SUBSYSTEM_ID` (`SUBSYSTEM_ID`);
 
 --
+-- Filtros para la tabla `OPERATIVE_CONDITION`
+--
+ALTER TABLE `OPERATIVE_CONDITION`
+  ADD CONSTRAINT `OPERA_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
+  ADD CONSTRAINT `OPERATIVE_CONDITION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
+  ADD CONSTRAINT `OPERATIVE_CONDITION_ID_FK` FOREIGN KEY (`OPERATIVE_CONDITION_ID`) REFERENCES `OPERATIVE_CONDITION_ID` (`OPERATIVE_CONDITION_ID`);
+
+--
 -- Filtros para la tabla `PARAMETER`
 --
 ALTER TABLE `PARAMETER`
@@ -4707,6 +4825,7 @@ ALTER TABLE `SOLICITUDE`
   ADD CONSTRAINT `SOLICITUDE_GROUP_CLIENT_ID_FK` FOREIGN KEY (`GROUP_CLIENT_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`),
   ADD CONSTRAINT `SOLICITUDE_ID_FK` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `SOLICITUDE_ID` (`SOLICITUDE_ID`),
   ADD CONSTRAINT `SOLICITUDE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
+  ADD CONSTRAINT `SOLICITUDE_OPE_COND_ID_FK` FOREIGN KEY (`OPERATIVE_CONDITION_ID`) REFERENCES `OPERATIVE_CONDITION_ID` (`OPERATIVE_CONDITION_ID`),
   ADD CONSTRAINT `SOLICITUDE_PARTNER_CLIE_ID_FK` FOREIGN KEY (`PARTNER_CLIENT_ID`) REFERENCES `PARTNER_ID` (`PARTNER_ID`),
   ADD CONSTRAINT `SOLICITUDE_PAY_FREQ_ID_FK` FOREIGN KEY (`PAYMENT_FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
   ADD CONSTRAINT `SOLICITUDE_PRODUCT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`),

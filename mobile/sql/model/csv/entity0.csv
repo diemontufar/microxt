@@ -28,6 +28,7 @@ ALL,PERSON_TYPE,1,person,1,1,0,0,0,0,Values of person types
 ALL,PHONE_TYPE,1,person,1,1,0,0,0,0,Values of phone types
 ALL,PROFESSION_TYPE,1,person,1,1,0,0,0,0,Values of profession types
 
+ALL,COMPONENT_TYPE,0,security,0,0,0,0,0,0,Values of component types
 ALL,COMPONENT,1,security,1,0,0,0,0,1,Values of components
 ALL,HOST,1,security,1,0,1,0,0,0,Values of hosts
 ALL,MODULE,1,security,1,1,0,0,0,0,Values of modules

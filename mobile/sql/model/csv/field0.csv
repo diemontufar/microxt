@@ -4,7 +4,7 @@ ALL,COMPANY,NAME,2,String,40,0,0,0,0,(null),(null),(null),(null),Name of company
 ALL,COMPANY,DATAFILE_ID,3,Long,10,0,0,0,1,(null),(null),(null),(null),Document Id
 ALL,COMPANY,UPGRADE_NUMBER,4,BigDecimal,4,2,0,0,1,(null),(null),(null),(null),Upgrade number of company
 ALL,COMPANY,LICENSE_DATE,5,Date,0,0,0,0,1,(null),(null),(null),(null),License date of company
-ALL,COMPANY,ENABLE,6,Boolean,1,0,0,0,0,0,(null),(null),(null),Enable
+ALL,COMPANY,ENABLE,6,Boolean,0,0,0,0,0,0,(null),(null),(null),Enable
 ALL,DATABASE_TYPE,DATA_TYPE_ID,1,String,30,0,1,0,0,(null),(null),(null),(null),Data type Id
 ALL,DATABASE_TYPE,DATABASE_ID,2,String,30,0,1,0,0,(null),(null),(null),(null),Database Id
 ALL,DATABASE_TYPE,DATA_SIZE,3,Integer,5,0,1,0,0,(null),(null),(null),(null),Data size of field
@@ -17,9 +17,9 @@ ALL,ENTITY_FIELD,FIELD_ORDER,3,Integer,3,0,0,1,0,(null),(null),(null),(null),Fie
 ALL,ENTITY_FIELD,DATA_TYPE_ID,4,String,30,0,0,0,0,(null),(null),(null),(null),Data type of field
 ALL,ENTITY_FIELD,DATA_SIZE,5,Integer,5,0,0,0,0,(null),(null),(null),(null),Data size of field
 ALL,ENTITY_FIELD,DATA_SCALE,6,Integer,3,0,0,0,0,0,(null),(null),(null),Data scale of field
-ALL,ENTITY_FIELD,PRIMARY_KEY,7,Boolean,1,0,0,0,0,0,(null),(null),(null),Primary key
-ALL,ENTITY_FIELD,UNIQUE_KEY,8,Boolean,1,0,0,0,0,0,(null),(null),(null),Unique key
-ALL,ENTITY_FIELD,NULLABLE,9,Boolean,1,0,0,0,0,0,(null),(null),(null),Nullable
+ALL,ENTITY_FIELD,PRIMARY_KEY,7,Boolean,0,0,0,0,0,0,(null),(null),(null),Primary key
+ALL,ENTITY_FIELD,UNIQUE_KEY,8,Boolean,0,0,0,0,0,0,(null),(null),(null),Unique key
+ALL,ENTITY_FIELD,NULLABLE,9,Boolean,0,0,0,0,0,0,(null),(null),(null),Nullable
 ALL,ENTITY_FIELD,DEFAULT_VALUE,10,String,30,0,0,0,1,(null),(null),(null),(null),Default value of field
 ALL,ENTITY_FIELD,SEQUENTIAL_ID,11,String,30,0,0,0,1,(null),(null),(null),(null),Sequential Id of field
 ALL,ENTITY_FIELD,MINIMUM_VALUE,12,String,30,0,0,0,1,(null),(null),(null),(null),Minimum value of field
@@ -32,14 +32,14 @@ ALL,ENTITY_RELATIONSHIP,FIELD_FROM,4,String,30,0,0,0,0,(null),(null),(null),(nul
 ALL,ENTITY_RELATIONSHIP,TABLE_TO,5,String,30,0,0,0,0,(null),(null),(null),(null),Table to
 ALL,ENTITY_RELATIONSHIP,FIELD_TO,6,String,30,0,0,0,0,(null),(null),(null),(null),Filed to
 ALL,ENTITY_TABLE,TABLE_ID,1,String,30,0,1,0,0,(null),(null),(null),(null),Table Id
-ALL,ENTITY_TABLE,HAS_TABLE_ID,2,Boolean,1,0,0,0,0,(null),(null),(null),(null),Order of fields
+ALL,ENTITY_TABLE,HAS_TABLE_ID,2,Boolean,0,0,0,0,0,(null),(null),(null),(null),Order of fields
 ALL,ENTITY_TABLE,PACKAGE_NAME,3,String,30,0,0,0,0,(null),(null),(null),(null),Package name of entity
-ALL,ENTITY_TABLE,MULTI_COMPANY,4,Boolean,1,0,0,0,0,0,(null),(null),(null),Multi company of entity
-ALL,ENTITY_TABLE,MULTI_LANGUAGE,5,Boolean,1,0,0,0,0,0,(null),(null),(null),Multi language of entity
-ALL,ENTITY_TABLE,HISTORICAL_DATA,6,Boolean,1,0,0,0,0,0,(null),(null),(null),Historical data of entity
-ALL,ENTITY_TABLE,OPTIMISTIC_LOCKING,7,Boolean,1,0,0,0,0,0,(null),(null),(null),Optimistic locking of entity
-ALL,ENTITY_TABLE,ENUMERATED_TYPES,8,Boolean,1,0,0,0,0,0,(null),(null),(null),Enumerated type of entity
-ALL,ENTITY_TABLE,CACHE_MEMORY,9,Boolean,1,0,0,0,0,0,(null),(null),(null),Cache memory of entity
+ALL,ENTITY_TABLE,MULTI_COMPANY,4,Boolean,0,0,0,0,0,0,(null),(null),(null),Multi company of entity
+ALL,ENTITY_TABLE,MULTI_LANGUAGE,5,Boolean,0,0,0,0,0,0,(null),(null),(null),Multi language of entity
+ALL,ENTITY_TABLE,HISTORICAL_DATA,6,Boolean,0,0,0,0,0,0,(null),(null),(null),Historical data of entity
+ALL,ENTITY_TABLE,OPTIMISTIC_LOCKING,7,Boolean,0,0,0,0,0,0,(null),(null),(null),Optimistic locking of entity
+ALL,ENTITY_TABLE,ENUMERATED_TYPES,8,Boolean,0,0,0,0,0,0,(null),(null),(null),Enumerated type of entity
+ALL,ENTITY_TABLE,CACHE_MEMORY,9,Boolean,0,0,0,0,0,0,(null),(null),(null),Cache memory of entity
 ALL,ENTITY_TABLE,DESCRIPTION,10,String,100,0,0,0,0,(null),(null),(null),(null),Description of entity
 ALL,LANGUAGE,LANGUAGE_ID,1,String,4,0,1,0,0,(null),(null),(null),(null),Language Id
 ALL,LANGUAGE,NAME,2,String,40,0,0,0,0,(null),(null),(null),(null),Name of language
@@ -120,11 +120,14 @@ ALL,PROFESSION_TYPE,PROFESSION_TYPE_ID,1,String,4,0,1,0,0,(null),(null),(null),(
 ALL,PROFESSION_TYPE,NAME,2,String,40,0,0,0,0,(null),(null),(null),(null),Name of profession type
 
 
+ALL,COMPONENT_TYPE,COMPONENT_TYPE_ID,1,String,3,0,1,0,0,(null),(null),(null),(null),Component type Id
+ALL,COMPONENT_TYPE,DESCRIPTION,2,String,50,0,0,0,0,(null),(null),(null),(null),Component type description
 ALL,COMPONENT,COMPONENT_ID,1,String,150,0,1,0,0,(null),(null),(null),(null),Component Id
-ALL,COMPONENT,SUBSYSTEM_ID,2,String,2,0,0,0,0,(null),(null),(null),(null),Subsystem Id
-ALL,COMPONENT,CLASS_NAME,3,String,100,0,0,0,0,(null),(null),(null),(null),Class name
-ALL,COMPONENT,METHOD_NAME,4,String,100,0,0,0,0,(null),(null),(null),(null),Method name
-ALL,COMPONENT,DESCRIPTION,5,String,100,0,0,0,0,(null),(null),(null),(null),Description
+ALL,COMPONENT,TYPE_ID,2,String,3,0,1,0,0,(null),(null),(null),(null),Component type Id
+ALL,COMPONENT,SUBSYSTEM_ID,3,String,2,0,0,0,0,(null),(null),(null),(null),Subsystem Id
+ALL,COMPONENT,CLASS_NAME,4,String,100,0,0,0,0,(null),(null),(null),(null),Class name
+ALL,COMPONENT,METHOD_NAME,5,String,100,0,0,0,1,(null),(null),(null),(null),Method name
+ALL,COMPONENT,DESCRIPTION,6,String,100,0,0,0,0,(null),(null),(null),(null),Description
 ALL,HOST,HOST_ID,1,String,40,0,1,0,0,(null),(null),(null),(null),Host Id
 ALL,HOST,ADDRESS,2,String,60,0,0,0,0,(null),(null),(null),(null),Address
 ALL,HOST,TIME_ZONE,6,String,4,0,0,0,1,(null),(null),(null),(null),Time zone
@@ -135,8 +138,8 @@ ALL,PROCESS,SUBSYSTEM_ID,1,String,2,0,1,0,0,(null),(null),(null),(null),Subsyste
 ALL,PROCESS,MODULE_ID,2,String,2,0,1,0,0,(null),(null),(null),(null),Module Id
 ALL,PROCESS,PROCESS_ID,3,String,2,0,1,0,0,(null),(null),(null),(null),Process Id
 ALL,PROCESS,NAME,4,String,40,0,0,0,0,(null),(null),(null),(null),Name of process
-ALL,PROCESS,ENABLE,5,Boolean,1,0,0,0,0,1,(null),(null),(null),Enable
-ALL,PROCESS,MENU,6,Boolean,1,0,0,0,0,1,(null),(null),(null),Show in app  menu
+ALL,PROCESS,ENABLE,5,Boolean,0,0,0,0,0,1,(null),(null),(null),Enable
+ALL,PROCESS,MENU,6,Boolean,0,0,0,0,0,1,(null),(null),(null),Show in app  menu
 ALL,PROCESS,URL,7,String,100,0,0,0,0,(null),(null),(null),(null),URL
 ALL,PROCESS,DATAFILE_ID,8,Long,10,0,0,0,1,(null),(null),(null),(null),Datafile Id
 ALL,PROCESS_COMPONENT,SUBSYSTEM_ID,2,String,2,0,1,0,0,(null),(null),(null),(null),Subsystem Id
@@ -144,8 +147,9 @@ ALL,PROCESS_COMPONENT,MODULE_ID,3,String,2,0,1,0,0,(null),(null),(null),(null),M
 ALL,PROCESS_COMPONENT,PROCESS_ID,4,String,2,0,1,0,0,(null),(null),(null),(null),Process Id
 ALL,PROCESS_COMPONENT,PROCESS_SEQUENCE,5,Integer,3,0,1,0,0,(null),(null),(null),(null),Process sequence
 ALL,PROCESS_COMPONENT,COMPONENT_ID,6,String,150,0,0,0,0,(null),(null),(null),(null),Component Id
-ALL,PROCESS_COMPONENT,ENABLE,7,Boolean,1,0,0,0,0,0,(null),(null),(null),Enable
-ALL,PROCESS_COMPONENT,AUTHORIZE,8,Boolean,1,0,0,0,1,0,(null),(null),(null),Authorize
+ALL,PROCESS_COMPONENT,TYPE_ID,7,String,3,0,0,0,0,(null),(null),(null),(null),Component type Id
+ALL,PROCESS_COMPONENT,ENABLE,8,Boolean,0,0,0,0,0,0,(null),(null),(null),Enable
+ALL,PROCESS_COMPONENT,AUTHORIZE,9,Boolean,0,0,0,0,1,0,(null),(null),(null),Authorize
 ALL,PROFILE,PROFILE_ID,1,String,4,0,1,0,0,(null),(null),(null),(null),Profile Id
 ALL,PROFILE,NAME,2,String,40,0,0,0,0,(null),(null),(null),(null),Name of profile
 ALL,PROFILE,DESCRIPTION,3,String,150,0,0,0,1,(null),(null),(null),(null),Description of profile
@@ -153,10 +157,10 @@ ALL,ROLE,PROFILE_ID,1,String,4,0,1,0,0,(null),(null),(null),(null),Profile Id
 ALL,ROLE,SUBSYSTEM_ID,2,String,2,0,1,0,0,(null),(null),(null),(null),Subsystem Id
 ALL,ROLE,MODULE_ID,3,String,2,0,1,0,0,(null),(null),(null),(null),Module Id
 ALL,ROLE,PROCESS_ID,4,String,2,0,1,0,0,(null),(null),(null),(null),Process Id
-ALL,ROLE,DAY_ID,5,String,3,0,1,0,1,(null),(null),(null),(null),Day Id
+ALL,ROLE,DAY_ID,5,String,3,0,0,0,1,(null),(null),(null),(null),Day Id
 ALL,ROLE,HOUR_FROM,6,String,4,0,0,0,1,(null),(null),(null),(null),Hour From
 ALL,ROLE,HOUR_TO,7,String,4,0,0,0,1,(null),(null),(null),(null),Hour To
-ALL,ROLE,EDITABLE,8,Boolean,1,0,0,0,0,0,(null),(null),(null),Editable
+ALL,ROLE,EDITABLE,8,Boolean,0,0,0,0,0,0,(null),(null),(null),Editable
 ALL,SUBSYSTEM,SUBSYSTEM_ID,1,String,2,0,1,0,0,(null),(null),(null),(null),Subsystem Id
 ALL,SUBSYSTEM,NAME,2,String,40,0,0,0,0,(null),(null),(null),(null),Name of subsystem
 ALL,USER_ACCESS,USER_ID,1,String,20,0,1,0,0,(null),(null),(null),(null),User Id
@@ -175,7 +179,7 @@ ALL,USER_NOTIFICATION,USER_ID,1,String,20,0,1,0,0,(null),(null),(null),(null),Us
 ALL,USER_NOTIFICATION,USER_NOTIFICATION_TYPE_ID,2,String,4,0,0,0,0,(null),(null),(null),(null),User notification type Id
 ALL,USER_NOTIFICATION,SUBJECT,3,String,100,0,0,0,0,(null),(null),(null),(null),Subject
 ALL,USER_NOTIFICATION,MESSAGE,4,String,4000,0,0,0,0,(null),(null),(null),(null),Message
-ALL,USER_NOTIFICATION,READ_,5,Boolean,1,0,0,0,0,0,(null),(null),(null),Read
+ALL,USER_NOTIFICATION,READ_,5,Boolean,0,0,0,0,0,0,(null),(null),(null),Read
 ALL,USER_NOTIFICATION_TYPE,USER_NOTIFICATION_TYPE_ID,1,String,4,0,1,0,0,(null),(null),(null),(null),User notification type Id
 ALL,USER_NOTIFICATION_TYPE,NAME,2,String,40,0,0,0,0,(null),(null),(null),(null),Name of user notification type
 ALL,USER_PROFILE,USER_ID,1,String,20,0,1,0,0,(null),(null),(null),(null),User Id

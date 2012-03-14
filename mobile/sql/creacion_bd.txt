@@ -2,8 +2,8 @@
    Auxiliar: "microxt_0" 
    Desarrollo: "microxt" 
    Las configuraciones de las unidades de persistencia:
-   "generador" -> "microxt_0" 
    "central" -> "microxt" 
+   "generador" -> "microxt_0" 
 2. Sobre "microxt_0" ejecutar 
    /sql/model/create_common.sql (modelo del paquete common)
    /sql/data/1.common.sql (parametrizacion del paquete common)
