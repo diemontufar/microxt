@@ -277,7 +277,7 @@ public class JPManager {
 			completeAbstractFieldsForPk((GeneralEntityKey) pk);
 		}
 
-		// Aply locking, if the entity implements OptimistickLocking interface
+		// Apply locking, if the entity implements OptimistickLocking interface
 		if (implementsInterface(type, OptimisticLocking.class)) {
 			entity = getEntityManager().find(type, pk, LockModeType.OPTIMISTIC);
 		} else {
