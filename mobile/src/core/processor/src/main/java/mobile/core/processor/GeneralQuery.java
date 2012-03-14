@@ -90,7 +90,7 @@ public class GeneralQuery implements QueryProcessor {
 		}
 
 		// Filter fields
-		if (data.getFilters() != null) {
+		if (data.getFilters() != null && !normalQuery) {
 			String strFilters = data.getFilters();
 			String[] lFilters = strFilters.split(";");
 			for (String filter : lFilters) {
@@ -103,10 +103,11 @@ public class GeneralQuery implements QueryProcessor {
 					sql.append(", ");
 				}
 
-				if (normalQuery)
-					sql.append("a." + field.replaceAll("pk_", "pk."));
-				else
+				if (normalQuery){
+					//sql.append("a." + field.replaceAll("pk_", "pk."));
+				}else{
 					sql.append("a." + JPManager.toSqlName(field.replaceAll("pk_", "")));
+				}
 				//fieldCounter++;
 			}
 		}
@@ -326,7 +327,7 @@ public class GeneralQuery implements QueryProcessor {
 				}
 			} else {
 				String qryField = queryFields.get(0);
-				Object result = (Object) results.get(i);
+				Object result = results.get(i);
 				Field field = new Field(qryField);
 				if (result != null) {
 					String completedValue = CoreConverter.completeValue(result);
