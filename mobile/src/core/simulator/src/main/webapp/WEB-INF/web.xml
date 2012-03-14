@@ -4,17 +4,17 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	<description></description>
 	<!-- Application Startup Class -->
-	<listener>
-		<listener-class>mobile.core.server.PersistenceListener</listener-class>
-	</listener>
+	<!-- <listener>
+		<listener-class>mobile.core.simulator.PersistenceListener</listener-class>
+	</listener> -->
 	<servlet>
-		<servlet-name>Core</servlet-name>
-		<servlet-class>mobile.core.server.Core</servlet-class>
+		<servlet-name>Simulador</servlet-name>
+		<servlet-class>mobile.core.simulator.Simulator</servlet-class>
 		<!--<load-on-startup>1</load-on-startup>-->
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>Core</servlet-name>
-		<url-pattern>/Core</url-pattern>
+		<servlet-name>Simulador</servlet-name>
+		<url-pattern>/Simulador</url-pattern>
 	</servlet-mapping>
 	<session-config>
 		<session-timeout>35</session-timeout>

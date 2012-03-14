@@ -24,12 +24,10 @@ public class Simulator extends HttpServlet {
 		String message = null;
 		try {
 			log.info(":::::::::::::::::::::::::");
-			// log.info("request: " + request);
 			log.info("content-type: " + request.getContentType());
 			log.info("character-encoding: " + request.getCharacterEncoding());
 			log.info("content-length: " + request.getContentLength());
 			log.info("remote-addr: " + request.getRemoteAddr());
-			// log.info("locale: " + request.getLocale());
 
 			BufferedReader reader = request.getReader();
 			log.info("Message");
@@ -37,20 +35,12 @@ public class Simulator extends HttpServlet {
 
 			log.info("Input message: ");
 			log.info(message);
-			// log.info("Input message UTF-8: " + new String(message.getBytes(),
-			// "UTF-8"));
-			// log.info("Input message ISO-8859-1: " + new
-			// String(message.getBytes(), "ISO-8859-1"));
-			log.info("Decode message :");
-			// log.info(URLDecoder.decode(message, "UTF-8"));
-			// message = URLDecoder.decode(message, "UTF-8");
 
 			if (message == null) {
 				setResponseProp(response);
 
 				PrintWriter out = response.getWriter();
 
-				// Test message
 				out.println("No message received.");
 				out.close();
 				return;
@@ -58,17 +48,17 @@ public class Simulator extends HttpServlet {
 
 			// Get data from json
 			Parser parser = new Parser();
-			Message msg = parser.parseMsg(message, Message.JSON);
+			Message msg = parser.parseMsg(message, Message.XML);
 
 			// Process
-			Instrumentation proc = new Instrumentation();
+			SimulatorProcessor proc = new SimulatorProcessor();
 			proc.process(msg);
-
+			
 			// Return the changes in JSON format
 			setResponseProp(response);
 			PrintWriter out = response.getWriter();
 
-			out.println(msg.toJSON());
+			out.println(msg.toXML());
 			out.close();
 		} catch (Exception e) {
 			e.printStackTrace();
