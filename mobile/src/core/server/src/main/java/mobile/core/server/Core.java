@@ -43,9 +43,6 @@ public class Core extends HttpServlet {
 			// "UTF-8"));
 			// log.info("Input message ISO-8859-1: " + new
 			// String(message.getBytes(), "ISO-8859-1"));
-			log.info("Decode message :");
-			log.info(URLDecoder.decode(message, "UTF-8"));
-			message = URLDecoder.decode(message, "UTF-8");
 
 			if (message == null) {
 				setResponseProp(response);
@@ -57,6 +54,11 @@ public class Core extends HttpServlet {
 				out.close();
 				return;
 			}
+
+			// Decode
+			log.info("Decode message :");
+			log.info(URLDecoder.decode(message, "UTF-8"));
+			message = URLDecoder.decode(message, "UTF-8");
 
 			// Get data from json
 			Parser parser = new Parser();
