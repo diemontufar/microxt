@@ -3,7 +3,7 @@ package mobile.bus.security;
 import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Message;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.entity.security.UserAccess;
 import mobile.entity.security.UserAccessPk;
 import mobile.entity.security.UserAccount;
@@ -28,7 +28,7 @@ public class Loggin implements QueryProcessor{
 		
 		// Verify
 		UserAccountPk userPk = new UserAccountPk(user);
-		UserAccount userAcc = JPManager.find(UserAccount.class, userPk);
+		UserAccount userAcc = JpManager.find(UserAccount.class, userPk);
 
 		if (userAcc != null) {
 			log.info("User found: ");
@@ -36,7 +36,7 @@ public class Loggin implements QueryProcessor{
 
 			// Find the password and compare
 			UserAccessPk accessPk = new UserAccessPk(user);
-			UserAccess userAccess = JPManager.find(UserAccess.class,
+			UserAccess userAccess = JpManager.find(UserAccess.class,
 					accessPk);
 
 			if (userAccess != null

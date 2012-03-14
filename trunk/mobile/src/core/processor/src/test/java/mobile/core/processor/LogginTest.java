@@ -1,7 +1,7 @@
 package mobile.core.processor;
 
 import junit.framework.TestCase;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.entity.manager.JPManagerFactory;
 import mobile.entity.security.UserAccess;
 import mobile.entity.security.UserAccessPk;
@@ -19,7 +19,7 @@ public class LogginTest extends TestCase{
 		try {
 			// Initialize Jpa
 			JPManagerFactory.createEntityManagerFactory("central");
-			JPManager.createEntityManager();
+			JpManager.createEntityManager();
 			// Initialize global parameters
 			LocalParameter.set(ParameterEnum.COMPANY, "MXT");
 			LocalParameter.set(ParameterEnum.LANGUAGE, "ES");
@@ -27,7 +27,7 @@ public class LogginTest extends TestCase{
 			// Process
 			// Find the user-account
 			UserAccountPk userPk = new UserAccountPk(user);
-			UserAccount userAcc = JPManager.find(UserAccount.class, userPk);
+			UserAccount userAcc = JpManager.find(UserAccount.class, userPk);
 
 			if (userAcc != null) {
 				System.out.println("Usuario encontrado:");
@@ -35,7 +35,7 @@ public class LogginTest extends TestCase{
 
 				// Find the password and compare
 				UserAccessPk accessPk = new UserAccessPk(user);
-				UserAccess userAccess = JPManager.find(UserAccess.class,
+				UserAccess userAccess = JpManager.find(UserAccess.class,
 						accessPk);
 
 				if (userAccess != null
@@ -49,7 +49,7 @@ public class LogginTest extends TestCase{
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JPManager.close();
+			JpManager.close();
 			JPManagerFactory.close();
 		}
 	}

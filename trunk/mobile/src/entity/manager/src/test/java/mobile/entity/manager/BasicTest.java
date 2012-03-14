@@ -11,13 +11,13 @@ public class BasicTest {
 		try {
 			// Initialize Jpa
 			JPManagerFactory.createEntityManagerFactory();
-			JPManager.createEntityManager();
+			JpManager.createEntityManager();
 			System.out.println("Hola mundo");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JPManager.close();
+			JpManager.close();
 			JPManagerFactory.close();
 		}
 	}
@@ -26,7 +26,7 @@ public class BasicTest {
 	public void testObject() {
 		try {
 			JPManagerFactory.createEntityManagerFactory("central");
-			JPManager.createEntityManager();
+			JpManager.createEntityManager();
 
 //			TypedQuery<GeographicZone> query = JPManager.getEntityManager()
 //					.createQuery("Select p from GeographicZone p",
@@ -40,7 +40,7 @@ public class BasicTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JPManager.close();
+			JpManager.close();
 			JPManagerFactory.close();
 		}
 	}

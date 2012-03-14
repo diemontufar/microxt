@@ -10,7 +10,7 @@ import mobile.core.generator.util.PropertyData;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityTable;
 import mobile.entity.common.EntityTablePk;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.tools.common.FileUtil;
 import mobile.tools.common.Log;
 
@@ -64,7 +64,7 @@ public class EntityGenerator {
 
 	public void generateAllEntities() throws Exception {
 		// Query all entities
-		TypedQuery<EntityTable> queryEntities = JPManager.getEntityManager().createQuery(ENTITY_QL, EntityTable.class);
+		TypedQuery<EntityTable> queryEntities = JpManager.getEntityManager().createQuery(ENTITY_QL, EntityTable.class);
 		queryEntities.setParameter("companyId", COMPANY);
 		List<EntityTable> lEntity = queryEntities.getResultList();
 
@@ -79,7 +79,7 @@ public class EntityGenerator {
 
 	public void generate(List<String> ltables) throws Exception {
 		// Query entities
-		TypedQuery<EntityTable> queryEntities = JPManager.getEntityManager().createQuery(ENTITY2_QL, EntityTable.class);
+		TypedQuery<EntityTable> queryEntities = JpManager.getEntityManager().createQuery(ENTITY2_QL, EntityTable.class);
 		queryEntities.setParameter("companyId", COMPANY);
 		queryEntities.setParameter("tables", ltables);
 		List<EntityTable> lEntity = queryEntities.getResultList();
@@ -99,7 +99,7 @@ public class EntityGenerator {
 		EntityTablePk pk = new EntityTablePk(tableId);
 		pk.setCompanyId(ALL_COMPANY);
 
-		EntityTable entity = JPManager.find(EntityTable.class, pk);
+		EntityTable entity = JpManager.find(EntityTable.class, pk);
 
 		if (entity == null) {
 			throw new Exception("NO ENTITY INFORMATION");
@@ -110,7 +110,7 @@ public class EntityGenerator {
 
 	private void generateEntity(EntityTable entity) throws Exception {
 		// Query fields
-		TypedQuery<EntityField> queryFields = JPManager.getEntityManager().createQuery(FIELD_SQL, EntityField.class);
+		TypedQuery<EntityField> queryFields = JpManager.getEntityManager().createQuery(FIELD_SQL, EntityField.class);
 		queryFields.setParameter("companyId", COMPANY);
 		queryFields.setParameter("tableId", entity.getPk().getTableId());
 		List<EntityField> lField = queryFields.getResultList();

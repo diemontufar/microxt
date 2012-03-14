@@ -13,7 +13,7 @@ import mobile.common.message.Item;
 import mobile.common.message.Message;
 import mobile.entity.common.EntityRelationship;
 import mobile.entity.common.EntityTable;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.entity.manager.util.QueryUtil;
 import mobile.tools.common.convertion.CoreConverter;
 import mobile.tools.common.param.LocalParameter;
@@ -84,7 +84,7 @@ public class GeneralQuery implements QueryProcessor {
 				if (normalQuery)
 					sql.append("a." + strField.replaceAll("pk_", "pk."));
 				else
-					sql.append("a." + JPManager.toSqlName(strField.replaceAll("pk_", "")));
+					sql.append("a." + JpManager.toSqlName(strField.replaceAll("pk_", "")));
 				fieldCounter++;
 			}
 		}
@@ -106,7 +106,7 @@ public class GeneralQuery implements QueryProcessor {
 				if (normalQuery){
 					//sql.append("a." + field.replaceAll("pk_", "pk."));
 				}else{
-					sql.append("a." + JPManager.toSqlName(field.replaceAll("pk_", "")));
+					sql.append("a." + JpManager.toSqlName(field.replaceAll("pk_", "")));
 				}
 				//fieldCounter++;
 			}
@@ -116,7 +116,7 @@ public class GeneralQuery implements QueryProcessor {
 		if (normalQuery)
 			sql.append(" from " + data.getDataId() + " a");
 		else
-			sql.append(" from " + JPManager.toSqlName(data.getDataId()) + " a");
+			sql.append(" from " + JpManager.toSqlName(data.getDataId()) + " a");
 
 		// Set data types map
 		// util.fillQueryTypes(entity);
@@ -129,7 +129,7 @@ public class GeneralQuery implements QueryProcessor {
 
 		// Automatic filters
 		int autoFiltersCounter = 0;
-		EntityTable entityTable = JPManager.getEntityTable(data.getDataId());
+		EntityTable entityTable = JpManager.getEntityTable(data.getDataId());
 		if (entityTable.getMultiCompany()) {
 			if (autoFiltersCounter == 0) {
 				sql.append(" where ");
@@ -231,7 +231,7 @@ public class GeneralQuery implements QueryProcessor {
 						if (comparator.compareTo("like") == 0 && !comparator.endsWith("%")) {
 							cValue = value + "%";
 						}
-						sql.append(JPManager.toSqlName(field.replaceAll("pk_", "").replaceAll("\\.", "_")) + " "
+						sql.append(JpManager.toSqlName(field.replaceAll("pk_", "").replaceAll("\\.", "_")) + " "
 								+ comparator + " ?" + (parametersCounter + 1));
 						lParameters.add(cValue);
 						filtersCounter++;
@@ -249,7 +249,7 @@ public class GeneralQuery implements QueryProcessor {
 				sql.append(" order by " + "a." + data.getOrderBy().replaceAll("pk_", "pk."));
 			} else {
 				sql.append(" order by "
-						+ JPManager.toSqlName(data.getOrderBy().replaceAll("pk_", "").replaceAll("\\.", "_")));
+						+ JpManager.toSqlName(data.getOrderBy().replaceAll("pk_", "").replaceAll("\\.", "_")));
 			}
 
 			if (data.getOrderDir() != null && data.getOrderDir().compareTo(ORDER_DIR_DESC) == 0) {
@@ -265,9 +265,9 @@ public class GeneralQuery implements QueryProcessor {
 		Query query = null;
 
 		if (normalQuery)
-			query = JPManager.getEntityManager().createQuery(sql.toString());
+			query = JpManager.getEntityManager().createQuery(sql.toString());
 		else
-			query = JPManager.getEntityManager().createNativeQuery(sql.toString());
+			query = JpManager.getEntityManager().createNativeQuery(sql.toString());
 
 		// Set parameters
 		parametersCounter = 0;
@@ -383,21 +383,21 @@ public class GeneralQuery implements QueryProcessor {
 
 		sql.append("(Select ");
 
-		sql.append(JPManager.toSqlName(field.replaceAll("pk_", "")));
+		sql.append(JpManager.toSqlName(field.replaceAll("pk_", "")));
 
 		// From
-		sql.append(" from " + JPManager.toSqlName(entity));
+		sql.append(" from " + JpManager.toSqlName(entity));
 
 		// Filters
 		int filtersCounter = 0;
 		if (mdependency == null) {
 			// Filters from relationship
 			String QL_RELATIONSHIP = "Select r from EntityRelationship r where r.tableFrom = :tableFrom and r.tableTo = :tableTo";
-			Query query = JPManager.getEntityManager().createQuery(QL_RELATIONSHIP, EntityRelationship.class);
-			query.setParameter("tableFrom", JPManager.toSqlName(this.entity));
+			Query query = JpManager.getEntityManager().createQuery(QL_RELATIONSHIP, EntityRelationship.class);
+			query.setParameter("tableFrom", JpManager.toSqlName(this.entity));
 			String tableTo = null;
-			if (JPManager.getEntityTable(entity).getHasTableId()) {
-				tableTo = JPManager.toSqlName(entity) + "_ID";
+			if (JpManager.getEntityTable(entity).getHasTableId()) {
+				tableTo = JpManager.toSqlName(entity) + "_ID";
 			}
 			query.setParameter("tableTo", tableTo);
 			List<EntityRelationship> list = query.getResultList();
@@ -418,14 +418,14 @@ public class GeneralQuery implements QueryProcessor {
 				if (filtersCounter > 0) {
 					sql.append(" and ");
 				}
-				sql.append(JPManager.toSqlName(filteredField.replaceAll("pk_", "")) + "=a."
-						+ JPManager.toSqlName(toDep.get(1).replaceAll("pk_", "")));
+				sql.append(JpManager.toSqlName(filteredField.replaceAll("pk_", "")) + "=a."
+						+ JpManager.toSqlName(toDep.get(1).replaceAll("pk_", "")));
 				filtersCounter++;
 			}
 		}
 
 		// Automatic filters
-		EntityTable entityTable = JPManager.getEntityTable(entity);
+		EntityTable entityTable = JpManager.getEntityTable(entity);
 		if (entityTable.getHistoricalData()) {
 			if (filtersCounter > 0) {
 				sql.append(" and ");
@@ -442,7 +442,7 @@ public class GeneralQuery implements QueryProcessor {
 		}
 
 		if (entity != null && field != null) {
-			sql.append(") as " + JPManager.toSqlName(entity) + "_" + JPManager.toSqlName(field));
+			sql.append(") as " + JpManager.toSqlName(entity) + "_" + JpManager.toSqlName(field));
 		} else {
 			sql.append(") ");
 		}
