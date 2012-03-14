@@ -129,21 +129,6 @@ public class GeneralQuery implements QueryProcessor {
 		// Automatic filters
 		int autoFiltersCounter = 0;
 		EntityTable entityTable = JPManager.getEntityTable(data.getDataId());
-		if (entityTable.getHistoricalData()) {
-			if (autoFiltersCounter == 0) {
-				sql.append(" where ");
-			}
-			if (autoFiltersCounter > 0) {
-				sql.append(" and ");
-			}
-			if (normalQuery)
-				sql.append("a.pk.expired = ?" + (parametersCounter + 1));
-			else
-				sql.append("a.EXPIRED = ?" + (parametersCounter + 1));
-			lParameters.add(Timer.getExpiredTime());
-			autoFiltersCounter++;
-			parametersCounter++;
-		}
 		if (entityTable.getMultiCompany()) {
 			if (autoFiltersCounter == 0) {
 				sql.append(" where ");
@@ -159,6 +144,37 @@ public class GeneralQuery implements QueryProcessor {
 			autoFiltersCounter++;
 			parametersCounter++;
 		}
+		if (entityTable.getMultiLanguage()) {
+			if (autoFiltersCounter == 0) {
+				sql.append(" where ");
+			}
+			if (autoFiltersCounter > 0) {
+				sql.append(" and ");
+			}
+			if (normalQuery)
+				sql.append("a.pk.languageId = ?" + (parametersCounter + 1));
+			else
+				sql.append("a.LANGUAGE_ID = ?" + (parametersCounter + 1));
+			lParameters.add(LocalParameter.get(ParameterEnum.LANGUAGE, String.class));
+			autoFiltersCounter++;
+			parametersCounter++;
+		}
+		if (entityTable.getHistoricalData()) {
+			if (autoFiltersCounter == 0) {
+				sql.append(" where ");
+			}
+			if (autoFiltersCounter > 0) {
+				sql.append(" and ");
+			}
+			if (normalQuery)
+				sql.append("a.pk.expired = ?" + (parametersCounter + 1));
+			else
+				sql.append("a.EXPIRED = ?" + (parametersCounter + 1));
+			lParameters.add(Timer.getExpiredTime());
+			autoFiltersCounter++;
+			parametersCounter++;
+		}
+
 
 		// Request filters
 		if (data.getFilters() != null) {
