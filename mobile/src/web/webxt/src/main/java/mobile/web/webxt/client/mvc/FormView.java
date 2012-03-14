@@ -29,6 +29,7 @@ import mobile.web.webxt.client.devform.C002;
 import mobile.web.webxt.client.devform.C003;
 import mobile.web.webxt.client.devform.C004;
 import mobile.web.webxt.client.devform.C005;
+import mobile.web.webxt.client.devform.C006;
 import mobile.web.webxt.client.devform.C101;
 import mobile.web.webxt.client.devform.C102;
 import mobile.web.webxt.client.devform.C103;
@@ -39,7 +40,7 @@ import mobile.web.webxt.client.devform.C202;
 import mobile.web.webxt.client.devform.C301;
 import mobile.web.webxt.client.devform.C302;
 import mobile.web.webxt.client.devform.C401;
-import mobile.web.webxt.client.devform.C402_;
+import mobile.web.webxt.client.devform.C402;
 import mobile.web.webxt.client.devform.C502;
 import mobile.web.webxt.client.devform.G101;
 import mobile.web.webxt.client.devform.G301;
@@ -178,6 +179,8 @@ public class FormView extends View {
 			form = new C004();
 		} else if (processId.compareTo("C005") == 0) {
 			form = new C005();
+		} else if (processId.compareTo("C006") == 0) {
+			form = new C006();
 		} else if (processId.compareTo("C101") == 0) {
 			form = new C101();
 		} else if (processId.compareTo("C102") == 0) {
@@ -199,7 +202,7 @@ public class FormView extends View {
 		} else if (processId.compareTo("C401") == 0) {
 			form = new C401();
 		} else if (processId.compareTo("C402") == 0) {
-			form = new C402_();
+			form = new C402();
 		} else if (processId.compareTo("C502") == 0) {
 			form = new C502();
 		} else if (processId.compareTo("G101") == 0) {
