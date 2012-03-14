@@ -25,7 +25,7 @@ public class QuerySolicitude implements QueryProcessor {
 			+ "from SOLICITUDE a "
 			+ "left outer join PARTNER b on b.company_id=a.company_id and b.language_id=a.language_id and b.expired=a.expired and b.partner_id=a.partner_client_id "
 			+ "left outer join PERSON c on c.company_id=b.company_id and c.expired=b.expired and c.person_id=b.person_id "
-			+ "where a.EXPIRED = fncexpired() and a.COMPANY_ID = 'MXT'";
+			+ "where a.EXPIRED = fncexpired() and a.COMPANY_ID = 'MXT' and a.INSTRUMENTATION_DATE is null";
 
 	// private final String SOLICITUDE_QL =
 	// "select a.SOLICITUDE_ID, a.ASSESSOR, "
