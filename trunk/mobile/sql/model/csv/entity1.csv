@@ -2,6 +2,7 @@ COMPANY_ID,TABLE_ID,HAS_TABLE_ID,PACKAGE_NAME,MULTI_COMPANY,MULTI_LANGUAGE,HISTO
 ALL,CURRENCY,1,microcredit,1,1,1,0,0,0,Currency
 ALL,SOLICITUDE_STATUS,1,microcredit,1,1,0,0,0,0,Solicitude status
 ALL,ACCOUNT_STATUS,1,microcredit,1,1,0,0,0,0,Account status
+ALL,OPERATIVE_CONDITION,1,microcredit,1,1,0,0,0,0,Operative conditions
 ALL,QUOTA_TYPE,1,microcredit,1,1,0,0,0,0,Quota type
 ALL,FREQUENCY,1,microcredit,1,1,0,0,0,0,Frequencies
 ALL,FUNDS_DESTINATION,1,microcredit,1,1,0,0,0,0,Destination of funds

@@ -9,6 +9,9 @@ FK(I),COMPANY_ID,TABLE_ID,FIELD_ID,FIELD_ORDER,DATA_TYPE_ID,DATA_SIZE,DATA_SCALE
 ,ALL,ACCOUNT_STATUS,STATUS_ID,1,String,3,0,1,0,0,(null),(null),(null),(null),Status
 ,ALL,ACCOUNT_STATUS,DESCRIPTION,2,String,50,0,0,0,0,(null),(null),(null),(null),Description
 
+,ALL,OPERATIVE_CONDITION,OPERATIVE_CONDITION_ID,1,String,3,0,1,0,0,(null),(null),(null),(null),Operative condition
+,ALL,OPERATIVE_CONDITION,DESCRIPTION,2,String,50,0,0,0,0,(null),(null),(null),(null),Description
+
 ,ALL,QUOTA_TYPE,QUOTA_TYPE_ID,1,String,3,0,1,0,0,(null),(null),(null),(null),Fee type
 ,ALL,QUOTA_TYPE,DESCRIPTION,2,String,50,0,0,0,0,(null),(null),(null),(null),Description
 
@@ -84,14 +87,15 @@ FK(I),COMPANY_ID,TABLE_ID,FIELD_ID,FIELD_ORDER,DATA_TYPE_ID,DATA_SIZE,DATA_SCALE
 ,ALL,SOLICITUDE,INITIAL_PAY_DATE,11,Date,0,0,0,0,1,(null),(null),(null),(null),Date for the first pay
 1,ALL,SOLICITUDE,PRODUCT_ID,12,String,3,0,0,0,0,(null),(null),(null),(null),Product id
 1,ALL,SOLICITUDE,STATUS_ID,13,String,3,0,0,0,0,(null),(null),(null),(null),Solicitude status id
-,ALL,SOLICITUDE,NUMBER_RENEWAL,14,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of renewal
-,ALL,SOLICITUDE,AMOUNT,15,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Amount
-,ALL,SOLICITUDE,TERM,16,Long,0,0,0,0,0,(null),(null),(null),(null),Term
-1,ALL,SOLICITUDE,QUOTA_TYPE_ID,17,String,3,0,0,0,0,(null),(null),(null),(null),Quota type id
-,ALL,SOLICITUDE,NUMBER_QUOTAS,18,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of fees
-1,ALL,SOLICITUDE,PAYMENT_FREQUENCY_ID,19,String,3,0,0,0,0,(null),(null),(null),(null),Frequency of payment
-1,ALL,SOLICITUDE,FUNDS_DESTINATION_ID,20,String,3,0,0,0,0,(null),(null),(null),(null),Destination of funds
-,ALL,SOLICITUDE,DESTINATION_DESCRIPTION,21,String,500,0,0,0,0,(null),(null),(null),(null),Description of destination
+1,ALL,SOLICITUDE,OPERATIVE_CONDITION_ID,14,String,3,0,0,0,1,(null),(null),(null),(null),Operative condition
+,ALL,SOLICITUDE,NUMBER_RENEWAL,15,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of renewal
+,ALL,SOLICITUDE,AMOUNT,16,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Amount
+,ALL,SOLICITUDE,TERM,17,Long,0,0,0,0,0,(null),(null),(null),(null),Term
+1,ALL,SOLICITUDE,QUOTA_TYPE_ID,18,String,3,0,0,0,0,(null),(null),(null),(null),Quota type id
+,ALL,SOLICITUDE,NUMBER_QUOTAS,19,Integer,0,0,0,0,1,(null),(null),(null),(null),Number of fees
+1,ALL,SOLICITUDE,PAYMENT_FREQUENCY_ID,20,String,3,0,0,0,0,(null),(null),(null),(null),Frequency of payment
+1,ALL,SOLICITUDE,FUNDS_DESTINATION_ID,21,String,3,0,0,0,0,(null),(null),(null),(null),Destination of funds
+,ALL,SOLICITUDE,DESTINATION_DESCRIPTION,22,String,500,0,0,0,0,(null),(null),(null),(null),Description of destination
 
 1,ALL,RECOMMENDATION,SOLICITUDE_ID,1,Integer,0,0,1,0,0,(null),(null),(null),(null),Solicitude Id
 ,ALL,RECOMMENDATION,DOCUMENTS,2,String,500,0,0,0,0,(null),(null),(null),(null),Comments about documents
@@ -124,6 +128,7 @@ FK(I),COMPANY_ID,TABLE_ID,FIELD_ID,FIELD_ORDER,DATA_TYPE_ID,DATA_SIZE,DATA_SCALE
 ,ALL,MICRO_ACCOUNT_QUOTA,FROM_DATE,4,Date,0,0,0,0,0,(null),(null),(null),(null),Initial date for term
 ,ALL,MICRO_ACCOUNT_QUOTA,EXPIRATION_DATE,5,Date,0,0,0,0,0,(null),(null),(null),(null),Expiration date
 ,ALL,MICRO_ACCOUNT_QUOTA,PAYMENT_DATE,6,Date,0,0,0,0,1,(null),(null),(null),(null),Payment date
-,ALL,MICRO_ACCOUNT_QUOTA,CAPITAL,7,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Capital amount
-,ALL,MICRO_ACCOUNT_QUOTA,INTEREST,8,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Interest amount
-,ALL,MICRO_ACCOUNT_QUOTA,CHARGE,9,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Charge amount
+,ALL,MICRO_ACCOUNT_QUOTA,REDUCED_CAPITAL,7,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Reduced capital
+,ALL,MICRO_ACCOUNT_QUOTA,CAPITAL,8,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Capital amount
+,ALL,MICRO_ACCOUNT_QUOTA,INTEREST,9,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Interest amount
+,ALL,MICRO_ACCOUNT_QUOTA,CHARGE,10,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Charge amount
