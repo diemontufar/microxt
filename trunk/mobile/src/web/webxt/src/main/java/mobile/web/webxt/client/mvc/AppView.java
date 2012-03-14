@@ -1,6 +1,6 @@
 package mobile.web.webxt.client.mvc;
 
-
+import mobile.web.webxt.client.devform.A000;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.event.EventType;
@@ -20,7 +20,7 @@ public class AppView extends View {
 	private Viewport viewport;
 	private HtmlContainer northPanel;
 	private ContentPanel formPanel;
-	
+
 	public AppView(AppController appController) {
 		super(appController);
 	}
@@ -42,62 +42,72 @@ public class AppView extends View {
 			onError(event);
 		}
 	}
-	
+
 	protected void onInit(AppEvent event) {
 		viewport = new Viewport();
 		viewport.setLayout(new BorderLayout());
-		
+
 		createNorth();
 	}
 
 	private void onError(AppEvent event) {
-		
+
 	}
 
 	private void createNorth() {
+
 		StringBuffer sb = new StringBuffer();
-		sb.append("</div><div id=mobile-title>Mobile - Microcréditos</div>");
+		sb.append("</div><div id=mobile-title><img src=\"img/logos/microxt_logo_header.png\" width=\"110\" height=\"28\"></div>");
 
 		northPanel = new HtmlContainer(sb.toString());
 		northPanel.setStateful(false);
 		northPanel.setId("mobile-header");
 		northPanel.addStyleName("x-small-editor");
+		northPanel.setHeight(100);
 
 		BorderLayoutData data = new BorderLayoutData(LayoutRegion.NORTH, 33);
 		data.setMargins(new Margins());
 		viewport.add(northPanel, data);
+
 	}
 
 	private void onFormPanelReady(AppEvent event) {
 		BorderLayoutData data = new BorderLayoutData(LayoutRegion.CENTER);
 		data.setMargins(new Margins(5, 5, 5, 0));
-		
-		//ContentPanel formPanel = event.getData();
+
+		// ContentPanel formPanel = event.getData();
 		formPanel = event.getData();
 		viewport.add(formPanel, data);
 	}
 
 	private void onNavPanelReady(AppEvent event) {
-		BorderLayoutData data = new BorderLayoutData(LayoutRegion.WEST, 250,
-				150, 350);
+		BorderLayoutData data = new BorderLayoutData(LayoutRegion.WEST, 250, 150, 350);
 		data.setMargins(new Margins(5, 5, 5, 5));
 		data.setCollapsible(true);
-		
+
 		ContentPanel panel = event.getData();
-		
+
 		viewport.add(panel, data);
 	}
 
 	private void onStatusToolbarReady(AppEvent event) {
-		BorderLayoutData data = new BorderLayoutData(LayoutRegion.SOUTH,27);
+		BorderLayoutData data = new BorderLayoutData(LayoutRegion.SOUTH, 27);
 		data.setMargins(new Margins(0, 5, 5, 5));
-		
+
 		Component statusBar = event.getData();
-		
+
 		viewport.add(statusBar, data);
 	}
 
 	private void onUIReady(AppEvent event) {
-				RootPanel.get().add(viewport);
+
+		A000 loginForm = new A000(viewport);
+		Viewport loadingViewPort = new Viewport();
+		loadingViewPort.setLoadingPanelId("loading");
+		loadingViewPort.setVisible(false);
+				
+		RootPanel.get().add(loadingViewPort);
+		RootPanel.get().add(loginForm);
+		loginForm.show();
 	}
 }

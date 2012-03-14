@@ -47,6 +47,7 @@ import mobile.web.webxt.client.devform.G301;
 import mobile.web.webxt.client.devform.G302;
 import mobile.web.webxt.client.devform.G303;
 import mobile.web.webxt.client.devform.G304;
+import mobile.web.webxt.client.devform.OverviewPage;
 import mobile.web.webxt.client.form.MyGeneralForm;
 
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -82,6 +83,14 @@ public class FormView extends View {
 	}
 
 	private void onInit(AppEvent event) {
+		
+		TabItem tabItem = new TabItem();
+		tabItem.setText("Principal");
+		tabItem.setId("shortcuts");
+		tabItem.setClosable(false);
+		tabItem.add(new OverviewPage(formPanel));
+		formPanel.addTab(tabItem);
+		
 		Dispatcher.forwardEvent(new AppEvent(AppEvents.FormPanelReady, formPanel));
 	}
 

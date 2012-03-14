@@ -36,6 +36,7 @@
   background: #1E4176 url(img/bg/hd-bg.gif) repeat-x scroll 0pt;
   border: 0pt none;
   padding-left: 3px;
+  padding-top: 0px;
 }
 
 #mobile-title {
@@ -53,4 +54,40 @@
 
 .header-text{
  color: #2554C7;
+}
+
+.overview-page {
+  background-color: white !important; 
+}
+
+.sample-box {
+  float: left;
+  width: 210px;
+  margin: 30px 50px 20px 30px;
+  text-align: center;
+  height: 180px;
+  cursor: default;
+  color: #444;
+  overflow: hidden;
+  padding-top: 4px;
+  border: 1px solid #DDDDDD !important;
+}
+
+.sample-over {
+  background: transparent url(img/bg/sample-over.gif) no-repeat;
+}
+
+.sample-over div {
+  color: #1860A8;
+}
+
+.sample-box div,#sample-box div a {
+  color:green;
+  font-size: 14px;
+  line-height: 12px;
+  font-family: tahoma, arial, sans-serif;
+}
+
+.sample-box dt a {
+  border: 0 none !important;
 }
