@@ -47,6 +47,12 @@ public class MicroAccountQuota extends AbstractHistoricalLocking implements Mult
 	private Date paymentDate;
 
 	/**
+	 * Reduced capital
+	 */
+	@Column(name = "REDUCED_CAPITAL", nullable = false)
+	private BigDecimal reducedCapital;
+
+	/**
 	 * Capital amount
 	 */
 	@Column(name = "CAPITAL", nullable = false)
@@ -72,11 +78,12 @@ public class MicroAccountQuota extends AbstractHistoricalLocking implements Mult
 	}
 
 	public MicroAccountQuota(MicroAccountQuotaPk pk, Integer provisionDays, Date fromDate, Date expirationDate,
-			BigDecimal capital, BigDecimal interest, BigDecimal charge) {
+			BigDecimal reducedCapital, BigDecimal capital, BigDecimal interest, BigDecimal charge) {
 		this.pk = pk;
 		this.provisionDays = provisionDays;
 		this.fromDate = fromDate;
 		this.expirationDate = expirationDate;
+		this.reducedCapital = reducedCapital;
 		this.capital = capital;
 		this.interest = interest;
 		this.charge = charge;
@@ -122,6 +129,14 @@ public class MicroAccountQuota extends AbstractHistoricalLocking implements Mult
 		this.paymentDate = paymentDate;
 	}
 
+	public BigDecimal getReducedCapital() {
+		return this.reducedCapital;
+	}
+
+	public void setReducedCapital(BigDecimal reducedCapital) {
+		this.reducedCapital = reducedCapital;
+	}
+
 	public BigDecimal getCapital() {
 		return this.capital;
 	}
@@ -162,7 +177,7 @@ public class MicroAccountQuota extends AbstractHistoricalLocking implements Mult
 	public String toString() {
 		return "MICRO_ACCOUNT_QUOTA:[" + this.getPk().toString() + ", " + this.getCreated() + ", "
 				+ this.getProvisionDays() + ", " + this.getFromDate() + ", " + this.getExpirationDate() + ", "
-				+ this.getPaymentDate() + ", " + this.getCapital() + ", " + this.getInterest() + ", "
-				+ this.getCharge() + ", " + this.getVersion() + "]";
+				+ this.getPaymentDate() + ", " + this.getReducedCapital() + ", " + this.getCapital() + ", "
+				+ this.getInterest() + ", " + this.getCharge() + ", " + this.getVersion() + "]";
 	}
 }

@@ -97,6 +97,12 @@ public class Solicitude extends AbstractHistoricalLocking implements Multicompan
 	private String statusId;
 
 	/**
+	 * Operative condition
+	 */
+	@Column(name = "OPERATIVE_CONDITION_ID", nullable = true)
+	private String operativeConditionId;
+
+	/**
 	 * Number of renewal
 	 */
 	@Column(name = "NUMBER_RENEWAL", nullable = false)
@@ -272,6 +278,14 @@ public class Solicitude extends AbstractHistoricalLocking implements Multicompan
 		this.statusId = statusId;
 	}
 
+	public String getOperativeConditionId() {
+		return this.operativeConditionId;
+	}
+
+	public void setOperativeConditionId(String operativeConditionId) {
+		this.operativeConditionId = operativeConditionId;
+	}
+
 	public Integer getNumberRenewal() {
 		return this.numberRenewal;
 	}
@@ -354,9 +368,10 @@ public class Solicitude extends AbstractHistoricalLocking implements Multicompan
 				+ this.getAssessor() + ", " + this.getPartnerClientId() + ", " + this.getGroupClientId() + ", "
 				+ this.getSolicitudeDate() + ", " + this.getApprovalDate() + ", " + this.getDisbursementDate() + ", "
 				+ this.getInstrumentationDate() + ", " + this.getExpirationDate() + ", " + this.getInitialPayDate()
-				+ ", " + this.getProductId() + ", " + this.getStatusId() + ", " + this.getNumberRenewal() + ", "
-				+ this.getAmount() + ", " + this.getTerm() + ", " + this.getQuotaTypeId() + ", "
-				+ this.getNumberQuotas() + ", " + this.getPaymentFrequencyId() + ", " + this.getFundsDestinationId()
-				+ ", " + this.getDestinationDescription() + ", " + this.getVersion() + "]";
+				+ ", " + this.getProductId() + ", " + this.getStatusId() + ", " + this.getOperativeConditionId() + ", "
+				+ this.getNumberRenewal() + ", " + this.getAmount() + ", " + this.getTerm() + ", "
+				+ this.getQuotaTypeId() + ", " + this.getNumberQuotas() + ", " + this.getPaymentFrequencyId() + ", "
+				+ this.getFundsDestinationId() + ", " + this.getDestinationDescription() + ", " + this.getVersion()
+				+ "]";
 	}
 }
