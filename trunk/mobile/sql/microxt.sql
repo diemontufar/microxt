@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 14-03-2012 a las 06:15:24
+-- Tiempo de generación: 14-03-2012 a las 20:49:23
 -- Versión del servidor: 5.5.8
 -- Versión de PHP: 5.3.5
 
@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `microxt2`
+-- Base de datos: `microxt4`
 --
 
 -- --------------------------------------------------------
@@ -2688,9 +2688,6 @@ CREATE TABLE IF NOT EXISTS `PARTNER` (
 -- Volcar la base de datos para la tabla `PARTNER`
 --
 
-INSERT INTO `PARTNER` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `PARTNER_ID`, `CREATED`, `PERSON_ID`, `ACTIVITY`, `USER_ID`, `FREQUENCY_ID`, `MEETING_DAY`) VALUES
-('MXT', 'ES', '9999-12-31 00:00:00', 1, '2012-03-13 23:50:53', 1, 'PRUEBAS DE EDSARROLLO', 'JPEREZ', '4', 6),
-('MXT', 'ES', '9999-12-31 00:00:00', 2, '2012-03-14 00:09:55', 2, 'PRUEBA', 'JPEREZ', '4', 5);
 
 -- --------------------------------------------------------
 
@@ -2721,8 +2718,6 @@ CREATE TABLE IF NOT EXISTS `PARTNER_GROUP` (
 -- Volcar la base de datos para la tabla `PARTNER_GROUP`
 --
 
-INSERT INTO `PARTNER_GROUP` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `PARTNER_GROUP_ID`, `CREATED`, `GROUP_DESCRIPTION`, `CREATION_DATE`, `ACTIVITY`, `USER_ID`, `FREQUENCY_ID`, `MEETING_DAY`) VALUES
-('MXT', 'ES', '9999-12-31 00:00:00', 1, '2012-03-13 23:51:42', 'TAMBO - CHECA', '2012-03-13 00:00:00', 'GANADERIA', 'JPEREZ', '4', 6);
 
 -- --------------------------------------------------------
 
@@ -2739,8 +2734,6 @@ CREATE TABLE IF NOT EXISTS `PARTNER_GROUP_ID` (
 -- Volcar la base de datos para la tabla `PARTNER_GROUP_ID`
 --
 
-INSERT INTO `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`) VALUES
-(1);
 
 -- --------------------------------------------------------
 
@@ -2778,9 +2771,6 @@ CREATE TABLE IF NOT EXISTS `PARTNER_ID` (
 -- Volcar la base de datos para la tabla `PARTNER_ID`
 --
 
-INSERT INTO `PARTNER_ID` (`PARTNER_ID`) VALUES
-(1),
-(2);
 
 -- --------------------------------------------------------
 
@@ -3912,10 +3902,10 @@ CREATE TABLE IF NOT EXISTS `SEQUENTIAL` (
 
 INSERT INTO `SEQUENTIAL` (`COMPANY_ID`, `SEQUENTIAL_ID`, `SEQUENTIAL_VALUE`, `VERSION`) VALUES
 ('MXT', 'GEOZONE', 1, 0),
-('MXT', 'PARTNER', 3, 2),
-('MXT', 'PARTNERGRP', 2, 1),
-('MXT', 'PERSON', 3, 2),
-('MXT', 'SOLICITUDE', 1003, 5);
+('MXT', 'PARTNER', 1, 0),
+('MXT', 'PARTNERGRP', 1, 0),
+('MXT', 'PERSON', 1, 0),
+('MXT', 'SOLICITUDE', 1000, 2);
 
 -- --------------------------------------------------------
 
@@ -3991,10 +3981,6 @@ CREATE TABLE IF NOT EXISTS `SOLICITUDE` (
 -- Volcar la base de datos para la tabla `SOLICITUDE`
 --
 
-INSERT INTO `SOLICITUDE` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SOLICITUDE_ID`, `CREATED`, `ACCOUNT`, `ASSESSOR`, `PARTNER_CLIENT_ID`, `GROUP_CLIENT_ID`, `SOLICITUDE_DATE`, `APPROVAL_DATE`, `DISBURSEMENT_DATE`, `INSTRUMENTATION_DATE`, `EXPIRATION_DATE`, `INITIAL_PAY_DATE`, `PRODUCT_ID`, `STATUS_ID`, `OPERATIVE_CONDITION_ID`, `NUMBER_RENEWAL`, `AMOUNT`, `TERM`, `QUOTA_TYPE_ID`, `NUMBER_QUOTAS`, `PAYMENT_FREQUENCY_ID`, `FUNDS_DESTINATION_ID`, `DESTINATION_DESCRIPTION`, `VERSION`) VALUES
-('MXT', 'ES', '9999-12-31 00:00:00', 1000, '2012-03-14 00:09:08', NULL, 'JPEREZ', 1, NULL, '2012-03-14 00:00:00', NULL, NULL, NULL, '9999-12-31 00:00:00', NULL, 'M01', '002', NULL, 0, 100.000000, 360, 'AMR', NULL, '4', 'PRO', 'ASDFASDFASFASDF', 1),
-('MXT', 'ES', '9999-12-31 00:00:00', 1001, '2012-03-14 00:10:47', NULL, 'JPEREZ', 2, NULL, '2012-03-14 00:00:00', NULL, NULL, NULL, '9999-12-31 00:00:00', NULL, 'M01', '002', NULL, 0, 100.000000, 300, 'AMR', NULL, '4', 'PRO', 'ASDASDFASDF', 1),
-('MXT', 'ES', '9999-12-31 00:00:00', 1002, '2012-03-14 00:11:18', NULL, 'JPEREZ', NULL, 1, '2012-03-14 00:00:00', NULL, NULL, NULL, '9999-12-31 00:00:00', NULL, 'M03', '003', NULL, 0, 150.000000, 360, 'AMR', NULL, '4', 'CON', 'ADFASDFASDF', 1);
 
 -- --------------------------------------------------------
 
@@ -4011,10 +3997,6 @@ CREATE TABLE IF NOT EXISTS `SOLICITUDE_ID` (
 -- Volcar la base de datos para la tabla `SOLICITUDE_ID`
 --
 
-INSERT INTO `SOLICITUDE_ID` (`SOLICITUDE_ID`) VALUES
-(1000),
-(1001),
-(1002);
 
 -- --------------------------------------------------------
 
