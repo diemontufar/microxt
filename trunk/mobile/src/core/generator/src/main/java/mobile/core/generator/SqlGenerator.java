@@ -337,6 +337,8 @@ public class SqlGenerator {
 				if (field.getDataScale() != null && field.getDataScale() != 0L) {
 					dataTypeSizeScale = dataTypeSizeScale + "," + field.getDataScale().toString();
 				}
+			}else if (field.getDataTypeId().compareTo("Boolean") == 0) {
+				dataTypeSizeScale = "1";
 			}
 
 			if (dataTypeSizeScale != "") {
@@ -357,11 +359,11 @@ public class SqlGenerator {
 		if (field.getDefaultValue() != null
 				&& !(field.getDefaultValue().compareToIgnoreCase("null") == 0 || field.getDefaultValue()
 						.compareToIgnoreCase("(null)") == 0)) {
-			if (!(field.getDataTypeId().compareTo("Boolean") == 0)) {
+			//if (!(field.getDataTypeId().compareTo("Boolean") == 0)) {
 				sbField.append(" DEFAULT '" + field.getDefaultValue() + "'");
-			} else {
-				sbField.append(" DEFAULT " + field.getDefaultValue() + "");
-			}
+			//} else {
+				//sbField.append(" DEFAULT " + field.getDefaultValue() + "");
+			//}
 
 		}
 
