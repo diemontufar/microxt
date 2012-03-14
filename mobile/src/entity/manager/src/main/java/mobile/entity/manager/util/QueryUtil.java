@@ -7,7 +7,7 @@ import java.util.List;
 import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.tools.common.convertion.CoreConverter;
 
 public class QueryUtil {
@@ -207,7 +207,7 @@ public class QueryUtil {
 						if (comparator.compareTo("like") == 0 && !comparator.endsWith("%")) {
 							cValue = value + "%";
 						}
-						sql.append(JPManager.toSqlName(field.replaceAll("pk_", "").replaceAll("\\.", "_")) + " "
+						sql.append(JpManager.toSqlName(field.replaceAll("pk_", "").replaceAll("\\.", "_")) + " "
 								+ comparator + " '" + cValue + "'");
 						filtersCounter++;
 					}
@@ -219,7 +219,7 @@ public class QueryUtil {
 		if (data.getOrderBy() != null) {
 			if (!normalQuery) {
 				sql.append(" order by "
-						+ JPManager.toSqlName(data.getOrderBy().replaceAll("pk_", "").replaceAll("\\.", "_")));
+						+ JpManager.toSqlName(data.getOrderBy().replaceAll("pk_", "").replaceAll("\\.", "_")));
 			}
 
 			if (data.getOrderDir() != null && data.getOrderDir().compareTo("DESC") == 0) {

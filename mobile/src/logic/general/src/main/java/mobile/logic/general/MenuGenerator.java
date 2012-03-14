@@ -9,7 +9,7 @@ import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
 import mobile.common.message.Message;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.entity.security.Module;
 import mobile.entity.security.Subsystem;
 import mobile.tools.common.param.LocalParameter;
@@ -56,7 +56,7 @@ public class MenuGenerator implements QueryProcessor {
 	}
 
 	private void obtainSubsystems(Message msg) throws Exception {
-		TypedQuery<Subsystem> query = JPManager.getEntityManager().createQuery(
+		TypedQuery<Subsystem> query = JpManager.getEntityManager().createQuery(
 				QRY_SUBSYSTEMS, Subsystem.class);
 		query.setParameter("companyId",
 				LocalParameter.get(ParameterEnum.COMPANY, String.class));
@@ -89,7 +89,7 @@ public class MenuGenerator implements QueryProcessor {
 				.replaceAll(":languageId", "'" + LANGUAGE + "'")
 				.replaceAll(":expired", "'9999-12-31'");
 
-		Query query = JPManager.getEntityManager().createNativeQuery(
+		Query query = JpManager.getEntityManager().createNativeQuery(
 				finalQuery, Module.class);
 
 		List<Module> lModules = query.getResultList();
@@ -108,7 +108,7 @@ public class MenuGenerator implements QueryProcessor {
 	}
 
 	private void obtainProcesses(Message msg) throws Exception {
-		TypedQuery<mobile.entity.security.Process> query = JPManager
+		TypedQuery<mobile.entity.security.Process> query = JpManager
 				.getEntityManager().createQuery(QRY_PROCESSES,
 						mobile.entity.security.Process.class);
 		query.setParameter("companyId",

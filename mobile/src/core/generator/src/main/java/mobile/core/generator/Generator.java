@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.entity.manager.JPManagerFactory;
 import mobile.tools.common.Log;
 
@@ -68,7 +68,7 @@ public class Generator {
 		try {
 			// Initialize Jpa
 			JPManagerFactory.createEntityManagerFactory("generator");
-			JPManager.createEntityManager();
+			JpManager.createEntityManager();
 
 			// ************************************************
 			// Generators for all tables
@@ -95,7 +95,7 @@ public class Generator {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JPManager.close();
+			JpManager.close();
 			JPManagerFactory.close();
 		}
 	}

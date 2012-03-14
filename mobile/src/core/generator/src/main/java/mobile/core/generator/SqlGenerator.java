@@ -12,7 +12,7 @@ import mobile.entity.common.DatabaseType;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityRelationship;
 import mobile.entity.common.EntityTable;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.tools.common.FileUtil;
 import mobile.tools.common.Log;
 
@@ -109,7 +109,7 @@ public class SqlGenerator {
 	private void fillDataTypes() {
 		// Query data types
 		List<DatabaseType> lTypes;
-		TypedQuery<DatabaseType> query = JPManager.getEntityManager().createQuery(DATA_TYPE_SQL, DatabaseType.class);
+		TypedQuery<DatabaseType> query = JpManager.getEntityManager().createQuery(DATA_TYPE_SQL, DatabaseType.class);
 		query.setParameter("databaseId", DATABASE_NAME);
 		lTypes = query.getResultList();
 
@@ -124,7 +124,7 @@ public class SqlGenerator {
 
 	public void generateAllTables() throws Exception {
 		// Query all entities
-		TypedQuery<EntityTable> query = JPManager.getEntityManager().createQuery(ENTITY_QL, EntityTable.class);
+		TypedQuery<EntityTable> query = JpManager.getEntityManager().createQuery(ENTITY_QL, EntityTable.class);
 		query.setParameter("company", COMPANY);
 		List<EntityTable> lEntity = query.getResultList();
 
@@ -155,7 +155,7 @@ public class SqlGenerator {
 	private void dropForeignKeys(List<String> ltables) {
 		// Query relationships
 		List<EntityRelationship> lRelationship;
-		TypedQuery<EntityRelationship> query = JPManager.getEntityManager().createQuery(RELATIONSHIP1_QL,
+		TypedQuery<EntityRelationship> query = JpManager.getEntityManager().createQuery(RELATIONSHIP1_QL,
 				EntityRelationship.class);
 		query.setParameter("company", COMPANY);
 		query.setParameter("tables", completeIdTables(ltables));
@@ -183,7 +183,7 @@ public class SqlGenerator {
 
 	private void dropTables(List<String> ltables) {
 		// Query entities
-		TypedQuery<EntityTable> query = JPManager.getEntityManager().createQuery(ENTITY2_QL, EntityTable.class);
+		TypedQuery<EntityTable> query = JpManager.getEntityManager().createQuery(ENTITY2_QL, EntityTable.class);
 		query.setParameter("company", COMPANY);
 		query.setParameter("tables", ltables);
 		List<EntityTable> lEntity = query.getResultList();
@@ -200,7 +200,7 @@ public class SqlGenerator {
 	private void createTables(List<String> ltables) throws Exception {
 		// Query entities
 		List<EntityTable> lEntity;
-		TypedQuery<EntityTable> query = JPManager.getEntityManager().createQuery(ENTITY2_QL, EntityTable.class);
+		TypedQuery<EntityTable> query = JpManager.getEntityManager().createQuery(ENTITY2_QL, EntityTable.class);
 		query.setParameter("company", COMPANY);
 		query.setParameter("tables", ltables);
 		lEntity = query.getResultList();
@@ -213,7 +213,7 @@ public class SqlGenerator {
 	private void generateFields(EntityTable ent) throws Exception {
 		// Query fields
 		List<EntityField> lFields;
-		TypedQuery<EntityField> query = JPManager.getEntityManager().createQuery(FIELD_QL, EntityField.class);
+		TypedQuery<EntityField> query = JpManager.getEntityManager().createQuery(FIELD_QL, EntityField.class);
 		query.setParameter("company", COMPANY);
 		query.setParameter("tableId", ent.getPk().getTableId());
 		lFields = query.getResultList();
@@ -396,7 +396,7 @@ public class SqlGenerator {
 	private void createForeignKeys(List<String> ltables) {
 		// Query relationships
 		List<EntityRelationship> lRelationship;
-		TypedQuery<EntityRelationship> query = JPManager.getEntityManager().createQuery(RELATIONSHIP_QL,
+		TypedQuery<EntityRelationship> query = JpManager.getEntityManager().createQuery(RELATIONSHIP_QL,
 				EntityRelationship.class);
 		query.setParameter("company", COMPANY);
 		query.setParameter("tables", completeIdTables(ltables));

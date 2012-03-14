@@ -1,6 +1,6 @@
 package mobile.core.generator;
 
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.entity.manager.JPManagerFactory;
 import mobile.tools.common.Log;
 
@@ -21,12 +21,12 @@ public class FillGeneratingModelFromCsv {
 	public static void loadPersistence() throws Exception {
 		log.info("Load persistence...");
 		JPManagerFactory.createEntityManagerFactory("generator");
-		JPManager.createEntityManager();
+		JpManager.createEntityManager();
 	}
 
 	public static void closePersistence() throws Exception {
 		log.info("Close persistence...");
-		JPManager.close();
+		JpManager.close();
 		JPManagerFactory.close();
 	}
 
@@ -36,7 +36,7 @@ public class FillGeneratingModelFromCsv {
 			// Load persistence
 			loadPersistence();
 			// Start transaction
-			JPManager.beginTransaction();
+			JpManager.beginTransaction();
 
 			// Fill generating entities <Model>
 			FillGeneratingEntitiesFromCsv filler = new FillGeneratingEntitiesFromCsv(entityFilePath, fieldFilePath,
@@ -53,10 +53,10 @@ public class FillGeneratingModelFromCsv {
 			filler1.fillRelationships();
 
 			// Commit tx and close persistence
-			JPManager.commitTransaction();
+			JpManager.commitTransaction();
 		} catch (Exception e) {
 			e.printStackTrace();
-			JPManager.rollbackTransaction();
+			JpManager.rollbackTransaction();
 		} finally {
 			try {
 				closePersistence();

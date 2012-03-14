@@ -18,7 +18,7 @@ import javax.xml.transform.stream.StreamSource;
 import mobile.common.message.Message;
 import mobile.common.message.ResponseData;
 import mobile.common.tools.ProcessType;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.entity.security.ProcessComponent;
 import mobile.tools.common.Log;
 import mobile.tools.common.convertion.FormatDates;
@@ -46,23 +46,23 @@ public class CoreProcessor {
 
 		try {
 			// Create entity manager
-			JPManager.createEntityManager();
+			JpManager.createEntityManager();
 			// Begin transaction
-			JPManager.beginTransaction();
+			JpManager.beginTransaction();
 			// Execute associated processes
 			executeProcesses(msg);
 			// Commit
-			JPManager.commitTransaction();
+			JpManager.commitTransaction();
 			// Set response
 			setOkResponseInfo(msg);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			// Rollback
-			JPManager.rollbackTransaction();
+			JpManager.rollbackTransaction();
 			// Set error response
 			setErrorResponseInfo(e, msg);
 		} finally {
-			JPManager.close();
+			JpManager.close();
 		}
 
 		log.info("Output message: \n" + formatXml(msg.toXML(), 2));
@@ -79,7 +79,7 @@ public class CoreProcessor {
 		String module = strProcess.substring(1, 2);
 		String process = strProcess.substring(2);
 
-		TypedQuery<ProcessComponent> query = JPManager.getEntityManager().createQuery(QRY_PROCESSES,
+		TypedQuery<ProcessComponent> query = JpManager.getEntityManager().createQuery(QRY_PROCESSES,
 				ProcessComponent.class);
 		query.setHint(QueryHints.READ_ONLY, HintValues.TRUE);
 		query.setParameter("companyId", LocalParameter.get(ParameterEnum.COMPANY, String.class));

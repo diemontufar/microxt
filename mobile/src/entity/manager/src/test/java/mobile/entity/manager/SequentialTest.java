@@ -16,10 +16,10 @@ public class SequentialTest {
 	public void testSequential() {
 		try {
 			JPManagerFactory.createEntityManagerFactory();
-			JPManager.createEntityManager();
+			JpManager.createEntityManager();
 			LocalParameter.set(ParameterEnum.COMPANY, "MXT");
 			LocalParameter.set(ParameterEnum.LANGUAGE, "ES");
-			JPManager.beginTransaction();
+			JpManager.beginTransaction();
 			
 			SolicitudePk pk = new SolicitudePk();
 //			Solicitude a = new Solicitude(pk, "ADM", Timer.getCurrentDate(), "M01", "001", 0, new BigDecimal("100"), 90L, "MNL", 3, "4", "PRO", "ASD");
@@ -28,10 +28,10 @@ public class SequentialTest {
 //			
 //			JPManager.commitTransaction();
 		} catch (Exception e) {
-			JPManager.rollbackTransaction();
+			JpManager.rollbackTransaction();
 			e.printStackTrace();
 		} finally {
-			JPManager.close();
+			JpManager.close();
 			JPManagerFactory.close();
 		}
 	}

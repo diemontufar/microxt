@@ -8,7 +8,7 @@ import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
 import mobile.common.message.Message;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.entity.schema.GeneralEntity;
 import mobile.entity.schema.SequentialKey;
 import mobile.tools.common.Log;
@@ -54,22 +54,22 @@ public class GeneralMaintenance implements MaintenanceProcessor {
 	}
 
 	private void expireEntity(String entityId, Item item) throws Exception {
-		GeneralEntity entity = JPManager.parseEntity(entityId, item, false);
+		GeneralEntity entity = JpManager.parseEntity(entityId, item, false);
 		log.info("Remove " + entity.toString());
-		JPManager.delete(entity);
+		JpManager.delete(entity);
 	}
 
 	private void persistEntity(String entityId, Item item) throws Exception {
-		GeneralEntity entity = JPManager.parseEntity(entityId, item, true);
+		GeneralEntity entity = JpManager.parseEntity(entityId, item, true);
 		log.info("Persist " + entity.toString());
-		JPManager.persist(entity);
+		JpManager.persist(entity);
 		setGeneratedSequence(entity);
 	}
 
 	private void updateEntity(String entityId, Item item) throws Exception {
-		GeneralEntity entity = JPManager.parseEntity(entityId, item, false);
+		GeneralEntity entity = JpManager.parseEntity(entityId, item, false);
 		log.info("Update " + entity.toString());
-		JPManager.update(entity);
+		JpManager.update(entity);
 	}
 
 	private String validateNull(String in) {

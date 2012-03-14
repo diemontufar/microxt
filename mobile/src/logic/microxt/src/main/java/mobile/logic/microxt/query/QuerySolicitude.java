@@ -6,7 +6,7 @@ import javax.persistence.Query;
 
 import mobile.common.message.EntityData;
 import mobile.common.message.Message;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.entity.manager.util.QueryUtil;
 import mobile.tools.common.structure.QueryProcessor;
 
@@ -40,7 +40,7 @@ public class QuerySolicitude implements QueryProcessor {
 		QueryUtil util = new QueryUtil(false);
 		String sql = util.completeSQL(SOLICITUDE_QL, data);
 
-		Query query = JPManager.getEntityManager().createNativeQuery(sql);
+		Query query = JpManager.getEntityManager().createNativeQuery(sql);
 
 		List<Object[]> results = query.getResultList();
 

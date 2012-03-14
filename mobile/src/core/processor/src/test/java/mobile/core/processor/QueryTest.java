@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.entity.manager.JPManagerFactory;
 import mobile.entity.microcredit.Solicitude;
 import mobile.tools.common.Log;
@@ -43,9 +43,9 @@ public class QueryTest {
 			String sql = "Select x from (Select a.pk.solicitudeId, b.description " +
 					"from Solicitude a ) as x";
 
-			JPManager.createEntityManager();
+			JpManager.createEntityManager();
 
-			Query query = JPManager.getEntityManager().createQuery(sql);
+			Query query = JpManager.getEntityManager().createQuery(sql);
 			//TypedQuery<Solicitude> query = JPManager.getEntityManager().createQuery(sql, Solicitude.class);
 			// query.setParameter("expired", PersistenceTime.getExpiredTime());
 			// query.setParameter("companyId", "MXT");
@@ -71,7 +71,7 @@ public class QueryTest {
 //				System.out.println(sol);
 //			}
 
-			JPManager.close();
+			JpManager.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -9,7 +9,7 @@ import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
 import mobile.common.message.Message;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.tools.common.structure.QueryProcessor;
 
 public class QueryPartnerInfo implements QueryProcessor {
@@ -25,7 +25,7 @@ public class QueryPartnerInfo implements QueryProcessor {
 	public Message process(Message msg) throws Exception {
 		EntityData data = msg.getEntityData("Partner");
 
-		Query query = JPManager.getEntityManager().createNativeQuery(PARTNER_QL);
+		Query query = JpManager.getEntityManager().createNativeQuery(PARTNER_QL);
 		List<Object[]> results = query.getResultList();
 
 		listToData(results, data);

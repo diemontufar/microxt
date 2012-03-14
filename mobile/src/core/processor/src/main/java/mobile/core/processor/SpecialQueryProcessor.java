@@ -14,7 +14,7 @@ import mobile.common.message.Item;
 import mobile.common.message.Message;
 import mobile.entity.common.EntityField;
 import mobile.entity.common.EntityTable;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.tools.common.Log;
 import mobile.tools.common.convertion.CoreConverter;
 import mobile.tools.common.param.LocalParameter;
@@ -105,7 +105,7 @@ public class SpecialQueryProcessor implements QueryProcessor {
 		}
 
 		// Automatic filters
-		EntityTable entityTable = JPManager.getEntityTable(data.getDataId());
+		EntityTable entityTable = JpManager.getEntityTable(data.getDataId());
 		if (entityTable.getHistoricalData()) {
 			if (filtersCounter == 0) {
 				sql.append(" where ");
@@ -139,7 +139,7 @@ public class SpecialQueryProcessor implements QueryProcessor {
 
 		// Query
 		log.info("Query: " + sql.toString());
-		Query query = JPManager.getEntityManager().createNativeQuery(sql.toString());
+		Query query = JpManager.getEntityManager().createNativeQuery(sql.toString());
 
 		// Set parameters
 		filtersCounter = 0;
@@ -204,7 +204,7 @@ public class SpecialQueryProcessor implements QueryProcessor {
 	private Map<String, String> getMapTypeFields(String id) {
 		String SQL_FIELDS = "Select f from EntityField f where f.pk.tableId=:tableId";
 
-		TypedQuery<EntityField> queryFields = JPManager.getEntityManager().createQuery(SQL_FIELDS, EntityField.class);
+		TypedQuery<EntityField> queryFields = JpManager.getEntityManager().createQuery(SQL_FIELDS, EntityField.class);
 		queryFields.setParameter("tableId", toSqlName(id));
 		List<EntityField> result = queryFields.getResultList();
 
@@ -258,7 +258,7 @@ public class SpecialQueryProcessor implements QueryProcessor {
 		}
 
 		// Automatic filters
-		EntityTable entityTable = JPManager.getEntityTable(entity);
+		EntityTable entityTable = JpManager.getEntityTable(entity);
 		if (entityTable.getHistoricalData()) {
 			if (filtersCounter > 0) {
 				sql.append(" and ");

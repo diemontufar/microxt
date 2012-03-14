@@ -18,7 +18,7 @@ import mobile.entity.common.EntityRelationshipPk;
 import mobile.entity.common.EntityTable;
 import mobile.entity.common.EntityTableId;
 import mobile.entity.common.EntityTablePk;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.entity.manager.JPManagerFactory;
 import mobile.tools.common.Log;
 
@@ -76,12 +76,12 @@ public class FillGeneratingEntitiesFromCsv {
 	public void loadPersistence() {
 		log.info("Load persistence...");
 		JPManagerFactory.createEntityManagerFactory(PERSISTENCE_UNIT);
-		JPManager.createEntityManager();
+		JpManager.createEntityManager();
 	}
 
 	protected void closePersistence() throws Throwable {
 		log.info("Close persistence...");
-		JPManager.close();
+		JpManager.close();
 		JPManagerFactory.close();
 	}
 
@@ -138,11 +138,11 @@ public class FillGeneratingEntitiesFromCsv {
 				log.info(tableId);
 				log.info(table);
 				if (tableId != null) {
-					JPManager.persist(tableId);
+					JpManager.persist(tableId);
 				}
-				JPManager.persist(table);
+				JpManager.persist(table);
 			}
-			JPManager.getEntityManager().flush();
+			JpManager.getEntityManager().flush();
 
 			// Special fields (companyId, languageId, expired, ...)
 			log.info("Guardar campos especiales");
@@ -150,32 +150,32 @@ public class FillGeneratingEntitiesFromCsv {
 				if (entity.getMultiCompany()) {
 					EntityFieldIdPk pk = new EntityFieldIdPk(entity.getPk().getTableId(), COMPANY_FIELD);
 					EntityFieldId fieldId = new EntityFieldId(pk);
-					JPManager.persist(fieldId);
+					JpManager.persist(fieldId);
 				}
 				if (entity.getMultiLanguage()) {
 					EntityFieldIdPk pk = new EntityFieldIdPk(entity.getPk().getTableId(), LANGUAGE_FIELD);
 					EntityFieldId fieldId = new EntityFieldId(pk);
-					JPManager.persist(fieldId);
+					JpManager.persist(fieldId);
 				}
 				if (entity.getHistoricalData()) {
 					EntityFieldIdPk pk = new EntityFieldIdPk(entity.getPk().getTableId(), EXPIRED_FIELD);
 					EntityFieldId fieldId = new EntityFieldId(pk);
-					JPManager.persist(fieldId);
+					JpManager.persist(fieldId);
 					pk = new EntityFieldIdPk(entity.getPk().getTableId(), CREATED_FIELD);
 					fieldId = new EntityFieldId(pk);
-					JPManager.persist(fieldId);
+					JpManager.persist(fieldId);
 				}
 			}
-			JPManager.getEntityManager().flush();
+			JpManager.getEntityManager().flush();
 
 			// Entities
 			log.info("Guardar tablas normales");
 			for (EntityTable entity : lentity) {
 				log.info(entity);
-				JPManager.persist(entity);
+				JpManager.persist(entity);
 			}
 
-			JPManager.getEntityManager().flush();
+			JpManager.getEntityManager().flush();
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -283,7 +283,7 @@ public class FillGeneratingEntitiesFromCsv {
 						EntityFieldIdPk pk = new EntityFieldIdPk(field.getPk().getTableId() + "_ID", field.getPk()
 								.getFieldId());
 						EntityFieldId fieldId = new EntityFieldId(pk);
-						JPManager.persist(fieldId);
+						JpManager.persist(fieldId);
 					}
 				}
 			}
@@ -292,19 +292,19 @@ public class FillGeneratingEntitiesFromCsv {
 			for (EntityField field : lfield) {
 				EntityFieldIdPk pk = new EntityFieldIdPk(field.getPk().getTableId(), field.getPk().getFieldId());
 				EntityFieldId fieldId = new EntityFieldId(pk);
-				JPManager.persist(fieldId);
+				JpManager.persist(fieldId);
 			}
 
-			JPManager.getEntityManager().flush();
+			JpManager.getEntityManager().flush();
 
 			// Entities
 			log.info("Guardar campos normales");
 			for (EntityField field : lfield) {
 				log.info(field);
-				JPManager.persist(field);
+				JpManager.persist(field);
 			}
 
-			JPManager.getEntityManager().flush();
+			JpManager.getEntityManager().flush();
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -329,7 +329,7 @@ public class FillGeneratingEntitiesFromCsv {
 					pk.setCompanyId(COMPANY);
 					EntityRelationship relationship = new EntityRelationship(pk, entity.getPk().getTableId(),
 							COMPANY_FIELD, COMPANY_TABLE, COMPANY_FIELD);
-					JPManager.persist(relationship);
+					JpManager.persist(relationship);
 				}
 				if (entity.getMultiLanguage()) {
 					String relationshipName = entity.getPk().getTableId() + "_LANGUAGE_FK";
@@ -340,7 +340,7 @@ public class FillGeneratingEntitiesFromCsv {
 					pk.setCompanyId(COMPANY);
 					EntityRelationship relationship = new EntityRelationship(pk, entity.getPk().getTableId(),
 							LANGUAGE_FIELD, LANGUAGE_TABLE, LANGUAGE_FIELD);
-					JPManager.persist(relationship);
+					JpManager.persist(relationship);
 				}
 				if (entity.getHasTableId()) {
 					int i = 1;
@@ -350,7 +350,7 @@ public class FillGeneratingEntitiesFromCsv {
 						pk.setCompanyId(COMPANY);
 						EntityRelationship relationship = new EntityRelationship(pk, entity.getPk().getTableId(),
 								field.getPk().getFieldId(), tableId, field.getPk().getFieldId());
-						JPManager.persist(relationship);
+						JpManager.persist(relationship);
 					}
 				}
 			}
@@ -391,7 +391,7 @@ public class FillGeneratingEntitiesFromCsv {
 			log.info("Guardar relaciones");
 			for (EntityRelationship rel : lrelationship) {
 				log.info(rel);
-				JPManager.persist(rel);
+				JpManager.persist(rel);
 			}
 		} catch (Exception e) {
 			throw e;
@@ -427,16 +427,16 @@ public class FillGeneratingEntitiesFromCsv {
 		
 		try {
 			filler.loadPersistence();
-			JPManager.beginTransaction();
+			JpManager.beginTransaction();
 
 			filler.fillTables();
 			filler.fillFields();
 			filler.fillRelationships();
 			
-			JPManager.commitTransaction();
+			JpManager.commitTransaction();
 		} catch (Throwable e) {
 			e.printStackTrace();
-			JPManager.rollbackTransaction();
+			JpManager.rollbackTransaction();
 		} finally{
 			filler.closePersistence();
 		}
@@ -485,10 +485,10 @@ public class FillGeneratingEntitiesFromCsv {
 			// Remove relationships
 			log.info("Eliminar relaciones");
 			String sql = "delete from EntityRelationship r WHERE r.pk.relationshipId in :lrelationship";
-			Query query = JPManager.getEntityManager().createQuery(sql);
+			Query query = JpManager.getEntityManager().createQuery(sql);
 			query.setParameter("lrelationship", lrelationship);
 			query.executeUpdate();
-			JPManager.getEntityManager().flush();
+			JpManager.getEntityManager().flush();
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -527,30 +527,30 @@ public class FillGeneratingEntitiesFromCsv {
 			// Remove fields
 			log.info("Eliminar relaciones");
 			String sql = "delete from EntityField f WHERE f.pk.tableId in :ltable";
-			Query query = JPManager.getEntityManager().createQuery(sql);
+			Query query = JpManager.getEntityManager().createQuery(sql);
 			query.setParameter("ltable", ltable);
 			query.executeUpdate();
-			JPManager.getEntityManager().flush();
+			JpManager.getEntityManager().flush();
 
 			sql = "delete from EntityFieldId f WHERE f.pk.tableId in :ltable";
-			query = JPManager.getEntityManager().createQuery(sql);
+			query = JpManager.getEntityManager().createQuery(sql);
 			query.setParameter("ltable", ltable);
 			query.executeUpdate();
-			JPManager.getEntityManager().flush();
+			JpManager.getEntityManager().flush();
 
 			// Remove tables
 			log.info("Eliminar tablas");
 			sql = "delete from EntityTable a WHERE a.pk.tableId in :ltable";
-			query = JPManager.getEntityManager().createQuery(sql);
+			query = JpManager.getEntityManager().createQuery(sql);
 			query.setParameter("ltable", ltable);
 			query.executeUpdate();
-			JPManager.getEntityManager().flush();
+			JpManager.getEntityManager().flush();
 
 			sql = "delete from EntityTableId a WHERE a.tableId in :ltable";
-			query = JPManager.getEntityManager().createQuery(sql);
+			query = JpManager.getEntityManager().createQuery(sql);
 			query.setParameter("ltable", ltable);
 			query.executeUpdate();
-			JPManager.getEntityManager().flush();
+			JpManager.getEntityManager().flush();
 
 		} catch (Exception e) {
 			throw e;

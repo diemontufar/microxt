@@ -11,7 +11,7 @@ import mobile.common.message.Data;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
 import mobile.common.message.Message;
-import mobile.entity.manager.JPManager;
+import mobile.entity.manager.JpManager;
 import mobile.entity.microcredit.MicroAccount;
 import mobile.entity.microcredit.MicroAccountPk;
 import mobile.entity.microcredit.MicroAccountQuota;
@@ -75,22 +75,22 @@ public class RemoteInstrumentation implements MaintenanceProcessor {
 
 		// Persist entities
 		for (Solicitude solicitude : lSolicitude) {
-			JPManager.update(solicitude);
+			JpManager.update(solicitude);
 		}
 		for (MicroAccount acc : lAccount) {
-			JPManager.persist(acc);
+			JpManager.persist(acc);
 		}
-		JPManager.getEntityManager().flush();
+		JpManager.getEntityManager().flush();
 
 		for (MicroAccountQuota quota : lAccountQuota) {
-			JPManager.persist(quota);
+			JpManager.persist(quota);
 		}
 
 		return msg;
 	}
 
 	private void getProducts() {
-		TypedQuery<ProductMicrocredit> query = JPManager.getEntityManager().createQuery(PRODUCT_QL,
+		TypedQuery<ProductMicrocredit> query = JpManager.getEntityManager().createQuery(PRODUCT_QL,
 				ProductMicrocredit.class);
 		query.setHint(QueryHints.READ_ONLY, HintValues.TRUE);
 		query.setParameter("companyId", LocalParameter.get(ParameterEnum.COMPANY, String.class));
@@ -104,13 +104,13 @@ public class RemoteInstrumentation implements MaintenanceProcessor {
 	private void getSolicitudes(Message msg) {
 		String assessor = msg.getControlFieldValue("user");
 
-		TypedQuery<Solicitude> query = JPManager.getEntityManager().createQuery(SOLICITUDE_QL, Solicitude.class);
+		TypedQuery<Solicitude> query = JpManager.getEntityManager().createQuery(SOLICITUDE_QL, Solicitude.class);
 		// query.setHint(QueryHints.READ_ONLY, HintValues.TRUE);
 		query.setParameter("assessor", assessor);
 		query.setParameter("expired", Timer.getExpiredTime());
 		List<Solicitude> results = query.getResultList();
 		lSolicitude.addAll(results);
-		JPManager.detachList(lSolicitude);
+		JpManager.detachList(lSolicitude);
 	}
 
 	private Message buildMessageForSimulator() {
@@ -167,7 +167,7 @@ public class RemoteInstrumentation implements MaintenanceProcessor {
 			Integer solId = Integer.parseInt(item.getFieldValue("solicitudeId"));
 			Solicitude solicitude = findSolicitude(solId);
 
-			log.debug("Contains " + JPManager.getEntityManager().contains(solicitude));
+			log.debug("Contains " + JpManager.getEntityManager().contains(solicitude));
 
 			// Update solicitude
 			String accId = item.getFieldValue("accountId");
