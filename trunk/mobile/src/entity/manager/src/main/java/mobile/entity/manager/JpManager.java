@@ -34,9 +34,9 @@ import org.apache.log4j.Logger;
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 
-public class JPManager {
+public class JpManager {
 
-	public static JPManager INSTANCE = null;
+	public static JpManager INSTANCE = null;
 
 	private EntityManager em;
 
@@ -46,7 +46,7 @@ public class JPManager {
 
 	private final static Logger log = Log.getInstance();
 
-	private JPManager() {
+	private JpManager() {
 		// Initialize the entity manager manually
 		// em = JPManagerFactory.getEntityManager();
 	}
@@ -59,11 +59,11 @@ public class JPManager {
 	// otra prueba para evitar instanciación múltiple
 	private synchronized static void createInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new JPManager();
+			INSTANCE = new JpManager();
 		}
 	}
 
-	public static JPManager getInstance() {
+	public static JpManager getInstance() {
 		if (INSTANCE == null) {
 			createInstance();
 		}
@@ -154,7 +154,7 @@ public class JPManager {
 			// If not exists, create
 			if (entityId == null) {
 				getEntityManager().persist(getEntityId(entity));
-				JPManager.getEntityManager().flush();
+				JpManager.getEntityManager().flush();
 			}
 		}
 
@@ -336,13 +336,13 @@ public class JPManager {
 		Object entityPk = null;
 
 		// Verify if the pk implements GeneralEntityKey
-		if (JPManager.implementsInterface(generalIdPk.getClass(), GeneralEntityKey.class)) {
+		if (JpManager.implementsInterface(generalIdPk.getClass(), GeneralEntityKey.class)) {
 			// Check the fields
 			Class idPkClass = generalIdPk.getClass();
 			Field[] fields = idPkClass.getDeclaredFields();
 			if (fields != null && fields.length > 0) {
 				// Instantiate pk
-				Class pkClass = JPManager.getEntityPkClass(generalId);
+				Class pkClass = JpManager.getEntityPkClass(generalId);
 				entityPk = pkClass.newInstance();
 				// Set the fields
 				for (Field field : fields) {
@@ -375,7 +375,7 @@ public class JPManager {
 			}
 
 			// Instantiate pk
-			Class pkClass = JPManager.getEntityPkClass(generalId);
+			Class pkClass = JpManager.getEntityPkClass(generalId);
 			entityPk = pkClass.newInstance();
 			// Set the data
 			Method setterMethod = pkClass.getMethod(
@@ -429,7 +429,7 @@ public class JPManager {
 		Class entityIdPkClass = getEntityIdPkClass(entity);
 
 		// Verify if the pk implements GeneralEntityKey
-		if (JPManager.implementsInterface(entityIdPkClass, GeneralEntityKey.class)) {
+		if (JpManager.implementsInterface(entityIdPkClass, GeneralEntityKey.class)) {
 			// Check the fields
 			Field[] fields = entityIdPkClass.getDeclaredFields();
 			if (fields != null && fields.length > 0) {
@@ -500,7 +500,7 @@ public class JPManager {
 		// Get entity class
 		EntityTablePk entityPk = new EntityTablePk(toTableName(entityName));
 		entityPk.setCompanyId(ALL_COMPANY);
-		EntityTable entityTable = JPManager.find(EntityTable.class, entityPk);
+		EntityTable entityTable = JpManager.find(EntityTable.class, entityPk);
 		if (entityTable == null) {
 			throw new Exception("ENTITY_TABLE NOT FOUND: " + toTableName(entityName));
 		}
