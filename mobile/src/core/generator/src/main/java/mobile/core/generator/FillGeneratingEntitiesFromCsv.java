@@ -102,14 +102,14 @@ public class FillGeneratingEntitiesFromCsv {
 			while (csvReader.readRecord()) {
 				String companyId = csvReader.get("COMPANY_ID");
 				String tableId = csvReader.get("TABLE_ID");
-				boolean hasTableId = isTrue(csvReader.get("HAS_TABLE_ID"));
+				Boolean hasTableId = isTrue(csvReader.get("HAS_TABLE_ID"));
 				String packageName = csvReader.get("PACKAGE_NAME");
-				boolean multiCompany = isTrue(csvReader.get("MULTI_COMPANY"));
-				boolean multiLanguage = isTrue(csvReader.get("MULTI_LANGUAGE"));
-				boolean historical = isTrue(csvReader.get("HISTORICAL_DATA"));
-				boolean optimistic = isTrue(csvReader.get("OPTIMISTIC_LOCKING"));
-				boolean enumeratedTypes = isTrue(csvReader.get("ENUMERATED_TYPES"));
-				boolean cacheMemory = isTrue(csvReader.get("CACHE_MEMORY"));
+				Boolean multiCompany = isTrue(csvReader.get("MULTI_COMPANY"));
+				Boolean multiLanguage = isTrue(csvReader.get("MULTI_LANGUAGE"));
+				Boolean historical = isTrue(csvReader.get("HISTORICAL_DATA"));
+				Boolean optimistic = isTrue(csvReader.get("OPTIMISTIC_LOCKING"));
+				Boolean enumeratedTypes = isTrue(csvReader.get("ENUMERATED_TYPES"));
+				Boolean cacheMemory = isTrue(csvReader.get("CACHE_MEMORY"));
 				String description = csvReader.get("DESCRIPTION");
 
 				EntityTablePk pk = new EntityTablePk(tableId);
@@ -413,8 +413,8 @@ public class FillGeneratingEntitiesFromCsv {
 		return res;
 	}
 
-	private boolean isTrue(String in) {
-		boolean res = false;
+	private Boolean isTrue(String in) {
+		Boolean res = false;
 		if (in.compareTo("1") == 0 || in.compareToIgnoreCase("true") == 0) {
 			res = true;
 		}
