@@ -22,7 +22,7 @@ public class Partner extends AbstractHistorical implements Multicompany, Multila
 	 * Person id
 	 */
 	@Column(name = "PERSON_ID", nullable = false)
-	private Long personId;
+	private Integer personId;
 
 	/**
 	 * Activity
@@ -55,7 +55,7 @@ public class Partner extends AbstractHistorical implements Multicompany, Multila
 		this.pk = pk;
 	}
 
-	public Partner(PartnerPk pk, Long personId, String userId) {
+	public Partner(PartnerPk pk, Integer personId, String userId) {
 		this.pk = pk;
 		this.personId = personId;
 		this.userId = userId;
@@ -69,11 +69,11 @@ public class Partner extends AbstractHistorical implements Multicompany, Multila
 		this.pk = pk;
 	}
 
-	public Long getPersonId() {
+	public Integer  getPersonId() {
 		return this.personId;
 	}
 
-	public void setPersonId(Long personId) {
+	public void setPersonId(Integer  personId) {
 		this.personId = personId;
 	}
 
