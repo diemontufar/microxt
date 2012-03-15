@@ -62,6 +62,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		reader = new MyReader();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void load(final DataReader<PagingLoadResult<ModelData>> readerNull, final Object loadConfig,
 			final AsyncCallback<PagingLoadResult<ModelData>> callback) {
 		System.out.println("MyHttpProxy.load: ");
@@ -235,10 +236,13 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			Map<String, EntityData> mdata = new HashMap<String, EntityData>();
 
 			// Data
-			EntityData data = new EntityData(ref.getEntity());
-			data.setAlias(ref.getAlias());
-			data.setOffset(0);
-			mdata.put(ref.getAlias(), data);
+			EntityData data = null;
+			if (ref != null && ref.getEntity() != null) {
+				data = new EntityData(ref.getEntity());
+				data.setAlias(ref.getAlias());
+				data.setOffset(0);
+				mdata.put(ref.getAlias(), data);
+			}
 
 			// Fill datas
 			for (String key : mfields.keySet()) {
@@ -290,7 +294,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					msg.setControlFieldValue(fieldName, value);
 				}
 				// Limit
-				if (data.getLimit() == null) {
+				if (data != null && data.getLimit() == null) {
 					data.setLimit(1);
 				}
 			}

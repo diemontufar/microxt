@@ -1,7 +1,7 @@
 package mobile.web.webxt.client.components;
 
 import mobile.web.webxt.client.MobileConfig;
-import mobile.web.webxt.client.devform.B101;
+import mobile.web.webxt.client.devform.C502;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.resources.Resources;
 
@@ -29,7 +29,7 @@ public class FormPanel extends ContentPanel {
 			add(tabPanel);
 		} else {
 			// Put here the tested form
-			add(new B101());
+			add(new C502());
 		}
 
 	}
@@ -50,7 +50,7 @@ public class FormPanel extends ContentPanel {
 
 	public void reloadTab() {
 		TabItem actual = tabPanel.getSelectedItem();
-		if (actual != null) {
+		if (actual != null && actual.getId().compareTo("shortcuts")!=0) {
 			ModelData actualProcess = actual.getData("process"); 
 			tabPanel.remove(actual);
 			Dispatcher.forwardEvent(new AppEvent(AppEvents.ProcessSelected, actualProcess));

@@ -30,6 +30,7 @@ import mobile.web.webxt.client.devform.C003;
 import mobile.web.webxt.client.devform.C004;
 import mobile.web.webxt.client.devform.C005;
 import mobile.web.webxt.client.devform.C006;
+import mobile.web.webxt.client.devform.C007;
 import mobile.web.webxt.client.devform.C101;
 import mobile.web.webxt.client.devform.C102;
 import mobile.web.webxt.client.devform.C103;
@@ -83,14 +84,15 @@ public class FormView extends View {
 	}
 
 	private void onInit(AppEvent event) {
-		
 		TabItem tabItem = new TabItem();
 		tabItem.setText("Principal");
 		tabItem.setId("shortcuts");
 		tabItem.setClosable(false);
-		tabItem.add(new OverviewPage(formPanel));
-		formPanel.addTab(tabItem);
+		tabItem.setBorders(false);
 		
+		tabItem.add(new OverviewPage());
+		formPanel.addTab(tabItem);
+
 		Dispatcher.forwardEvent(new AppEvent(AppEvents.FormPanelReady, formPanel));
 	}
 
@@ -190,6 +192,8 @@ public class FormView extends View {
 			form = new C005();
 		} else if (processId.compareTo("C006") == 0) {
 			form = new C006();
+		} else if (processId.compareTo("C007") == 0) {
+			form = new C007();
 		} else if (processId.compareTo("C101") == 0) {
 			form = new C101();
 		} else if (processId.compareTo("C102") == 0) {

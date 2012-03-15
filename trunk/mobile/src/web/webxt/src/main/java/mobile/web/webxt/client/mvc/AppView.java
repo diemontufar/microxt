@@ -1,6 +1,6 @@
 package mobile.web.webxt.client.mvc;
 
-import mobile.web.webxt.client.devform.A000;
+import mobile.web.webxt.client.devform.A001;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.event.EventType;
@@ -44,18 +44,31 @@ public class AppView extends View {
 	}
 
 	protected void onInit(AppEvent event) {
+		System.out.println("MVC>> AppView on init...");
+		showLoggin();
+		
 		viewport = new Viewport();
 		viewport.setLayout(new BorderLayout());
 
 		createNorth();
 	}
 
-	private void onError(AppEvent event) {
+	private void showLoggin() {
+		System.out.println("MVC>> AppView show loggin...");
+		A001 loginForm = new A001();
+		Viewport loadingViewPort = new Viewport();
+		loadingViewPort.setLoadingPanelId("loading");
+		loadingViewPort.setVisible(false);
+				
+		RootPanel.get().add(loadingViewPort);
+		RootPanel.get().add(loginForm);
+		loginForm.show();
+	}
 
+	private void onError(AppEvent event) {
 	}
 
 	private void createNorth() {
-
 		StringBuffer sb = new StringBuffer();
 		sb.append("</div><div id=mobile-title><img src=\"img/logos/microxt_logo_header.png\" width=\"110\" height=\"28\"></div>");
 
@@ -72,6 +85,7 @@ public class AppView extends View {
 	}
 
 	private void onFormPanelReady(AppEvent event) {
+		System.out.println("MVC>> AppView on form panel ready...");
 		BorderLayoutData data = new BorderLayoutData(LayoutRegion.CENTER);
 		data.setMargins(new Margins(5, 5, 5, 0));
 
@@ -81,6 +95,7 @@ public class AppView extends View {
 	}
 
 	private void onNavPanelReady(AppEvent event) {
+		System.out.println("MVC>> On nava panel ready...");
 		BorderLayoutData data = new BorderLayoutData(LayoutRegion.WEST, 250, 150, 350);
 		data.setMargins(new Margins(5, 5, 5, 5));
 		data.setCollapsible(true);
@@ -91,6 +106,7 @@ public class AppView extends View {
 	}
 
 	private void onStatusToolbarReady(AppEvent event) {
+		System.out.println("MVC>> On status tool bar ready...");
 		BorderLayoutData data = new BorderLayoutData(LayoutRegion.SOUTH, 27);
 		data.setMargins(new Margins(0, 5, 5, 5));
 
@@ -100,14 +116,8 @@ public class AppView extends View {
 	}
 
 	private void onUIReady(AppEvent event) {
-
-		A000 loginForm = new A000(viewport);
-		Viewport loadingViewPort = new Viewport();
-		loadingViewPort.setLoadingPanelId("loading");
-		loadingViewPort.setVisible(false);
-				
-		RootPanel.get().add(loadingViewPort);
-		RootPanel.get().add(loginForm);
-		loginForm.show();
+		System.out.println("MVC>> On ui ready...");
+		RootPanel.get().clear();
+		RootPanel.get().add(viewport);
 	}
 }
