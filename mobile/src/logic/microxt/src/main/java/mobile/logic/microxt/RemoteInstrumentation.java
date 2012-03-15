@@ -16,8 +16,14 @@ import mobile.entity.microcredit.MicroAccount;
 import mobile.entity.microcredit.MicroAccountPk;
 import mobile.entity.microcredit.MicroAccountQuota;
 import mobile.entity.microcredit.MicroAccountQuotaPk;
+import mobile.entity.microcredit.Partner;
+import mobile.entity.microcredit.PartnerGroup;
+import mobile.entity.microcredit.PartnerGroupPk;
+import mobile.entity.microcredit.PartnerPk;
 import mobile.entity.microcredit.ProductMicrocredit;
 import mobile.entity.microcredit.Solicitude;
+import mobile.entity.person.Person;
+import mobile.entity.person.PersonPk;
 import mobile.tools.common.convertion.FormatDates;
 import mobile.tools.common.param.LocalParameter;
 import mobile.tools.common.param.ParameterEnum;
@@ -182,7 +188,7 @@ public class RemoteInstrumentation implements MaintenanceProcessor {
 			MicroAccountPk accPk = new MicroAccountPk(accId);
 			MicroAccount acc = new MicroAccount(accPk);
 			acc.setSolicitudeId(solicitude.getPk().getSolicitudeId());
-			acc.setClientName("___");
+			acc.setClientName(getClientName(solicitude));
 			acc.setAssessor(solicitude.getAssessor());
 			acc.setPartnerClientId(solicitude.getPartnerClientId());
 			acc.setGroupClientId(solicitude.getGroupClientId());
@@ -226,6 +232,28 @@ public class RemoteInstrumentation implements MaintenanceProcessor {
 
 			lAccountQuota.add(quota);
 		}
+	}
+
+	private String getClientName(Solicitude solicitude) throws Exception {
+		String clientName = "";
+		
+		if(solicitude.getPartnerClientId() != null){
+			PartnerPk partnerPk = new PartnerPk(solicitude.getPartnerClientId());
+			Partner partner = JpManager.find(Partner.class, partnerPk);
+			PersonPk personPk = new PersonPk(partner.getPersonId());
+			Person person = JpManager.find(Person.class, personPk);
+			if(person.getSecondLastName()!=null){
+				clientName = person.getLastName() + " " + person.getSecondLastName() + " " + person.getName();
+			}else{
+				clientName = person.getLastName() + " " + person.getName();
+			}
+		}else{
+			PartnerGroupPk groupPk = new PartnerGroupPk(solicitude.getGroupClientId());
+			PartnerGroup group = JpManager.find(PartnerGroup.class, groupPk);
+			clientName = group.getGroupDescription();
+		}
+
+		return clientName;
 	}
 
 	private Solicitude findSolicitude(Integer solicitudeId) {

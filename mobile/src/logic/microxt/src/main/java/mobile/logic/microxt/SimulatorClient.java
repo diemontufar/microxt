@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import mobile.common.message.Message;
+import mobile.tools.common.Config;
 import mobile.tools.common.Log;
 import mobile.tools.common.msg.Parser;
 
@@ -16,16 +17,17 @@ import org.apache.log4j.Logger;
 
 public class SimulatorClient {
 
-	private final static String url = "http://127.0.0.1:7070/simulator/Simulador";
+	private final static String url = Config.getInstance().get("simulator-url");
 	private final static String charset = "UTF-8";
 	private final static Logger log = Log.getInstance();
-
+	
 	public static Message sendMessage(Message msg) throws Exception {
 		log.info("Send message to Simulator: ");
 
 		HttpURLConnection httpConnection = null;
 		Message rspMsg = null;
 		try {
+			log.info("Trying conection with: " + url);
 			httpConnection = (HttpURLConnection) new URL(url).openConnection();
 			httpConnection.setRequestMethod("POST");
 
