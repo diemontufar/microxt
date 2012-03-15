@@ -21,6 +21,9 @@ public class MyColumnData extends ColumnData {
 
 	private DataSource dataSource;
 
+	public MyColumnData() {
+	}
+
 	/**
 	 * Creates a data source RECORD with the alias in <code>null</code> and the
 	 * provided field

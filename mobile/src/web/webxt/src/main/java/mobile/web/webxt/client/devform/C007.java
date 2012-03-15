@@ -23,13 +23,13 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.google.gwt.user.client.Element;
 
-public class C006 extends MyGeneralForm {
+public class C007 extends MyGeneralForm {
 
-	private final static String PROCESS = "C006";
-	private final static String ENTITY = "OperativeCondition";
+	private final static String PROCESS = "C007";
+	private final static String ENTITY = "AccountStatus";
 	private final Integer PAGE_SIZE = 5;
 
-	public C006() {
+	public C007() {
 		super(PROCESS, true);
 		setReference(ENTITY);
 	}
@@ -40,7 +40,7 @@ public class C006 extends MyGeneralForm {
 
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_operativeConditionId", "Id", 100, 3, false));
+		cdata.add(new MyColumnData("pk_statusId", "Id", 100, 3, false));
 		cdata.add(new MyColumnData("description", "Descripcion", 150, 50, false));
 		getConfig().setlDataSource(cdata.getDataSources());
 
@@ -54,7 +54,7 @@ public class C006 extends MyGeneralForm {
 		ColumnModel cm = new ColumnModel(configs);
 
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Condiciones operativas", 400, 230);
+		EntityContentPanel cp = new EntityContentPanel("Estatus de cuenta", 400, 230);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);

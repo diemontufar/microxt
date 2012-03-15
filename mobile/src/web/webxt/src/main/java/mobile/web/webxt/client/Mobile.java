@@ -1,6 +1,5 @@
 package mobile.web.webxt.client;
 
-import mobile.common.tools.Format;
 import mobile.web.webxt.client.mvc.AppController;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.mvc.FormController;
@@ -20,7 +19,8 @@ public class Mobile implements EntryPoint {
 
 	public void onModuleLoad() {
 
-		Maps.loadMapsApi(Format.mapsAPIKey, "2", false, new Runnable() {
+		//Maps.loadMapsApi(Format.mapsAPIKey, "2", false, new Runnable() {
+		Maps.loadMapsApi("", "2", false, new Runnable() {
 			public void run() {
 				createMVC();
 				disableRightClick();
@@ -37,7 +37,6 @@ public class Mobile implements EntryPoint {
 		dispatcher.addController(new StatusController());
 		dispatcher.addController(new FormController());
 		dispatcher.dispatch(AppEvents.Init);
-		dispatcher.dispatch(AppEvents.UIReady);
 	}
 
 	/**

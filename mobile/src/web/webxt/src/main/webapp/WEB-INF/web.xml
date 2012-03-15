@@ -16,7 +16,7 @@
 
 	<servlet-mapping>
 		<servlet-name>HttpProxy</servlet-name>
-		<url-pattern>mobile/Core</url-pattern>
+		<url-pattern>/mobile/Core</url-pattern>
 	</servlet-mapping>
 
 	<!-- Default page to serve -->
