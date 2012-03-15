@@ -178,26 +178,26 @@ insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, 
 insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '03', '2011-10-14 00:00:00', 'CANTONES', '1', '1', 'G303', null);
 insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '04', '2011-10-14 00:00:00', 'PARROQUIAS', '1', '1', 'G304', null);
 
-insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.bus.security.Loggin', 'QRY');
 insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.core.processor.MaintenanceProcessor', 'MNT');
 insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.core.processor.QueryProcessor', 'QRY');
+insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.core.security.Loggin', 'QRY');
 insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.logic.general.MenuGenerator', 'QRY');
 insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.logic.microxt.query.QueryPartnerInfo', 'QRY');
 insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.logic.microxt.query.QuerySolicitude', 'QRY');
 insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.logic.microxt.RemoteInstrumentation', 'MNT');
 
-insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.bus.security.Loggin', 'QRY', 'A', 'Loggin', 'general', 'Process loggin');
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.core.processor.MaintenanceProcessor', 'MNT', 'G', 'MaintenanceProcessor', 'general', 'General maintenance processor');
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.core.processor.QueryProcessor', 'QRY', 'G', 'QueryProcessor', 'general', 'General query processor');
+insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.core.security.Loggin', 'QRY', 'A', 'Loggin', 'general', 'Process loggin');
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.logic.general.MenuGenerator', 'QRY', 'G', 'MenuGenerator', 'general', 'Query the menu items');
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', 'C', 'QueryPartnerInfo', null, 'CONSULTA INFORMACION DE CLIENTES INDIVIDUALES');
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 'C', 'QuerySolicitude', null, 'CONSULTA INFORMACION DE LAS SOLICITUDES');
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', 'C', 'RemoteInstrumentation', null, 'REALIZA LA INSTRUMENTACIÓN CONECTANDOSE CON EL CORE BANCARIO');
 
-insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'A', '0', '01', 1, 'mobile.bus.security.Loggin', 'QRY', 1, 0);
-insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'C', '4', '01', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 1, null);
-insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'C', '4', '02', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 1, null);
-insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'C', '4', '02', 2, 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', 1, null);
-insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'G', '0', '01', 1, 'mobile.logic.general.MenuGenerator', 'QRY', 1, 0);
-insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'G', '2', '02', 1, 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', 1, null);
+insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'A', '0', '01', 1, 'mobile.core.security.Loggin', 'QRY', '1', '0');
+insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'C', '4', '01', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', '1', null);
+insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'C', '4', '02', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', '1', null);
+insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'C', '4', '02', 2, 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', '1', null);
+insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'G', '0', '01', 1, 'mobile.logic.general.MenuGenerator', 'QRY', '1', '0');
+insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'G', '2', '02', 1, 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', '1', null);
 
