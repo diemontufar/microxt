@@ -59,7 +59,6 @@ public class OverviewPage extends LayoutContainer {
 		dataView.setBorders(false);
 		dataView.setStore(store);
 		dataView.setTemplate(sb.toString());
-		// dataView.setTemplate(getTemplate());
 
 		dataView.getSelectionModel().addSelectionChangedListener(new SelectionChangedListener<ShortcutProcess>() {
 
@@ -76,16 +75,4 @@ public class OverviewPage extends LayoutContainer {
 		});
 		add(dataView);
 	}
-
-	private native String getTemplate() /*-{
-
-										return [
-										'<tpl for=".">',
-										'<div class="sample-box" style="border: 1px solid #DDDDDD;float:left;clear:both;position:static;margin:50px 50px 10px 50px; padding:10px;width:210px;">',
-										'<div class="thumbd" style="padding-top: 4px;border: none;"><center>{image}</center></div>',
-										'<div style="color:green"><center>{name}</center></div>',
-										'</div>', '</tpl>', '' ].join("");
-
-										}-*/;
-
 }

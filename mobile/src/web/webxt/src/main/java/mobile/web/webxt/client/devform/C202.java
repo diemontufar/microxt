@@ -26,6 +26,7 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
+import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.DatesManager;
 import mobile.web.webxt.client.util.TextType;
 
@@ -36,17 +37,20 @@ import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
 import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
+import com.extjs.gxt.ui.client.event.KeyListener;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.mvc.AppEvent;
+import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.store.Store;
 import com.extjs.gxt.ui.client.store.StoreEvent;
 import com.extjs.gxt.ui.client.store.StoreListener;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
@@ -68,7 +72,7 @@ public class C202 extends MyGeneralForm {
 	ContentPanel panelPrincipal = new ContentPanel();
 
 	// Partner Fields
-	InputBox freqDescription;
+	InputBox freqDescription, generatedId;
 	MyDateField formationDate;
 	MyTextArea activity, description;
 	ComboForm asessorCombo, freqCombo, partnerGroupCode;
@@ -125,6 +129,8 @@ public class C202 extends MyGeneralForm {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
 				formGroup.commitForm();
+				enableToolBarButtons(toolBar, true);
+				save.disable();
 			}
 		});
 
@@ -234,11 +240,13 @@ public class C202 extends MyGeneralForm {
 					if (isOnePresident(grid)) {
 						grid.getStore().commitChanges();
 					} else {
-						Info.display("Informacion", "El grupo debe tener 1 Presidente");
+						Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification,
+								"El grupo debe tener 1 Presidente"));
 					}
 
 				} else {
-					Info.display("Informacion", "El grupo debe tener entre 3 y 15 miembros");
+					Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification,
+							"El grupo debe tener entre 3 y 15 miembros"));
 				}
 
 			}
@@ -254,9 +262,7 @@ public class C202 extends MyGeneralForm {
 			public void handleEvent(StoreEvent se) {
 				if (se.getType() == Store.Add) {
 					membersNumber = grid.getStore().getCount();
-					grid.getStore().getAt(membersNumber - 1)
-							.set("pk_partnerGroupId", partnerGroupCode.getValue().get("pk_partnerGroupId"));
-					System.out.println("Conteo de filas: " + grid.getStore().getCount());
+					grid.getStore().getAt(membersNumber - 1).set("pk_partnerGroupId", generatedId.getRawValue());
 				}
 			}
 		});
@@ -267,6 +273,7 @@ public class C202 extends MyGeneralForm {
 			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
 
 				if (((ComboForm) se.getSource()).isSomeSelected() || partnerGroupCode.getValue() != null) {
+					generatedId.setValue(partnerGroupCode.getRawValue());
 					formGroup.queryForm();
 					pagingToolBar.refresh();
 					enableToolBarButtons(toolBar, true);
@@ -304,6 +311,7 @@ public class C202 extends MyGeneralForm {
 		row.add(label);
 
 		partnerGroupCode = new ComboForm(80);
+		partnerGroupCode.setData("mobile-type", Integer.class);
 		partnerGroupCode.setDataSource(new DataSource("par", "pk_partnerGroupId", DataSourceType.CRITERION));
 
 		Reference refPartner = new Reference("par1", "PartnerGroup");
@@ -318,7 +326,8 @@ public class C202 extends MyGeneralForm {
 		fieldSetLeft.add(row);
 
 		// GeneratedId
-		final InputBox generatedId = new InputBox();
+		generatedId = new InputBox();
+		generatedId.setId("generatedId");
 		generatedId.setDataSource(new DataSource(Item.GENERATED_ID, DataSourceType.CONTROL));
 		generatedId.setVisible(false);
 		generatedId.setFireChangeEventOnSetValue(true);
@@ -327,13 +336,19 @@ public class C202 extends MyGeneralForm {
 				if (e.getValue() != null) {
 					partnerGroupCode.setRawValue((String) e.getValue());
 					partnerGroupCode.setLoaded(false);
-					enableToolBarButtons(toolBar, true);
-					save.disable();
 				}
 			}
 		});
 		row.add(generatedId);
 		fieldSetLeft.add(row);
+		
+		KeyListener listener = new KeyListener() {
+			@Override
+			public void componentKeyPress(ComponentEvent event) {
+				save.enable();
+			}
+
+		};
 
 		// Description:
 		row = new RowContainer();
@@ -347,12 +362,7 @@ public class C202 extends MyGeneralForm {
 		description.setEmptyText("Ingrese una descripcion del grupo");
 		description.setAllowBlank(false);
 
-		description.addListener(Events.Change, new Listener<FieldEvent>() {
-			public void handleEvent(FieldEvent e) {
-				save.enable();
-				;
-			}
-		});
+		description.addKeyListener(listener);
 
 		row.add(description);
 		fieldSetRight.add(row);
@@ -368,12 +378,7 @@ public class C202 extends MyGeneralForm {
 		activity.setHeight(60);
 		activity.setEmptyText("Ingrese las actividades a las que se dedica el grupo");
 
-		activity.addListener(Events.Change, new Listener<FieldEvent>() {
-			public void handleEvent(FieldEvent e) {
-				save.enable();
-				;
-			}
-		});
+		activity.addKeyListener(listener);
 
 		row.add(activity);
 		fieldSetRight.add(row);
@@ -398,7 +403,7 @@ public class C202 extends MyGeneralForm {
 			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
 
 				if (((ComboForm) se.getSource()).isSomeSelected()) {
-					save.enable();
+					//save.enable();
 				}
 			}
 		});
@@ -414,6 +419,13 @@ public class C202 extends MyGeneralForm {
 
 		asessorCombo.addFilter(filter);
 		asessorCombo.setLoaded(false);
+		asessorCombo.addListener(Events.SelectionChange, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent e) {
+				if (e.getValue() != null) {
+					save.enable();
+				}
+			}
+		});
 
 		asessorCombo.setAllowBlank(false);
 
@@ -436,23 +448,19 @@ public class C202 extends MyGeneralForm {
 		freqCombo.setDisplayField("pk_frequencyId");
 		freqCombo.setAllowBlank(false);
 
-		freqCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
-
-				if (((ComboForm) se.getSource()).isSomeSelected()) {
-					save.enable();
-				}
-			}
-		});
-
 		row.add(freqCombo);
 
 		freqDescription = new InputBox(80);
 		freqDescription.setReadOnly(true);
 		freqDescription.setDataSource(new DataSource("Frequency", "description", DataSourceType.DESCRIPTION));
+		freqDescription.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent e) {
+				if (e.getValue() != null) {
+					save.enable();
+				}
+			}
+		});
 		row.add(freqDescription);
-		
 
 		freqCombo.linkWithField(freqDescription, "description");
 
@@ -477,11 +485,7 @@ public class C202 extends MyGeneralForm {
 		meetingDay.setToolTip("Dia de la semana entre 1-7");
 		meetingDay.setMaxLength(1);
 
-		meetingDay.addListener(Events.Change, new Listener<FieldEvent>() {
-			public void handleEvent(FieldEvent e) {
-				save.enable();
-			}
-		});
+		meetingDay.addKeyListener(listener);
 
 		row.add(meetingDay);
 		fieldSetLeft.add(row);
