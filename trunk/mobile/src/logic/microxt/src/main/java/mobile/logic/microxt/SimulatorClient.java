@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 
 public class SimulatorClient {
 
-	private final static String url = Config.getInstance().get("simulator-url");
+	private final static String url = Config.get("simulator-url");
 	private final static String charset = "UTF-8";
 	private final static Logger log = Log.getInstance();
 	
