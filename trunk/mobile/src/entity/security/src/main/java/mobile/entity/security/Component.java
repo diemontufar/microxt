@@ -31,7 +31,7 @@ public class Component extends AbstractEntity implements Multicompany {
 	/**
 	 * Method name
 	 */
-	@Column(name = "METHOD_NAME", nullable = false)
+	@Column(name = "METHOD_NAME", nullable = true)
 	private String methodName;
 
 	/**
@@ -47,11 +47,10 @@ public class Component extends AbstractEntity implements Multicompany {
 		this.pk = pk;
 	}
 
-	public Component(ComponentPk pk, String subsystemId, String className, String methodName, String description) {
+	public Component(ComponentPk pk, String subsystemId, String className, String description) {
 		this.pk = pk;
 		this.subsystemId = subsystemId;
 		this.className = className;
-		this.methodName = methodName;
 		this.description = description;
 	}
 

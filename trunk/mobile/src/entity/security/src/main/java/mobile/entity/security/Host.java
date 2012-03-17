@@ -24,6 +24,12 @@ public class Host extends AbstractHistorical implements Multicompany, Historical
 	private String address;
 
 	/**
+	 * Channel Id
+	 */
+	@Column(name = "CHANNEL_ID", nullable = false)
+	private String channelId;
+
+	/**
 	 * Time zone
 	 */
 	@Column(name = "TIME_ZONE", nullable = true)
@@ -36,9 +42,10 @@ public class Host extends AbstractHistorical implements Multicompany, Historical
 		this.pk = pk;
 	}
 
-	public Host(HostPk pk, String address) {
+	public Host(HostPk pk, String address, String channelId) {
 		this.pk = pk;
 		this.address = address;
+		this.channelId = channelId;
 	}
 
 	public HostPk getPk() {
@@ -55,6 +62,14 @@ public class Host extends AbstractHistorical implements Multicompany, Historical
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getChannelId() {
+		return this.channelId;
+	}
+
+	public void setChannelId(String channelId) {
+		this.channelId = channelId;
 	}
 
 	public String getTimeZone() {
@@ -80,6 +95,6 @@ public class Host extends AbstractHistorical implements Multicompany, Historical
 	@Override
 	public String toString() {
 		return "HOST:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getAddress() + ", "
-				+ this.getTimeZone() + "]";
+				+ this.getChannelId() + ", " + this.getTimeZone() + "]";
 	}
 }

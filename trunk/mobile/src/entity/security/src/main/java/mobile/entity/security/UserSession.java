@@ -22,8 +22,8 @@ public class UserSession extends AbstractHistoricalLocking implements Multicompa
 	/**
 	 * Token
 	 */
-	@Column(name = "TOKEN", nullable = false)
-	private String token;
+	@Column(name = "SESSION_ID", nullable = false)
+	private String sessionId;
 
 	public UserSession() {
 	}
@@ -32,9 +32,9 @@ public class UserSession extends AbstractHistoricalLocking implements Multicompa
 		this.pk = pk;
 	}
 
-	public UserSession(UserSessionPk pk, String token) {
+	public UserSession(UserSessionPk pk, String sessionId) {
 		this.pk = pk;
-		this.token = token;
+		this.sessionId = sessionId;
 	}
 
 	public UserSessionPk getPk() {
@@ -45,12 +45,12 @@ public class UserSession extends AbstractHistoricalLocking implements Multicompa
 		this.pk = pk;
 	}
 
-	public String getToken() {
-		return this.token;
+	public String getSessionId() {
+		return this.sessionId;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class UserSession extends AbstractHistoricalLocking implements Multicompa
 
 	@Override
 	public String toString() {
-		return "USER_SESSION:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getToken() + ", "
-				+ this.getVersion() + "]";
+		return "USER_SESSION:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getSessionId()
+				+ ", " + this.getVersion() + "]";
 	}
 }
