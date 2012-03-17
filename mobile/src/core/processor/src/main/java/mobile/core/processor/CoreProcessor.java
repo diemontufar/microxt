@@ -16,12 +16,16 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import mobile.common.message.Message;
-import mobile.common.message.ResponseData;
 import mobile.common.tools.ProcessType;
+import mobile.core.security.RoleValidator;
+import mobile.core.security.SessionValidator;
 import mobile.entity.manager.JpManager;
 import mobile.entity.security.ProcessComponent;
+import mobile.tools.common.Config;
 import mobile.tools.common.Log;
+import mobile.tools.common.Objection;
 import mobile.tools.common.convertion.FormatDates;
+import mobile.tools.common.enums.ObjectionCode;
 import mobile.tools.common.param.LocalParameter;
 import mobile.tools.common.param.ParameterEnum;
 import mobile.tools.common.structure.GeneralProcessor;
@@ -37,9 +41,8 @@ public class CoreProcessor {
 
 	private final String QRY_PROCESSES = "Select p from ProcessComponent p " + "where p.pk.companyId = :companyId "
 			+ "and p.pk.subsystemId = :subsystemId " + "and p.pk.moduleId = :moduleId "
-			+ "and p.pk.processId = :processId "
-			+ "and p.typeId = :processType "
-			+ "and p.enable = true " + "order by p.pk.processSequence";
+			+ "and p.pk.processId = :processId " + "and p.typeId = :processType " + "and p.enable = true "
+			+ "order by p.pk.processSequence";
 
 	public Message process(Message msg) {
 		log.info("Input message: \n" + formatXml(msg.toXML(), 2));
@@ -49,18 +52,20 @@ public class CoreProcessor {
 			JpManager.createEntityManager();
 			// Begin transaction
 			JpManager.beginTransaction();
+			// Security verifications
+			executeValidations(msg);
 			// Execute associated processes
 			executeProcesses(msg);
 			// Commit
 			JpManager.commitTransaction();
 			// Set response
-			setOkResponseInfo(msg);
+			setResponse(msg, null);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			// Rollback
 			JpManager.rollbackTransaction();
 			// Set error response
-			setErrorResponseInfo(e, msg);
+			setResponse(msg, e);
 		} finally {
 			JpManager.close();
 		}
@@ -68,6 +73,17 @@ public class CoreProcessor {
 		log.info("Output message: \n" + formatXml(msg.toXML(), 2));
 
 		return msg;
+	}
+
+	private void executeValidations(Message msg) throws Exception {
+		if (Config.is("core-validate-session")) {
+			SessionValidator sessionValidator = new SessionValidator();
+			sessionValidator.execute(msg);
+		}
+		if (Config.is("core-validate-role")) {
+			RoleValidator roleValidator = new RoleValidator();
+			roleValidator.execute(msg);
+		}
 	}
 
 	private void executeProcesses(Message msg) throws Exception {
@@ -87,18 +103,17 @@ public class CoreProcessor {
 		query.setParameter("moduleId", module);
 		query.setParameter("processId", process);
 		query.setParameter("processType", strProcessType);
-		
+
 		List<ProcessComponent> lProcesses = query.getResultList();
-		
+
 		if (lProcesses.size() == 0) {
-			if(ProcessType.QUERY.getShortName().compareTo(strProcessType)==0){
+			if (ProcessType.QUERY.getShortName().compareTo(strProcessType) == 0) {
 				new GeneralQuery().process(msg);
-			}else if(ProcessType.MAINTENANCE.getShortName().compareTo(strProcessType)==0){
+			} else if (ProcessType.MAINTENANCE.getShortName().compareTo(strProcessType) == 0) {
 				new GeneralMaintenance().process(msg);
 			}
 		}
 
-		
 		for (ProcessComponent processComponent : lProcesses) {
 			log.info("Processing: " + processComponent.getComponentId());
 
@@ -106,8 +121,7 @@ public class CoreProcessor {
 			try {
 				proc = (GeneralProcessor) Class.forName(processComponent.getComponentId()).newInstance();
 			} catch (ClassNotFoundException e) {
-				log.error("ProccesComponent not found: " + processComponent.getComponentId());
-				throw new Exception("ProcessComponent not found: " + processComponent.getComponentId());
+				throw new Objection(ObjectionCode.NO_CLASS, processComponent.getComponentId());
 			}
 
 			long init = System.currentTimeMillis();
@@ -116,20 +130,6 @@ public class CoreProcessor {
 					+ FormatDates.getMinuteFormat().format(new Date(System.currentTimeMillis() - init)));
 
 		}
-	}
-
-	private String stackToString(Exception e) {
-		if (e != null) {
-			try {
-				StringWriter sw = new StringWriter();
-				PrintWriter pw = new PrintWriter(sw);
-				e.printStackTrace(pw);
-				return sw.toString();
-			} catch (Exception ex) {
-				return "Could not show the stackTrace in String\n" + ex.getMessage();
-			}
-		}
-		return "";
 	}
 
 	private String formatXml(String input, int indent) {
@@ -148,34 +148,70 @@ public class CoreProcessor {
 		}
 	}
 
-	private void setOkResponseInfo(Message msg) {
-		msg.getResponse().setCode(ResponseData.RESPONSE_CODE_OK);
-		msg.getResponse().setMessage("OK");
-	}
-
-	private void setErrorResponseInfo(Exception e, Message msg) {
-		msg.getResponse().setCode(ResponseData.RESPONSE_CODE_ERROR);
-
-		if (e instanceof NullPointerException) {
-			msg.getResponse().setMessage("ENVIO DE VALORES NULOS");
-		} else if (e instanceof PersistenceException) {
-			DatabaseException dbe = (DatabaseException) e.getCause();
-			String desc = "CÓDIGO: " + dbe.getDatabaseErrorCode() + "<br/>";
-			desc = desc + dbe.getMessage();
-			desc = replaceWrongCharacters(desc);
-			msg.getResponse().setMessage(desc);
-		} else if (e.getMessage() != null) {
-			String errorMessage = e.getMessage();
-			errorMessage = replaceWrongCharacters(errorMessage);
-			msg.getResponse().setMessage(errorMessage);
-		} else if (e.getCause() != null) {
-			msg.getResponse().setMessage(e.getCause().toString());
+	public Message setResponse(Message msg, Throwable throwable) {
+		if (throwable == null) {
+			msg.getResponse().setCode(ObjectionCode.SUCCESS.getCode());
+			msg.getResponse().setMessage(ObjectionCode.SUCCESS.getMessage());
 		} else {
-			msg.getResponse().setMessage(stackToString(e));
+			Objection objection = null;
+			if (throwable instanceof Objection) {
+				objection = (Objection) throwable;
+			}
+			if (throwable.getCause() instanceof Objection) {
+				objection = (Objection) throwable.getCause();
+			}
+			if (objection != null) {
+				msg.getResponse().setCode(objection.getCode());
+				msg.getResponse().setMessage(objection.getMessage());
+				msg.getResponse().setError(getStackTrace(throwable));
+			} else {
+				String message = "";
+				if (throwable instanceof NullPointerException) {
+					message = "ENVIO DE VALORES NULOS";
+				} else if (throwable instanceof PersistenceException) {
+					DatabaseException dbe = (DatabaseException) throwable.getCause();
+					message = "CÓDIGO: " + dbe.getDatabaseErrorCode() + "<br/>";
+					message = message + dbe.getMessage();
+					message = replaceWrongCharacters(message);
+				} else if (throwable.getMessage() != null) {
+					message = throwable.getMessage();
+					message = replaceWrongCharacters(message);
+				} else if (throwable.getCause() != null) {
+					message = throwable.getCause().toString();
+				} else {
+					message = ObjectionCode.FAILED.getMessage();
+				}
+
+				msg.getResponse().setCode(ObjectionCode.FAILED.getCode());
+				msg.getResponse().setMessage(message);
+				msg.getResponse().setError(getStackTrace(throwable));
+			}
 		}
+		return msg;
 	}
-	
-	private String replaceWrongCharacters(String message){
+
+	// private String getStackTrace(Throwable throwable) {
+	// Writer writer = new StringWriter();
+	// PrintWriter printWriter = new PrintWriter(writer);
+	// throwable.printStackTrace(printWriter);
+	// return "<![CDATA[" + writer.toString() + "]]>";
+	// }
+
+	private String getStackTrace(Throwable throwable) {
+		if (throwable != null) {
+			try {
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				throwable.printStackTrace(pw);
+				return sw.toString();
+			} catch (Exception ex) {
+				return "COULD NOT SHOW THE STACKTRACE IN STRING \n" + ex.getMessage();
+			}
+		}
+		return "";
+	}
+
+	private String replaceWrongCharacters(String message) {
 		String out = message.replaceAll("\t", "  ");
 		out = out.replaceAll("(\r|\n)", "<br/>");
 		out = out.replaceAll("\"", "'");

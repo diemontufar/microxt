@@ -6,46 +6,83 @@ import mobile.entity.security.UserAccess;
 import mobile.entity.security.UserAccessPk;
 import mobile.entity.security.UserAccount;
 import mobile.entity.security.UserAccountPk;
+import mobile.tools.common.Objection;
+import mobile.tools.common.enums.ObjectionCode;
 import mobile.tools.common.structure.QueryProcessor;
 
 public class Loggin implements QueryProcessor {
 
+	private final static String USER = "user";
+	private final static String PASSWORD = "password";
+	private final static String HOST = "host";
+	private final static String CHANNEL = "channel";
+	private final static String SESSION = "session";
+	private final static String PROFILE = "profile";
+	private final static String RESPONSE_CODE = "responseCode";
+	private final static String RESPONSE_MSG = "responseMessage";
+
 	@Override
 	public Message process(Message msg) throws Exception {
-		String user = msg.getControlFieldValue("user");
-		String password = msg.getControlFieldValue("password");
+		String user = msg.getControlFieldValue(USER);
+		String password = msg.getControlFieldValue(PASSWORD);
 
-		String code = "0";
-		String message = "Autenticación fallida";
+		try {
+			// Verify/set host
+			HostValidator hv = new HostValidator();
+			hv.setHostId(msg);
 
-		// Verify
-		UserAccountPk userPk = new UserAccountPk(user);
-		UserAccount userAcc = JpManager.find(UserAccount.class, userPk);
+			// Verify user and password
+			UserAccountPk userPk = new UserAccountPk(user);
+			UserAccount userAcc = JpManager.find(UserAccount.class, userPk);
 
-		if (userAcc != null) {
-			log.info("User found: ");
-			log.info(userAcc);
+			if (userAcc != null) {
+				log.info("User found: " + userAcc);
+				msg.getRequest().setUser(user);
 
-			// Find the password and compare
-			UserAccessPk accessPk = new UserAccessPk(user);
-			UserAccess userAccess = JpManager.find(UserAccess.class, accessPk);
+				// Verify user status
+				if (userAcc.getUserStatusId().compareTo("ACT") != 0) {
+					throw new Objection(ObjectionCode.USER_NOT_ACTIVE, userAcc.getPk().getUserId());
+				}
 
-			if (userAccess != null && userAccess.getUserKey().compareTo(password) == 0) {
-				log.info("Verified password");
-				log.info(userAccess);
-				code = "1";
-				message = "Autenticación correcta";
+				// Verify password
+				UserAccessPk accessPk = new UserAccessPk(user);
+				UserAccess userAccess = JpManager.find(UserAccess.class, accessPk);
+
+				if (userAccess != null && userAccess.getUserKey().compareTo(password) == 0) {
+					log.info("Verified password");
+					log.info(userAccess);
+
+					SessionValidator sv = new SessionValidator();
+					sv.setUserSession(msg);
+					
+//					RoleValidator rv = new RoleValidator();
+//					rv.execute(msg);
+				} else {
+					log.info("Ivalid password");
+					throw new Objection(ObjectionCode.USER_PASSWORD);
+				}
 			} else {
-				log.info("Error de autenticacion");
-				message = "La contraseña ingresada es incorrecta";
+				log.info("Not defined user");
+				throw new Objection(ObjectionCode.USER_NOT, user);
 			}
-		} else {
-			message = "El usuario " + user + " no existe";
+
+		} catch (Objection e) {
+			if(e instanceof Objection){
+				msg.setControlFieldValue(RESPONSE_CODE, "0");
+				msg.setControlFieldValue(RESPONSE_MSG, e.getMessage());
+				return msg;
+			}else{
+				throw e;
+			}
 		}
-
-		msg.setControlFieldValue("responseCode", code);
-		msg.setControlFieldValue("responseMessage", message);
-
+		
+		msg.setControlFieldValue(HOST, msg.getRequest().getHost());
+		msg.setControlFieldValue(CHANNEL, msg.getRequest().getChannel());
+		msg.setControlFieldValue(SESSION, msg.getRequest().getSession());
+		msg.setControlFieldValue(PROFILE, msg.getRequest().getProfile());
+		msg.setControlFieldValue(RESPONSE_CODE, "1");
+		msg.setControlFieldValue(RESPONSE_MSG, "USUARIO LOGEADO CORRECTAMENTE");
+		
 		return msg;
 	}
 }
