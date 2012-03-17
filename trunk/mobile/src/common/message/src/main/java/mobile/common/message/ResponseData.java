@@ -9,8 +9,7 @@ public class ResponseData extends Data{
 	public final static String RESPONSE_ERROR = "error";
 	public final static String RESPONSE_NOTES = "notes";
 	
-	public final static String RESPONSE_CODE_OK = "000";
-	public final static String RESPONSE_CODE_ERROR = "001";
+	public final static String RESPONSE_CODE_OK = "OK";
 
 	public ResponseData() {
 		super(RESPONSE);
@@ -35,5 +34,13 @@ public class ResponseData extends Data{
 
 	public void setMessage(String message){
 		setFieldValue(RESPONSE_MESSAGE, message);
+	}
+	
+	public String getError(){
+		return (String) getFieldValue(RESPONSE_ERROR);
+	}
+
+	public void setError(String error){
+		setFieldValue(RESPONSE_ERROR, error);
 	}
 }
