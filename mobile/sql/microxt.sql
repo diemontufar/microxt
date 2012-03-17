@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 15-03-2012 a las 20:49:09
+-- Tiempo de generación: 17-03-2012 a las 19:18:07
 -- Versión del servidor: 5.5.8
 -- Versión de PHP: 5.3.5
 
@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `microxt`
+-- Base de datos: `microxt1`
 --
 
 -- --------------------------------------------------------
@@ -118,6 +118,26 @@ INSERT INTO `ADDRESS_TYPE_ID` (`ADDRESS_TYPE_ID`) VALUES
 ('ML'),
 ('OF'),
 ('WE');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `CHANNEL`
+--
+
+CREATE TABLE IF NOT EXISTS `CHANNEL` (
+  `CHANNEL_ID` varchar(4) NOT NULL,
+  `NAME` varchar(40) NOT NULL,
+  PRIMARY KEY (`CHANNEL_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcar la base de datos para la tabla `CHANNEL`
+--
+
+INSERT INTO `CHANNEL` (`CHANNEL_ID`, `NAME`) VALUES
+('MOBI', 'MOBILE'),
+('PC', 'COMPUTADOR');
 
 -- --------------------------------------------------------
 
@@ -293,6 +313,7 @@ INSERT INTO `COMPONENT` (`COMPANY_ID`, `COMPONENT_ID`, `TYPE_ID`, `SUBSYSTEM_ID`
 ('MXT', 'mobile.core.processor.MaintenanceProcessor', 'MNT', 'G', 'MaintenanceProcessor', 'general', 'General maintenance processor'),
 ('MXT', 'mobile.core.processor.QueryProcessor', 'QRY', 'G', 'QueryProcessor', 'general', 'General query processor'),
 ('MXT', 'mobile.core.security.Loggin', 'QRY', 'A', 'Loggin', 'general', 'Process loggin'),
+('MXT', 'mobile.core.security.Logout', 'MNT', 'A', 'Logout', NULL, 'Process logout'),
 ('MXT', 'mobile.logic.general.MenuGenerator', 'QRY', 'G', 'MenuGenerator', 'general', 'Query the menu items'),
 ('MXT', 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', 'C', 'QueryPartnerInfo', NULL, 'CONSULTA INFORMACION DE CLIENTES INDIVIDUALES'),
 ('MXT', 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 'C', 'QuerySolicitude', NULL, 'CONSULTA INFORMACION DE LAS SOLICITUDES'),
@@ -315,10 +336,10 @@ CREATE TABLE IF NOT EXISTS `COMPONENT_ID` (
 --
 
 INSERT INTO `COMPONENT_ID` (`COMPONENT_ID`, `TYPE_ID`) VALUES
-('mobile.bus.security.Loggin', 'QRY'),
 ('mobile.core.processor.MaintenanceProcessor', 'MNT'),
 ('mobile.core.processor.QueryProcessor', 'QRY'),
 ('mobile.core.security.Loggin', 'QRY'),
+('mobile.core.security.Logout', 'MNT'),
 ('mobile.logic.general.MenuGenerator', 'QRY'),
 ('mobile.logic.microxt.query.QueryPartnerInfo', 'QRY'),
 ('mobile.logic.microxt.query.QuerySolicitude', 'QRY'),
@@ -411,7 +432,7 @@ CREATE TABLE IF NOT EXISTS `CURRENCY` (
 
 INSERT INTO `CURRENCY` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `CURRENCY_ID`, `CREATED`, `DESCRIPTION`, `INITIALS`) VALUES
 ('MXT', 'ES', '9999-12-31 00:00:00', 'EUR', '2012-01-20 20:46:58', 'EURO', '$'),
-('MXT', 'ES', '9999-12-31 00:00:00', 'USD', '2012-01-20 20:46:58', 'DOLAR', '?');
+('MXT', 'ES', '9999-12-31 00:00:00', 'USD', '2012-01-20 20:46:58', 'DOLAR', '');
 
 -- --------------------------------------------------------
 
@@ -844,6 +865,8 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'ACCOUNT_STATUS', 'STATUS_ID', 1, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Status'),
 ('ALL', 'ADDRESS_TYPE', 'ADDRESS_TYPE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Address type Id'),
 ('ALL', 'ADDRESS_TYPE', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of address type'),
+('ALL', 'CHANNEL', 'CHANNEL_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Channel Id'),
+('ALL', 'CHANNEL', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name'),
 ('ALL', 'CITY', 'CITY_ID', 3, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'City Id'),
 ('ALL', 'CITY', 'COUNTRY_ID', 1, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Country Id'),
 ('ALL', 'CITY', 'NAME', 4, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of city'),
@@ -937,8 +960,9 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'GEOGRAPHIC_ZONE', 'P41', 10, 'String', 50, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Point of coordinate 4,1'),
 ('ALL', 'GEOGRAPHIC_ZONE', 'P42', 11, 'String', 50, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Point of coordinate 4,2'),
 ('ALL', 'HOST', 'ADDRESS', 2, 'String', 60, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Address'),
+('ALL', 'HOST', 'CHANNEL_ID', 3, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Channel Id'),
 ('ALL', 'HOST', 'HOST_ID', 1, 'String', 40, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Host Id'),
-('ALL', 'HOST', 'TIME_ZONE', 6, 'String', 4, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Time zone'),
+('ALL', 'HOST', 'TIME_ZONE', 4, 'String', 4, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Time zone'),
 ('ALL', 'IDENTIFICATION_TYPE', 'IDENTIFICATION_TYPE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Identification type Id'),
 ('ALL', 'IDENTIFICATION_TYPE', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of identification type'),
 ('ALL', 'LANGUAGE', 'LANGUAGE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Language Id'),
@@ -946,7 +970,7 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'MICRO_ACCOUNT', 'ACCOUNT_ID', 1, 'String', 25, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Account number and id'),
 ('ALL', 'MICRO_ACCOUNT', 'AMOUNT', 11, 'BigDecimal', 19, 6, 0, 0, 0, NULL, NULL, NULL, NULL, 'Amount'),
 ('ALL', 'MICRO_ACCOUNT', 'ASSESSOR', 4, 'String', 20, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Assessor'),
-('ALL', 'MICRO_ACCOUNT', 'CLIENT_NAME', 3, 'String', 25, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Client''s name'),
+('ALL', 'MICRO_ACCOUNT', 'CLIENT_NAME', 3, 'String', 120, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Client''s name'),
 ('ALL', 'MICRO_ACCOUNT', 'GROUP_CLIENT_ID', 6, 'Integer', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Group'),
 ('ALL', 'MICRO_ACCOUNT', 'NUMBER_QUOTAS', 14, 'Integer', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Number of fees'),
 ('ALL', 'MICRO_ACCOUNT', 'NUMBER_RENEWAL', 9, 'Integer', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Number of renewal'),
@@ -1133,7 +1157,7 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'USER_PROFILE', 'PROFILE_ID', 2, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Profile Id'),
 ('ALL', 'USER_PROFILE', 'USER_ID', 1, 'String', 20, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User Id'),
 ('ALL', 'USER_SESSION', 'HOST_ID', 2, 'String', 40, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Host Id'),
-('ALL', 'USER_SESSION', 'TOKEN', 3, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Token'),
+('ALL', 'USER_SESSION', 'SESSION_ID', 3, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Token'),
 ('ALL', 'USER_SESSION', 'USER_ID', 1, 'String', 20, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User Id'),
 ('ALL', 'USER_STATUS', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of user status'),
 ('ALL', 'USER_STATUS', 'USER_STATUS_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User status Id'),
@@ -1170,6 +1194,8 @@ INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
 ('ADDRESS_TYPE', 'LANGUAGE_ID'),
 ('ADDRESS_TYPE', 'NAME'),
 ('ADDRESS_TYPE_ID', 'ADDRESS_TYPE_ID'),
+('CHANNEL', 'CHANNEL_ID'),
+('CHANNEL', 'NAME'),
 ('CITY', 'CITY_ID'),
 ('CITY', 'COMPANY_ID'),
 ('CITY', 'COUNTRY_ID'),
@@ -1309,6 +1335,7 @@ INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
 ('GEOGRAPHIC_ZONE', 'P42'),
 ('GEOGRAPHIC_ZONE_ID', 'GEOGRAPHIC_ZONE_ID'),
 ('HOST', 'ADDRESS'),
+('HOST', 'CHANNEL_ID'),
 ('HOST', 'COMPANY_ID'),
 ('HOST', 'CREATED'),
 ('HOST', 'EXPIRED'),
@@ -1635,7 +1662,7 @@ INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
 ('USER_SESSION', 'CREATED'),
 ('USER_SESSION', 'EXPIRED'),
 ('USER_SESSION', 'HOST_ID'),
-('USER_SESSION', 'TOKEN'),
+('USER_SESSION', 'SESSION_ID'),
 ('USER_SESSION', 'USER_ID'),
 ('USER_STATUS', 'COMPANY_ID'),
 ('USER_STATUS', 'LANGUAGE_ID'),
@@ -1691,6 +1718,7 @@ INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHI
 ('ALL', 'ENTITY_RELATIONSHIP_FROM_FK', 2, 'ENTITY_RELATIONSHIP', 'FIELD_FROM', 'ENTITY_FIELD_ID', 'FIELD_ID'),
 ('ALL', 'ENTITY_RELATIONSHIP_TO_FK', 1, 'ENTITY_RELATIONSHIP', 'TABLE_TO', 'ENTITY_FIELD_ID', 'TABLE_ID'),
 ('ALL', 'ENTITY_RELATIONSHIP_TO_FK', 2, 'ENTITY_RELATIONSHIP', 'FIELD_TO', 'ENTITY_FIELD_ID', 'FIELD_ID'),
+('ALL', 'HOST_CHANNEL_ID_FK', 1, 'HOST', 'CHANNEL_ID', 'CHANNEL', 'CHANNEL_ID'),
 ('ALL', 'MIC_ACC_FREQ_ID_FK', 1, 'MICRO_ACCOUNT', 'PAYMENT_FREQUENCY_ID', 'FREQUENCY_ID', 'FREQUENCY_ID'),
 ('ALL', 'MIC_ACC_MIC_ACC_ID_FK', 1, 'MICRO_ACCOUNT', 'PREVIOUS_ACCOUNT', 'MICRO_ACCOUNT_ID', 'ACCOUNT_ID'),
 ('ALL', 'MIC_ACC_PARTNER_GRP_ID_FK', 1, 'MICRO_ACCOUNT', 'GROUP_CLIENT_ID', 'PARTNER_GROUP_ID', 'PARTNER_GROUP_ID'),
@@ -1933,6 +1961,7 @@ CREATE TABLE IF NOT EXISTS `ENTITY_TABLE` (
 INSERT INTO `ENTITY_TABLE` (`COMPANY_ID`, `TABLE_ID`, `HAS_TABLE_ID`, `PACKAGE_NAME`, `MULTI_COMPANY`, `MULTI_LANGUAGE`, `HISTORICAL_DATA`, `OPTIMISTIC_LOCKING`, `ENUMERATED_TYPES`, `CACHE_MEMORY`, `DESCRIPTION`) VALUES
 ('ALL', 'ACCOUNT_STATUS', 1, 'microcredit', 1, 1, 0, 0, 0, 0, 'Account status'),
 ('ALL', 'ADDRESS_TYPE', 1, 'person', 1, 1, 0, 0, 0, 0, 'Values of address types'),
+('ALL', 'CHANNEL', 0, 'security', 0, 0, 0, 0, 0, 0, 'Values of channels'),
 ('ALL', 'CITY', 1, 'parameter', 1, 1, 0, 0, 0, 0, 'Values of cities'),
 ('ALL', 'CIVIL_STATUS', 1, 'person', 1, 1, 0, 0, 0, 0, 'Values of civil statuses'),
 ('ALL', 'COMPANY', 0, 'common', 0, 0, 0, 0, 0, 0, 'Values of companies'),
@@ -2014,6 +2043,7 @@ INSERT INTO `ENTITY_TABLE_ID` (`TABLE_ID`) VALUES
 ('ACCOUNT_STATUS_ID'),
 ('ADDRESS_TYPE'),
 ('ADDRESS_TYPE_ID'),
+('CHANNEL'),
 ('CITY'),
 ('CITY_ID'),
 ('CIVIL_STATUS'),
@@ -2315,8 +2345,10 @@ CREATE TABLE IF NOT EXISTS `HOST` (
   `HOST_ID` varchar(40) NOT NULL,
   `CREATED` datetime NOT NULL,
   `ADDRESS` varchar(60) NOT NULL,
+  `CHANNEL_ID` varchar(4) NOT NULL,
   `TIME_ZONE` varchar(4) DEFAULT NULL,
   PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`HOST_ID`),
+  KEY `HOST_CHANNEL_ID_FK` (`CHANNEL_ID`),
   KEY `HOST_ID_FK` (`HOST_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -2324,6 +2356,8 @@ CREATE TABLE IF NOT EXISTS `HOST` (
 -- Volcar la base de datos para la tabla `HOST`
 --
 
+INSERT INTO `HOST` (`COMPANY_ID`, `EXPIRED`, `HOST_ID`, `CREATED`, `ADDRESS`, `CHANNEL_ID`, `TIME_ZONE`) VALUES
+('MXT', '9999-12-31 00:00:00', 'LOCALHOST', '2012-03-17 00:00:00', '127.0.0.1', 'PC', NULL);
 
 -- --------------------------------------------------------
 
@@ -2340,6 +2374,8 @@ CREATE TABLE IF NOT EXISTS `HOST_ID` (
 -- Volcar la base de datos para la tabla `HOST_ID`
 --
 
+INSERT INTO `HOST_ID` (`HOST_ID`) VALUES
+('LOCALHOST');
 
 -- --------------------------------------------------------
 
@@ -2451,9 +2487,6 @@ CREATE TABLE IF NOT EXISTS `MICRO_ACCOUNT` (
 -- Volcar la base de datos para la tabla `MICRO_ACCOUNT`
 --
 
-INSERT INTO `MICRO_ACCOUNT` (`COMPANY_ID`, `EXPIRED`, `ACCOUNT_ID`, `CREATED`, `SOLICITUDE_ID`, `CLIENT_NAME`, `ASSESSOR`, `PARTNER_CLIENT_ID`, `GROUP_CLIENT_ID`, `PRODUCT_ID`, `STATUS_ID`, `NUMBER_RENEWAL`, `PREVIOUS_ACCOUNT`, `AMOUNT`, `TERM`, `QUOTA_TYPE_ID`, `NUMBER_QUOTAS`, `PAYMENT_FREQUENCY_ID`, `VERSION`) VALUES
-('MXT', '9999-12-31 00:00:00', '1000', '2012-03-15 01:02:37', 1000, 'GUALÁN SAAVEDRA RONALD MARCELO', 'JPEREZ', 1, NULL, 'M01', '002', 0, NULL, 100.000000, 360, 'AMR', 12, '4', 1),
-('MXT', '9999-12-31 00:00:00', '1001', '2012-03-15 01:02:37', 1001, 'MONTUFAR DIEGO FABIAN', 'JPEREZ', 2, NULL, 'M03', '002', 0, NULL, 150.000000, 180, 'AMR', 6, '4', 1);
 
 -- --------------------------------------------------------
 
@@ -2470,9 +2503,6 @@ CREATE TABLE IF NOT EXISTS `MICRO_ACCOUNT_ID` (
 -- Volcar la base de datos para la tabla `MICRO_ACCOUNT_ID`
 --
 
-INSERT INTO `MICRO_ACCOUNT_ID` (`ACCOUNT_ID`) VALUES
-('1000'),
-('1001');
 
 -- --------------------------------------------------------
 
@@ -2503,25 +2533,6 @@ CREATE TABLE IF NOT EXISTS `MICRO_ACCOUNT_QUOTA` (
 -- Volcar la base de datos para la tabla `MICRO_ACCOUNT_QUOTA`
 --
 
-INSERT INTO `MICRO_ACCOUNT_QUOTA` (`COMPANY_ID`, `EXPIRED`, `ACCOUNT_ID`, `SUBACCOUNT`, `CREATED`, `PROVISION_DAYS`, `FROM_DATE`, `EXPIRATION_DATE`, `PAYMENT_DATE`, `REDUCED_CAPITAL`, `CAPITAL`, `INTEREST`, `CHARGE`, `VERSION`) VALUES
-('MXT', '9999-12-31 00:00:00', '1000', 1, '2012-03-15 01:02:37', 30, '2012-03-14 00:00:00', '2012-04-13 00:00:00', NULL, 100.000000, 7.960000, 0.830000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1000', 2, '2012-03-15 01:02:37', 30, '2012-04-13 00:00:00', '2012-05-13 00:00:00', NULL, 92.040000, 8.020000, 0.770000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1000', 3, '2012-03-15 01:02:37', 30, '2012-05-13 00:00:00', '2012-06-12 00:00:00', NULL, 84.020000, 8.090000, 0.700000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1000', 4, '2012-03-15 01:02:37', 30, '2012-06-12 00:00:00', '2012-07-12 00:00:00', NULL, 75.930000, 8.160000, 0.630000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1000', 5, '2012-03-15 01:02:37', 30, '2012-07-12 00:00:00', '2012-08-11 00:00:00', NULL, 67.770000, 8.230000, 0.570000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1000', 6, '2012-03-15 01:02:37', 30, '2012-08-11 00:00:00', '2012-09-10 00:00:00', NULL, 59.540000, 8.300000, 0.500000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1000', 7, '2012-03-15 01:02:37', 30, '2012-09-10 00:00:00', '2012-10-10 00:00:00', NULL, 51.250000, 8.360000, 0.430000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1000', 8, '2012-03-15 01:02:37', 30, '2012-10-10 00:00:00', '2012-11-09 00:00:00', NULL, 42.880000, 8.430000, 0.360000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1000', 9, '2012-03-15 01:02:37', 30, '2012-11-09 00:00:00', '2012-12-09 00:00:00', NULL, 34.450000, 8.500000, 0.290000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1000', 10, '2012-03-15 01:02:37', 30, '2012-12-09 00:00:00', '2013-01-08 00:00:00', NULL, 25.950000, 8.580000, 0.220000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1000', 11, '2012-03-15 01:02:37', 30, '2013-01-08 00:00:00', '2013-02-07 00:00:00', NULL, 17.370000, 8.650000, 0.140000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1000', 12, '2012-03-15 01:02:37', 30, '2013-02-07 00:00:00', '2013-03-09 00:00:00', NULL, 8.720000, 8.720000, 0.070000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1001', 1, '2012-03-15 01:02:37', 30, '2012-03-14 00:00:00', '2012-04-13 00:00:00', NULL, 150.000000, 24.450000, 1.330000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1001', 2, '2012-03-15 01:02:37', 30, '2012-04-13 00:00:00', '2012-05-13 00:00:00', NULL, 125.550000, 24.670000, 1.110000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1001', 3, '2012-03-15 01:02:37', 30, '2012-05-13 00:00:00', '2012-06-12 00:00:00', NULL, 100.880000, 24.890000, 0.900000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1001', 4, '2012-03-15 01:02:37', 30, '2012-06-12 00:00:00', '2012-07-12 00:00:00', NULL, 76.000000, 25.110000, 0.670000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1001', 5, '2012-03-15 01:02:37', 30, '2012-07-12 00:00:00', '2012-08-11 00:00:00', NULL, 50.890000, 25.330000, 0.450000, 0.000000, 1),
-('MXT', '9999-12-31 00:00:00', '1001', 6, '2012-03-15 01:02:37', 30, '2012-08-11 00:00:00', '2012-09-10 00:00:00', NULL, 25.560000, 25.560000, 0.230000, 0.000000, 1);
 
 -- --------------------------------------------------------
 
@@ -2539,25 +2550,6 @@ CREATE TABLE IF NOT EXISTS `MICRO_ACCOUNT_QUOTA_ID` (
 -- Volcar la base de datos para la tabla `MICRO_ACCOUNT_QUOTA_ID`
 --
 
-INSERT INTO `MICRO_ACCOUNT_QUOTA_ID` (`ACCOUNT_ID`, `SUBACCOUNT`) VALUES
-('1000', 1),
-('1000', 2),
-('1000', 3),
-('1000', 4),
-('1000', 5),
-('1000', 6),
-('1000', 7),
-('1000', 8),
-('1000', 9),
-('1000', 10),
-('1000', 11),
-('1000', 12),
-('1001', 1),
-('1001', 2),
-('1001', 3),
-('1001', 4),
-('1001', 5),
-('1001', 6);
 
 -- --------------------------------------------------------
 
@@ -2747,10 +2739,6 @@ CREATE TABLE IF NOT EXISTS `PARTNER` (
 -- Volcar la base de datos para la tabla `PARTNER`
 --
 
-INSERT INTO `PARTNER` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `PARTNER_ID`, `CREATED`, `PERSON_ID`, `ACTIVITY`, `USER_ID`, `FREQUENCY_ID`, `MEETING_DAY`) VALUES
-('MXT', 'ES', '2012-03-14 23:04:44', 1, '2012-03-14 23:04:36', 1, 'ASDFASDFASDFASDF', 'JPEREZ', '4', 4),
-('MXT', 'ES', '9999-12-31 00:00:00', 1, '2012-03-14 23:04:44', 1, 'ASDFASDFASDFASDF222', 'JPEREZ', '4', 4),
-('MXT', 'ES', '9999-12-31 00:00:00', 2, '2012-03-14 23:05:09', 2, 'QWERQWERQWERQWER', 'JPEREZ', '4', 6);
 
 -- --------------------------------------------------------
 
@@ -2781,8 +2769,6 @@ CREATE TABLE IF NOT EXISTS `PARTNER_GROUP` (
 -- Volcar la base de datos para la tabla `PARTNER_GROUP`
 --
 
-INSERT INTO `PARTNER_GROUP` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `PARTNER_GROUP_ID`, `CREATED`, `GROUP_DESCRIPTION`, `CREATION_DATE`, `ACTIVITY`, `USER_ID`, `FREQUENCY_ID`, `MEETING_DAY`) VALUES
-('MXT', 'ES', '9999-12-31 00:00:00', 1, '2012-03-15 10:40:48', 'AAFSDFFF', '2012-03-15 00:00:00', 'FSDFGSFDSFDS', 'JPEREZ', '4', 7);
 
 -- --------------------------------------------------------
 
@@ -2799,8 +2785,6 @@ CREATE TABLE IF NOT EXISTS `PARTNER_GROUP_ID` (
 -- Volcar la base de datos para la tabla `PARTNER_GROUP_ID`
 --
 
-INSERT INTO `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`) VALUES
-(1);
 
 -- --------------------------------------------------------
 
@@ -2838,9 +2822,6 @@ CREATE TABLE IF NOT EXISTS `PARTNER_ID` (
 -- Volcar la base de datos para la tabla `PARTNER_ID`
 --
 
-INSERT INTO `PARTNER_ID` (`PARTNER_ID`) VALUES
-(1),
-(2);
 
 -- --------------------------------------------------------
 
@@ -3084,6 +3065,7 @@ CREATE TABLE IF NOT EXISTS `PROCESS` (
 
 INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`, `CREATED`, `NAME`, `ENABLE`, `MENU`, `URL`, `DATAFILE_ID`) VALUES
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '0', '01', '2011-10-14 00:00:00', 'LOGGIN', 1, 0, 'A001', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'A', '0', '02', '2012-03-17 02:15:11', 'LOGOUT', 1, 0, 'A002', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '01', '2011-10-14 00:00:00', 'ESTADO DE USUARIOS', 1, 1, 'A101', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '02', '2011-11-27 00:00:00', 'TIPOS DE USUARIO', 1, 1, 'A102', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '03', '2011-11-27 00:00:00', 'SUBSISTEMAS', 1, 1, 'A103', NULL),
@@ -3168,6 +3150,7 @@ CREATE TABLE IF NOT EXISTS `PROCESS_COMPONENT` (
 
 INSERT INTO `PROCESS_COMPONENT` (`COMPANY_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`, `PROCESS_SEQUENCE`, `COMPONENT_ID`, `TYPE_ID`, `ENABLE`, `AUTHORIZE`) VALUES
 ('MXT', 'A', '0', '01', 1, 'mobile.core.security.Loggin', 'QRY', 1, 0),
+('MXT', 'A', '0', '02', 1, 'mobile.core.security.Logout', 'MNT', 1, 0),
 ('MXT', 'C', '4', '01', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 1, NULL),
 ('MXT', 'C', '4', '02', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 1, NULL),
 ('MXT', 'C', '4', '02', 2, 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', 1, NULL),
@@ -3974,10 +3957,10 @@ CREATE TABLE IF NOT EXISTS `SEQUENTIAL` (
 
 INSERT INTO `SEQUENTIAL` (`COMPANY_ID`, `SEQUENTIAL_ID`, `SEQUENTIAL_VALUE`, `VERSION`) VALUES
 ('MXT', 'GEOZONE', 1, 0),
-('MXT', 'PARTNER', 3, 2),
-('MXT', 'PARTNERGRP', 2, 1),
+('MXT', 'PARTNER', 1, 0),
+('MXT', 'PARTNERGRP', 1, 0),
 ('MXT', 'PERSON', 1, 0),
-('MXT', 'SOLICITUDE', 1002, 4);
+('MXT', 'SOLICITUDE', 1000, 2);
 
 -- --------------------------------------------------------
 
@@ -4053,11 +4036,6 @@ CREATE TABLE IF NOT EXISTS `SOLICITUDE` (
 -- Volcar la base de datos para la tabla `SOLICITUDE`
 --
 
-INSERT INTO `SOLICITUDE` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SOLICITUDE_ID`, `CREATED`, `ACCOUNT`, `ASSESSOR`, `PARTNER_CLIENT_ID`, `GROUP_CLIENT_ID`, `SOLICITUDE_DATE`, `APPROVAL_DATE`, `DISBURSEMENT_DATE`, `INSTRUMENTATION_DATE`, `EXPIRATION_DATE`, `INITIAL_PAY_DATE`, `PRODUCT_ID`, `STATUS_ID`, `OPERATIVE_CONDITION_ID`, `NUMBER_RENEWAL`, `AMOUNT`, `TERM`, `QUOTA_TYPE_ID`, `NUMBER_QUOTAS`, `PAYMENT_FREQUENCY_ID`, `FUNDS_DESTINATION_ID`, `DESTINATION_DESCRIPTION`, `VERSION`) VALUES
-('MXT', 'ES', '2012-03-15 01:02:37', 1000, '2012-03-14 23:06:33', NULL, 'JPEREZ', 1, NULL, '2012-03-14 00:00:00', NULL, NULL, NULL, '9999-12-31 00:00:00', NULL, 'M01', '002', NULL, 0, 100.000000, 360, 'AMR', NULL, '4', 'PRO', 'ASDFASDFASDF', 1),
-('MXT', 'ES', '2012-03-15 01:02:37', 1001, '2012-03-14 23:07:33', NULL, 'JPEREZ', 2, NULL, '2012-03-14 00:00:00', NULL, NULL, NULL, '9999-12-31 00:00:00', NULL, 'M03', '002', NULL, 0, 150.000000, 180, 'AMR', NULL, '4', 'PRO', 'ASDFASDFASDF', 1),
-('MXT', 'ES', '9999-12-31 00:00:00', 1000, '2012-03-15 01:02:37', '1000', 'JPEREZ', 1, NULL, '2012-03-14 00:00:00', NULL, NULL, '2012-03-15 00:00:00', '9999-12-31 00:00:00', NULL, 'M01', '002', NULL, 0, 100.000000, 360, 'AMR', 12, '4', 'PRO', 'ASDFASDFASDF', 2),
-('MXT', 'ES', '9999-12-31 00:00:00', 1001, '2012-03-15 01:02:37', '1001', 'JPEREZ', 2, NULL, '2012-03-14 00:00:00', NULL, NULL, '2012-03-15 00:00:00', '9999-12-31 00:00:00', NULL, 'M03', '002', NULL, 0, 150.000000, 180, 'AMR', 6, '4', 'PRO', 'ASDFASDFASDF', 2);
 
 -- --------------------------------------------------------
 
@@ -4074,9 +4052,6 @@ CREATE TABLE IF NOT EXISTS `SOLICITUDE_ID` (
 -- Volcar la base de datos para la tabla `SOLICITUDE_ID`
 --
 
-INSERT INTO `SOLICITUDE_ID` (`SOLICITUDE_ID`) VALUES
-(1000),
-(1001);
 
 -- --------------------------------------------------------
 
@@ -4342,7 +4317,7 @@ CREATE TABLE IF NOT EXISTS `USER_SESSION` (
   `USER_ID` varchar(20) NOT NULL,
   `HOST_ID` varchar(40) NOT NULL,
   `CREATED` datetime NOT NULL,
-  `TOKEN` varchar(100) NOT NULL,
+  `SESSION_ID` varchar(100) NOT NULL,
   `VERSION` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`,`HOST_ID`),
   KEY `USER_SESSION_HOST_ID_FK` (`HOST_ID`),
@@ -4353,6 +4328,9 @@ CREATE TABLE IF NOT EXISTS `USER_SESSION` (
 -- Volcar la base de datos para la tabla `USER_SESSION`
 --
 
+INSERT INTO `USER_SESSION` (`COMPANY_ID`, `EXPIRED`, `USER_ID`, `HOST_ID`, `CREATED`, `SESSION_ID`, `VERSION`) VALUES
+('MXT', '2012-03-17 02:33:08', 'ADMIN', 'LOCALHOST', '2012-03-17 00:54:31', 'FCD708B8E428C1FB7B04EAF180EBF32320120317005431002', 1),
+('MXT', '9999-12-31 00:00:00', 'ADMIN', 'LOCALHOST', '2012-03-17 02:33:50', 'FCD708B8E428C1FB7B04EAF180EBF32320120317023350399', 1);
 
 -- --------------------------------------------------------
 
@@ -4625,6 +4603,7 @@ ALTER TABLE `GEOGRAPHIC_ZONE`
 -- Filtros para la tabla `HOST`
 --
 ALTER TABLE `HOST`
+  ADD CONSTRAINT `HOST_CHANNEL_ID_FK` FOREIGN KEY (`CHANNEL_ID`) REFERENCES `CHANNEL` (`CHANNEL_ID`),
   ADD CONSTRAINT `HOST_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `HOST_ID_FK` FOREIGN KEY (`HOST_ID`) REFERENCES `HOST_ID` (`HOST_ID`);
 
