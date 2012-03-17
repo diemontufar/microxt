@@ -16,7 +16,7 @@ public final class Log {
 
 	public Log() {
 		try {
-            String properties = Config.getInstance().get("log4j.properties");
+            String properties = Config.get("log4j.properties");
             URL url = Loader.getResource(properties);
             PropertyConfigurator.configure(url);
             INSTANCE = Logger.getLogger("mobile");	

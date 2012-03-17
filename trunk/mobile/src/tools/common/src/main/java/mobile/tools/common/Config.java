@@ -2,26 +2,29 @@ package mobile.tools.common;
 
 import java.util.ResourceBundle;
 
-/**
- * Manage configuration parameters
- */
+import mobile.tools.common.convertion.CoreConverter;
+
 public class Config {
 
-	public static Config INSTANCE = null;
-	private ResourceBundle bundle = null;
+	private static Config INSTANCE;
+	private ResourceBundle bundle;
 
-	public Config() {
+	private Config() {
 		bundle = ResourceBundle.getBundle("config");
 	}
 
-	public static Config getInstance() {
+	private synchronized static Config getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new Config();
 		}
 		return INSTANCE;
 	}
 
-	public String get(String key) {
-		return bundle.getString(key);
+	public static String get(String key) {
+		return getInstance().bundle.getString(key);
+	}
+
+	public static boolean is(String key) throws Exception {
+		return CoreConverter.convertObject(getInstance().bundle.getString(key), Boolean.class);
 	}
 }
