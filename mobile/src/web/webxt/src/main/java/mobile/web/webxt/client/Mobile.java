@@ -1,5 +1,6 @@
 package mobile.web.webxt.client;
 
+import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.mvc.AppController;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.mvc.FormController;
@@ -12,21 +13,33 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.widget.Document;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.RootPanel;
 
 public class Mobile implements EntryPoint {
 
 	public void onModuleLoad() {
 
-		//Maps.loadMapsApi(Format.mapsAPIKey, "2", false, new Runnable() {
+		// Maps.loadMapsApi("", "2", false, new Runnable() {
+		// public void run() {
+		// createMVC();
+		// disableRightClick();
+		// enableReloadForm();
+		// exitEvent();
+		// }
+		// });
 		Maps.loadMapsApi("", "2", false, new Runnable() {
 			public void run() {
-				createMVC();
-				disableRightClick();
-				enableReloadForm();
 			}
 		});
+		createMVC();
+		disableRightClick();
+		enableReloadForm();
+		exitEvent();
 	}
 
 	private void createMVC() {
@@ -37,6 +50,20 @@ public class Mobile implements EntryPoint {
 		dispatcher.addController(new StatusController());
 		dispatcher.addController(new FormController());
 		dispatcher.dispatch(AppEvents.Init);
+		// dispatcher.dispatch(AppEvents.UIReady);
+	}
+
+	private void exitEvent() {
+		RootPanel.get();
+
+		Window.addCloseHandler(new CloseHandler<Window>() {
+
+			public void onClose(CloseEvent<Window> event) {
+				System.out.println("Loggout>> Closing Microcredit Application");
+				MyHttpProxy proxy = new MyHttpProxy();
+				proxy.logout();
+			}
+		});
 	}
 
 	/**

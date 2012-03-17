@@ -13,6 +13,7 @@ import mobile.common.message.Message;
 import mobile.common.message.ResponseData;
 import mobile.common.tools.Format;
 import mobile.common.tools.ProcessType;
+import mobile.web.webxt.client.MobileConstants;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
@@ -21,6 +22,7 @@ import mobile.web.webxt.client.util.DatesManager;
 import mobile.web.webxt.client.util.WebConverter;
 import mobile.web.webxt.client.windows.AlertDialog;
 
+import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.data.DataProxy;
 import com.extjs.gxt.ui.client.data.DataReader;
 import com.extjs.gxt.ui.client.data.FilterConfig;
@@ -39,10 +41,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 
 	private final String CONTENT_TYPE = "text/plain; charset=utf-8";
-	// private final String CONTENT_TYPE = "text/plain; charset=ISO-8859-1";
-	// private final String url = "http://127.0.0.1:9090/mobile/Core";
-	private final String ACCEPT = "application/json";
-	// private final String ACCEPT = "text/plain";
+	private final String ACCEPT = "application/json"; // "text/plain";
 	private final String url = GWT.getHostPageBaseURL() + "mobile/Core";
 
 	protected RequestBuilder builder;
@@ -53,6 +52,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	public final String QUERY_PROCESSING_MSG_0 = "Procesando consulta";
 	public final String QUERY_PROCESSING_MSG_1 = "Procesando consulta combo";
 	private String queryProcessing = QUERY_PROCESSING_MSG_0;
+
+	private final String LOGOUT_PROCESS = "A002";
 
 	public MyHttpProxy() {
 		builder = new RequestBuilder(RequestBuilder.POST, URL.encode(url));
@@ -77,6 +78,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		try {
 			// Request
 			Message msg = new Message();
+			setRequestFields(msg);
 			msg.getRequest().setProcess(config.getProcess());
 			msg.getRequest().setProcessType(ProcessType.QUERY.getShortName());
 
@@ -186,12 +188,26 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		}
 	}
 
+	private void setRequestFields(Message msg) {
+		String user = Registry.get(MobileConstants.USER);
+		String host = Registry.get(MobileConstants.HOST);
+		String channel = Registry.get(MobileConstants.CHANNEL);
+		String session = Registry.get(MobileConstants.SESSION);
+		// String user = Registry.get(MobileConstants.PROFILE);
+		msg.getRequest().setUser(user);
+		msg.getRequest().setHost(host);
+		msg.getRequest().setChannel(channel);
+		msg.getRequest().setSession(session);
+		// msg.getRequest().setProfile(profile);
+	}
+
 	public void requestMsg(final MyProcessConfig config, final AsyncCallback<Message> callback) {
 		System.out.println("MyHttpProxy.requestMsg: " + config.toString());
 
 		try {
 			// Request
 			Message msg = new Message();
+			setRequestFields(msg);
 			msg.getRequest().setProcess(config.getProcess());
 			msg.getRequest().setProcessType(config.getProcessType().getShortName());
 
@@ -219,6 +235,33 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		}
 	}
 
+	public void logout() {
+		System.out.println("MyHttpProxy.logout: ");
+
+		try {
+			// Request
+			Message msg = new Message();
+			setRequestFields(msg);
+			msg.getRequest().setProcess(LOGOUT_PROCESS);
+			msg.getRequest().setProcessType(ProcessType.MAINTENANCE.getShortName());
+
+			System.out.println("Conversion en json");
+			String data = convertMessage(msg);
+
+			builder.sendRequest(data, new RequestCallback() {
+				public void onResponseReceived(Request request, Response response) {
+				}
+
+				public void onError(Request request, Throwable exception) {
+				}
+			});
+
+		} catch (Exception e) {
+			showError(e);
+			e.printStackTrace();
+		}
+	}
+
 	public void queryForm(final MyProcessConfig config, Map<String, String> mfields,
 			final AsyncCallback<Map<String, Object>> callback) {
 		System.out.println("MyHttpProxy.queryForm: " + config.toString());
@@ -226,6 +269,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		try {
 			// Request
 			Message msg = new Message();
+			setRequestFields(msg);
 			msg.getRequest().setProcess(config.getProcess());
 			msg.getRequest().setProcessType(ProcessType.QUERY.getShortName());
 
@@ -341,6 +385,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		try {
 			// Request
 			Message msg = new Message();
+			setRequestFields(msg);
 			msg.getRequest().setProcess(config.getProcess());
 			msg.getRequest().setProcessType(ProcessType.MAINTENANCE.getShortName());
 
@@ -449,6 +494,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		try {
 			// Request
 			Message msg = new Message();
+			setRequestFields(msg);
 			msg.getRequest().setProcess(config.getProcess());
 			msg.getRequest().setProcessType(ProcessType.MAINTENANCE.getShortName());
 
@@ -528,15 +574,12 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	private Message evaluateResponse(Response response, MyProcessConfig config) throws Exception {
 		// Evaluate response
 		if (response.getStatusCode() != Response.SC_OK) {
-			if (response.getStatusCode() == 0) {
-				throw new RuntimeException("HttpProxy: ERROR DE COMUNICACION. CÓDIGO = " + response.getStatusCode());
-			}
-			throw new RuntimeException("HttpProxy: CÓDIGO DE ESTATUS NO VÁLIDO = " + response.getStatusCode());
+			throw new RuntimeException("ERROR AL COMUNICARSE CON EL CORE. CÓDIGO: " + response.getStatusCode());
 		}
 
 		String text = response.getText();
-		if (text.startsWith("No message received")) {
-			throw new RuntimeException("HttpProxy: CORE: NO MESSAGE RECEIVED");
+		if (text.startsWith("NINGUN MENSAJE RECIBIDO")) {
+			throw new RuntimeException("CORE: NINGUN MENSAJE RECIBIDO");
 		}
 
 		// Evaluate process result
@@ -545,15 +588,17 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		if (msg.getResponse().getCode() != null
 				&& msg.getResponse().getCode().compareTo(ResponseData.RESPONSE_CODE_OK) != 0) {
 
-			String errorCode = msg.getResponse().getCode();
+			String code = msg.getResponse().getCode();
+			String message = msg.getResponse().getMessage();
+			String error = msg.getResponse().getError();
 
-			String errorMessage = msg.getResponse().getMessage();
-
-			if (errorMessage == null) {
-				throw new RuntimeException("ERROR DE PROCESAMIENTO: " + errorCode);
-			} else {
-				throw new RuntimeException("ERROR DE PROCESAMIENTO: " + errorCode + ".<br/>MENSAJE:<BR/>"
-						+ errorMessage);
+			if (message != null && error != null) {
+				throw new RuntimeException("ERROR DE PROCESAMIENTO: " + code + "<br/>MENSAJE:<br/>" + message
+						+ "<br/>ERROR:<br/>" + error);
+			} else if (message != null && error == null) {
+				throw new RuntimeException("ERROR DE PROCESAMIENTO: " + code + "<br/>MENSAJE:<br/>" + message);
+			} else if (message == null && error == null) {
+				throw new RuntimeException("ERROR DE PROCESAMIENTO: " + code);
 			}
 		}
 

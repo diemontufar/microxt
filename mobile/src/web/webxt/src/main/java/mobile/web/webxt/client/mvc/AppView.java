@@ -1,5 +1,6 @@
 package mobile.web.webxt.client.mvc;
 
+import com.google.gwt.user.client.Timer;
 import mobile.web.webxt.client.devform.A001;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
@@ -55,12 +56,16 @@ public class AppView extends View {
 
 	private void showLoggin() {
 		System.out.println("MVC>> AppView show loggin...");
+
+		Viewport logginviewport;
+		logginviewport = new Viewport();
+		logginviewport.setLoadingPanelId("loading");
+		logginviewport.setVisible(false);
+		
 		A001 loginForm = new A001();
-		Viewport loadingViewPort = new Viewport();
-		loadingViewPort.setLoadingPanelId("loading");
-		loadingViewPort.setVisible(false);
-				
-		RootPanel.get().add(loadingViewPort);
+		
+		RootPanel.get().add(logginviewport);
+		
 		RootPanel.get().add(loginForm);
 		loginForm.show();
 	}
@@ -117,7 +122,14 @@ public class AppView extends View {
 
 	private void onUIReady(AppEvent event) {
 		System.out.println("MVC>> On ui ready...");
-		RootPanel.get().clear();
-		RootPanel.get().add(viewport);
+		
+		Timer t = new Timer() {
+			@Override
+			public void run() {
+				RootPanel.get().clear();
+				RootPanel.get().add(viewport);	
+			}
+		};
+		t.schedule(500);
 	}
 }
