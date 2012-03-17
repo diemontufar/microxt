@@ -1,6 +1,7 @@
 package mobile.web.webxt.client.devform;
 
 import mobile.common.tools.Format;
+import mobile.web.webxt.client.MobileConstants;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.form.MyFormPanel;
@@ -11,6 +12,7 @@ import mobile.web.webxt.client.form.widgets.MyLabel;
 import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.mvc.AppEvents;
 
+import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
@@ -39,7 +41,7 @@ public class A001 extends Dialog {
 	MyFormPanel formLogin;
 
 	// Fields
-	protected InputBox user, password, encPassword, responseCode, responseMsg;
+	protected InputBox user, password, encPassword, responseCode, responseMsg, host, channel, session, profileCounter;
 	protected Button loginButton;
 	protected Status status;
 
@@ -144,7 +146,25 @@ public class A001 extends Dialog {
 		responseMsg.setVisible(false);
 		responseMsg.setDataSource(new DataSource("responseMessage", DataSourceType.CONTROL));
 		formLogin.add(responseMsg);
+		
+		// Host
+		host = new InputBox();
+		host.setVisible(false);
+		host.setDataSource(new DataSource("host", DataSourceType.CONTROL));
+		formLogin.add(host);
+		
+		// Channel
+		channel = new InputBox();
+		channel.setVisible(false);
+		channel.setDataSource(new DataSource("channel", DataSourceType.CONTROL));
+		formLogin.add(channel);
 
+		// Session
+		session = new InputBox();
+		session.setVisible(false);
+		session.setDataSource(new DataSource("session", DataSourceType.CONTROL));
+		formLogin.add(session);
+		
 		add(formLogin);
 	}
 
@@ -189,8 +209,22 @@ public class A001 extends Dialog {
 
 	private void onResponse() {
 		if (responseCode.getValue() != null && responseCode.getValue().compareTo("1") == 0) {
-			Info.display("Autenticación", "Ingreso exitoso");
+			hide();
+			if (responseMsg.getValue() != null) {
+				Info.display("Autenticación", responseMsg.getValue());
+			}
+			
+			Registry.register(MobileConstants.USER, user.getValue());
+			Registry.register(MobileConstants.HOST, host.getValue());
+			Registry.register(MobileConstants.CHANNEL, channel.getValue());
+			Registry.register(MobileConstants.SESSION, session.getValue());
+			//Registry.register(MobileConstants.PROFILE, profile.getValue());
 			Dispatcher.forwardEvent(AppEvents.UIReady);
+			
+			System.out.println("Loggin>> " + user.getValue());
+			System.out.println("Loggin>> " + host.getValue());
+			System.out.println("Loggin>> " + channel.getValue());
+			System.out.println("Loggin>> " + session.getValue());
 		} else {
 			if (responseMsg.getValue() != null) {
 				String msg = responseMsg.getValue();
@@ -206,47 +240,4 @@ public class A001 extends Dialog {
 			loginButton.enable();
 		}
 	}
-
-	// public void clear() {
-	// user.clear();
-	// password.clear();
-	// retrievedUser.clear();
-	// retrievedPassword.clear();
-	// validate();
-	// user.focus();
-	// status.hide();
-	// getButtonBar().enable();
-	// reset.enable();
-	// loginButton.disable();
-	// }
-
-	// public boolean verifyAccess() {
-	//
-	// TripleDesCipher cipher = new TripleDesCipher();
-	// cipher.setKey(Format.GWT_DES_KEY);
-	//
-	// userExists = true;
-	//
-	// try {
-	// encrypted = cipher.encrypt(password.getValue());
-	// } catch (DataLengthException e) {
-	// e.printStackTrace();
-	// } catch (IllegalStateException e) {
-	// e.printStackTrace();
-	// } catch (InvalidCipherTextException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// if (retrievedPassword.getValue() == null) {
-	// userExists = false;
-	// return false;
-	// }
-	//
-	// if (encrypted.compareTo(retrievedPassword.getValue()) == 0) {
-	// return true;
-	// }
-	//
-	// return false;
-	//
-	// }
 }
