@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import mobile.common.message.Message;
 import mobile.core.processor.CoreProcessor;
 import mobile.tools.common.Log;
+import mobile.tools.common.enums.ObjectionCode;
 import mobile.tools.common.msg.Parser;
 
 import org.apache.log4j.Logger;
@@ -39,10 +40,6 @@ public class Core extends HttpServlet {
 
 			log.info("Input message: ");
 			log.info(message);
-			// log.info("Input message UTF-8: " + new String(message.getBytes(),
-			// "UTF-8"));
-			// log.info("Input message ISO-8859-1: " + new
-			// String(message.getBytes(), "ISO-8859-1"));
 
 			if (message == null) {
 				setResponseProp(response);
@@ -50,7 +47,7 @@ public class Core extends HttpServlet {
 				PrintWriter out = response.getWriter();
 
 				// Test message
-				out.println("No message received.");
+				out.println(ObjectionCode.NO_MESSAGE.getMessage());
 				out.close();
 				return;
 			}
@@ -63,7 +60,12 @@ public class Core extends HttpServlet {
 			// Get data from json
 			Parser parser = new Parser();
 			Message msg = parser.parseMsg(message, Message.JSON);
-
+			
+			// Set address
+			if(msg.getRequest().getHost() == null){
+				msg.getRequest().setAddress(request.getRemoteAddr());
+			}
+			
 			// Process
 			CoreProcessor proc = new CoreProcessor();
 			proc.process(msg);
