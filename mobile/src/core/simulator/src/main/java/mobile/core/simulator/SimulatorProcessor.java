@@ -17,6 +17,7 @@ import mobile.common.message.ResponseData;
 import mobile.core.simulator.micro.Instrumentation;
 import mobile.tools.common.Log;
 import mobile.tools.common.convertion.FormatDates;
+import mobile.tools.common.enums.ObjectionCode;
 
 import org.apache.log4j.Logger;
 
@@ -91,7 +92,7 @@ public class SimulatorProcessor {
 	}
 
 	private void setErrorResponseInfo(Exception e, Message msg) {
-		msg.getResponse().setCode(ResponseData.RESPONSE_CODE_ERROR);
+		msg.getResponse().setCode(ObjectionCode.FAILED.getCode());
 
 		if (e instanceof NullPointerException) {
 			msg.getResponse().setMessage("ENVIO DE VALORES NULOS");
