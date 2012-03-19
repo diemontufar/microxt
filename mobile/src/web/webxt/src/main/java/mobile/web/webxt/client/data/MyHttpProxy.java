@@ -192,13 +192,13 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		String user = Registry.get(MobileConstants.USER);
 		String host = Registry.get(MobileConstants.HOST);
 		String channel = Registry.get(MobileConstants.CHANNEL);
+		String profile = Registry.get(MobileConstants.PROFILE);
 		String session = Registry.get(MobileConstants.SESSION);
-		// String user = Registry.get(MobileConstants.PROFILE);
 		msg.getRequest().setUser(user);
 		msg.getRequest().setHost(host);
 		msg.getRequest().setChannel(channel);
 		msg.getRequest().setSession(session);
-		// msg.getRequest().setProfile(profile);
+		msg.getRequest().setProfile(profile);
 	}
 
 	public void requestMsg(final MyProcessConfig config, final AsyncCallback<Message> callback) {
