@@ -4,12 +4,17 @@ import mobile.common.tools.Format;
 import mobile.web.webxt.client.MobileConstants;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
+import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.form.MyFormPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.validations.Validate;
+import mobile.web.webxt.client.form.widgets.ComboForm;
 import mobile.web.webxt.client.form.widgets.InputBox;
+import mobile.web.webxt.client.form.widgets.MyComboBox;
 import mobile.web.webxt.client.form.widgets.MyLabel;
 import mobile.web.webxt.client.form.widgets.RowContainer;
+import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
+import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.mvc.AppEvents;
 
 import com.extjs.gxt.ui.client.Registry;
@@ -23,9 +28,12 @@ import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.util.IconHelper;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.Info;
+import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Status;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
+import com.extjs.gxt.ui.client.widget.layout.CardLayout;
+import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.FillToolItem;
 import com.googlecode.gwt.crypto.client.TripleDesCipher;
 
@@ -33,20 +41,25 @@ public class A001 extends Dialog {
 	private final static String PROCESS = "A001";
 
 	// Constants
-	final int FORM_WIDTH = 350;
-	final int LABEL_WIDTH = 70;
+	private final int FORM_WIDTH = 350;
+	private final int FORM_HEIGHT = 90;
+	private final int LABEL_WIDTH = 70;
 
 	// Forms
-	MyGeneralForm formContainerLogin;
-	MyFormPanel formLogin;
+	private final MyGeneralForm formContainerLogin;
+	private final MyFormPanel formLogin;
+	private final CardLayout cardLayout = new CardLayout();
+	private final LayoutContainer loginContainer = new LayoutContainer(new FlowLayout());
+	private final LayoutContainer profileContainer = new LayoutContainer(new FlowLayout());
 
 	// Fields
-	protected InputBox user, password, encPassword, responseCode, responseMsg, host, channel, session, profileCounter;
-	protected Button loginButton;
-	protected Status status;
+	private InputBox user, password, encPassword, responseCode, responseMsg, host, channel, session;
+	private InputBox profileCounter, profile;
+	private MyComboBox comboProfile;
+	private Button loginButton;
+	private Status status;
 
-	String encrypted;
-	TripleDesCipher cipher;
+	private TripleDesCipher cipher;
 
 	public A001() {
 		cipher = new TripleDesCipher();
@@ -56,7 +69,7 @@ public class A001 extends Dialog {
 		formContainerLogin = new MyGeneralForm(PROCESS);
 		formContainerLogin.setBorders(false);
 
-		// Loggin form
+		// Login form
 		formLogin = new MyFormPanel(formContainerLogin, "", FORM_WIDTH) {
 			@Override
 			protected boolean postQuery() {
@@ -70,11 +83,20 @@ public class A001 extends Dialog {
 		formLogin.setBodyBorder(false);
 		formLogin.setStyleAttribute("padding", "0px");
 
+		// Login container
+		formLogin.setLayout(cardLayout);
+		formLogin.add(loginContainer);
+		formLogin.add(profileContainer);
+		formLogin.setHeight(FORM_HEIGHT);
+		
+		cardLayout.setActiveItem(loginContainer);
+
 		// Create form
 		createForm();
 	}
 
 	public void createForm() {
+		// Login container
 		setClosable(false);
 		setButtonAlign(HorizontalAlignment.LEFT);
 		setButtons("");
@@ -127,7 +149,8 @@ public class A001 extends Dialog {
 		});
 		setFocusWidget(user);
 
-		formLogin.add(fieldSet);
+		// formLogin.add(fieldSet);
+		loginContainer.add(fieldSet);
 
 		// Encrypted password
 		encPassword = new InputBox();
@@ -146,13 +169,13 @@ public class A001 extends Dialog {
 		responseMsg.setVisible(false);
 		responseMsg.setDataSource(new DataSource("responseMessage", DataSourceType.CONTROL));
 		formLogin.add(responseMsg);
-		
+
 		// Host
 		host = new InputBox();
 		host.setVisible(false);
 		host.setDataSource(new DataSource("host", DataSourceType.CONTROL));
 		formLogin.add(host);
-		
+
 		// Channel
 		channel = new InputBox();
 		channel.setVisible(false);
@@ -164,7 +187,37 @@ public class A001 extends Dialog {
 		session.setVisible(false);
 		session.setDataSource(new DataSource("session", DataSourceType.CONTROL));
 		formLogin.add(session);
+
+		// Profile/profiles
+		profileCounter = new InputBox();
+		profileCounter.setVisible(false);
+		profileCounter.setDataSource(new DataSource("profileCounter", DataSourceType.CONTROL));
+		formLogin.add(profileCounter);
+
+		profile = new InputBox();
+		profile.setVisible(false);
+		profile.setDataSource(new DataSource("profile", DataSourceType.CONTROL));
+		formLogin.add(profile);
+
+		// Profile container
+		row = new RowContainer();
+		label = new MyLabel("Rol:", LABEL_WIDTH);
+		row.add(label);
 		
+		comboProfile = new ComboForm(60);
+		comboProfile.setProcess("G203");
+
+		Reference refProfile = new Reference("prof", "Profile");
+		final ArrayColumnData cdata = new ArrayColumnData();
+		cdata.add(new MyColumnData("prof", "profileId", "Id", 60));
+		cdata.add(new MyColumnData("prof", "description", "Descripción", 150));
+		comboProfile.setQueryData(refProfile, cdata);
+		comboProfile.setDisplayField("profileId");
+		comboProfile.addDependency(user, "userId");
+		row.add(comboProfile);
+		
+		profileContainer.add(row);
+
 		add(formLogin);
 	}
 
@@ -190,41 +243,50 @@ public class A001 extends Dialog {
 	}
 
 	protected void onSubmit() {
-		// Encrypt password
-		String encrypted = "";
-		TripleDesCipher cipher = new TripleDesCipher();
-		cipher.setKey(Format.GWT_DES_KEY);
-		try {
-			encrypted = cipher.encrypt(password.getValue());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		encPassword.setValue(encrypted);
+		if (cardLayout.getActiveItem() == loginContainer) {
+			// Encrypt password
+			String encrypted = "";
+			TripleDesCipher cipher = new TripleDesCipher();
+			cipher.setKey(Format.GWT_DES_KEY);
+			try {
+				encrypted = cipher.encrypt(password.getValue());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			encPassword.setValue(encrypted);
 
-		// Remote loggin
-		status.show();
-		getButtonBar().disable();
-		formLogin.queryForm();
+			// Remote login
+			status.show();
+			getButtonBar().disable();
+			formLogin.queryForm();
+		} else {
+			String profile = comboProfile.getRawValue();
+			onProfileSelected(profile);
+		}
 	}
 
 	private void onResponse() {
+		status.hide();
+		getButtonBar().enable();
+		loginButton.enable();
+		
 		if (responseCode.getValue() != null && responseCode.getValue().compareTo("1") == 0) {
-			hide();
-			if (responseMsg.getValue() != null) {
-				Info.display("Autenticación", responseMsg.getValue());
-			}
-			
+			// Register global variables
 			Registry.register(MobileConstants.USER, user.getValue());
 			Registry.register(MobileConstants.HOST, host.getValue());
 			Registry.register(MobileConstants.CHANNEL, channel.getValue());
 			Registry.register(MobileConstants.SESSION, session.getValue());
-			//Registry.register(MobileConstants.PROFILE, profile.getValue());
-			Dispatcher.forwardEvent(AppEvents.UIReady);
-			
 			System.out.println("Loggin>> " + user.getValue());
 			System.out.println("Loggin>> " + host.getValue());
 			System.out.println("Loggin>> " + channel.getValue());
 			System.out.println("Loggin>> " + session.getValue());
+			
+			if (Integer.parseInt(profileCounter.getValue()) == 1) {
+				onProfileSelected(profile.getValue());
+			} else {
+				cardLayout.setActiveItem(profileContainer);
+			}
+			
 		} else {
 			if (responseMsg.getValue() != null) {
 				String msg = responseMsg.getValue();
@@ -235,9 +297,18 @@ public class A001 extends Dialog {
 			A001.this.show();
 			A001.this.formLogin.reset();
 			user.focus();
-			status.hide();
-			getButtonBar().enable();
-			loginButton.enable();
 		}
+	}
+
+	private void onProfileSelected(String profile) {
+		Registry.register(MobileConstants.PROFILE, profile);
+		System.out.println("Loggin>> " + profile);
+		
+		hide();
+
+		if (responseMsg.getValue() != null) {
+			Info.display("Autenticación", responseMsg.getValue());
+		}
+		Dispatcher.forwardEvent(AppEvents.UIReady);
 	}
 }
