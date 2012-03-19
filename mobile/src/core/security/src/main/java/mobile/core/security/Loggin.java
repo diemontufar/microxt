@@ -54,9 +54,9 @@ public class Loggin implements QueryProcessor {
 
 					SessionValidator sv = new SessionValidator();
 					sv.setUserSession(msg);
-					
-//					RoleValidator rv = new RoleValidator();
-//					rv.execute(msg);
+
+					RoleValidator rv = new RoleValidator();
+					rv.setProfile(msg);
 				} else {
 					log.info("Ivalid password");
 					throw new Objection(ObjectionCode.USER_PASSWORD);
@@ -67,6 +67,7 @@ public class Loggin implements QueryProcessor {
 			}
 
 		} catch (Objection e) {
+			e.printStackTrace();
 			if(e instanceof Objection){
 				msg.setControlFieldValue(RESPONSE_CODE, "0");
 				msg.setControlFieldValue(RESPONSE_MSG, e.getMessage());
