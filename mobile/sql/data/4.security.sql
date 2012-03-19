@@ -115,12 +115,14 @@ insert into PROCESS_ID (SUBSYSTEM_ID, MODULE_ID, PROCESS_ID) values ('G', '0', '
 insert into PROCESS_ID (SUBSYSTEM_ID, MODULE_ID, PROCESS_ID) values ('G', '1', '01');
 insert into PROCESS_ID (SUBSYSTEM_ID, MODULE_ID, PROCESS_ID) values ('G', '2', '01');
 insert into PROCESS_ID (SUBSYSTEM_ID, MODULE_ID, PROCESS_ID) values ('G', '2', '02');
+insert into PROCESS_ID (SUBSYSTEM_ID, MODULE_ID, PROCESS_ID) values ('G', '2', '03');
 insert into PROCESS_ID (SUBSYSTEM_ID, MODULE_ID, PROCESS_ID) values ('G', '3', '01');
 insert into PROCESS_ID (SUBSYSTEM_ID, MODULE_ID, PROCESS_ID) values ('G', '3', '02');
 insert into PROCESS_ID (SUBSYSTEM_ID, MODULE_ID, PROCESS_ID) values ('G', '3', '03');
 insert into PROCESS_ID (SUBSYSTEM_ID, MODULE_ID, PROCESS_ID) values ('G', '3', '04');
 
 insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '0', '01', '2011-10-14 00:00:00', 'LOGGIN', '1', '0', 'A001', null);
+insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '0', '02', '2012-03-17 02:15:11', 'LOGOUT', '1', '0', 'A002', null);
 insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '01', '2011-10-14 00:00:00', 'ESTADO DE USUARIOS', '1', '1', 'A101', null);
 insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '02', '2011-11-27 00:00:00', 'TIPOS DE USUARIO', '1', '1', 'A102', null);
 insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '03', '2011-11-27 00:00:00', 'SUBSISTEMAS', '1', '1', 'A103', null);
@@ -173,6 +175,7 @@ insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, 
 insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '1', '01', '2011-10-14 00:00:00', 'PARAMETROS GENERALES', '1', '1', 'G101', null);
 insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '01', '2011-10-14 00:00:00', 'LISTA DE VALORES PARA LOS COMBOS', '1', '0', 'G201', null);
 insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '02', '2012-03-03 12:09:42', 'LOV PARA SOCIOS INDIVIDUALES', '1', '0', 'G202', null);
+insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '03', '2012-03-03 12:09:42', 'LOV PARA ROLES POR USUARIO', '1', '0', 'G203', null);
 insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '01', '2011-10-14 00:00:00', 'PAISES', '1', '1', 'G301', null);
 insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '02', '2011-10-14 00:00:00', 'PROVINCIAS', '1', '1', 'G302', null);
 insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, CREATED, NAME, ENABLE, MENU, URL, DATAFILE_ID) values ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '03', '2011-10-14 00:00:00', 'CANTONES', '1', '1', 'G303', null);
@@ -181,6 +184,8 @@ insert into PROCESS (COMPANY_ID, LANGUAGE_ID, EXPIRED, SUBSYSTEM_ID, MODULE_ID, 
 insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.core.processor.MaintenanceProcessor', 'MNT');
 insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.core.processor.QueryProcessor', 'QRY');
 insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.core.security.Loggin', 'QRY');
+insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.core.security.Logout', 'MNT');
+insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.core.security.query.QueryProfilesForUser', 'QRY');
 insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.logic.general.MenuGenerator', 'QRY');
 insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.logic.microxt.query.QueryPartnerInfo', 'QRY');
 insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.logic.microxt.query.QuerySolicitude', 'QRY');
@@ -189,15 +194,18 @@ insert into COMPONENT_ID (COMPONENT_ID, TYPE_ID) values ('mobile.logic.microxt.R
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.core.processor.MaintenanceProcessor', 'MNT', 'G', 'MaintenanceProcessor', 'general', 'General maintenance processor');
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.core.processor.QueryProcessor', 'QRY', 'G', 'QueryProcessor', 'general', 'General query processor');
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.core.security.Loggin', 'QRY', 'A', 'Loggin', 'general', 'Process loggin');
+insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.core.security.Logout', 'MNT', 'A', 'Logout', null, 'Process logout');
+insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.core.security.query.QueryProfilesForUser', 'QRY', 'A', 'QueryProfilesForUser', 'general', 'CONSULTA LOS ROLES DE UN USUARIO');
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.logic.general.MenuGenerator', 'QRY', 'G', 'MenuGenerator', 'general', 'Query the menu items');
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', 'C', 'QueryPartnerInfo', null, 'CONSULTA INFORMACION DE CLIENTES INDIVIDUALES');
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 'C', 'QuerySolicitude', null, 'CONSULTA INFORMACION DE LAS SOLICITUDES');
 insert into COMPONENT (COMPANY_ID, COMPONENT_ID, TYPE_ID, SUBSYSTEM_ID, CLASS_NAME, METHOD_NAME, DESCRIPTION) values ('MXT', 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', 'C', 'RemoteInstrumentation', null, 'REALIZA LA INSTRUMENTACIÓN CONECTANDOSE CON EL CORE BANCARIO');
 
 insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'A', '0', '01', 1, 'mobile.core.security.Loggin', 'QRY', '1', '0');
+insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'A', '0', '02', 1, 'mobile.core.security.Logout', 'MNT', '1', '0');
 insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'C', '4', '01', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', '1', null);
 insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'C', '4', '02', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', '1', null);
 insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'C', '4', '02', 2, 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', '1', null);
 insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'G', '0', '01', 1, 'mobile.logic.general.MenuGenerator', 'QRY', '1', '0');
 insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'G', '2', '02', 1, 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', '1', null);
-
+insert into PROCESS_COMPONENT (COMPANY_ID, SUBSYSTEM_ID, MODULE_ID, PROCESS_ID, PROCESS_SEQUENCE, COMPONENT_ID, TYPE_ID, ENABLE, AUTHORIZE) values ('MXT', 'G', '2', '03', 1, 'mobile.core.security.query.QueryProfilesForUser', 'QRY', '1', null);
