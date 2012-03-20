@@ -92,7 +92,7 @@ public class A107 extends MyGeneralForm {
 		// Filter: module
 		row = new RowContainer();
 
-		label = new MyLabel("Modulo:", LABEL_WIDTH);
+		label = new MyLabel("Módulo:", LABEL_WIDTH);
 		row.add(label);
 
 		// Module combo

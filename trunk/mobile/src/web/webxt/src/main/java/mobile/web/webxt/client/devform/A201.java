@@ -44,7 +44,7 @@ public class A201 extends MyGeneralForm {
 		final ArrayColumnData cdata = new ArrayColumnData();
 		cdata.add(new MyColumnData("pk_profileId", "Rol", 70, 4, false));
 		cdata.add(new MyColumnData("name", "Nombre", 150, 40, false));
-		cdata.add(new MyColumnData("description", "Descripcion", 200, 150, true));
+		cdata.add(new MyColumnData("description", "Descripción", 200, 150, true));
 		getConfig().setlDataSource(cdata.getDataSources());
 
 		// Columns

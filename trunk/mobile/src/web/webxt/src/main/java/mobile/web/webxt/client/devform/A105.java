@@ -96,7 +96,7 @@ public class A105 extends MyGeneralForm {
 		row = new RowContainer();
 		row.setStyleAttribute("margin-bottom", "10px");
 
-		label = new MyLabel("Modulo:", LABEL_WIDTH);
+		label = new MyLabel("Módulo:", LABEL_WIDTH);
 		row.add(label);
 
 		// Module combo

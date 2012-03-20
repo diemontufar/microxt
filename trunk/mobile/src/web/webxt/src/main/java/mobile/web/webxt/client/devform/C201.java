@@ -110,7 +110,7 @@ public class C201 extends MyGeneralForm {
 		
 		row = new RowContainer();
 		row.setHeight(320);
-		activity=new MyTextArea(520,100);
+		activity=new MyTextArea(520,300);
 		activity.setDataSource(new DataSource("par", "activity", DataSourceType.RECORD));
 		activity.setHeight(100);
 		activity.setEmptyText("Describa las actividades a las que se dedica el cliente");
@@ -158,7 +158,7 @@ public class C201 extends MyGeneralForm {
 		fieldSet.setWidth(270);
 		
 		row = new RowContainer();
-		label = new MyLabel("Identificacion:", LABEL_WIDTH+10);
+		label = new MyLabel("Identificación:", LABEL_WIDTH+10);
 		row.add(label);								
 		identification= new InputBox(150,11,Validate.ALPHANUMERIC);
 		row.add(identification);
@@ -180,7 +180,7 @@ public class C201 extends MyGeneralForm {
 		fieldSet.add(row);
 		
 		row = new RowContainer();
-		label = new MyLabel("Genero:", LABEL_WIDTH+10);
+		label = new MyLabel("Género:", LABEL_WIDTH+10);
 		row.add(label);	
 		gender= new InputBox(100,2,Validate.TEXT);
 		row.add(gender);
@@ -261,9 +261,11 @@ public class C201 extends MyGeneralForm {
 		
 		
 		// Person combo
-		personCombo = new ComboForm(70);
+		personCombo = new ComboForm(100);
 		personCombo.setDataSource(new DataSource("par", "personId", DataSourceType.RECORD));
 		personCombo.setPageSize(10);
+		personCombo.setAllowBlank(false);
+		personCombo.setEditable(true);
 
 		Reference refPerson = new Reference("per", "Person");
 		final ArrayColumnData cdataPerson = new ArrayColumnData();
@@ -276,6 +278,7 @@ public class C201 extends MyGeneralForm {
 		cdataPerson.add(new MyColumnData("per","civilStatusId", false));
 		personCombo.setQueryData(refPerson, cdataPerson);
 		personCombo.setDisplayField("pk_personId");
+		personCombo.setFilteredField("identificationNumber");
 		row.add(personCombo);
 
 		row.add(personCombo);
@@ -286,15 +289,18 @@ public class C201 extends MyGeneralForm {
 		label = new MyLabel("Asesor:", LABEL_WIDTH);
 		row.add(label);			
 				
-		asessorCombo = new ComboForm(70);
+		asessorCombo = new ComboForm(100);
 		asessorCombo.setDataSource(new DataSource("par", "userId", DataSourceType.RECORD));
+		asessorCombo.setAllowBlank(false);
+		asessorCombo.setEditable(true);
 
 		Reference refUserAcco = new Reference("usa", "UserAccount");
 		final ArrayColumnData uadata = new ArrayColumnData();
-		uadata.add(new MyColumnData("usa", "pk_userId", "Id", 40));
-		uadata.add(new MyColumnData("usa", "name", "Nombre", 120));
+		uadata.add(new MyColumnData("usa", "pk_userId", "Id", 70));
+		uadata.add(new MyColumnData("usa", "name", "Nombre", 150));
 		asessorCombo.setQueryData(refUserAcco, uadata);
 		asessorCombo.setDisplayField("pk_userId");
+		asessorCombo.setFilteredField("pk_userId");
 		row.add(asessorCombo);
 		
 		String filterField = "userTypeId";
@@ -322,7 +328,7 @@ public class C201 extends MyGeneralForm {
 		Reference refFrec = new Reference("fre", "Frequency");
 		final ArrayColumnData frdata = new ArrayColumnData();
 		frdata.add(new MyColumnData("fre", "pk_frequencyId", "Id", 40));
-		frdata.add(new MyColumnData("fre", "description", "Descripcion", 120));
+		frdata.add(new MyColumnData("fre", "description", "Descripción", 120));
 		freqCombo.setQueryData(refFrec, frdata);
 		freqCombo.setDisplayField("pk_frequencyId");
 		row.add(freqCombo);
@@ -340,14 +346,14 @@ public class C201 extends MyGeneralForm {
 		fieldSet.add(row);
 		
 		row = new RowContainer();
-		label = new MyLabel("Dia reunion:", LABEL_WIDTH);
+		label = new MyLabel("Día reunión:", LABEL_WIDTH);
 		row.add(label);
 		
-		meetingDay = new MyNumberField(80);
+		meetingDay = new MyNumberField(70);
 		meetingDay.setDataSource(new DataSource("par", "meetingDay", DataSourceType.RECORD));
 		meetingDay.setMaxValue(7);
 		meetingDay.setMinValue(1);
-		meetingDay.setToolTip("Dia de la semana entre 1-7");
+		meetingDay.setToolTip("Día de la semana entre 1-7");
 		meetingDay.setMaxLength(1);
 				
 		row.add(meetingDay);

@@ -54,7 +54,7 @@ public class B007 extends MyGeneralForm {
 		ColumnModel cm = new ColumnModel(configs);
 
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Tipos de Telefono", 400, 230);
+		EntityContentPanel cp = new EntityContentPanel("Tipos de Teléfono", 400, 230);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);

@@ -49,16 +49,13 @@ public class A202 extends MyGeneralForm {
 
 		// Grid configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_profileId", "Rol", 70, 4, false));
+		cdata.add(new MyColumnData("pk_profileId", "Rol", 100, 4, false));
 		DataSource ds1 = new DataSource("Process", "url", DataSourceType.DESCRIPTION);
-		cdata.add(new MyColumnData(ds1, "Proceso", 70, false));
+		cdata.add(new MyColumnData(ds1, "Proceso", 100, false));
 		cdata.add(new MyColumnData("pk_subsystemId"));
 		cdata.add(new MyColumnData("pk_moduleId"));
 		cdata.add(new MyColumnData("pk_processId"));
-		// cdata.add(new MyColumnData("dayId", "Día", 50, 1, false));
-		// cdata.add(new MyColumnData("hourFrom", "Hora desde", 100, 4, true));
-		// cdata.add(new MyColumnData("hourTo", "Hora hasta", 100, 4, true));
-		cdata.add(new MyColumnData("editable", "Editable", 60, 10, false));
+		cdata.add(new MyColumnData("editable", "Editable", 100, 10, false));
 		getConfig().setlDataSource(cdata.getDataSources());
 
 		// Column model
@@ -76,7 +73,7 @@ public class A202 extends MyGeneralForm {
 		// Combo process
 		ComboColumn comboProcess = new ComboColumn(cdata.get(1));
 		Reference refProcess = new Reference("proc", "Process");
-		// comboProcess.setPageSize(10);
+		comboProcess.getComboBox().setPageSize(10);
 		cdataCombo = new ArrayColumnData();
 		cdataCombo.add(new MyColumnData("proc", "url", "Proceso", 70));
 		cdataCombo.add(new MyColumnData("proc", "name", "Nombre	", 200));
@@ -100,10 +97,6 @@ public class A202 extends MyGeneralForm {
 		comboProcess.linkWithColumn("pk_moduleId", modCol);
 		comboProcess.linkWithColumn("pk_processId", proCol);
 
-		// configs.add(new NumericColumn(cdata.get(5),NumberType.INTEGER));
-		// configs.add(new NumericColumn(cdata.get(6),NumberType.INTEGER));
-		// configs.add(new NumericColumn(cdata.get(7),NumberType.INTEGER));
-
 		CheckColumnConfig a = new CheckColumn(cdata.get(5));
 		configs.add(a);
 
@@ -112,7 +105,7 @@ public class A202 extends MyGeneralForm {
 		ColumnModel cm = new ColumnModel(configs);
 
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Procesos por rol", 300, 340);
+		EntityContentPanel cp = new EntityContentPanel("Procesos por rol", 400, 340);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);

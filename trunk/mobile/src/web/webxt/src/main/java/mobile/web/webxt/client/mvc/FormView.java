@@ -30,7 +30,6 @@ import mobile.web.webxt.client.devform.C002;
 import mobile.web.webxt.client.devform.C003;
 import mobile.web.webxt.client.devform.C004;
 import mobile.web.webxt.client.devform.C005;
-import mobile.web.webxt.client.devform.C006;
 import mobile.web.webxt.client.devform.C007;
 import mobile.web.webxt.client.devform.C101;
 import mobile.web.webxt.client.devform.C102;
@@ -194,7 +193,7 @@ public class FormView extends View {
 		} else if (processId.compareTo("C005") == 0) {
 			form = new C005();
 		} else if (processId.compareTo("C006") == 0) {
-			form = new C006();
+			//form = new C006();
 		} else if (processId.compareTo("C007") == 0) {
 			form = new C007();
 		} else if (processId.compareTo("C101") == 0) {

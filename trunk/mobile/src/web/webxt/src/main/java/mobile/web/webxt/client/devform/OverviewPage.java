@@ -35,12 +35,18 @@ public class OverviewPage extends LayoutContainer {
 
 		lProcess = new ArrayList<ShortcutProcess>();
 		lProcess.add(new ShortcutProcess("B101", "Personas Naturales", Resources.IMAGES.person().getHTML()));
-		lProcess.add(new ShortcutProcess("C102", "Zonas Geograficas", Resources.IMAGES.zones().getHTML()));
+		lProcess.add(new ShortcutProcess("B102", "Dierecciones", Resources.IMAGES.address().getHTML()));
+		lProcess.add(new ShortcutProcess("B103", "Telefonos", Resources.IMAGES.phone().getHTML()));
 		lProcess.add(new ShortcutProcess("C201", "Socios Individuales", Resources.IMAGES.individual().getHTML()));
 		lProcess.add(new ShortcutProcess("C202", "Socios Grupales", Resources.IMAGES.groupal().getHTML()));
 		lProcess.add(new ShortcutProcess("C301", "Solicitud", Resources.IMAGES.solicitude().getHTML()));
-		lProcess.add(new ShortcutProcess("C302", "Recomendacion", Resources.IMAGES.recomendation().getHTML()));
-
+		lProcess.add(new ShortcutProcess("C201", "Zonas Asignadas", Resources.IMAGES.zones().getHTML()));
+		lProcess.add(new ShortcutProcess("C302", "Aprobación", Resources.IMAGES.approval().getHTML()));
+		lProcess.add(new ShortcutProcess("C402", "Instrumentación", Resources.IMAGES.instrumentation().getHTML()));
+		lProcess.add(new ShortcutProcess("C503", "Pago de Cuotas", Resources.IMAGES.payment().getHTML()));
+		lProcess.add(new ShortcutProcess("C401", "Consulta Solicitudes", Resources.IMAGES.solicitudes().getHTML()));
+		lProcess.add(new ShortcutProcess("C502", "Consulta de Cuotas", Resources.IMAGES.quotas().getHTML()));
+		lProcess.add(new ShortcutProcess("C401", "Movimientos del Día", Resources.IMAGES.movements().getHTML()));
 		ListStore<ShortcutProcess> store = new ListStore<ShortcutProcess>();
 		store.add(lProcess);
 

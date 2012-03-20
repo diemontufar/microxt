@@ -43,7 +43,7 @@ public class B103 extends MyGeneralForm {
 
 		// Constants
 		final int FORM_WIDTH = 620;
-		final int GRID_HEIGHT = 350;
+		final int GRID_HEIGHT = 250;
 
 		// Form panel
 		final MyFormPanel form = new MyFormPanel(this, "Teléfonos", FORM_WIDTH);
