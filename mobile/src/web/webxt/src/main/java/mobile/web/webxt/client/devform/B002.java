@@ -54,7 +54,7 @@ public class B002 extends MyGeneralForm {
 		ColumnModel cm = new ColumnModel(configs);
 
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Tipos de Identificacion", 400, 230);
+		EntityContentPanel cp = new EntityContentPanel("Tipos de Identificación", 400, 230);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);

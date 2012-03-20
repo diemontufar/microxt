@@ -1,7 +1,15 @@
 package mobile.web.webxt.client.components;
 
 import mobile.web.webxt.client.MobileConfig;
-import mobile.web.webxt.client.devform.C502;
+import mobile.web.webxt.client.devform.A105;
+import mobile.web.webxt.client.devform.A202;
+import mobile.web.webxt.client.devform.A205;
+import mobile.web.webxt.client.devform.A206;
+import mobile.web.webxt.client.devform.B101;
+import mobile.web.webxt.client.devform.C102;
+import mobile.web.webxt.client.devform.C104;
+import mobile.web.webxt.client.devform.C201;
+import mobile.web.webxt.client.devform.C301;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.resources.Resources;
 
@@ -29,7 +37,7 @@ public class FormPanel extends ContentPanel {
 			add(tabPanel);
 		} else {
 			// Put here the tested form
-			add(new C502());
+			add(new C201());
 		}
 
 	}

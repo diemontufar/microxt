@@ -33,7 +33,7 @@ public class PersonHeader extends RowContainer {
 		this.idField = idField;
 		this.dsType = type;
 
-		personCombo = new ComboForm(50);
+		personCombo = new ComboForm(70);
 	}
 
 	@Override
@@ -46,6 +46,7 @@ public class PersonHeader extends RowContainer {
 		add(label, new HBoxLayoutData(new Margins(0, 0, 0, 0)));
 
 		personCombo.setDataSource(new DataSource(alias, idField, dsType));
+		personCombo.setEditable(true);
 		Reference refPerson = new Reference("per1", "Person");
 		final ArrayColumnData cdataPerson = new ArrayColumnData();
 		cdataPerson.add(new MyColumnData("per1", "pk_personId", "Id", 50));
@@ -56,6 +57,7 @@ public class PersonHeader extends RowContainer {
 		personCombo.setDisplayField("pk_personId");
 		personCombo.setData("mobile-type", Long.class);
 		personCombo.setPageSize(COMBO_PAGE_SIZE);
+		personCombo.setFilteredField("identificationNumber");
 		add(personCombo, new HBoxLayoutData(new Margins(0, 0, 0, 0)));
 
 		// Identification

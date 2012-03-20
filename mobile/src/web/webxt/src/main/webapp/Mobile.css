@@ -18,7 +18,10 @@
   color: #444;
   font: bold 13px tahoma, arial, helvetica;
   padding: 10px;
-  margin: 0;
+  margin-left: auto ;
+  margin-right: auto ;
+  margin-top: auto ;
+  margin-bottom: auto ;
   height: auto;
 }
  
@@ -62,10 +65,10 @@
 
 .sample-box {
   float: left;
-  width: 210px;
-  margin: 30px 50px 20px 30px;
+  width: 172px;
+  margin: 10px 10px 10px 10px;
   text-align: center;
-  height: 180px;
+  height: 150px;
   cursor: default;
   color: #444;
   overflow: hidden;

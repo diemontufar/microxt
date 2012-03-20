@@ -16,8 +16,8 @@ import mobile.web.webxt.client.form.widgets.MyLabel;
 import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
+import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.DatesManager;
-import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Orientation;
@@ -29,6 +29,8 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.mvc.AppEvent;
+import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -52,7 +54,8 @@ public class B101 extends MyGeneralForm {
 	final int FIELD_WIDTH_2 = 150;
 
 	IdType type = null;
-	boolean isValidId = false;
+	boolean isValidId, isValidDate;
+	MyDateField birthDate;
 
 	public B101() {
 		super(PROCESS, true);
@@ -166,7 +169,7 @@ public class B101 extends MyGeneralForm {
 		label = new MyLabel("Fecha Nacimiento:", LABEL_WIDTH);
 		row.add(label);
 
-		final MyDateField birthDate = new MyDateField();
+		birthDate = new MyDateField();
 		birthDate.setDataSource(new DataSource("per", "dateOfBirth", DataSourceType.RECORD));
 		birthDate.setWidth(FIELD_WIDTH);
 		birthDate.setAllowBlank(false);
@@ -185,6 +188,7 @@ public class B101 extends MyGeneralForm {
 		// Gender combo
 		final ComboForm genderCombo = new ComboForm(50);
 		genderCombo.setDataSource(new DataSource("per", "genderTypeId", DataSourceType.RECORD));
+		genderCombo.setAllowBlank(false);
 
 		Reference refProduct = new Reference("gen", "GenderType");
 		final ArrayColumnData pcdata = new ArrayColumnData();
@@ -211,7 +215,8 @@ public class B101 extends MyGeneralForm {
 		// Civil Status combo
 		final ComboForm civilStatusCombo = new ComboForm(50);
 		civilStatusCombo.setDataSource(new DataSource("per", "civilStatusId", DataSourceType.RECORD));
-
+		civilStatusCombo.setAllowBlank(false);
+		
 		Reference refCivilStatus = new Reference("civ", "CivilStatus");
 		final ArrayColumnData csdata = new ArrayColumnData();
 		csdata.add(new MyColumnData("civ", "pk_civilStatusId", "Id", 70));
@@ -237,6 +242,7 @@ public class B101 extends MyGeneralForm {
 		// Profession combo
 		final ComboForm profesionCombo = new ComboForm(50);
 		profesionCombo.setDataSource(new DataSource("per", "professionTypeId", DataSourceType.RECORD));
+		profesionCombo.setAllowBlank(false);
 
 		Reference refProfession = new Reference("pro", "ProfessionType");
 		final ArrayColumnData prdata = new ArrayColumnData();
@@ -262,8 +268,6 @@ public class B101 extends MyGeneralForm {
 		// ID Type:
 		FieldSet fieldSet2 = new FieldSet();
 		fieldSet2.setHeading("Identificación");
-		//fieldSet2.setWidth(350);
-		//fieldSet2.setWidth(LABEL_WIDTH_2 + FIELD_WIDTH_2 + 40);
 
 		row = new RowContainer();
 		label = new MyLabel("Tipo ID:", LABEL_WIDTH_2);
@@ -272,6 +276,7 @@ public class B101 extends MyGeneralForm {
 		// Identification Combo:
 		final ComboForm idTypeCombo = new ComboForm(50);
 		idTypeCombo.setDataSource(new DataSource("per", "identificationTypeId", DataSourceType.RECORD));
+		idTypeCombo.setAllowBlank(false);
 
 		Reference refIdentification = new Reference("idt", "IdentificationType");
 		final ArrayColumnData iddata = new ArrayColumnData();
@@ -302,27 +307,6 @@ public class B101 extends MyGeneralForm {
 		identification.setValidateOnBlur(true);
 		row.add(identification);
 
-		identification.addListener(Events.OnBlur, new Listener<FieldEvent>() {
-			public void handleEvent(FieldEvent fe) {
-
-				if (type == IdType.CED || type == IdType.RUC) {
-					isValidId = new ValidateIdentification().isValid(identification.getValue(), type);
-				}else{
-					isValidId=true;
-				}				
-				
-				if (!isValidId) {
-					identification.isValid(false);
-					identification.forceInvalid("Identificacion Incorrecta");
-				} else {
-					identification.isValid(true);
-					identification.clearInvalid();
-				}
-
-			}
-		});
-		
-		
 		idTypeCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
@@ -354,10 +338,39 @@ public class B101 extends MyGeneralForm {
 
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-
+				
+				System.out.println("**********Este es el valor del combo: "+personIdCombo.getValue());
+				
+				if (type == IdType.CED || type == IdType.RUC) {
+					isValidId = new ValidateIdentification().isValid(identification.getValue(), type);
+				}else{
+					isValidId=true;
+				}	
+				
+				if (DatesManager.isToday(birthDate.getRawValue())){
+					isValidDate=false;
+				}else{
+					isValidDate=true;
+				}
+				
 				if (!isValidId) {
-					new AlertDialog("Error", "Identificacion incorrecta").show();
-					identification.forceInvalid("Identificacion Incorrecta");
+					identification.isValid(false);
+					Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification,
+					"Identificación Incorrecta"));
+					identification.forceInvalid("Identificación Incorrecta");
+				} else {
+					identification.isValid(true);
+					identification.clearInvalid();
+				}
+				
+				if (!isValidDate) {
+					birthDate.isValid(false);
+					Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification,
+					"Fecha de nacimiento no puede ser hoy"));
+					birthDate.forceInvalid("Fecha Incorrecta");
+				} else {
+					birthDate.isValid(true);
+					birthDate.clearInvalid();
 				}
 
 				form.commitForm();

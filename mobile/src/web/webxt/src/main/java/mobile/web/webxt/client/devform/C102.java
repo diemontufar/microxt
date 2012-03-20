@@ -34,7 +34,6 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
-import com.extjs.gxt.ui.client.widget.layout.CenterLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.layout.RowData;
 import com.extjs.gxt.ui.client.widget.layout.RowLayout;
@@ -137,7 +136,7 @@ public class C102 extends MyGeneralForm {
 		right.setStyleAttribute("padding", "10");
 		right.setBorders(true);
 		right.setFrame(false);
-		right.setLayout(new CenterLayout());
+		right.setLayout(new FitLayout());
 		
 		save = new Button("Guardar", new SelectionListener<ButtonEvent>() {
 			@Override

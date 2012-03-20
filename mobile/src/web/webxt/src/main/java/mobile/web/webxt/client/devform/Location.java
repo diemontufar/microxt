@@ -43,6 +43,7 @@ public class Location extends FieldSet {
 		final ComboForm countryCombo = new ComboForm(fieldWidth);
 		DataSource ds = new DataSource("per", "countryId", DataSourceType.RECORD);
 		countryCombo.setDataSource(ds);
+		countryCombo.setAllowBlank(false);
 
 		Reference refCountry = new Reference("con", "Country");
 		final ArrayColumnData codata = new ArrayColumnData();

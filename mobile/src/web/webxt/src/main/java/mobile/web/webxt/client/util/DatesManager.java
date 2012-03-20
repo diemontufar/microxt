@@ -137,7 +137,7 @@ public class DatesManager {
 	
 	public static boolean isToday(String date){
 		java.util.Date today = new java.util.Date();
-		String td= dateToString(today, Format.DATE);
+		String td= dateToString(today, Format.DATE_PRESENTATION);
 		
 		if (date.compareTo(td)==0) {
 		    return true;

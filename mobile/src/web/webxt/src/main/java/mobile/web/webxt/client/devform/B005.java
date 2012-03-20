@@ -54,7 +54,7 @@ public class B005 extends MyGeneralForm {
 		ColumnModel cm = new ColumnModel(configs);
 
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Tipos de Profesion", 400, 230);
+		EntityContentPanel cp = new EntityContentPanel("Tipos de Profesión", 400, 230);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);

@@ -21,6 +21,7 @@ import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.form.DateField;
@@ -285,7 +286,8 @@ public class MyFormPanel extends FormPanel {
 
 		// Validate
 		if (!isValid()) {
-			Info.display("Validación", "Existe errores de validación");
+			Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification,
+			"Existen errores de Validación"));
 			return;
 		}
 

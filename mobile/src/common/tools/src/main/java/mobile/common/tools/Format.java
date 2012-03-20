@@ -25,6 +25,4 @@ public final class Format {
 		 
 	public static final byte[] GWT_DES_KEY = "[B@10b7f7$6Ya*uJBh15df)d".getBytes();
 	
-	public static final String mapsAPIKey = "ABQIAAAAaNAkBjzcbXsAJ5HR69IHNhTvoZypEwrtth8tBAhhFnGc_4WvEBRMN-FPvc_3YxJ8mHFTzhUWscmFQw";
-
 }

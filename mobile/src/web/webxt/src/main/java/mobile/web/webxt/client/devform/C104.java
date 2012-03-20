@@ -25,6 +25,9 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
+import com.extjs.gxt.ui.client.widget.grid.filters.NumericFilter;
+import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
 import com.google.gwt.user.client.Element;
 
 public class C104 extends MyGeneralForm {
@@ -80,10 +83,27 @@ public class C104 extends MyGeneralForm {
 
 		// Content panel
 		EntityContentPanel cp = new EntityContentPanel("Productos de Microcredito", 700, 230);
+		
+		// Filters
+		GridFilters filters = new GridFilters();
+		StringFilter descFilter = new StringFilter("description");
+		NumericFilter minAmountFilter = new NumericFilter("minAmount");
+		NumericFilter maxAmountFilter = new NumericFilter("maxAmount");
+		NumericFilter minPeriodFilter = new NumericFilter("minPeriod");
+		NumericFilter maxPeriodFilter = new NumericFilter("maxPeriod");
+		NumericFilter rateFilter = new NumericFilter("rate");
+		
+		filters.addFilter(descFilter);
+		filters.addFilter(minAmountFilter);
+		filters.addFilter(maxAmountFilter);
+		filters.addFilter(minPeriodFilter);
+		filters.addFilter(maxPeriodFilter);
+		filters.addFilter(rateFilter);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
 		grid.setAutoExpandColumn("description");
+		grid.addPlugin(filters);
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
