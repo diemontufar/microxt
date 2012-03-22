@@ -419,7 +419,8 @@ public class JpManager {
 	}
 
 	private static boolean hasId(GeneralEntity entity) throws Exception {
-		return getEntityIdClass(entity) != null;
+		EntityTable entityTable = getEntityTable(entity.getClass().getSimpleName());
+		return entityTable.getHasTableId();
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
