@@ -14,13 +14,13 @@ import mobile.common.message.ResponseData;
 import mobile.common.tools.Format;
 import mobile.common.tools.ProcessType;
 import mobile.web.webxt.client.MobileConstants;
+import mobile.web.webxt.client.MobileError;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.DatesManager;
 import mobile.web.webxt.client.util.WebConverter;
-import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.data.DataProxy;
@@ -194,11 +194,21 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		String channel = Registry.get(MobileConstants.CHANNEL);
 		String profile = Registry.get(MobileConstants.PROFILE);
 		String session = Registry.get(MobileConstants.SESSION);
-		msg.getRequest().setUser(user);
-		msg.getRequest().setHost(host);
-		msg.getRequest().setChannel(channel);
-		msg.getRequest().setSession(session);
-		msg.getRequest().setProfile(profile);
+		if (user != null) {
+			msg.getRequest().setUser(user);
+		}
+		if (host != null) {
+			msg.getRequest().setHost(host);
+		}
+		if (channel != null) {
+			msg.getRequest().setChannel(channel);
+		}
+		if (session != null) {
+			msg.getRequest().setSession(session);
+		}
+		if (profile != null) {
+			msg.getRequest().setProfile(profile);
+		}
 	}
 
 	public void requestMsg(final MyProcessConfig config, final AsyncCallback<Message> callback) {
@@ -230,8 +240,8 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			});
 
 		} catch (Exception e) {
-			showError(e);
 			e.printStackTrace();
+			showError(e);
 		}
 	}
 
@@ -368,12 +378,13 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 				}
 			});
 		} catch (Exception e) {
+			e.printStackTrace();
 			callback.onFailure(e);
 		}
 	}
 
 	private void showError(Throwable e) {
-		new AlertDialog("MyHttpProxy", e.getMessage()).show();
+		MobileError.report("ERROR DE PROCESAMIENTO");
 	}
 
 	public void commit(final MyProcessConfig commitConfig, List<ModelData> lModified,
@@ -464,6 +475,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 				}
 			});
 		} catch (Exception e) {
+			e.printStackTrace();
 			callback.onFailure(e);
 		}
 	}
@@ -567,6 +579,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 				}
 			});
 		} catch (Exception e) {
+			e.printStackTrace();
 			callback.onFailure(e);
 		}
 	}
@@ -574,32 +587,37 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 	private Message evaluateResponse(Response response, MyProcessConfig config) throws Exception {
 		// Evaluate response
 		if (response.getStatusCode() != Response.SC_OK) {
-			throw new RuntimeException("ERROR AL COMUNICARSE CON EL CORE. CÓDIGO: " + response.getStatusCode());
+			throw new RuntimeException("ERROR AL COMUNICARSE CON EL CORE");
 		}
-
+		
 		String text = response.getText();
 		if (text.startsWith("NINGUN MENSAJE RECIBIDO")) {
 			throw new RuntimeException("CORE: NINGUN MENSAJE RECIBIDO");
 		}
 
 		// Evaluate process result
-		Message msg = reader.readMessage(config, text);
-
-		if (msg.getResponse().getCode() != null
+		Message msg = null;
+		try {
+			msg = reader.readMessage(config, text);
+		} catch (Exception e) {
+			throw new RuntimeException("EL MENSAJE DE RESPUESTA ES INCORRECTO");
+		}
+		
+		if (msg != null && msg.getResponse().getCode() != null
 				&& msg.getResponse().getCode().compareTo(ResponseData.RESPONSE_CODE_OK) != 0) {
-
-			String code = msg.getResponse().getCode();
 			String message = msg.getResponse().getMessage();
-			String error = msg.getResponse().getError();
+			throw new RuntimeException(message);
 
-			if (message != null && error != null) {
-				throw new RuntimeException("ERROR DE PROCESAMIENTO: " + code + "<br/>MENSAJE:<br/>" + message
-						+ "<br/>ERROR:<br/>" + error);
-			} else if (message != null && error == null) {
-				throw new RuntimeException("ERROR DE PROCESAMIENTO: " + code + "<br/>MENSAJE:<br/>" + message);
-			} else if (message == null && error == null) {
-				throw new RuntimeException("ERROR DE PROCESAMIENTO: " + code);
-			}
+			// if (message != null && error != null) {
+			// throw new RuntimeException("ERROR DE PROCESAMIENTO: " + code +
+			// "<br/>MENSAJE:<br/>" + message
+			// + "<br/>ERROR:<br/>" + error);
+			// } else if (message != null && error == null) {
+			// throw new RuntimeException("ERROR DE PROCESAMIENTO: " + code +
+			// "<br/>MENSAJE:<br/>" + message);
+			// } else if (message == null && error == null) {
+			// throw new RuntimeException("ERROR DE PROCESAMIENTO: " + code);
+			// }
 		}
 
 		return msg;

@@ -1,6 +1,7 @@
 package mobile.web.webxt.client.devform;
 
 import mobile.common.tools.Format;
+import mobile.web.webxt.client.MobileError;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
@@ -15,7 +16,6 @@ import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.util.DatesManager;
-import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -185,8 +185,7 @@ public class A205 extends MyGeneralForm {
 		
 		if (pass.getValue().compareTo(retypePassword.getValue()) != 0) {
 			result = false;
-			AlertDialog alert = new AlertDialog("Error", "Contraseñas no coinciden");
-			alert.show();
+			MobileError.report("Contraseñas no coinciden");
 		}
 
 		return result;

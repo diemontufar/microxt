@@ -35,8 +35,8 @@ public class OverviewPage extends LayoutContainer {
 
 		lProcess = new ArrayList<ShortcutProcess>();
 		lProcess.add(new ShortcutProcess("B101", "Personas Naturales", Resources.IMAGES.person().getHTML()));
-		lProcess.add(new ShortcutProcess("B102", "Dierecciones", Resources.IMAGES.address().getHTML()));
-		lProcess.add(new ShortcutProcess("B103", "Telefonos", Resources.IMAGES.phone().getHTML()));
+		lProcess.add(new ShortcutProcess("B102", "Direcciones", Resources.IMAGES.address().getHTML()));
+		lProcess.add(new ShortcutProcess("B103", "Teléfonos", Resources.IMAGES.phone().getHTML()));
 		lProcess.add(new ShortcutProcess("C201", "Socios Individuales", Resources.IMAGES.individual().getHTML()));
 		lProcess.add(new ShortcutProcess("C202", "Socios Grupales", Resources.IMAGES.groupal().getHTML()));
 		lProcess.add(new ShortcutProcess("C301", "Solicitud", Resources.IMAGES.solicitude().getHTML()));

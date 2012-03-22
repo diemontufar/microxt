@@ -18,13 +18,12 @@ public class NavView extends View {
 
 	@Override
 	protected void handleEvent(AppEvent event) {
-		if(MobileConfig.FORM_DEVELOPMENT){
-			
-		}else{
+		if (MobileConfig.FORM_DEVELOPMENT) {
+
+		} else {
 			EventType eventType = event.getType();
 			if (eventType.equals(AppEvents.Init)) {
-				Dispatcher.forwardEvent(new AppEvent(AppEvents.NavPanelReady,
-						navPanel));
+				Dispatcher.forwardEvent(new AppEvent(AppEvents.NavPanelReady, navPanel));
 			} else if (eventType.equals(AppEvents.TabSelected)) {
 				onTabSelected(event);
 			}
@@ -33,7 +32,7 @@ public class NavView extends View {
 
 	private void onTabSelected(AppEvent event) {
 		ModelData process = event.getData();
+		System.out.println("MVC>> NavView>> Tab selected " + process.get("id"));
 		navPanel.selectProcess(process);
 	}
-
 }

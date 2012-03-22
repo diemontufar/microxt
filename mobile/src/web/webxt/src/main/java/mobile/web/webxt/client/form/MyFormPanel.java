@@ -8,6 +8,7 @@ import java.util.Map;
 
 import mobile.common.message.Item;
 import mobile.common.tools.Format;
+import mobile.web.webxt.client.MobileError;
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyMessageReader;
 import mobile.web.webxt.client.data.form.DataSource;
@@ -17,7 +18,7 @@ import mobile.web.webxt.client.form.widgets.InputBox;
 import mobile.web.webxt.client.form.widgets.PersistentField;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.DatesManager;
-import mobile.web.webxt.client.windows.AlertDialog;
+import mobile.web.webxt.client.util.WebConverter;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -147,6 +148,9 @@ public class MyFormPanel extends FormPanel {
 				String key = MyMessageReader.buildKey(ds);
 				validateOverwrite(key);
 				String value = getValueFromField(f);
+				if (ds.getType() == DataSourceType.CRITERION && f.getData("mobile-type") != null) {
+					value = WebConverter.completeValue(value, f.getData("mobile-type"));
+				}
 				rqField.put(key, value);
 			}
 		}
@@ -315,8 +319,9 @@ public class MyFormPanel extends FormPanel {
 			}
 
 			public void onFailure(Throwable caught) {
-				new AlertDialog("MyFormPanel", caught.getMessage()).show();
 				caught.printStackTrace();
+				postError();
+				MobileError.report(caught);
 			}
 		};
 
@@ -345,8 +350,9 @@ public class MyFormPanel extends FormPanel {
 			}
 
 			public void onFailure(Throwable caught) {
-				new AlertDialog("MobileForm", caught.getMessage()).show();
 				caught.printStackTrace();
+				postError();
+				MobileError.report(caught);
 			}
 		};
 
@@ -369,5 +375,8 @@ public class MyFormPanel extends FormPanel {
 
 	protected boolean postMaintenance() {
 		return true;
+	}
+	
+	protected void postError() {
 	}
 }
