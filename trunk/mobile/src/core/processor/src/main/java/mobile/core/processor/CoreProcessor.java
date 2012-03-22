@@ -35,6 +35,8 @@ import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 import org.eclipse.persistence.exceptions.DatabaseException;
 
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
+
 public class CoreProcessor {
 
 	private final Logger log = Log.getInstance();
@@ -43,6 +45,8 @@ public class CoreProcessor {
 			+ "and p.pk.subsystemId = :subsystemId " + "and p.pk.moduleId = :moduleId "
 			+ "and p.pk.processId = :processId " + "and p.typeId = :processType " + "and p.enable = true "
 			+ "order by p.pk.processSequence";
+
+	private final int MAX_STACK_TRACE = 500;
 
 	public Message process(Message msg) {
 		log.info("Input message: \n" + formatXml(msg.toXML(), 2));
@@ -62,8 +66,12 @@ public class CoreProcessor {
 			setResponse(msg, null);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			// Rollback
-			JpManager.rollbackTransaction();
+			if (!(e instanceof PersistenceException && e.getCause() instanceof DatabaseException && ((DatabaseException) e
+					.getCause()).getErrorCode() == 4002)) {
+				// Rollback
+				JpManager.rollbackTransaction();
+			}
+
 			// Set error response
 			setResponse(msg, e);
 		} finally {
@@ -147,46 +155,70 @@ public class CoreProcessor {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
 	public Message setResponse(Message msg, Throwable throwable) {
+		Objection objection = null;
+		String message = "";
+
 		if (throwable == null) {
 			msg.getResponse().setCode(ObjectionCode.SUCCESS.getCode());
 			msg.getResponse().setMessage(ObjectionCode.SUCCESS.getMessage());
-		} else {
-			Objection objection = null;
-			if (throwable instanceof Objection) {
-				objection = (Objection) throwable;
-			}
-			if (throwable.getCause() instanceof Objection) {
-				objection = (Objection) throwable.getCause();
-			}
-			if (objection != null) {
-				msg.getResponse().setCode(objection.getCode());
-				msg.getResponse().setMessage(objection.getMessage());
-				msg.getResponse().setError(getStackTrace(throwable));
+			return msg;
+		} else if (throwable instanceof NullPointerException) {
+			objection = new Objection(throwable, ObjectionCode.NULL_VALUES);
+		} else if (throwable instanceof PersistenceException) {
+			DatabaseException dbe = (DatabaseException) throwable.getCause();
+			if (dbe.isCommunicationFailure()) {
+				objection = new Objection(dbe, ObjectionCode.DB_CONNECTION_ERROR);
 			} else {
-				String message = "";
-				if (throwable instanceof NullPointerException) {
-					message = "ENVIO DE VALORES NULOS";
-				} else if (throwable instanceof PersistenceException) {
-					DatabaseException dbe = (DatabaseException) throwable.getCause();
-					message = "CÓDIGO: " + dbe.getDatabaseErrorCode() + "<br/>";
-					message = message + dbe.getMessage();
-					message = replaceWrongCharacters(message);
-				} else if (throwable.getMessage() != null) {
-					message = throwable.getMessage();
-					message = replaceWrongCharacters(message);
-				} else if (throwable.getCause() != null) {
-					message = throwable.getCause().toString();
-				} else {
-					message = ObjectionCode.FAILED.getMessage();
+				objection = new Objection(dbe, ObjectionCode.DB_ERROR);
+				Integer errorCode = dbe.getDatabaseErrorCode();
+				if (errorCode != null) {
+					if (errorCode == 1062) {
+						objection = new Objection(dbe, ObjectionCode.DB_DUPLICATE_PK);
+					}else if(errorCode == 1451 || errorCode == 1452){
+						objection = new Objection(dbe, ObjectionCode.DB_FOREIGN_KEY);
+					}else if(errorCode == 1048){
+						objection = new Objection(dbe, ObjectionCode.DB_FOREIGN_KEY);
+					}
 				}
-
-				msg.getResponse().setCode(ObjectionCode.FAILED.getCode());
-				msg.getResponse().setMessage(message);
-				msg.getResponse().setError(getStackTrace(throwable));
 			}
+		} else if (throwable instanceof CommunicationsException){
+			objection = new Objection(throwable, ObjectionCode.DB_CONNECTION_ERROR);
+		} else if (throwable instanceof IllegalArgumentException){
+			objection = new Objection(throwable, ObjectionCode.DB_QUERY_ERROR);
+		}else if (throwable.getMessage() != null) {
+			message = throwable.getMessage();
+			message = replaceWrongCharacters(message);
+		} else if (throwable.getCause() != null) {
+			message = throwable.getCause().toString();
+			message = replaceWrongCharacters(message);
 		}
+
+		if (objection != null) {
+			msg.getResponse().setCode(objection.getCode());
+			msg.getResponse().setMessage(objection.getMessage());
+			String stackTrace = replaceWrongCharacters(getStackTrace(throwable));
+			stackTrace = (stackTrace.length() > MAX_STACK_TRACE) ? stackTrace.substring(0, MAX_STACK_TRACE) + "..."
+					: stackTrace;
+			msg.getResponse().setError(stackTrace);
+			// DatabaseException dbe = (DatabaseException) throwable.getCause();
+			// message = ObjectionCode.DB_ERROR.getMessage() + "<br/>";
+			// message = "CÓDIGO: " + dbe.getDatabaseErrorCode() + "<br/>";
+			// message = message + dbe.getMessage();
+			// message = replaceWrongCharacters(message);
+			// msg.getResponse().setMessage(message);
+			// String stackTrace = replaceWrongCharacters(getStackTrace(dbe));
+			// msg.getResponse().setError(stackTrace);
+		} else {
+			msg.getResponse().setCode(ObjectionCode.FAILED.getCode());
+			msg.getResponse().setMessage(message);
+			String stackTrace = replaceWrongCharacters(getStackTrace(throwable));
+			stackTrace = (stackTrace.length() > MAX_STACK_TRACE) ? stackTrace.substring(0, MAX_STACK_TRACE) + "..."
+					: stackTrace;
+			msg.getResponse().setError(stackTrace);
+		}
+
 		return msg;
 	}
 
@@ -213,8 +245,10 @@ public class CoreProcessor {
 
 	private String replaceWrongCharacters(String message) {
 		String out = message.replaceAll("\t", "  ");
+		out = out.replaceAll("(\\<|\\>)", "'");
 		out = out.replaceAll("(\r|\n)", "<br/>");
 		out = out.replaceAll("\"", "'");
+
 		return out;
 	}
 }
