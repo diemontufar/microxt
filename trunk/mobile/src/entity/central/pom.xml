@@ -56,7 +56,18 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                            <includeGroupIds>mobile.entity</includeGroupIds>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-mobile-dependencies-2</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${settings.localRepository}/mobile/entity/mobile.entity.central/2.0</outputDirectory>
                             <includeGroupIds>mobile.entity</includeGroupIds>
                         </configuration>
                     </execution>
