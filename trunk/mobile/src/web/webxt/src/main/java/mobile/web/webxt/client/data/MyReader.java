@@ -7,11 +7,11 @@ import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
 import mobile.common.message.Message;
+import mobile.web.webxt.client.MobileError;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.parser.Parser;
 import mobile.web.webxt.client.util.WebConverter;
-import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
@@ -53,14 +53,14 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 					} else if (ds.getType() == DataSourceType.DESCRIPTION) {
 						field = item.getField(ds.getAlias() + "_" + ds.getField());
 					}
-					//if (field != null && field.getValue() != null) {
+					// if (field != null && field.getValue() != null) {
 					if (field != null) {
-						String modelPropertyName = ds.getField(); 
-						if(ds.getType() == DataSourceType.DESCRIPTION){
+						String modelPropertyName = ds.getField();
+						if (ds.getType() == DataSourceType.DESCRIPTION) {
 							modelPropertyName = ds.getAlias() + "_" + ds.getField();
 						}
 						model.set(modelPropertyName, WebConverter.convertToType(field.getValue()));
-						
+
 					}
 
 				}
@@ -84,27 +84,23 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 			}
 
 		} catch (Exception e) {
-			new AlertDialog("MyReader", e.getMessage()).show();
 			e.printStackTrace();
+			MobileError.report("MENSAJE DE RETORNO INCORRECTO");
 		}
 
 		return (PagingLoadResult<ModelData>) paginatedModels;
 	}
 
-	public Message readMessage(Object loadConfig, Object data) {
+	public Message readMessage(Object loadConfig, Object data) throws Exception{
 		System.out.println("MyReader.readMessage" + data.toString());
 
 		Message msg = null;
 
-		try {
-			String strData = data.toString();
+		String strData = data.toString();
 
-			System.out.println("Parsing");
-			Parser parser = new Parser();
-			msg = parser.parseMsg(strData, MSG_TYPE);
-		} catch (Exception e) {
-			new AlertDialog("MyReader", e.getMessage()).show();
-		}
+		System.out.println("Parsing");
+		Parser parser = new Parser();
+		msg = parser.parseMsg(strData, MSG_TYPE);
 
 		return msg;
 	}

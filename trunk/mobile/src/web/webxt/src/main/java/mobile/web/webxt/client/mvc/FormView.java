@@ -1,5 +1,6 @@
 package mobile.web.webxt.client.mvc;
 
+import mobile.web.webxt.client.MobileError;
 import mobile.web.webxt.client.components.FormPanel;
 import mobile.web.webxt.client.devform.A101;
 import mobile.web.webxt.client.devform.A102;
@@ -89,11 +90,11 @@ public class FormView extends View {
 		tabItem.setId("shortcuts");
 		tabItem.setClosable(false);
 		tabItem.setBorders(false);
-		
+
 		tabItem.add(new OverviewPage());
 		formPanel.addTab(tabItem);
 
-		Dispatcher.forwardEvent(new AppEvent(AppEvents.FormPanelReady, formPanel));
+		Dispatcher.forwardEvent(AppEvents.FormPanelReady, formPanel);
 	}
 
 	private void onTabSelected(AppEvent event) {
@@ -105,7 +106,7 @@ public class FormView extends View {
 		String processId = process.get("id");
 		actualProcess = processId;
 
-		System.out.println("Process seleced>>" + processId);
+		System.out.println("MVC>> FormView>> Process seleced>> " + processId);
 		MyGeneralForm form = getForm(processId);
 
 		if (form != null) {
@@ -114,15 +115,14 @@ public class FormView extends View {
 			tabItem.setData("process", process);
 			tabItem.setClosable(true);
 			tabItem.add(form);
-			formPanel.addTab(tabItem);
 			tabItem.addListener(Events.Select, new Listener<TabPanelEvent>() {
 				public void handleEvent(TabPanelEvent be) {
-					Dispatcher.forwardEvent(new AppEvent(AppEvents.TabSelected, process));
+					Dispatcher.forwardEvent(AppEvents.TabSelected, process);
 				}
 			});
+			formPanel.addTab(tabItem);
 		} else {
-			Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification, "El formulario del proceso " + processId
-					+ " no esta definido"));
+			MobileError.report("El formulario del proceso " + processId + " no esta definido");
 		}
 	}
 
@@ -193,7 +193,7 @@ public class FormView extends View {
 		} else if (processId.compareTo("C005") == 0) {
 			form = new C005();
 		} else if (processId.compareTo("C006") == 0) {
-			//form = new C006();
+			// form = new C006();
 		} else if (processId.compareTo("C007") == 0) {
 			form = new C007();
 		} else if (processId.compareTo("C101") == 0) {

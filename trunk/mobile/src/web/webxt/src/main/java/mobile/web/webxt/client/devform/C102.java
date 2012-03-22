@@ -1,6 +1,7 @@
 package mobile.web.webxt.client.devform;
 
 import mobile.common.message.Item;
+import mobile.web.webxt.client.MobileError;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
@@ -15,7 +16,6 @@ import mobile.web.webxt.client.form.widgets.MyTextArea;
 import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
-import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Orientation;
@@ -599,16 +599,13 @@ public class C102 extends MyGeneralForm {
 	}
 
 	private void preCommitForm() {
-
-		AlertDialog alertPoint = new AlertDialog("Error", "Debe seleccionar al menos un punto en el mapa");
-		AlertDialog alertPoints = new AlertDialog("Error", "Debe seleccionar al menos cuatro puntos en el mapa");
 		int numPoints = countNullPoints();
 		boolean isOK = false;
 		boolean fourPoints = false;
 		String coordType = "";
 
 		if (numPoints == 4 && isMNT) {
-			alertPoint.show();
+			MobileError.report("Debe seleccionar al menos un punto en el mapa");
 			return;
 		} else {
 			isOK = true;
@@ -617,14 +614,14 @@ public class C102 extends MyGeneralForm {
 		System.out.println("Numero de puntos con null: " + numPoints);
 
 		if (routeRadio.getValue() && numPoints > 0 && isMNT) {
-			alertPoints.show();
+			MobileError.report("Debe seleccionar al menos cuatro puntos en el mapa");
 			return;
 		} else {
 			isOK = true;
 		}
 
 		if (polygonRadio.getValue() && numPoints > 0 && isMNT) {
-			alertPoints.show();
+			MobileError.report("Debe seleccionar al menos cuatro puntos en el mapa");
 			return;
 		} else {
 			isOK = true;

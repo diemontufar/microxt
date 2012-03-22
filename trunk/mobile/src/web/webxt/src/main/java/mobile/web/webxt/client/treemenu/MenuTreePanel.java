@@ -9,12 +9,12 @@ import java.util.Set;
 
 import mobile.common.message.Message;
 import mobile.common.tools.ProcessType;
+import mobile.web.webxt.client.MobileError;
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyMessageReader;
 import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.resources.Resources;
-import mobile.web.webxt.client.windows.AlertDialog;
 
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -59,8 +59,7 @@ public class MenuTreePanel extends LayoutContainer {
 				Dispatcher.forwardEvent(AppEvents.UserNotification, "Cargando menu");
 				AsyncCallback<Message> callback = new AsyncCallback<Message>() {
 					public void onFailure(Throwable caught) {
-						//new AlertDialog("FilterTreePanel", caught.getMessage()).show();
-						new AlertDialog("Error", "Error al cargfar el menu").show();
+						MobileError.report("Error al cargar el menu");
 					}
 
 					public void onSuccess(Message result) {

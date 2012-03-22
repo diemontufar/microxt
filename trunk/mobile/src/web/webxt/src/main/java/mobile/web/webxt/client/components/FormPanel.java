@@ -1,21 +1,12 @@
 package mobile.web.webxt.client.components;
 
 import mobile.web.webxt.client.MobileConfig;
-import mobile.web.webxt.client.devform.A105;
-import mobile.web.webxt.client.devform.A202;
-import mobile.web.webxt.client.devform.A205;
-import mobile.web.webxt.client.devform.A206;
-import mobile.web.webxt.client.devform.B101;
-import mobile.web.webxt.client.devform.C102;
-import mobile.web.webxt.client.devform.C104;
 import mobile.web.webxt.client.devform.C201;
-import mobile.web.webxt.client.devform.C301;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.resources.Resources;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.TabItem;
@@ -58,10 +49,10 @@ public class FormPanel extends ContentPanel {
 
 	public void reloadTab() {
 		TabItem actual = tabPanel.getSelectedItem();
-		if (actual != null && actual.getId().compareTo("shortcuts")!=0) {
-			ModelData actualProcess = actual.getData("process"); 
+		if (actual != null && actual.getId().compareTo("shortcuts") != 0) {
+			ModelData actualProcess = actual.getData("process");
 			tabPanel.remove(actual);
-			Dispatcher.forwardEvent(new AppEvent(AppEvents.ProcessSelected, actualProcess));
+			Dispatcher.forwardEvent(AppEvents.ProcessSelected, actualProcess);
 		}
 	}
 }

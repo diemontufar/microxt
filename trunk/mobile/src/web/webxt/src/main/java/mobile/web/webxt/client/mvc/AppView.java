@@ -1,6 +1,5 @@
 package mobile.web.webxt.client.mvc;
 
-import com.google.gwt.user.client.Timer;
 import mobile.web.webxt.client.devform.A001;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
@@ -11,9 +10,11 @@ import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.HtmlContainer;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.Viewport;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class AppView extends View {
@@ -47,7 +48,7 @@ public class AppView extends View {
 	protected void onInit(AppEvent event) {
 		System.out.println("MVC>> AppView on init...");
 		showLoggin();
-		
+
 		viewport = new Viewport();
 		viewport.setLayout(new BorderLayout());
 
@@ -61,16 +62,26 @@ public class AppView extends View {
 		logginviewport = new Viewport();
 		logginviewport.setLoadingPanelId("loading");
 		logginviewport.setVisible(false);
-		
+
 		A001 loginForm = new A001();
-		
+
 		RootPanel.get().add(logginviewport);
-		
+
 		RootPanel.get().add(loginForm);
 		loginForm.show();
 	}
 
 	private void onError(AppEvent event) {
+		String message = event.getData();
+
+		MessageBox errorBox = new MessageBox();
+		errorBox.setIcon(MessageBox.ERROR);
+		errorBox.setTitle("Error");
+		errorBox.setButtons(MessageBox.OK);
+		errorBox.setMinWidth(400);
+		errorBox.setMessage(message);
+		errorBox.show();
+		// new AlertDialog("ERROR", caught.getMessage()).show();
 	}
 
 	private void createNorth() {
@@ -122,12 +133,12 @@ public class AppView extends View {
 
 	private void onUIReady(AppEvent event) {
 		System.out.println("MVC>> On ui ready...");
-		
+
 		Timer t = new Timer() {
 			@Override
 			public void run() {
 				RootPanel.get().clear();
-				RootPanel.get().add(viewport);	
+				RootPanel.get().add(viewport);
 			}
 		};
 		t.schedule(500);

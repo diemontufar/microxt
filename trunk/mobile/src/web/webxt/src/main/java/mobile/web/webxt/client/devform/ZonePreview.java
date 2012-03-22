@@ -224,6 +224,7 @@ public class ZonePreview extends Dialog {
 
 		zoneCode = new InputBox(90, 20, Validate.TEXT);
 		zoneCode.setDataSource(new DataSource("geo", "pk_geographicZoneId", DataSourceType.CRITERION));
+		zoneCode.setData("mobile-type", Integer.class);
 		zoneCode.setReadOnly(true);
 		zoneCode.setFireChangeEventOnSetValue(true);
 

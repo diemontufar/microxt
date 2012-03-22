@@ -76,6 +76,10 @@ public class A001 extends Dialog {
 				onResponse();
 				return true;
 			}
+			@Override
+			protected void postError() {
+				onError();
+			}
 		};
 		formLogin.setHeaderVisible(false);
 		formLogin.setFrame(false);
@@ -104,7 +108,7 @@ public class A001 extends Dialog {
 		setHeading("Inicio de sesión");
 		setModal(true);
 		setBodyBorder(true);
-		setBodyStyle("padding: 8px;background: none");
+		//setBodyStyle("padding: 8px;background: none");
 		setWidth(300);
 		setResizable(false);
 
@@ -200,6 +204,12 @@ public class A001 extends Dialog {
 		formLogin.add(profile);
 
 		// Profile container
+		FieldSet fieldSet2 = new FieldSet();
+		fieldSet2.setHeading("");
+		fieldSet2.setCollapsible(false);
+		fieldSet2.setBorders(false);
+		fieldSet2.setWidth(270);
+
 		row = new RowContainer();
 		label = new MyLabel("Rol:", LABEL_WIDTH);
 		row.add(label);
@@ -216,7 +226,8 @@ public class A001 extends Dialog {
 		comboProfile.addDependency(user, "userId");
 		row.add(comboProfile);
 		
-		profileContainer.add(row);
+		fieldSet2.add(row);
+		profileContainer.add(fieldSet2);
 
 		add(formLogin);
 	}
@@ -298,6 +309,12 @@ public class A001 extends Dialog {
 			A001.this.formLogin.reset();
 			user.focus();
 		}
+	}
+	
+	private void onError() {
+		status.hide();
+		getButtonBar().enable();
+		loginButton.enable();
 	}
 
 	private void onProfileSelected(String profile) {

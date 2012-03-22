@@ -2,7 +2,7 @@ package mobile.web.webxt.client.data;
 
 import java.util.List;
 
-import mobile.web.webxt.client.windows.AlertDialog;
+import mobile.web.webxt.client.MobileError;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.DataProxy;
@@ -40,7 +40,7 @@ public class MyPagingLoader extends
 	@Override
 	protected void onLoadFailure(Object loadConfig, Throwable t) {
 		super.onLoadFailure(loadConfig, t);
-		new AlertDialog("Load exception", t.getMessage()).show();
+		MobileError.report(t);
 	}
 
 	public MyProcessConfig getConfig() {
