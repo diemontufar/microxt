@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 17-03-2012 a las 19:18:07
+-- Tiempo de generación: 22-03-2012 a las 23:01:48
 -- Versión del servidor: 5.5.8
 -- Versión de PHP: 5.3.5
 
@@ -314,6 +314,7 @@ INSERT INTO `COMPONENT` (`COMPANY_ID`, `COMPONENT_ID`, `TYPE_ID`, `SUBSYSTEM_ID`
 ('MXT', 'mobile.core.processor.QueryProcessor', 'QRY', 'G', 'QueryProcessor', 'general', 'General query processor'),
 ('MXT', 'mobile.core.security.Loggin', 'QRY', 'A', 'Loggin', 'general', 'Process loggin'),
 ('MXT', 'mobile.core.security.Logout', 'MNT', 'A', 'Logout', NULL, 'Process logout'),
+('MXT', 'mobile.core.security.query.QueryProfilesForUser', 'QRY', 'A', 'QueryProfilesForUser', 'general', 'CONSULTA LOS ROLES DE UN USUARIO'),
 ('MXT', 'mobile.logic.general.MenuGenerator', 'QRY', 'G', 'MenuGenerator', 'general', 'Query the menu items'),
 ('MXT', 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', 'C', 'QueryPartnerInfo', NULL, 'CONSULTA INFORMACION DE CLIENTES INDIVIDUALES'),
 ('MXT', 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 'C', 'QuerySolicitude', NULL, 'CONSULTA INFORMACION DE LAS SOLICITUDES'),
@@ -340,6 +341,7 @@ INSERT INTO `COMPONENT_ID` (`COMPONENT_ID`, `TYPE_ID`) VALUES
 ('mobile.core.processor.QueryProcessor', 'QRY'),
 ('mobile.core.security.Loggin', 'QRY'),
 ('mobile.core.security.Logout', 'MNT'),
+('mobile.core.security.query.QueryProfilesForUser', 'QRY'),
 ('mobile.logic.general.MenuGenerator', 'QRY'),
 ('mobile.logic.microxt.query.QueryPartnerInfo', 'QRY'),
 ('mobile.logic.microxt.query.QuerySolicitude', 'QRY'),
@@ -432,7 +434,7 @@ CREATE TABLE IF NOT EXISTS `CURRENCY` (
 
 INSERT INTO `CURRENCY` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `CURRENCY_ID`, `CREATED`, `DESCRIPTION`, `INITIALS`) VALUES
 ('MXT', 'ES', '9999-12-31 00:00:00', 'EUR', '2012-01-20 20:46:58', 'EURO', '$'),
-('MXT', 'ES', '9999-12-31 00:00:00', 'USD', '2012-01-20 20:46:58', 'DOLAR', '');
+('MXT', 'ES', '9999-12-31 00:00:00', 'USD', '2012-01-20 20:46:58', 'DOLAR', '?');
 
 -- --------------------------------------------------------
 
@@ -2316,6 +2318,9 @@ CREATE TABLE IF NOT EXISTS `GEOGRAPHIC_ZONE` (
 -- Volcar la base de datos para la tabla `GEOGRAPHIC_ZONE`
 --
 
+INSERT INTO `GEOGRAPHIC_ZONE` (`COMPANY_ID`, `LANGUAGE_ID`, `GEOGRAPHIC_ZONE_ID`, `DESCRIPTION`, `COORDINATE_TYPE`, `P11`, `P12`, `P21`, `P22`, `P31`, `P32`, `P41`, `P42`) VALUES
+('MXT', 'ES', 1, 'ASFDASFSFDASFD', 'ZONA', '-2.89692395461964', '-79.01985168457031', '-2.91063923190347', '-79.01976585388184', '-2.918954037532118', '-78.99624824523926', '-2.9031815705361996', '-78.98886680603027'),
+('MXT', 'ES', 2, 'DFASFDASFDASFD', 'PUNTO', '-2.8956381388441645', '-79.02302742004395', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2332,6 +2337,9 @@ CREATE TABLE IF NOT EXISTS `GEOGRAPHIC_ZONE_ID` (
 -- Volcar la base de datos para la tabla `GEOGRAPHIC_ZONE_ID`
 --
 
+INSERT INTO `GEOGRAPHIC_ZONE_ID` (`GEOGRAPHIC_ZONE_ID`) VALUES
+(1),
+(2);
 
 -- --------------------------------------------------------
 
@@ -2863,7 +2871,8 @@ CREATE TABLE IF NOT EXISTS `PERSON` (
 
 INSERT INTO `PERSON` (`COMPANY_ID`, `EXPIRED`, `PERSON_ID`, `CREATED`, `NAME`, `LAST_NAME`, `SECOND_LAST_NAME`, `IDENTIFICATION_TYPE_ID`, `IDENTIFICATION_NUMBER`, `DATE_OF_BIRTH`, `GENDER_TYPE_ID`, `CIVIL_STATUS_ID`, `COUNTRY_ID`, `CITY_ID`, `PROVINCE_ID`, `DISTRICT_ID`, `PROFESSION_TYPE_ID`, `VERSION`) VALUES
 ('MXT', '9999-12-31 00:00:00', 1, '2012-03-13 23:46:56', 'RONALD MARCELO', 'GUALÁN', 'SAAVEDRA', 'CED', '1400658611', '1988-09-28 00:00:00', 'M', 'SOL', 'EC', 'CU', 'AZ', 'RIC', '101', 1),
-('MXT', '9999-12-31 00:00:00', 2, '2012-03-13 23:48:24', 'DIEGO FABIAN', 'MONTUFAR', NULL, 'CED', '0105362651', '1988-12-05 00:00:00', 'M', 'SOL', 'EC', 'CU', 'AZ', 'TOT', '103', 1);
+('MXT', '9999-12-31 00:00:00', 2, '2012-03-13 23:48:24', 'DIEGO FABIAN', 'MONTUFAR', NULL, 'CED', '0105362651', '1988-12-05 00:00:00', 'M', 'SOL', 'EC', 'CU', 'AZ', 'TOT', '103', 1),
+('MXT', '9999-12-31 00:00:00', 3, '2012-03-22 13:01:50', 'MARIO', 'GOMEZ', 'LEE', 'PER', '213423424234', '1970-10-10 00:00:00', 'M', 'CAS', 'EC', 'CU', 'AZ', 'BAÑ', '102', 1);
 
 -- --------------------------------------------------------
 
@@ -2910,7 +2919,8 @@ CREATE TABLE IF NOT EXISTS `PERSON_ID` (
 
 INSERT INTO `PERSON_ID` (`PERSON_ID`) VALUES
 (1),
-(2);
+(2),
+(3);
 
 -- --------------------------------------------------------
 
@@ -3118,6 +3128,7 @@ INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '1', '01', '2011-10-14 00:00:00', 'PARAMETROS GENERALES', 1, 1, 'G101', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '01', '2011-10-14 00:00:00', 'LISTA DE VALORES PARA LOS COMBOS', 1, 0, 'G201', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '02', '2012-03-03 12:09:42', 'LOV PARA SOCIOS INDIVIDUALES', 1, 0, 'G202', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '03', '2012-03-03 12:09:42', 'LOV PARA ROLES POR USUARIO', 1, 0, 'G203', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '01', '2011-10-14 00:00:00', 'PAISES', 1, 1, 'G301', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '02', '2011-10-14 00:00:00', 'PROVINCIAS', 1, 1, 'G302', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '03', '2011-10-14 00:00:00', 'CANTONES', 1, 1, 'G303', NULL),
@@ -3155,7 +3166,8 @@ INSERT INTO `PROCESS_COMPONENT` (`COMPANY_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, `PRO
 ('MXT', 'C', '4', '02', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 1, NULL),
 ('MXT', 'C', '4', '02', 2, 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', 1, NULL),
 ('MXT', 'G', '0', '01', 1, 'mobile.logic.general.MenuGenerator', 'QRY', 1, 0),
-('MXT', 'G', '2', '02', 1, 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', 1, NULL);
+('MXT', 'G', '2', '02', 1, 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', 1, NULL),
+('MXT', 'G', '2', '03', 1, 'mobile.core.security.query.QueryProfilesForUser', 'QRY', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -3229,6 +3241,7 @@ INSERT INTO `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) VALUES
 ('G', '1', '01'),
 ('G', '2', '01'),
 ('G', '2', '02'),
+('G', '2', '03'),
 ('G', '3', '01'),
 ('G', '3', '02'),
 ('G', '3', '03'),
@@ -3956,10 +3969,10 @@ CREATE TABLE IF NOT EXISTS `SEQUENTIAL` (
 --
 
 INSERT INTO `SEQUENTIAL` (`COMPANY_ID`, `SEQUENTIAL_ID`, `SEQUENTIAL_VALUE`, `VERSION`) VALUES
-('MXT', 'GEOZONE', 1, 0),
+('MXT', 'GEOZONE', 3, 2),
 ('MXT', 'PARTNER', 1, 0),
 ('MXT', 'PARTNERGRP', 1, 0),
-('MXT', 'PERSON', 1, 0),
+('MXT', 'PERSON', 4, 1),
 ('MXT', 'SOLICITUDE', 1000, 2);
 
 -- --------------------------------------------------------
@@ -4304,6 +4317,10 @@ CREATE TABLE IF NOT EXISTS `USER_PROFILE` (
 -- Volcar la base de datos para la tabla `USER_PROFILE`
 --
 
+INSERT INTO `USER_PROFILE` (`COMPANY_ID`, `EXPIRED`, `USER_ID`, `PROFILE_ID`, `CREATED`) VALUES
+('MXT', '9999-12-31 00:00:00', 'ADMIN', 'ADM', '2012-03-18 00:00:00'),
+('MXT', '9999-12-31 00:00:00', 'ADMIN', 'ASE', '2012-03-18 00:00:00'),
+('MXT', '9999-12-31 00:00:00', 'JPEREZ', 'ASE', '2012-03-18 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -4330,7 +4347,11 @@ CREATE TABLE IF NOT EXISTS `USER_SESSION` (
 
 INSERT INTO `USER_SESSION` (`COMPANY_ID`, `EXPIRED`, `USER_ID`, `HOST_ID`, `CREATED`, `SESSION_ID`, `VERSION`) VALUES
 ('MXT', '2012-03-17 02:33:08', 'ADMIN', 'LOCALHOST', '2012-03-17 00:54:31', 'FCD708B8E428C1FB7B04EAF180EBF32320120317005431002', 1),
-('MXT', '9999-12-31 00:00:00', 'ADMIN', 'LOCALHOST', '2012-03-17 02:33:50', 'FCD708B8E428C1FB7B04EAF180EBF32320120317023350399', 1);
+('MXT', '2012-03-17 17:45:21', 'ADMIN', 'LOCALHOST', '2012-03-17 02:33:50', 'FCD708B8E428C1FB7B04EAF180EBF32320120317023350399', 1),
+('MXT', '2012-03-20 02:26:27', 'JPEREZ', 'LOCALHOST', '2012-03-19 08:52:32', 'F61BAAA6A2793CFA275D296B85D76B482012031908523271', 1),
+('MXT', '2012-03-21 16:49:03', 'ADMIN', 'LOCALHOST', '2012-03-18 13:22:07', 'FCD708B8E428C1FB7B04EAF180EBF3232012031813220747', 1),
+('MXT', '9999-12-31 00:00:00', 'ADMIN', 'LOCALHOST', '2012-03-21 16:50:00', 'FCD708B8E428C1FB7B04EAF180EBF32320120321164959529', 1),
+('MXT', '9999-12-31 00:00:00', 'JPEREZ', 'LOCALHOST', '2012-03-21 00:13:45', 'F61BAAA6A2793CFA275D296B85D76B4820120321001344712', 1);
 
 -- --------------------------------------------------------
 
@@ -4373,6 +4394,7 @@ CREATE TABLE IF NOT EXISTS `USER_STATUS_ID` (
 --
 
 INSERT INTO `USER_STATUS_ID` (`USER_STATUS_ID`) VALUES
+('ACAT'),
 ('ACT'),
 ('BLO'),
 ('INA');
@@ -4442,6 +4464,9 @@ CREATE TABLE IF NOT EXISTS `ZONE_ASESSOR` (
 -- Volcar la base de datos para la tabla `ZONE_ASESSOR`
 --
 
+INSERT INTO `ZONE_ASESSOR` (`USER_ID`, `GEOGRAPHIC_ZONE_ID`, `OBSERVATIONS`) VALUES
+('ADMIN', 2, 'ASFASFASDAFSDFFS'),
+('JPEREZ', 1, 'ASDFASFASDFASFD');
 
 --
 -- Filtros para las tablas descargadas (dump)
