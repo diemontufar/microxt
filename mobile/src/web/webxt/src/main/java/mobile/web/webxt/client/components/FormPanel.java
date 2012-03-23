@@ -1,7 +1,7 @@
 package mobile.web.webxt.client.components;
 
 import mobile.web.webxt.client.MobileConfig;
-import mobile.web.webxt.client.devform.C201;
+import mobile.web.webxt.client.devform.C103;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.resources.Resources;
 
@@ -28,7 +28,7 @@ public class FormPanel extends ContentPanel {
 			add(tabPanel);
 		} else {
 			// Put here the tested form
-			add(new C201());
+			add(new C103());
 		}
 
 	}

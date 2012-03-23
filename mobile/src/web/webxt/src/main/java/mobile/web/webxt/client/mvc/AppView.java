@@ -1,10 +1,14 @@
 package mobile.web.webxt.client.mvc;
 
+import mobile.web.webxt.client.MobileConfig;
+import mobile.web.webxt.client.MobileConstants;
 import mobile.web.webxt.client.devform.A001;
 
+import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.event.EventType;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
+import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.mvc.View;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.Component;
@@ -47,8 +51,17 @@ public class AppView extends View {
 
 	protected void onInit(AppEvent event) {
 		System.out.println("MVC>> AppView on init...");
-		showLoggin();
-
+		
+		if(!MobileConfig.FORM_DEVELOPMENT){
+			showLoggin();
+		}else{
+			Registry.register(MobileConstants.USER, "ADMIN");
+			Registry.register(MobileConstants.HOST, "LOCALHOST");
+			Registry.register(MobileConstants.CHANNEL, "PC");
+			Registry.register(MobileConstants.PROFILE, "ADM");
+			Dispatcher.forwardEvent(AppEvents.UIReady);
+		}
+		
 		viewport = new Viewport();
 		viewport.setLayout(new BorderLayout());
 

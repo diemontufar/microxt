@@ -25,6 +25,7 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.user.client.Element;
 
 public class C105 extends MyGeneralForm {
@@ -52,16 +53,21 @@ public class C105 extends MyGeneralForm {
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		// Combo Asessor
-		
-		ComboColumn spcComboCol = new ComboColumn(cdata.get(0));
+		// Combo Assessor
+		final ComboColumn comboAssessor = new ComboColumn(cdata.get(0));
 		Reference refAsessor = new Reference("usr", "UserAccount");
 		ArrayColumnData cdataComboAsessor = new ArrayColumnData();
 		cdataComboAsessor.add(new MyColumnData("usr", "pk_userId", "Asesor", 70));
 		cdataComboAsessor.add(new MyColumnData("usr", "userTypeId", "Tipo", 70));
 		cdataComboAsessor.add(new MyColumnData("usr", "name", "Nombre", 200));
-		spcComboCol.setQueryData(refAsessor, cdataComboAsessor);
-		spcComboCol.getComboBox().setPageSize(10);
+		comboAssessor.setQueryData(refAsessor, cdataComboAsessor);
+		comboAssessor.getComboBox().setPageSize(10);
+		comboAssessor.getComboBox().addAttachHandler(new AttachEvent.Handler() {
+			public void onAttachOrDetach(AttachEvent event) {
+				comboAssessor.getComboBox().addFilter("userTypeId", "ASE");
+				comboAssessor.getComboBox().addFilter("userStatusId", "ACT");
+			}
+		});
 		
 		String filterField = "userTypeId";
 
@@ -70,8 +76,8 @@ public class C105 extends MyGeneralForm {
 		filter.setComparison("=");
 		filter.setValue("ASE");
 		
-		spcComboCol.getComboBox().addFilter(filter);
-		configs.add(spcComboCol);
+		comboAssessor.getComboBox().addFilter(filter);
+		configs.add(comboAssessor);
 		
 		ComboColumn productComboColumn = new ComboColumn(cdata.get(1));
 		Reference refProduct = new Reference("prod", "ProductMicrocredit");
