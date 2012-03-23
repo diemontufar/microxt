@@ -46,7 +46,6 @@ import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.TextField;
-import com.extjs.gxt.ui.client.widget.grid.BufferView;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
@@ -171,6 +170,7 @@ public class A206 extends MyGeneralForm {
 							}
 						}
 					});
+					
 				}
 
 				Button b = new Button("Reset", new SelectionListener<ButtonEvent>() {
@@ -179,18 +179,13 @@ public class A206 extends MyGeneralForm {
 						toolBar.enableSaveButton(false);
 
 						if (defaultKey.getValue() != null) {
-							model.set("userKey", defaultKey.getValue());
-							model.set("lastChange", DatesManager.getCurrentDate());
-							grid.getStore().getAt(rowIndex).set("userKey", defaultKey.getValue());
-							grid.getStore().getAt(rowIndex).set("lastChange", DatesManager.getCurrentDate());
-							
+
+							store.getAt(rowIndex).set("userKey", defaultKey.getValue());
+							store.getAt(rowIndex).set("lastChange", DatesManager.getCurrentDate());
+
+							//grid.getView().refresh(true);
 							store.commitChanges();
-							grid.getStore().commitChanges();
-							
-							toolBar.getSaveButton().fireEvent(Events.Select);
-							
-							grid.getView().refresh(true);
-							
+																					
 							Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification, "Contraseña de usuario: "
 									+ model.get("pk_userId").toString() + " fue reseteada exitosamente"));
 
@@ -238,9 +233,9 @@ public class A206 extends MyGeneralForm {
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
 		grid.setAutoExpandColumn("userKey");
 
-		BufferView view = new BufferView();
-		view.setRowHeight(23);
-		grid.setView(view);
+//		BufferView view = new BufferView();
+//		view.setRowHeight(23);
+//		grid.setView(view);
 
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
@@ -249,8 +244,8 @@ public class A206 extends MyGeneralForm {
 
 			}
 		});
-		grid.getColumnModel().getColumn(1).getEditor().disable();
-		grid.getColumnModel().getColumn(2).getEditor().disable();
+		//grid.getColumnModel().getColumn(1).getEditor().disable();
+		//grid.getColumnModel().getColumn(2).getEditor().disable();
 
 		grid.getStore().addStoreListener(new StoreListener() {
 			public void handleEvent(StoreEvent se) {
