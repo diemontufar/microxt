@@ -1,8 +1,6 @@
 package mobile.web.webxt.client.form.widgets;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import mobile.web.webxt.client.data.MyHttpProxy;
@@ -23,11 +21,9 @@ import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
-import com.extjs.gxt.ui.client.event.KeyEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
-import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.Field;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -43,14 +39,12 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 
 	public MyComboBox() {
 		setForceSelection(true);
-		setTriggerAction(TriggerAction.ALL);
+		setTriggerAction(TriggerAction.QUERY);
 		setItemSelector("tr.search-item");
 		setEditable(false);
 
 		initLinks();
 		initValidateDependencies();
-
-		resetFunction();
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -109,34 +103,13 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 	}
 
 	public void addFilter(String field, String value) {
-		FilterConfig filter = new BaseStringFilterConfig();
-		filter.setField(field);
-		filter.setComparison("=");
-		filter.setValue(value);
-		addFilter(filter);
+		MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) getStore().getLoader()).getConfig();
+		config.addFilter(field, value);
 	}
 
 	public void addFilter(FilterConfig filter) {
-		MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) this.getStore().getLoader()).getConfig();
-
-		List<FilterConfig> filters = config.getFilterConfigs();
-		if (filters == null) {
-			filters = new ArrayList<FilterConfig>();
-		}
-
-		boolean exists = false;
-		for (FilterConfig fil : filters) {
-			if (fil.getField().compareTo(filter.getField()) == 0) {
-				exists = true;
-				fil.setValue(filter.getValue());
-			}
-		}
-
-		if (!exists) {
-			filters.add(filter);
-		}
-
-		config.setFilterConfigs(filters);
+		MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) getStore().getLoader()).getConfig();
+		config.addFilter(filter);
 	}
 
 	public boolean isSomeSelected() {
@@ -274,7 +247,6 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 			public void handleEvent(BaseEvent be) {
 				if (validateDependencies()) {
 					MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) getStore().getLoader()).getConfig();
-					// Map<DataSource, String> map = getDsDependencies();
 					Map<DataSource, String> map = getDeepDsDependencies();
 					if (map != null) {
 						for (DataSource ds : map.keySet()) {
@@ -291,16 +263,6 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 				} else {
 					be.setCancelled(true);
 				}
-			}
-		});
-
-	}
-
-	private void resetFunction() {
-		addListener(Events.KeyPress, new Listener<KeyEvent>() {
-			public void handleEvent(KeyEvent ke) {
-				Info.display("KeyCode", String.valueOf(ke.getKeyCode()));
-				// setLoaded(false);
 			}
 		});
 
@@ -394,5 +356,4 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 	public void setFilteredField(String filteredField) {
 		this.filteredField = filteredField;
 	}
-
 }

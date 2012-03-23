@@ -33,6 +33,7 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
+import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.user.client.Element;
 
 public class C103 extends MyGeneralForm {
@@ -62,17 +63,22 @@ public class C103 extends MyGeneralForm {
 		// Column model
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		// Combo Asessor
-		ComboColumn comboAsessor = new ComboColumn(cdata.get(0));
+		// Combo Assessor
+		final ComboColumn comboAssessor = new ComboColumn(cdata.get(0));
 		Reference refProfile = new Reference("ase", "UserAccount");
 		ArrayColumnData cdataCombo = new ArrayColumnData();
 		cdataCombo.add(new MyColumnData("ase", "pk_userId", "ID", 70));
 		cdataCombo.add(new MyColumnData("ase", "name", "Nombre", 200));
-		comboAsessor.setQueryData(refProfile, cdataCombo);
-		comboAsessor.getComboBox().setPageSize(5);
-		comboAsessor.getComboBox().addFilter("userTypeId", "ASE");
+		comboAssessor.setQueryData(refProfile, cdataCombo);
+		comboAssessor.getComboBox().setPageSize(5);
+		comboAssessor.getComboBox().addAttachHandler(new AttachEvent.Handler() {
+			public void onAttachOrDetach(AttachEvent event) {
+				comboAssessor.getComboBox().addFilter("userTypeId", "ASE");
+				comboAssessor.getComboBox().addFilter("userStatusId", "ACT");
+			}
+		});
 
-		configs.add(comboAsessor);
+		configs.add(comboAssessor);
 
 		ComboColumn profileGeoZone = new ComboColumn(cdata.get(1));
 		Reference refGeoZone = new Reference("geo", "GeographicZone");

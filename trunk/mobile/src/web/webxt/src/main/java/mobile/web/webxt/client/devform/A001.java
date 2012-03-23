@@ -271,8 +271,12 @@ public class A001 extends Dialog {
 			getButtonBar().disable();
 			formLogin.queryForm();
 		} else {
-			String profile = comboProfile.getRawValue();
-			onProfileSelected(profile);
+			if(comboProfile.getValue() == null){
+				comboProfile.forceInvalid("Seleccione un rol");
+			}else{
+				String profile = comboProfile.getRawValue();
+				onProfileSelected(profile);	
+			}
 		}
 	}
 

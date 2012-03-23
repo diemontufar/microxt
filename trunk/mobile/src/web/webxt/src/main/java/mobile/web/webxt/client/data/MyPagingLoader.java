@@ -10,8 +10,7 @@ import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public class MyPagingLoader extends
-		BasePagingLoader<PagingLoadResult<ModelData>> {
+public class MyPagingLoader extends BasePagingLoader<PagingLoadResult<ModelData>> {
 
 	private final MyProcessConfig config;
 
@@ -27,13 +26,11 @@ public class MyPagingLoader extends
 		return config;
 	}
 
-	public void commitChanges(List<ModelData> lModified,
-			final AsyncCallback<PagingLoadResult<ModelData>> callback) {
+	public void commitChanges(List<ModelData> lModified, final AsyncCallback<PagingLoadResult<ModelData>> callback) {
 		((MyHttpProxy) this.proxy).commit(config, lModified, callback);
 	}
 
 	protected void onLoadSuccess(Object loadConfig, PagingLoadResult<ModelData> result) {
-		//System.out.println("::OnLoadSuccess " + result.getData().size());
 		super.onLoadSuccess(loadConfig, result);
 	};
 
@@ -46,5 +43,4 @@ public class MyPagingLoader extends
 	public MyProcessConfig getConfig() {
 		return config;
 	}
-	
 }

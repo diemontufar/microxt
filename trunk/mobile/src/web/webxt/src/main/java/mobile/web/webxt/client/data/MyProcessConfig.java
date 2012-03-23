@@ -8,6 +8,7 @@ import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.Reference;
 
 import com.extjs.gxt.ui.client.data.BaseFilterPagingLoadConfig;
+import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
 import com.extjs.gxt.ui.client.data.FilterConfig;
 
 public class MyProcessConfig extends BaseFilterPagingLoadConfig {
@@ -33,8 +34,16 @@ public class MyProcessConfig extends BaseFilterPagingLoadConfig {
 		this.lDataSource = new ArrayList<DataSource>();
 	}
 	
+	public void addFilter(String field, String value) {
+		FilterConfig filter = new BaseStringFilterConfig();
+		filter.setField(field);
+		filter.setComparison("=");
+		filter.setValue(value);
+		addFilter(filter);
+	}
+	
 	public void addFilter(FilterConfig filter){
-    	List<FilterConfig> filters = getFilterConfigs(); 
+		List<FilterConfig> filters = getFilterConfigs(); 
     	if(filters==null){
     		filters  = new ArrayList<FilterConfig>();
     	}
