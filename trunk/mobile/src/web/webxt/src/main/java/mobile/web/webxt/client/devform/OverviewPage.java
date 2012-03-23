@@ -40,7 +40,7 @@ public class OverviewPage extends LayoutContainer {
 		lProcess.add(new ShortcutProcess("C201", "Socios Individuales", Resources.IMAGES.individual().getHTML()));
 		lProcess.add(new ShortcutProcess("C202", "Socios Grupales", Resources.IMAGES.groupal().getHTML()));
 		lProcess.add(new ShortcutProcess("C301", "Solicitud", Resources.IMAGES.solicitude().getHTML()));
-		lProcess.add(new ShortcutProcess("C201", "Zonas Asignadas", Resources.IMAGES.zones().getHTML()));
+		lProcess.add(new ShortcutProcess("C203", "Zonas Asignadas", Resources.IMAGES.zones().getHTML()));
 		lProcess.add(new ShortcutProcess("C302", "Aprobación", Resources.IMAGES.approval().getHTML()));
 		lProcess.add(new ShortcutProcess("C402", "Instrumentación", Resources.IMAGES.instrumentation().getHTML()));
 		lProcess.add(new ShortcutProcess("C503", "Pago de Cuotas", Resources.IMAGES.payment().getHTML()));

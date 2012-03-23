@@ -18,10 +18,13 @@
   color: #444;
   font: bold 13px tahoma, arial, helvetica;
   padding: 10px;
-  margin-left: auto ;
-  margin-right: auto ;
-  margin-top: auto ;
-  margin-bottom: auto ;
+  border: 1px solid #9c9c9c;
+  
+  position:absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
   height: auto;
 }
  
