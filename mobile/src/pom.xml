@@ -12,7 +12,6 @@
         <module>logic</module>
         <module>entity</module>
         <module>web</module>
-        <module>mis</module>
     </modules>
     <build>
         <plugins>
