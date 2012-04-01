@@ -18,12 +18,16 @@ import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
 import mobile.web.webxt.client.util.TextType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
+import com.extjs.gxt.ui.client.widget.grid.filters.ListFilter;
 import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
 import com.google.gwt.user.client.Element;
 
@@ -104,8 +108,22 @@ public class A203 extends MyGeneralForm {
 		GridFilters filters = new GridFilters();
 		StringFilter parameterIdFilter = new StringFilter(cdata.getIdFields().get(0));
 		StringFilter subsystemFilter = new StringFilter(cdata.getIdFields().get(1));
+		ListStore<ModelData> statusStore = new ListStore<ModelData>();  
+	    ModelData model = new BaseModelData();
+	    model.set("userStatusId", "ACT");
+	    statusStore.add(model);  
+		model = new BaseModelData();
+	    model.set("userStatusId", "BLO");
+	    statusStore.add(model);
+	    model = new BaseModelData();
+	    model.set("userStatusId", "INA");
+	    statusStore.add(model);
+	    ListFilter statusListFilter = new ListFilter("userStatusId", statusStore);
+	    statusListFilter.setDisplayProperty("userStatusId");
+	    
 		filters.addFilter(parameterIdFilter);
 		filters.addFilter(subsystemFilter);
+		filters.addFilter(statusListFilter);
 		
 		// Content panel
 		EntityContentPanel cp = new EntityContentPanel("Usuarios",650,300);

@@ -33,7 +33,7 @@ public class MyProcessConfig extends BaseFilterPagingLoadConfig {
 		this.process = process;
 		this.lDataSource = new ArrayList<DataSource>();
 	}
-	
+
 	public void addFilter(String field, String value) {
 		FilterConfig filter = new BaseStringFilterConfig();
 		filter.setField(field);
@@ -41,26 +41,54 @@ public class MyProcessConfig extends BaseFilterPagingLoadConfig {
 		filter.setValue(value);
 		addFilter(filter);
 	}
-	
-	public void addFilter(FilterConfig filter){
-		List<FilterConfig> filters = getFilterConfigs(); 
-    	if(filters==null){
-    		filters  = new ArrayList<FilterConfig>();
-    	}
-    	
-    	boolean exists = false;
-    	for (FilterConfig fil : filters) {
-			if (fil.getField().compareTo(filter.getField())==0){
+
+	public void addFilter(FilterConfig filter) {
+		List<FilterConfig> filters = getFilterConfigs();
+		if (filters == null) {
+			filters = new ArrayList<FilterConfig>();
+		}
+
+		boolean exists = false;
+		for (FilterConfig fil : filters) {
+			if (fil.getField().compareTo(filter.getField()) == 0) {
 				exists = true;
 				fil.setValue(filter.getValue());
 			}
 		}
-    	
-    	if(!exists){
-        	filters.add(filter);
-    	}
-    	
-    	setFilterConfigs(filters);
+
+		if (!exists) {
+			filters.add(filter);
+		}
+
+		setFilterConfigs(filters);
+	}
+
+	public void removeFilter(FilterConfig filter) {
+		if (getFilterConfigs() != null) {
+			for (FilterConfig fil : getFilterConfigs()) {
+				if (fil.getField().compareTo(filter.getField()) == 0) {
+					getFilterConfigs().remove(fil);
+					return;
+				}
+			}
+		}
+	}
+
+	public void addFilters(List<FilterConfig> lfilter) {
+		for (FilterConfig filterConfig : lfilter) {
+			addFilter(filterConfig);
+		}
+	}
+
+	public void removeFilters(List<FilterConfig> delFilters) {
+//		List<FilterConfig> delFilters = new ArrayList<FilterConfig>();
+//		FilterConfig filterConfig = new BaseStringFilterConfig();
+//		filterConfig.setField("Process_url");
+//		delFilters.add(filterConfig);
+
+		for (FilterConfig filter : delFilters) {
+			removeFilter(filter);
+		}
 	}
 
 	public String getProcess() {

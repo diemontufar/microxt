@@ -31,6 +31,8 @@ public class EntityEditorGrid extends EditorGrid<ModelData> implements Dependent
 		setStripeRows(true);
 		setColumnLines(true);
 		setFiresEvents(true);
+		
+		setStateful(true);
 
 		// Set pluggins
 		addPlugins();

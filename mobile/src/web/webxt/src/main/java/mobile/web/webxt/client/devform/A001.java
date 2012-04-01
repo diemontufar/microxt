@@ -72,9 +72,8 @@ public class A001 extends Dialog {
 		// Login form
 		formLogin = new MyFormPanel(formContainerLogin, "", FORM_WIDTH) {
 			@Override
-			protected boolean postQuery() {
+			protected void postQuery() {
 				onResponse();
-				return true;
 			}
 			@Override
 			protected void postError() {
@@ -300,6 +299,7 @@ public class A001 extends Dialog {
 				onProfileSelected(profile.getValue());
 			} else {
 				cardLayout.setActiveItem(profileContainer);
+				comboProfile.focus();
 			}
 			
 		} else {
@@ -324,12 +324,12 @@ public class A001 extends Dialog {
 	private void onProfileSelected(String profile) {
 		Registry.register(MobileConstants.PROFILE, profile);
 		System.out.println("Loggin>> " + profile);
-		
 		hide();
-
+		
 		if (responseMsg.getValue() != null) {
 			Info.display("Autenticación", responseMsg.getValue());
 		}
+		
 		Dispatcher.forwardEvent(AppEvents.UIReady);
 	}
 }

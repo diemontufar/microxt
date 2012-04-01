@@ -1,6 +1,5 @@
 package mobile.web.webxt.client.form.widgets;
 
-
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.validations.ValidationTypes;
@@ -17,21 +16,21 @@ public class InputBox extends TextField<String> implements PersistentField {
 
 	DataSource dataSource;
 	Validate type;
-	boolean toolTip=false;
-	
-	public InputBox(){
+	boolean toolTip = false;
+
+	public InputBox() {
 		super();
 	}
-	
+
 	public InputBox(int width) {
 		this.setWidth(width);
 	}
-	
+
 	public InputBox(int width, int maxLenght) {
 		this.setWidth(width);
 		this.setMaxLength(maxLenght);
 	}
-	
+
 	public InputBox(int width, int maxLenght, Validate type) {
 		this.setWidth(width);
 		this.setMaxLength(maxLenght);
@@ -39,7 +38,7 @@ public class InputBox extends TextField<String> implements PersistentField {
 		createValidator(type);
 	}
 
-	public InputBox(String lbl, String field, int width,int maxLenght, Validate type) {
+	public InputBox(String lbl, String field, int width, int maxLenght, Validate type) {
 		setDataSource(new DataSource(field));
 		this.setFieldLabel(lbl.trim());
 		this.setWidth(width);
@@ -50,10 +49,10 @@ public class InputBox extends TextField<String> implements PersistentField {
 
 	public void createValidator(Validate type) {
 
-		if (type == Validate.REQUIRED){
+		if (type == Validate.REQUIRED) {
 			setAllowBlank(false);
 		}
-		
+
 		if (type == Validate.TEXT) {
 			setValidator(new ValidationTypesValidator(ValidationTypes.ALPHABET));
 		}
@@ -75,13 +74,13 @@ public class InputBox extends TextField<String> implements PersistentField {
 		if (type == Validate.EMAIL) {
 			setValidator(new ValidationTypesValidator(ValidationTypes.EMAIL));
 		}
-		
+
 		if (type == Validate.DATE) {
 			setValidator(new ValidationTypesValidator(ValidationTypes.DATE));
 			setToolTip("Formato: dd-mm-aaaa");
 			setMaxLength(10);
 		}
-		
+
 	}
 
 	@Override
@@ -96,19 +95,19 @@ public class InputBox extends TextField<String> implements PersistentField {
 	protected void onRender(Element target, int index) {
 		super.onRender(target, index);
 		getInputEl().setElementAttribute("maxLength", getMaxLength());
-		
+
 		this.addListener(Events.OnMouseOver, new Listener<BaseEvent>() {
-		    public void handleEvent(BaseEvent be) {
-		    	if(toolTip){
-		    		setToolTip(getValue());
-		    	}
-		    }
+			public void handleEvent(BaseEvent be) {
+				if (toolTip) {
+					setToolTip(getValue());
+				}
+			}
 		});
-		
+
 		this.addListener(Events.OnBlur, new Listener<FieldEvent>() {
 			public void handleEvent(FieldEvent e) {
-				if (getValue()!=null && getType()!=Validate.EMAIL && getType()!=Validate.PASSWORD){
-					//setValue(getValue().toString().toUpperCase());
+				if (getValue() != null && getType() != Validate.EMAIL && getType() != Validate.PASSWORD) {
+					// setValue(getValue().toString().toUpperCase());
 				}
 			}
 		});
@@ -127,15 +126,15 @@ public class InputBox extends TextField<String> implements PersistentField {
 	}
 
 	public void setToolTipValue(boolean value) {
-		this.toolTip=value;
+		this.toolTip = value;
 	}
-	
+
 	@Override
 	public String getValue() {
-		if (super.getValue()!=null && getType()!=Validate.EMAIL && getType()!=Validate.PASSWORD){
-			//return super.getValue().toUpperCase();
+		if (super.getValue() != null && getType() != Validate.EMAIL && getType() != Validate.PASSWORD) {
+			// return super.getValue().toUpperCase();
 			return super.getValue();
-		}else{
+		} else {
 			return super.getValue();
 		}
 	}
@@ -147,10 +146,13 @@ public class InputBox extends TextField<String> implements PersistentField {
 	public void setType(Validate type) {
 		this.type = type;
 	}
-	
+
 	@Override
 	public void setReadOnly(boolean readOnly) {
 		super.setReadOnly(readOnly);
 		setTabIndex(-1);
+		if (isReadOnly()) {
+			setStyleAttribute("color", "gray");
+		}
 	}
 }

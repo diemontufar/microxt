@@ -26,7 +26,7 @@ public final class MyMessageReader {
 	/** Field separator */
 	public final static String FS = ":";
 
-	public static List<ModelData> getModels(Message msg, String entityName) {
+	public static List<ModelData> getModels(Message msg, String entityName) throws Exception {
 		ArrayList<ModelData> models = new ArrayList<ModelData>();
 
 		EntityData entityData = msg.getEntityData(entityName);

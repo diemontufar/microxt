@@ -19,22 +19,17 @@ public class GridToolBar extends ToolBar {
 	private Button resetButton;
 	private Button saveButton;
 	private ModelData initModel;
-	
-	private boolean isSaveOverwritten;
 
 	public int initColumnIndex = 0;
 
 	public GridToolBar(Grid<ModelData> grid, MyListStore store) {
 		this(grid, store, new BaseModelData());
-		setSaveOverwritten(false);
 	}
 
 	public GridToolBar(Grid<ModelData> grid, MyListStore store, ModelData initModel) {
 		this.grid = grid;
 		this.store = store;
 		this.initModel = initModel;
-		
-		setSaveOverwritten(false);
 
 		// Add button
 		addButton = new Button("Agregar");
@@ -61,9 +56,7 @@ public class GridToolBar extends ToolBar {
 		saveButton = new Button("Guardar", new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				if(!isSaveOverwritten()){
-					saveAction();
-				}
+				saveAction();
 			}
 		});
 		saveButton.setIcon(Resources.ICONS.save());
@@ -102,7 +95,7 @@ public class GridToolBar extends ToolBar {
 	public void enableSaveButton(boolean enabled) {
 		this.saveButton.setEnabled(enabled);
 	}
-	
+
 	public Button getAddButton() {
 		return addButton;
 	}
@@ -126,13 +119,4 @@ public class GridToolBar extends ToolBar {
 	public void setSaveButton(Button saveButton) {
 		this.saveButton = saveButton;
 	}
-	
-	public boolean isSaveOverwritten() {
-		return isSaveOverwritten;
-	}
-
-	public void setSaveOverwritten(boolean isSaveOverwritten) {
-		this.isSaveOverwritten = isSaveOverwritten;
-	}
-
 }

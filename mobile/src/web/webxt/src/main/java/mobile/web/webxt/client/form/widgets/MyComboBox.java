@@ -19,6 +19,7 @@ import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoader;
 import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
@@ -61,7 +62,18 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 				if (filteredField == null) {
 					filteredField = getDisplayField();
 				}
-				getStore().filter(filteredField, q);
+				//getStore().filter(filteredField, q);
+				if(q != null && q.length()>0){
+					FilterConfig filter = new BaseStringFilterConfig();
+					filter.setField(filteredField);
+					filter.setValue(q);
+					((MyPagingLoader) getStore().getLoader()).getConfig().addFilter(filter);
+				}else{
+					FilterConfig filter = new BaseStringFilterConfig();
+					filter.setField(filteredField);
+					filter.setValue(q);
+					((MyPagingLoader) getStore().getLoader()).getConfig().removeFilter(filter);
+				}
 				((PagingLoader) getStore().getLoader()).load(0, getPageSize());
 			}
 		} else {
@@ -74,6 +86,14 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 		}
 	}
 
+	@Override
+	protected void onTriggerClick(ComponentEvent ce) {
+		if(isEditable()){
+			super.clearSelections();
+		}		
+		super.onTriggerClick(ce);
+	}
+	
 	@Override
 	protected void onKeyDown(FieldEvent fe) {
 		if (fe.getKeyCode() == KeyCodes.KEY_DELETE) {
@@ -113,7 +133,11 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 	}
 
 	public boolean isSomeSelected() {
-		return getValue() != null && isLoaded();
+		if(isEditable()){
+			return getValue() != null;
+		}else{
+			return getValue() != null && isLoaded();
+		}
 	}
 
 	public void linkWithField(Field<?> widget, String field) {

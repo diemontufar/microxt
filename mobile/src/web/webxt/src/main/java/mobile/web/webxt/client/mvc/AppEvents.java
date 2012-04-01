@@ -9,6 +9,7 @@ public class AppEvents {
 	public static final EventType NavPanelReady = new EventType();
 	public static final EventType FormPanelReady = new EventType();
 	public static final EventType StatusToolbarReady = new EventType();
+	public static final EventType CloseSession = new EventType();
 	
 	public static final EventType ProcessSelected = new EventType();
 	public static final EventType TabSelected = new EventType();

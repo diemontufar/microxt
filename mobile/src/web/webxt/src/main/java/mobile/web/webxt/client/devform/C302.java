@@ -43,7 +43,7 @@ public class C302 extends MyGeneralForm {
 		final int WIDGET_HEIGHT = 40;
 
 		// Form panel
-		final MyFormPanel form = new MyFormPanel(this, "Recomendacion de Microcrédido", FORM_WIDTH);
+		final MyFormPanel form = new MyFormPanel(this, "Recomendación de Microcrédido", FORM_WIDTH);
 		form.setHeight(460);
 
 		// Header - solicitude combo
@@ -57,6 +57,7 @@ public class C302 extends MyGeneralForm {
 		solicitudeId.setDataSource(new DataSource("rec", "pk_solicitudeId", DataSourceType.CRITERION));
 		solicitudeId.setFieldLabel("Solicitud");
 		solicitudeId.setAllowBlank(false);
+		solicitudeId.setData("mobile-type", Integer.class);
 
 		Reference refSolicitude = new Reference("sol1", "Solicitude");
 		final ArrayColumnData solCdata = new ArrayColumnData();

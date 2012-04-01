@@ -1,7 +1,6 @@
 package mobile.web.webxt.client.devform;
 
 import mobile.common.message.Item;
-import mobile.web.webxt.client.MobileError;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
@@ -16,6 +15,7 @@ import mobile.web.webxt.client.form.widgets.MyTextArea;
 import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
+import mobile.web.webxt.client.windows.MobileError;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Orientation;

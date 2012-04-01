@@ -2,7 +2,7 @@ package mobile.web.webxt.client.data;
 
 import java.util.List;
 
-import mobile.web.webxt.client.MobileError;
+import mobile.web.webxt.client.windows.MobileError;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.DataProxy;
@@ -18,7 +18,7 @@ public class MyPagingLoader extends BasePagingLoader<PagingLoadResult<ModelData>
 		super(proxy);
 		this.setRemoteSort(true);
 		this.config = config;
-		setReuseLoadConfig(false);
+		setReuseLoadConfig(true);
 	}
 
 	@Override

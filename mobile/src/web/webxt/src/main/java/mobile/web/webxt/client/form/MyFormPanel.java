@@ -8,7 +8,6 @@ import java.util.Map;
 
 import mobile.common.message.Item;
 import mobile.common.tools.Format;
-import mobile.web.webxt.client.MobileError;
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyMessageReader;
 import mobile.web.webxt.client.data.form.DataSource;
@@ -19,6 +18,7 @@ import mobile.web.webxt.client.form.widgets.PersistentField;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.DatesManager;
 import mobile.web.webxt.client.util.WebConverter;
+import mobile.web.webxt.client.windows.MobileError;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -58,7 +58,7 @@ public class MyFormPanel extends FormPanel {
 		setFrame(true);
 		setWidth(width);
 	}
-	
+
 	public MyFormPanel(MyGeneralForm parent, String title, String width) {
 		this.parent = parent;
 		setHeading(title);
@@ -156,9 +156,9 @@ public class MyFormPanel extends FormPanel {
 		}
 
 		// Show map
-		for (String key : rqField.keySet()) {
-			System.out.println(key + ">" + rqField.get(key));
-		}
+		// for (String key : rqField.keySet()) {
+		// System.out.println(key + ">" + rqField.get(key));
+		// }
 	}
 
 	public static void setValueToField(Field<?> f, Object newObject, boolean diff) {
@@ -186,7 +186,6 @@ public class MyFormPanel extends FormPanel {
 			if (!diff || field.getValue() == null || (newValue != null && !field.getValue().equals(newValue))) {
 				field.setValue(newValue);
 			}
-
 		} else if (f instanceof DateField) {
 			DateField field = (DateField) f;
 			Date newValue = null;
@@ -219,7 +218,7 @@ public class MyFormPanel extends FormPanel {
 				newModel.set(field.getDisplayField(), newValue);
 			}
 
-			if (!diff || field.getValue() == null || (newValue != null && !field.getValue().equals(newValue))) {
+			if (!diff || field.getValue() == null || (newValue != null && !field.getRawValue().equals(newValue))) {
 				field.setValue(newModel);
 				field.setRawValue(newValue);
 				field.setLoaded(false);
@@ -231,9 +230,11 @@ public class MyFormPanel extends FormPanel {
 		System.out.println("::mapToFields");
 
 		// Show map
-		for (String key : rmfields.keySet()) {
-			System.out.println(key + ">" + rmfields.get(key));
-		}
+//		System.out.println(">>>>>>mfields");
+//		for (String key : rmfields.keySet()) {
+//			System.out.println(key + ">" + rmfields.get(key));
+//		}
+//		System.out.println(">>>>>>");
 
 		// Query something?
 		boolean atLeastOneItem = (Boolean) rmfields.get("ONE_ITEM");
@@ -242,30 +243,60 @@ public class MyFormPanel extends FormPanel {
 		} else {
 			setNewItem(true); // It's a new creation
 		}
-
-		// Mapping
-		try {
-			for (Field<?> f : getPersistentFields()) {
-				PersistentField pf = (PersistentField) f;
-				DataSource ds = pf.getDataSource();
-				if (ds != null && ds.getType() != DataSourceType.CRITERION) {
-					String key = MyMessageReader.buildKey(ds);
-					if(ds.getType() == DataSourceType.DESCRIPTION){
-						key = uncompleteDescriptionKey(key);
-					}
-					Object newObject = rmfields.get(key);
-					setValueToField(f, newObject, diff);
+		
+		// Clear solicited fields
+		//System.out.println(">>>>>>Clear fields");
+		for (Field<?> f : getPersistentFields()) {
+			PersistentField pf = (PersistentField) f;
+			DataSource ds = pf.getDataSource();
+			if (ds != null && ds.getType() != DataSourceType.CRITERION) {
+				String key = MyMessageReader.buildKey(ds);
+				if (ds.getType() == DataSourceType.DESCRIPTION) {
+					key = uncompleteDescriptionKey(key);
+				}
+				if (rqField.containsKey(key)) {
+					//System.out.print(">>>>>Clean " + ds);
+					setValueToField(f, null, diff);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+		//System.out.println(">>>>>>");
+
+		// Mapping
+		//System.out.println(">>>>>>Mapping");
+		for (Field<?> f : getPersistentFields()) {
+			PersistentField pf = (PersistentField) f;
+			DataSource ds = pf.getDataSource();
+			if (diff) {
+				if (ds != null && (ds.getType() == DataSourceType.RECORD || ds.getType() == DataSourceType.CONTROL)) {
+					String key = MyMessageReader.buildKey(ds);
+					if (rmfields.containsKey(key)) {
+						Object newObject = rmfields.get(key);
+						setValueToField(f, newObject, diff);
+					}
+				}
+			} else {
+				if (ds != null && ds.getType() != DataSourceType.CRITERION) {
+					String key = MyMessageReader.buildKey(ds);
+					if (ds.getType() == DataSourceType.DESCRIPTION) {
+						key = uncompleteDescriptionKey(key);
+					}
+					if (rmfields.containsKey(key)) {
+						//System.out.print(">>>>> Set " + ds);
+						Object newObject = rmfields.get(key);
+						setValueToField(f, newObject, diff);
+						//System.out.println(" " + newObject);
+					}
+				}
+			}
+		}
+		//System.out.println(">>>>>>");
 	}
 
 	private String uncompleteDescriptionKey(String key) {
 		String key2 = key;
-		String [] part = key.split(":");
-		if(part.length>3){
+		String[] part = key.split(":");
+		if (part.length > 3) {
 			key2 = part[0] + ":" + part[1] + ":" + part[2];
 		}
 		return key2;
@@ -290,8 +321,7 @@ public class MyFormPanel extends FormPanel {
 
 		// Validate
 		if (!isValid()) {
-			Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification,
-			"Existen errores de Validación"));
+			Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification, "Existen errores de Validación"));
 			return;
 		}
 
@@ -365,18 +395,16 @@ public class MyFormPanel extends FormPanel {
 		return true;
 	}
 
-	protected boolean postQuery() {
-		return true;
+	protected void postQuery() throws Exception {
 	}
 
 	protected boolean preMaintenance() {
 		return true;
 	}
 
-	protected boolean postMaintenance() {
-		return true;
+	protected void postMaintenance() throws Exception {
 	}
-	
+
 	protected void postError() {
 	}
 }
