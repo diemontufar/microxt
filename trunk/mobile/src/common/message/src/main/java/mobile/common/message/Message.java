@@ -75,8 +75,15 @@ public class Message {
 		return dataList;
 	}
 
-	public EntityData getEntityData(String entity) {
-		return toEntityData(getData(entity));
+	public EntityData getEntityData(String entity) throws Exception {
+		EntityData  entityData = null;
+		Data data = getData(entity);
+		if(data != null){
+			entityData = toEntityData(data);
+		}else{
+			throw new Exception("Entidad no encontrada");
+		}
+		return entityData;
 	}
 
 	public List<EntityData> getEntityDataList() {
