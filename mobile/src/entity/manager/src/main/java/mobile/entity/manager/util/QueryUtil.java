@@ -1,5 +1,8 @@
 package mobile.entity.manager.util;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +10,8 @@ import java.util.List;
 import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
+import mobile.entity.common.EntityField;
+import mobile.entity.common.EntityFieldPk;
 import mobile.entity.manager.JpManager;
 import mobile.tools.common.convertion.CoreConverter;
 
@@ -214,7 +219,7 @@ public class QueryUtil {
 				}
 			}
 		}
-		
+
 		// Ordering
 		if (data.getOrderBy() != null) {
 			if (!normalQuery) {
@@ -226,7 +231,6 @@ public class QueryUtil {
 				sql.append(" DESC");
 			}
 		}
-
 
 		return sql.toString();
 	}
@@ -292,4 +296,34 @@ public class QueryUtil {
 		data.setTotal(totalLength);
 	}
 
+	public Object convertParameter(String entity, String field, Object value) throws Exception {
+		Object cValue = null;
+		EntityFieldPk pk = new EntityFieldPk(JpManager.toSqlName(entity), JpManager.toSqlName(field));
+		pk.setCompanyId("ALL");
+		EntityField entityField = JpManager.find(EntityField.class, pk);
+
+		if(entityField == null){
+			return value;
+		}
+		
+		String type = entityField.getDataTypeId();
+
+		if (type.compareTo("String") == 0) {
+			cValue = value;
+		} else if (type.compareTo("Integer") == 0) {
+			cValue = CoreConverter.convertObject(value, Integer.class);
+		} else if (type.compareTo("BigDecimal") == 0) {
+			cValue = CoreConverter.convertObject(value, BigDecimal.class);
+		} else if (type.compareTo("Boolean") == 0) {
+			cValue = CoreConverter.convertObject(value, Boolean.class);
+		} else if (type.compareTo("Long") == 0) {
+			cValue = CoreConverter.convertObject(value, Long.class);
+		} else if (type.compareTo("Date") == 0) {
+			cValue = CoreConverter.convertObject(value, Date.class);
+		} else if (type.compareTo("Timestamp") == 0) {
+			cValue = CoreConverter.convertObject(value, Timestamp.class);
+		}
+
+		return cValue;
+	}
 }

@@ -557,6 +557,7 @@ public class JpManager {
 
 		// Find the entity
 		if (!isNew) {
+			//getEntityManager().getEntityManagerFactory().getCache().evictAll();
 			GeneralEntity findedEntity = (GeneralEntity) find(entity.getClass(), pk);
 			if (findedEntity != null) {
 				entity = findedEntity;
@@ -582,6 +583,7 @@ public class JpManager {
 			}
 		}
 
+		log.info("Converted entity: " + entity);
 		return (GeneralEntity) entity;
 	}
 
