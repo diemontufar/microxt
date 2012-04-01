@@ -69,11 +69,11 @@ public class Partner extends AbstractHistorical implements Multicompany, Multila
 		this.pk = pk;
 	}
 
-	public Integer  getPersonId() {
+	public Integer getPersonId() {
 		return this.personId;
 	}
 
-	public void setPersonId(Integer  personId) {
+	public void setPersonId(Integer personId) {
 		this.personId = personId;
 	}
 

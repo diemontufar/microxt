@@ -12,7 +12,7 @@
    Modelo microcredito: entity1.csv, field1.csv, relationship1.csv
 4. Ejecutar GeneratorFromCsv (Parametrizar la variable <OUTPUT_FOLDER>). 
    Esto creara en la carpeta <OUTPUT_FOLDER> los sql de generacion create.sql y drop.sql, ademas de las persistencias
-5. Sobre "microxt", ejecutar create.sql
+5. Sobre "microxt", ejecutar create.sql. Agregar las persistencias a los fuentes.
 7. Ejecutar los scripts de parametrizacion que se encuentran dentro de 
    /sql/data/*.sql
 8. Finalmente se debe llenar las tablas de generacion(EntityTable, EntityField, EntityRelationship) en la bd "microxt"
