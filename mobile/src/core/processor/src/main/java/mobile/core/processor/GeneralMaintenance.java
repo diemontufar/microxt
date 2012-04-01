@@ -67,9 +67,11 @@ public class GeneralMaintenance implements MaintenanceProcessor {
 	}
 
 	private void updateEntity(String entityId, Item item) throws Exception {
-		GeneralEntity entity = JpManager.parseEntity(entityId, item, false);
-		log.info("Update " + entity.toString());
-		JpManager.update(entity);
+		if(item.getFieldList() != null && item.getFieldList().size()>0){
+			GeneralEntity entity = JpManager.parseEntity(entityId, item, false);
+			log.info("Update " + entity.toString());
+			JpManager.update(entity);
+		}
 	}
 
 	private String validateNull(String in) {

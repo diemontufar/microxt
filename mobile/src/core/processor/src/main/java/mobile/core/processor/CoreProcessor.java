@@ -155,10 +155,9 @@ public class CoreProcessor {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public Message setResponse(Message msg, Throwable throwable) {
-		Objection objection = null;
-		String message = "";
+		Objection objection = new Objection(throwable, ObjectionCode.FAILED);
 
 		if (throwable == null) {
 			msg.getResponse().setCode(ObjectionCode.SUCCESS.getCode());
@@ -176,48 +175,31 @@ public class CoreProcessor {
 				if (errorCode != null) {
 					if (errorCode == 1062) {
 						objection = new Objection(dbe, ObjectionCode.DB_DUPLICATE_PK);
-					}else if(errorCode == 1451 || errorCode == 1452){
+					} else if (errorCode == 1451 || errorCode == 1452) {
 						objection = new Objection(dbe, ObjectionCode.DB_FOREIGN_KEY);
-					}else if(errorCode == 1048){
+					} else if (errorCode == 1048) {
 						objection = new Objection(dbe, ObjectionCode.DB_FOREIGN_KEY);
 					}
 				}
 			}
-		} else if (throwable instanceof CommunicationsException){
+		} else if (throwable instanceof CommunicationsException) {
 			objection = new Objection(throwable, ObjectionCode.DB_CONNECTION_ERROR);
-		} else if (throwable instanceof IllegalArgumentException){
-			objection = new Objection(throwable, ObjectionCode.DB_QUERY_ERROR);
-		}else if (throwable.getMessage() != null) {
-			message = throwable.getMessage();
-			message = replaceWrongCharacters(message);
-		} else if (throwable.getCause() != null) {
-			message = throwable.getCause().toString();
-			message = replaceWrongCharacters(message);
 		}
 
-		if (objection != null) {
-			msg.getResponse().setCode(objection.getCode());
-			msg.getResponse().setMessage(objection.getMessage());
-			String stackTrace = replaceWrongCharacters(getStackTrace(throwable));
-			stackTrace = (stackTrace.length() > MAX_STACK_TRACE) ? stackTrace.substring(0, MAX_STACK_TRACE) + "..."
-					: stackTrace;
-			msg.getResponse().setError(stackTrace);
-			// DatabaseException dbe = (DatabaseException) throwable.getCause();
-			// message = ObjectionCode.DB_ERROR.getMessage() + "<br/>";
-			// message = "CÓDIGO: " + dbe.getDatabaseErrorCode() + "<br/>";
-			// message = message + dbe.getMessage();
-			// message = replaceWrongCharacters(message);
-			// msg.getResponse().setMessage(message);
-			// String stackTrace = replaceWrongCharacters(getStackTrace(dbe));
-			// msg.getResponse().setError(stackTrace);
-		} else {
-			msg.getResponse().setCode(ObjectionCode.FAILED.getCode());
-			msg.getResponse().setMessage(message);
-			String stackTrace = replaceWrongCharacters(getStackTrace(throwable));
-			stackTrace = (stackTrace.length() > MAX_STACK_TRACE) ? stackTrace.substring(0, MAX_STACK_TRACE) + "..."
-					: stackTrace;
-			msg.getResponse().setError(stackTrace);
-		}
+		msg.getResponse().setCode(objection.getCode());
+		msg.getResponse().setMessage(objection.getMessage());
+		String stackTrace = replaceWrongCharacters(getStackTrace(throwable));
+		stackTrace = (stackTrace.length() > MAX_STACK_TRACE) ? stackTrace.substring(0, MAX_STACK_TRACE) + "..."
+				: stackTrace;
+		msg.getResponse().setError(stackTrace);
+		// DatabaseException dbe = (DatabaseException) throwable.getCause();
+		// message = ObjectionCode.DB_ERROR.getMessage() + "<br/>";
+		// message = "CÓDIGO: " + dbe.getDatabaseErrorCode() + "<br/>";
+		// message = message + dbe.getMessage();
+		// message = replaceWrongCharacters(message);
+		// msg.getResponse().setMessage(message);
+		// String stackTrace = replaceWrongCharacters(getStackTrace(dbe));
+		// msg.getResponse().setError(stackTrace);
 
 		return msg;
 	}
