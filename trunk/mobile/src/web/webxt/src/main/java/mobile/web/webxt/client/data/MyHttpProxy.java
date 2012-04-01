@@ -14,13 +14,13 @@ import mobile.common.message.ResponseData;
 import mobile.common.tools.Format;
 import mobile.common.tools.ProcessType;
 import mobile.web.webxt.client.MobileConstants;
-import mobile.web.webxt.client.MobileError;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.DatesManager;
 import mobile.web.webxt.client.util.WebConverter;
+import mobile.web.webxt.client.windows.MobileError;
 
 import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.data.DataProxy;
@@ -514,13 +514,21 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 			Map<String, EntityData> mdata = new HashMap<String, EntityData>();
 
 			// Fill data
-			EntityData data = new EntityData(config.getReference().getEntity());
-			data.setAlias(config.getReference().getAlias());
-			mdata.put(config.getReference().getAlias(), data);
+			EntityData data = null;
+			if (config.getReference() != null && config.getReference().getEntity() != null) {
+				data = new EntityData(config.getReference().getEntity());
+				if (config.getReference().getAlias() != null) {
+					data.setAlias(config.getReference().getAlias());
+				}
+				mdata.put(config.getReference().getAlias(), data);
+			}
 
 			// Fill Item
-			Item item = new Item(1);
-			data.addItem(item);
+			Item item = null;
+			if (data != null) {
+				item = new Item(1);
+				data.addItem(item);
+			}
 
 			for (String key : mfields.keySet()) {
 				String value = mfields.get(key);
@@ -589,7 +597,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		if (response.getStatusCode() != Response.SC_OK) {
 			throw new RuntimeException("ERROR AL COMUNICARSE CON EL CORE");
 		}
-		
+
 		String text = response.getText();
 		if (text.startsWith("NINGUN MENSAJE RECIBIDO")) {
 			throw new RuntimeException("CORE: NINGUN MENSAJE RECIBIDO");
@@ -602,7 +610,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 		} catch (Exception e) {
 			throw new RuntimeException("EL MENSAJE DE RESPUESTA ES INCORRECTO");
 		}
-		
+
 		if (msg != null && msg.getResponse().getCode() != null
 				&& msg.getResponse().getCode().compareTo(ResponseData.RESPONSE_CODE_OK) != 0) {
 			String message = msg.getResponse().getMessage();

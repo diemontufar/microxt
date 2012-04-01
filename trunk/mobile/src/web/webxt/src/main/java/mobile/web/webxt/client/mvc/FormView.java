@@ -1,6 +1,5 @@
 package mobile.web.webxt.client.mvc;
 
-import mobile.web.webxt.client.MobileError;
 import mobile.web.webxt.client.components.FormPanel;
 import mobile.web.webxt.client.devform.A101;
 import mobile.web.webxt.client.devform.A102;
@@ -31,15 +30,16 @@ import mobile.web.webxt.client.devform.C002;
 import mobile.web.webxt.client.devform.C003;
 import mobile.web.webxt.client.devform.C004;
 import mobile.web.webxt.client.devform.C005;
+import mobile.web.webxt.client.devform.C006;
 import mobile.web.webxt.client.devform.C007;
 import mobile.web.webxt.client.devform.C101;
 import mobile.web.webxt.client.devform.C102;
 import mobile.web.webxt.client.devform.C103;
 import mobile.web.webxt.client.devform.C104;
 import mobile.web.webxt.client.devform.C105;
+import mobile.web.webxt.client.devform.C106;
 import mobile.web.webxt.client.devform.C201;
 import mobile.web.webxt.client.devform.C202;
-import mobile.web.webxt.client.devform.C106;
 import mobile.web.webxt.client.devform.C301;
 import mobile.web.webxt.client.devform.C302;
 import mobile.web.webxt.client.devform.C401;
@@ -52,6 +52,7 @@ import mobile.web.webxt.client.devform.G303;
 import mobile.web.webxt.client.devform.G304;
 import mobile.web.webxt.client.devform.OverviewPage;
 import mobile.web.webxt.client.form.MyGeneralForm;
+import mobile.web.webxt.client.windows.MobileError;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.EventType;
@@ -194,7 +195,7 @@ public class FormView extends View {
 		} else if (processId.compareTo("C005") == 0) {
 			form = new C005();
 		} else if (processId.compareTo("C006") == 0) {
-			// form = new C006();
+			form = new C006();
 		} else if (processId.compareTo("C007") == 0) {
 			form = new C007();
 		} else if (processId.compareTo("C101") == 0) {

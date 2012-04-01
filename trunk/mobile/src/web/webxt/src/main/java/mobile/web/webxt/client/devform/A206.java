@@ -11,7 +11,6 @@ import mobile.web.webxt.client.form.MyFormPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgets.InputBox;
-import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.ComboColumn;
 import mobile.web.webxt.client.form.widgetsgrid.EntityEditorGrid;
@@ -20,31 +19,22 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
-import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.DatesManager;
 import mobile.web.webxt.client.util.TextType;
 
 import com.extjs.gxt.ui.client.Style.SortDir;
-import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.event.LoadListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.mvc.AppEvent;
-import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.store.Store;
-import com.extjs.gxt.ui.client.store.StoreEvent;
-import com.extjs.gxt.ui.client.store.StoreListener;
+import com.extjs.gxt.ui.client.store.Record;
 import com.extjs.gxt.ui.client.widget.BoxComponent;
 import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.button.Button;
-import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
@@ -52,12 +42,13 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
+import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.user.client.Element;
 
+/**
+ * PROCESS FOR RESETING PASWORDS (ADMIN)
+ */
 public class A206 extends MyGeneralForm {
-
-	// PROCESS FOR RESETING PASWORDS (ADMIN)
-
 	private final static String PROCESS = "A206";
 	private final static String ENTITY = "UserAccess";
 	private final Integer PAGE_SIZE = 5;
@@ -76,58 +67,47 @@ public class A206 extends MyGeneralForm {
 
 	EntityEditorGrid grid;
 
+	CellEditor cellEdito1;
+
 	public A206() {
 		super(PROCESS, true);
 		setReference(ENTITY);
 
 		formContainerParameter = new MyGeneralForm(PROCESS);
 		formContainerParameter.setReference(new Reference("par", ENTITY_PARAMETER));
-		formContainerParameter.setBorders(false);
-		formParameter = new MyFormPanel(formContainerParameter, "", 200);
-		formParameter.setHeaderVisible(false);
-		formParameter.setFrame(false);
-		formParameter.setBorders(false);
-		formParameter.setBodyBorder(false);
-		formParameter.setStyleAttribute("padding", "0px");
+		formContainerParameter.setVisible(false);
+
+		formParameter = new MyFormPanel(formContainerParameter, "", 200) {
+			@Override
+			protected void postQuery() {
+				grid.getStore().getLoader().load();
+			}
+		};
+		formParameter.setVisible(false);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void onRender(Element parent, int index) {
 		super.onRender(parent, index);
 
-		FieldSet fieldSet = new FieldSet();
-		fieldSet.setBorders(false);
-		fieldSet.setWidth(280);
-
-		RowContainer row = new RowContainer();
-
-		// parameterCode
+		// Auxiliary form
 		parameterCode = new InputBox();
 		parameterCode.setDataSource(new DataSource("par", "pk_parameterId", DataSourceType.CRITERION));
-		parameterCode.setFireChangeEventOnSetValue(true);
+		parameterCode.setValue("DEFAULT_PASSWORD");
+		formParameter.add(parameterCode);
 
-		parameterCode.addListener(Events.Change, new Listener<FieldEvent>() {
-			public void handleEvent(FieldEvent e) {
-				if (e.getValue() != null) {
-					formParameter.queryForm();
-				}
-			}
-		});
-
-		row.add(parameterCode);
-		fieldSet.add(row);
-
-		row = new RowContainer();
 		defaultKey = new InputBox();
 		defaultKey.setDataSource(new DataSource("par", "parameterValue", DataSourceType.RECORD));
 		defaultKey.setType(Validate.PASSWORD);
+		formParameter.add(defaultKey);
 
-		row.add(defaultKey);
-		fieldSet.add(row);
+		formParameter.addAttachHandler(new AttachEvent.Handler() {
+			public void onAttachOrDetach(AttachEvent event) {
+				formParameter.queryForm();
+			}
+		});
 
-		formParameter.add(fieldSet);
-
+		// Grid form
 		final ArrayColumnData cdata = new ArrayColumnData();
 		cdata.add(new MyColumnData("pk_userId", "ID", 70, 20, false));
 		cdata.add(new MyColumnData("userKey", "Clave", 200, 300, false));
@@ -137,16 +117,16 @@ public class A206 extends MyGeneralForm {
 		// Column model
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		// Combo Asessor
-		ComboColumn comboAsessor = new ComboColumn(cdata.get(0));
+		// Combo Assessor
+		ComboColumn comboAssessor = new ComboColumn(cdata.get(0));
 		Reference refProfile = new Reference("ase", "UserAccount");
 		ArrayColumnData cdataCombo = new ArrayColumnData();
 		cdataCombo.add(new MyColumnData("ase", "pk_userId", "ID", 70));
 		cdataCombo.add(new MyColumnData("ase", "name", "Nombre", 200));
-		comboAsessor.setQueryData(refProfile, cdataCombo);
-		comboAsessor.getComboBox().setPageSize(5);
+		comboAssessor.setQueryData(refProfile, cdataCombo);
+		comboAssessor.getComboBox().setPageSize(5);
 
-		configs.add(comboAsessor);
+		configs.add(comboAssessor);
 
 		GridCellRenderer<ModelData> buttonRenderer = new GridCellRenderer<ModelData>() {
 
@@ -165,30 +145,26 @@ public class A206 extends MyGeneralForm {
 										&& be.getGrid().getView().getWidget(i, be.getColIndex()) instanceof BoxComponent) {
 									((BoxComponent) be.getGrid().getView().getWidget(i, be.getColIndex())).setWidth(be
 											.getWidth() - 10);
-
 								}
 							}
 						}
 					});
-					
+
 				}
 
 				Button b = new Button("Reset", new SelectionListener<ButtonEvent>() {
 					@Override
 					public void componentSelected(ButtonEvent ce) {
-						toolBar.enableSaveButton(false);
-
 						if (defaultKey.getValue() != null) {
-
-							store.getAt(rowIndex).set("userKey", defaultKey.getValue());
-							store.getAt(rowIndex).set("lastChange", DatesManager.getCurrentDate());
-
-							//grid.getView().refresh(true);
-							store.commitChanges();
-																					
-							Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification, "Contraseña de usuario: "
-									+ model.get("pk_userId").toString() + " fue reseteada exitosamente"));
-
+							try {
+								Record rec = store.getRecord(model);
+								rec.setValid("userKey", true);
+								rec.set("userKey", defaultKey.getValue());
+								rec.setValid("lastChange", true);
+								rec.set("lastChange", DatesManager.getCurrentDate());
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						} else {
 							Info.display("Error", "No hay Contraseña por defecto");
 						}
@@ -200,19 +176,20 @@ public class A206 extends MyGeneralForm {
 				b.setToolTip("Resetear Contraseña");
 
 				return b;
-
 			}
-
 		};
 
 		columnEncoded = new ColumnConfig();
 		columnEncoded.setId("userKey");
 		columnEncoded.setHeader("Clave");
 		columnEncoded.setWidth(200);
-		columnEncoded.setEditor(new CellEditor(new TextField<String>()));
+		cellEdito1 = new CellEditor(new TextField<String>());
+		columnEncoded.setEditor(cellEdito1);
+		columnEncoded.setEditor(null);
 		configs.add(columnEncoded);
 
 		dateColumn = new NormalColumn(cdata.get(2), TextType.DATE, null);
+		dateColumn.setEditor(null);
 		configs.add(dateColumn);
 
 		ColumnConfig column = new ColumnConfig();
@@ -230,53 +207,25 @@ public class A206 extends MyGeneralForm {
 		EntityContentPanel cp = new EntityContentPanel("Reseteo de Contraseñas", 500, 230);
 
 		// Grid
-		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
+		grid = new EntityEditorGrid(getStore(), cm);
 		grid.setAutoExpandColumn("userKey");
-
-//		BufferView view = new BufferView();
-//		view.setRowHeight(23);
-//		grid.setView(view);
 
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
 				getStore().sort(cdata.getIdFields().get(0), SortDir.ASC);
-
-			}
-		});
-		//grid.getColumnModel().getColumn(1).getEditor().disable();
-		//grid.getColumnModel().getColumn(2).getEditor().disable();
-
-		grid.getStore().addStoreListener(new StoreListener() {
-			public void handleEvent(StoreEvent se) {
-				if (se.getType() == Store.Add) {
-					toolBar.enableSaveButton(true);
-					grid.getStore().getAt(se.getIndex()).set("userKey", defaultKey.getValue());
-					grid.getStore().getAt(se.getIndex()).set("lastChange", DatesManager.getCurrentDate());
-				}
-
 			}
 		});
 
 		// Top tool bar
 		toolBar = new GridToolBar(grid, getStore());
 		cp.setTopComponent(toolBar);
-		toolBar.enableSaveButton(false);
 
 		// Paging tool bar
 		final GridPagingToolBar pagingToolBar = new GridPagingToolBar(grid, PAGE_SIZE);
 		cp.setBottomComponent(pagingToolBar);
 
-		grid.getStore().getLoader().addLoadListener(new LoadListener() {
-			@Override
-			public void loaderLoad(LoadEvent le) {
-				parameterCode.setValue("DEFAULT_PASSWORD");
-			}
-		});
-
 		cp.add(formParameter);
 		add(cp);
-
 	}
-
 }

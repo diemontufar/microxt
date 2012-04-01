@@ -9,12 +9,12 @@ import java.util.Set;
 
 import mobile.common.message.Message;
 import mobile.common.tools.ProcessType;
-import mobile.web.webxt.client.MobileError;
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyMessageReader;
 import mobile.web.webxt.client.data.MyProcessConfig;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.resources.Resources;
+import mobile.web.webxt.client.windows.MobileError;
 
 import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -63,7 +63,11 @@ public class MenuTreePanel extends LayoutContainer {
 					}
 
 					public void onSuccess(Message result) {
-						onLoadSuccess(null, result);
+						try {
+							onLoadSuccess(null, result);
+						} catch (Exception e) {
+							MobileError.report("Error al leer los datos del menu");
+						}
 					}
 				};
 				MyProcessConfig config = new MyProcessConfig(PROCESS);
@@ -73,7 +77,7 @@ public class MenuTreePanel extends LayoutContainer {
 				return true;
 			}
 
-			protected void onLoadSuccess(Object loadConfig, Message result) {
+			protected void onLoadSuccess(Object loadConfig, Message result) throws Exception {
 				List<ModelData> subsystemModels = MyMessageReader.getModels(result, "Subsystem");
 				List<ModelData> moduleModels = MyMessageReader.getModels(result, "Module");
 				List<ModelData> processModels = MyMessageReader.getModels(result, "Process");

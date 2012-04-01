@@ -34,6 +34,7 @@ import com.extjs.gxt.ui.client.widget.TabItem;
 import com.extjs.gxt.ui.client.widget.TabPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
+import com.extjs.gxt.ui.client.widget.form.PropertyEditor;
 import com.extjs.gxt.ui.client.widget.form.Radio;
 import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.layout.CardLayout;
@@ -72,9 +73,8 @@ public class C301 extends MyGeneralForm {
 		// Form panel
 		form = new MyFormPanel(this, "Solicitud de Microcrédito", FORM_WIDTH) {
 			@Override
-			protected boolean postQuery() {
+			protected void postQuery() {
 				doPostQuery();
-				return true;
 			}
 		};
 		form.setLayout(new FlowLayout());
@@ -178,7 +178,7 @@ public class C301 extends MyGeneralForm {
 		individualId = new ComboForm(80);
 		individualId.setDataSource(new DataSource("sol", "partnerClientId", DataSourceType.RECORD));
 		individualId.setProcess("G202");
-		individualId.setPageSize(5);
+		individualId.setPageSize(10);
 		individualId.setEditable(true);
 
 		Reference refPartner1 = new Reference("cli1", "Partner");
@@ -196,7 +196,7 @@ public class C301 extends MyGeneralForm {
 		row1.add(clientDescription);
 
 		individualId.linkWithField(clientDescription, "name");
-		
+
 		debtorContainer.add(row1);
 
 		// Group debtor
@@ -209,8 +209,8 @@ public class C301 extends MyGeneralForm {
 		groupId = new ComboForm(80);
 		groupId.setId("groupId");
 		groupId.setDataSource(new DataSource("sol", "groupClientId", DataSourceType.RECORD));
-		groupId.setPageSize(5);
-		groupId.setEditable(true);
+		groupId.setPageSize(10);
+		groupId.setEditable(false);
 
 		Reference refGroup1 = new Reference("gru1", "PartnerGroup");
 		final ArrayColumnData combodata2 = new ArrayColumnData();
@@ -266,7 +266,7 @@ public class C301 extends MyGeneralForm {
 		final ArrayColumnData pcdata = new ArrayColumnData();
 		pcdata.add(new MyColumnData("pro", "pk_productId", "Id", 50));
 		pcdata.add(new MyColumnData("pro", "description", "Descripcion", 250));
-		pcdata.add(new MyColumnData("pro", "currencyId", false));
+		pcdata.add(new MyColumnData("pro", "rate", false));
 		pcdata.add(new MyColumnData("pro", "minAmount", false));
 		pcdata.add(new MyColumnData("pro", "maxAmount", false));
 		pcdata.add(new MyColumnData("pro", "minPeriod", false));
@@ -282,10 +282,28 @@ public class C301 extends MyGeneralForm {
 				.setDataSource(new DataSource("ProductMicrocredit", "description", DataSourceType.DESCRIPTION));
 		row.add(productDescription);
 
-		final InputBox productCurrency = new InputBox(70);
-		productCurrency.setReadOnly(true);
-		productCurrency.setDataSource(new DataSource("ProductMicrocredit", "currencyId", DataSourceType.DESCRIPTION));
-		row.add(productCurrency);
+		final InputBox rate = new InputBox(70);
+		rate.setDataSource(new DataSource("ProductMicrocredit", "rate", DataSourceType.DESCRIPTION));
+		rate.setReadOnly(true);
+		rate.setPropertyEditor(new PropertyEditor<String>() {
+
+			public String getStringValue(String value) {
+				String out = null;
+				if (value != null) {
+					out = value + "%";
+				}
+				return out;
+			}
+
+			public String convertStringValue(String value) {
+				String out = null;
+				if (value != null) {
+					out = value.substring(0, value.length()-1);
+				}
+				return out;
+			}
+		});
+		row.add(rate);
 
 		fieldSet.add(row);
 
@@ -297,6 +315,8 @@ public class C301 extends MyGeneralForm {
 		final InputBox minAmount = new InputBox(100);
 		minAmount.setReadOnly(true);
 		minAmount.setDataSource(new DataSource("ProductMicrocredit", "minAmount", DataSourceType.DESCRIPTION));
+		minAmount.setFireChangeEventOnSetValue(true);
+
 		row.add(minAmount);
 
 		label = new MyLabel("Plazo min:", LABEL_WIDTH);
@@ -305,6 +325,7 @@ public class C301 extends MyGeneralForm {
 		final InputBox minPeriod = new InputBox(100);
 		minPeriod.setReadOnly(true);
 		minPeriod.setDataSource(new DataSource("ProductMicrocredit", "minPeriod", DataSourceType.DESCRIPTION));
+		minPeriod.setFireChangeEventOnSetValue(true);
 		row.add(minPeriod);
 
 		fieldSet.add(row);
@@ -318,6 +339,7 @@ public class C301 extends MyGeneralForm {
 		final InputBox maxAmount = new InputBox(100);
 		maxAmount.setReadOnly(true);
 		maxAmount.setDataSource(new DataSource("ProductMicrocredit", "maxAmount", DataSourceType.DESCRIPTION));
+		maxAmount.setFireChangeEventOnSetValue(true);
 		row.add(maxAmount);
 
 		label = new MyLabel("Plazo max:", LABEL_WIDTH);
@@ -326,10 +348,11 @@ public class C301 extends MyGeneralForm {
 		final InputBox maxPeriod = new InputBox(100);
 		maxPeriod.setReadOnly(true);
 		maxPeriod.setDataSource(new DataSource("ProductMicrocredit", "maxPeriod", DataSourceType.DESCRIPTION));
+		maxPeriod.setFireChangeEventOnSetValue(true);
 		row.add(maxPeriod);
 
 		productCombo.linkWithField(productDescription, "description");
-		productCombo.linkWithField(productCurrency, "currencyId");
+		productCombo.linkWithField(rate, "rate");
 		productCombo.linkWithField(minAmount, "minAmount");
 		productCombo.linkWithField(maxAmount, "maxAmount");
 		productCombo.linkWithField(minPeriod, "minPeriod");
@@ -351,22 +374,71 @@ public class C301 extends MyGeneralForm {
 		label = new MyLabel("Monto:", LABEL_WIDTH);
 		row.add(label);
 
-		MyNumberField amount = new MyNumberField();
+		final MyNumberField amount = new MyNumberField();
 		amount.setWidth(80);
 		amount.setAllowBlank(false);
 		amount.setDataSource(new DataSource("sol", "amount", DataSourceType.RECORD));
 		amount.setPropertyEditorType(Double.class);
 		amount.setFormat(NumberFormat.getFormat("#,##0.00"));
+		amount.setMaxValue(1000);
 		row.add(amount);
+
+		// Min / max validations
+		minAmount.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent be) {
+				InputBox input = (InputBox) be.getSource();
+				if (input.getValue() != null && input.getValue().length() > 0) {
+					amount.setMinValue(Double.parseDouble(input.getValue()));
+					if (amount.getValue() != null) {
+						amount.validate();
+					}
+				}
+			}
+		});
+		maxAmount.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent be) {
+				InputBox input = (InputBox) be.getSource();
+				if (input.getValue() != null && input.getValue().length() > 0) {
+					amount.setMaxValue(Double.parseDouble(input.getValue()));
+					if (amount.getValue() != null) {
+						amount.validate();
+					}
+				}
+			}
+		});
 
 		label = new MyLabel("Plazo:", LABEL_WIDTH);
 		row.add(label, new HBoxLayoutData(0, 10, 0, 30));
 
-		MyNumberField term = new MyNumberField();
+		final MyNumberField term = new MyNumberField();
 		term.setWidth(80);
 		term.setDataSource(new DataSource("sol", "term", DataSourceType.RECORD));
 		term.setPropertyEditorType(Integer.class);
 		row.add(term);
+
+		// Min / max validations
+		minPeriod.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent be) {
+				InputBox input = (InputBox) be.getSource();
+				if (input.getValue() != null && input.getValue().length() > 0) {
+					term.setMinValue(Double.parseDouble(input.getValue()));
+					if (term.getValue() != null) {
+						term.validate();
+					}
+				}
+			}
+		});
+		maxPeriod.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent be) {
+				InputBox input = (InputBox) be.getSource();
+				if (input.getValue() != null && input.getValue().length() > 0) {
+					term.setMaxValue(Double.parseDouble(input.getValue()));
+					if (term.getValue() != null) {
+						term.validate();
+					}
+				}
+			}
+		});
 
 		fieldSet.add(row);
 
@@ -389,6 +461,7 @@ public class C301 extends MyGeneralForm {
 
 		InputBox paymentFreqDesc = new InputBox(150);
 		paymentFreqDesc.setDataSource(new DataSource("Frequency", "description", DataSourceType.DESCRIPTION));
+		paymentFreqDesc.setReadOnly(true);
 		row.add(paymentFreqDesc);
 
 		paymentFreq.linkWithField(paymentFreqDesc, "description");
@@ -541,14 +614,23 @@ public class C301 extends MyGeneralForm {
 		quotaType.setValue("AMR");
 		form.add(quotaType);
 
+		amount.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent be) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
 		form.setButtonAlign(HorizontalAlignment.CENTER);
 		form.addButton(new Button("Guardar", new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				if (debtorRadioGroup.getValue().getBoxLabel().compareTo("Individual") == 0 && individualId.getValue() == null) {
+				if (debtorRadioGroup.getValue().getBoxLabel().compareTo("Individual") == 0
+						&& individualId.getValue() == null) {
 					Info.display("Requerido", "Ingresar un cliente individual");
 					return;
-				} else if (debtorRadioGroup.getValue().getBoxLabel().compareTo("Grupal") == 0 && groupId.getValue() == null) {
+				} else if (debtorRadioGroup.getValue().getBoxLabel().compareTo("Grupal") == 0
+						&& groupId.getValue() == null) {
 					Info.display("Requerido", "Ingresar un cliente grupal");
 					return;
 				}
@@ -566,9 +648,9 @@ public class C301 extends MyGeneralForm {
 	}
 
 	private void doPostQuery() {
-		if ( individualId.getRawValue() != null) {
+		if (individualId.getValue() != null) {
 			debtorRadioGroup.setValue(individualRadio);
-		} else if (groupId.getRawValue() != null) {
+		} else if (groupId.getValue() != null) {
 			debtorRadioGroup.setValue(groupalRadio);
 		}
 	}

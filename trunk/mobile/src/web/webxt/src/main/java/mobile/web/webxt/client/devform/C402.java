@@ -133,7 +133,7 @@ public class C402 extends MyGeneralForm {
 		filters.addFilter(statusListFilter);
 
 		// Content panel
-		EntityContentPanel cp = new EntityContentPanel("Consulta de Solicitudes", 700, 340);
+		EntityContentPanel cp = new EntityContentPanel("Instrumentación Core", 700, 340);
 
 		// Grid
 		final EntityGrid grid = new EntityGrid(getStore(), cm);

@@ -46,7 +46,7 @@ public class B101 extends MyGeneralForm {
 	private final static String ENTITY = "Person";
 
 	// Constants
-	final int FORM_WIDTH = 690;
+	final int FORM_WIDTH = 700;
 	final int FORM_HEIGHT = 260;
 	final int LABEL_WIDTH = 115;
 	final int LABEL_WIDTH_2 = 90;
@@ -77,14 +77,19 @@ public class B101 extends MyGeneralForm {
 		row.add(label);
 
 		final ComboForm personIdCombo = new ComboForm(100);
+		personIdCombo.setProcess("G204");
+		personIdCombo.setEditable(true);
 		personIdCombo.setDataSource(new DataSource("per", "pk_personId", DataSourceType.CRITERION));
 
 		Reference refPerson = new Reference("per1", "Person");
 		final ArrayColumnData perCdata = new ArrayColumnData();
-		perCdata.add(new MyColumnData("per1", "pk_personId", "Id", 100));
+		perCdata.add(new MyColumnData("per1", "personId", "Id", 50));
+		perCdata.add(new MyColumnData("per1", "identificationNumber", "Identificación", 100));
+		perCdata.add(new MyColumnData("per1", "name", "Nombre", 200));
 		personIdCombo.setQueryData(refPerson, perCdata);
-		personIdCombo.setDisplayField("pk_personId");
-
+		personIdCombo.setDisplayField("personId");
+		personIdCombo.setFilteredField("identificationNumber");
+		personIdCombo.setPageSize(10);
 		personIdCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
@@ -216,7 +221,7 @@ public class B101 extends MyGeneralForm {
 		final ComboForm civilStatusCombo = new ComboForm(50);
 		civilStatusCombo.setDataSource(new DataSource("per", "civilStatusId", DataSourceType.RECORD));
 		civilStatusCombo.setAllowBlank(false);
-		
+
 		Reference refCivilStatus = new Reference("civ", "CivilStatus");
 		final ArrayColumnData csdata = new ArrayColumnData();
 		csdata.add(new MyColumnData("civ", "pk_civilStatusId", "Id", 70));
@@ -243,6 +248,7 @@ public class B101 extends MyGeneralForm {
 		final ComboForm profesionCombo = new ComboForm(50);
 		profesionCombo.setDataSource(new DataSource("per", "professionTypeId", DataSourceType.RECORD));
 		profesionCombo.setAllowBlank(false);
+		profesionCombo.setEditable(true);
 
 		Reference refProfession = new Reference("pro", "ProfessionType");
 		final ArrayColumnData prdata = new ArrayColumnData();
@@ -250,6 +256,7 @@ public class B101 extends MyGeneralForm {
 		prdata.add(new MyColumnData("pro", "name", "Nombre", 150));
 		profesionCombo.setQueryData(refProfession, prdata);
 		profesionCombo.setDisplayField("pk_professionTypeId");
+		profesionCombo.setFilteredField("name");
 		profesionCombo.setPageSize(10);
 		row.add(profesionCombo);
 
@@ -326,10 +333,10 @@ public class B101 extends MyGeneralForm {
 		fieldSet2.add(row);
 
 		right.add(fieldSet2);
-		right.add(new Location(LABEL_WIDTH_2, 50, FIELD_WIDTH_2-60));
+		right.add(new Location(LABEL_WIDTH_2, 50, FIELD_WIDTH_2 - 60));
 
-		panelPrincipal.add(left, new RowData(LABEL_WIDTH + FIELD_WIDTH + 60, 1, new Margins(5,10,0,0)));
-		panelPrincipal.add(right, new RowData(LABEL_WIDTH_2 + FIELD_WIDTH_2 + 50, 1, new Margins(5,0,0,0)));
+		panelPrincipal.add(left, new RowData(LABEL_WIDTH + FIELD_WIDTH + 60, 1, new Margins(5, 10, 0, 0)));
+		panelPrincipal.add(right, new RowData(LABEL_WIDTH_2 + FIELD_WIDTH_2 + 50, 1, new Margins(5, 0, 0, 0)));
 
 		form.add(panelPrincipal);
 
@@ -338,35 +345,34 @@ public class B101 extends MyGeneralForm {
 
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				
-				System.out.println("**********Este es el valor del combo: "+personIdCombo.getValue());
-				
+
+				System.out.println("**********Este es el valor del combo: " + personIdCombo.getValue());
+
 				if (type == IdType.CED || type == IdType.RUC) {
 					isValidId = new ValidateIdentification().isValid(identification.getValue(), type);
-				}else{
-					isValidId=true;
-				}	
-				
-				if (DatesManager.isToday(birthDate.getRawValue())){
-					isValidDate=false;
-				}else{
-					isValidDate=true;
+				} else {
+					isValidId = true;
 				}
-				
+
+				if (DatesManager.isToday(birthDate.getRawValue())) {
+					isValidDate = false;
+				} else {
+					isValidDate = true;
+				}
+
 				if (!isValidId) {
 					identification.isValid(false);
-					Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification,
-					"Identificación Incorrecta"));
+					Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification, "Identificación Incorrecta"));
 					identification.forceInvalid("Identificación Incorrecta");
 				} else {
 					identification.isValid(true);
 					identification.clearInvalid();
 				}
-				
+
 				if (!isValidDate) {
 					birthDate.isValid(false);
 					Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification,
-					"Fecha de nacimiento no puede ser hoy"));
+							"Fecha de nacimiento no puede ser hoy"));
 					birthDate.forceInvalid("Fecha Incorrecta");
 				} else {
 					birthDate.isValid(true);

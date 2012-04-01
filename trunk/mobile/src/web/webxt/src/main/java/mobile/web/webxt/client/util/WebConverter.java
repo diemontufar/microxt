@@ -83,6 +83,9 @@ public class WebConverter extends CommonConverter {
 
 	public static String completeValue(String value, Object class1) {
 		String cvalue = null;
+		if(value == null){
+			return null;
+		}
 		if (class1 == Integer.class) {
 			cvalue = "((Integer))" + value;
 		} else if (class1 == Long.class) {

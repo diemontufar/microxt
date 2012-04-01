@@ -7,11 +7,11 @@ import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
 import mobile.common.message.Message;
-import mobile.web.webxt.client.MobileError;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.parser.Parser;
 import mobile.web.webxt.client.util.WebConverter;
+import mobile.web.webxt.client.windows.MobileError;
 
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
@@ -38,10 +38,10 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 			String strData = data.toString();
 			Parser parser = new Parser();
 			Message msg = parser.parseMsg(strData, MSG_TYPE);
-			System.out.println("entity: " + config.getReference().getEntity());
+			System.out.println(">>Entity: " + config.getReference().getEntity());
 			EntityData entityData = msg.getEntityData(config.getReference().getEntity());
 
-			System.out.println("reading items");
+			System.out.println("Reading items");
 			for (Item item : entityData.getItemList()) {
 				ModelData model = new BaseModelData();
 				for (DataSource ds : config.getlDataSource()) {
@@ -67,22 +67,21 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 				models.add(model);
 			}
 
-			System.out.println("Modelos");
-			for (ModelData model : models) {
-				for (String prop : model.getPropertyNames()) {
-					System.out.println(prop + ":" + model.get(prop));
-				}
-			}
+//			System.out.println("Modelos");
+//			for (ModelData model : models) {
+//				for (String prop : model.getPropertyNames()) {
+//					System.out.println(prop + ":" + model.get(prop));
+//				}
+//			}
 
 			// Pagination
 			System.out.println("reading pagination");
-			if (entityData.getOffset() != null) {
-				paginatedModels.setOffset(entityData.getOffset());
-			}
-			if (entityData.getTotal() != null) {
-				paginatedModels.setTotalLength(entityData.getTotal());
-			}
-
+//			if (entityData.getOffset() != null) {
+//				paginatedModels.setOffset(entityData.getOffset());
+//			}
+//			if (entityData.getTotal() != null) {
+//				paginatedModels.setTotalLength(entityData.getTotal());
+//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			MobileError.report("MENSAJE DE RETORNO INCORRECTO");

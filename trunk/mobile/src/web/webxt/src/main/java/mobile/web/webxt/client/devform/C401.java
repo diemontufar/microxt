@@ -86,30 +86,30 @@ public class C401 extends MyGeneralForm {
 		DateFilter dateFilter = new DateFilter("solicitudeDate");
 		NumericFilter amountFilter = new NumericFilter("amount");
 		NumericFilter termFilter = new NumericFilter("term");
-		
-		ListStore<ModelData> clientTypeStore = new ListStore<ModelData>();  
-	    ModelData model = new BaseModelData();
-	    model.set("tipoCliente", "INDIVIDUAL");
-		clientTypeStore.add(model);  
+
+		ListStore<ModelData> clientTypeStore = new ListStore<ModelData>();
+		ModelData model = new BaseModelData();
+		model.set("tipoCliente", "INDIVIDUAL");
+		clientTypeStore.add(model);
 		model = new BaseModelData();
-	    model.set("tipoCliente", "GRUPAL");
-	    clientTypeStore.add(model);
-	    ListFilter typeListFilter = new ListFilter("tipoCliente", clientTypeStore);
-	    typeListFilter.setDisplayProperty("tipoCliente");
-	    
-		ListStore<ModelData> statusStore = new ListStore<ModelData>();  
-	    model = new BaseModelData();
-	    model.set("status", "SOLICITADA");
-		statusStore.add(model);  
+		model.set("tipoCliente", "GRUPAL");
+		clientTypeStore.add(model);
+		ListFilter typeListFilter = new ListFilter("tipoCliente", clientTypeStore);
+		typeListFilter.setDisplayProperty("tipoCliente");
+
+		ListStore<ModelData> statusStore = new ListStore<ModelData>();
 		model = new BaseModelData();
-	    model.set("status", "APROVADA");
-	    statusStore.add(model);
-	    model = new BaseModelData();
-	    model.set("status", "DENEGADA");
-	    statusStore.add(model);
-	    ListFilter statusListFilter = new ListFilter("status", statusStore);
-	    statusListFilter.setDisplayProperty("status");
-	    
+		model.set("status", "SOLICITADA");
+		statusStore.add(model);
+		model = new BaseModelData();
+		model.set("status", "APROVADA");
+		statusStore.add(model);
+		model = new BaseModelData();
+		model.set("status", "DENEGADA");
+		statusStore.add(model);
+		ListFilter statusListFilter = new ListFilter("status", statusStore);
+		statusListFilter.setDisplayProperty("status");
+
 		filters.addFilter(idFilter);
 		filters.addFilter(nameFilter);
 		filters.addFilter(dateFilter);
@@ -117,8 +117,7 @@ public class C401 extends MyGeneralForm {
 		filters.addFilter(termFilter);
 		filters.addFilter(typeListFilter);
 		filters.addFilter(statusListFilter);
-		 
-	    
+
 		// Content panel
 		EntityContentPanel cp = new EntityContentPanel("Consulta de Solicitudes", 700, 340);
 
