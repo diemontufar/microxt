@@ -30,6 +30,7 @@ ALL,PROFESSION_TYPE,1,person,1,1,0,0,0,0,Values of profession types
 
 ALL,COMPONENT_TYPE,0,security,0,0,0,0,0,0,Values of component types
 ALL,COMPONENT,1,security,1,0,0,0,0,1,Values of components
+ALL,CHANNEL,0,security,0,0,0,0,0,0,Values of channels
 ALL,HOST,1,security,1,0,1,0,0,0,Values of hosts
 ALL,MODULE,1,security,1,1,0,0,0,0,Values of modules
 ALL,PROCESS,1,security,1,1,1,0,0,1,Values of processes
@@ -39,8 +40,6 @@ ALL,ROLE,0,security,1,0,1,0,0,0,Values of roles
 ALL,SUBSYSTEM,1,security,1,1,0,0,1,0,Values of subsystems
 ALL,USER_ACCESS,0,security,1,0,1,0,0,0,Values of user access
 ALL,USER_ACCOUNT,1,security,1,0,1,1,0,0,Values of user accounts
-ALL,USER_NOTIFICATION,0,security,1,0,1,0,0,0,Values of user notification
-ALL,USER_NOTIFICATION_TYPE,1,security,0,1,0,0,1,0,Values of user notification types
 ALL,USER_PROFILE,0,security,1,0,1,0,0,0,Values of user profiles
 ALL,USER_SESSION,0,security,1,0,1,1,0,0,Values of user sessions
 ALL,USER_STATUS,1,security,1,1,0,0,1,0,Values of user status

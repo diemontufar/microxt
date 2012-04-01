@@ -33,6 +33,8 @@ insert into QUOTA_TYPE_ID (QUOTA_TYPE_ID) values ('MNL');
 insert into QUOTA_TYPE (COMPANY_ID, LANGUAGE_ID, QUOTA_TYPE_ID, DESCRIPTION) values ('MXT', 'ES', 'AMR', 'AMORTIZACIÓN GRADUAL');
 insert into QUOTA_TYPE (COMPANY_ID, LANGUAGE_ID, QUOTA_TYPE_ID, DESCRIPTION) values ('MXT', 'ES', 'MNL', 'MANUAL');
 
+
+insert into FREQUENCY_ID (FREQUENCY_ID) values ('0');
 insert into FREQUENCY_ID (FREQUENCY_ID) values ('1');
 insert into FREQUENCY_ID (FREQUENCY_ID) values ('2');
 insert into FREQUENCY_ID (FREQUENCY_ID) values ('3');
@@ -41,7 +43,7 @@ insert into FREQUENCY_ID (FREQUENCY_ID) values ('5');
 insert into FREQUENCY_ID (FREQUENCY_ID) values ('6');
 insert into FREQUENCY_ID (FREQUENCY_ID) values ('7');
 insert into FREQUENCY_ID (FREQUENCY_ID) values ('8');
-
+insert into FREQUENCY (COMPANY_ID, LANGUAGE_ID, FREQUENCY_ID, DESCRIPTION) values ('MXT', 'ES', '0', 'AL VENCIMIENTO');
 insert into FREQUENCY (COMPANY_ID, LANGUAGE_ID, FREQUENCY_ID, DESCRIPTION) values ('MXT', 'ES', '1', 'DIARIO');
 insert into FREQUENCY (COMPANY_ID, LANGUAGE_ID, FREQUENCY_ID, DESCRIPTION) values ('MXT', 'ES', '2', 'SEMANAL');
 insert into FREQUENCY (COMPANY_ID, LANGUAGE_ID, FREQUENCY_ID, DESCRIPTION) values ('MXT', 'ES', '3', 'QUINCENAL');

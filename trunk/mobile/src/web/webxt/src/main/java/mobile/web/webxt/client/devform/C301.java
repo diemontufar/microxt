@@ -614,13 +614,6 @@ public class C301 extends MyGeneralForm {
 		quotaType.setValue("AMR");
 		form.add(quotaType);
 
-		amount.addListener(Events.Change, new Listener<FieldEvent>() {
-			public void handleEvent(FieldEvent be) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
 		form.setButtonAlign(HorizontalAlignment.CENTER);
 		form.addButton(new Button("Guardar", new SelectionListener<ButtonEvent>() {
 			@Override

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import mobile.common.message.Item;
@@ -43,8 +44,10 @@ public class JpManager {
 	private final static String ENTITY_PACKAGE = "mobile.entity";
 
 	private final static String ALL_COMPANY = "ALL";
-
+	
 	private final static Logger log = Log.getInstance();
+	
+	private static Boolean hasMetadata;
 
 	private JpManager() {
 		// Initialize the entity manager manually
@@ -129,7 +132,7 @@ public class JpManager {
 					}
 					
 					// Set sequential number and increment it
-					key.setId(seq.getSequentialValue());
+					key.setId(Integer.valueOf(seq.getSequentialValue().toString()));
 					seq.setSequentialValue(seq.getSequentialValue()+1);
 					getEntityManager().merge(seq);
 				}
@@ -419,8 +422,21 @@ public class JpManager {
 	}
 
 	private static boolean hasId(GeneralEntity entity) throws Exception {
-		EntityTable entityTable = getEntityTable(entity.getClass().getSimpleName());
-		return entityTable.getHasTableId();
+		if(hasMetadata == null){
+			Query query = getEntityManager().createQuery("select count(a) from EntityField a");
+			Long count = (Long) query.getSingleResult();
+			if(count > 0){
+				hasMetadata = true;
+			}else{
+				hasMetadata = false;
+			}
+		}
+		if(hasMetadata){
+			EntityTable entityTable = getEntityTable(entity.getClass().getSimpleName());
+			return entityTable.getHasTableId();
+		}else{
+			return getEntityIdClass(entity) != null;	
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

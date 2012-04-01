@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 22-03-2012 a las 23:01:48
+-- Tiempo de generación: 02-04-2012 a las 00:48:37
 -- Versión del servidor: 5.5.8
 -- Versión de PHP: 5.3.5
 
@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `microxt1`
+-- Base de datos: `microxt3`
 --
 
 -- --------------------------------------------------------
@@ -94,7 +94,7 @@ INSERT INTO `ADDRESS_TYPE` (`COMPANY_ID`, `LANGUAGE_ID`, `ADDRESS_TYPE_ID`, `NAM
 ('MXT', 'ES', 'CE', 'CORREO ELECTRÓNICO'),
 ('MXT', 'ES', 'HA', 'DOMICILIO'),
 ('MXT', 'ES', 'ML', 'CORREO'),
-('MXT', 'ES', 'OF', 'OFICINA'),
+('MXT', 'ES', 'TR', 'LUGAR DE TRABAJO'),
 ('MXT', 'ES', 'WE', 'PAGINA WEB');
 
 -- --------------------------------------------------------
@@ -116,7 +116,7 @@ INSERT INTO `ADDRESS_TYPE_ID` (`ADDRESS_TYPE_ID`) VALUES
 ('CE'),
 ('HA'),
 ('ML'),
-('OF'),
+('TR'),
 ('WE');
 
 -- --------------------------------------------------------
@@ -312,13 +312,15 @@ CREATE TABLE IF NOT EXISTS `COMPONENT` (
 INSERT INTO `COMPONENT` (`COMPANY_ID`, `COMPONENT_ID`, `TYPE_ID`, `SUBSYSTEM_ID`, `CLASS_NAME`, `METHOD_NAME`, `DESCRIPTION`) VALUES
 ('MXT', 'mobile.core.processor.MaintenanceProcessor', 'MNT', 'G', 'MaintenanceProcessor', 'general', 'General maintenance processor'),
 ('MXT', 'mobile.core.processor.QueryProcessor', 'QRY', 'G', 'QueryProcessor', 'general', 'General query processor'),
+('MXT', 'mobile.core.security.ChangePassword', 'MNT', 'A', 'ChangePassword', NULL, 'Change password'),
 ('MXT', 'mobile.core.security.Loggin', 'QRY', 'A', 'Loggin', 'general', 'Process loggin'),
 ('MXT', 'mobile.core.security.Logout', 'MNT', 'A', 'Logout', NULL, 'Process logout'),
 ('MXT', 'mobile.core.security.query.QueryProfilesForUser', 'QRY', 'A', 'QueryProfilesForUser', 'general', 'CONSULTA LOS ROLES DE UN USUARIO'),
 ('MXT', 'mobile.logic.general.MenuGenerator', 'QRY', 'G', 'MenuGenerator', 'general', 'Query the menu items'),
 ('MXT', 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', 'C', 'QueryPartnerInfo', NULL, 'CONSULTA INFORMACION DE CLIENTES INDIVIDUALES'),
 ('MXT', 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 'C', 'QuerySolicitude', NULL, 'CONSULTA INFORMACION DE LAS SOLICITUDES'),
-('MXT', 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', 'C', 'RemoteInstrumentation', NULL, 'REALIZA LA INSTRUMENTACIÓN CONECTANDOSE CON EL CORE BANCARIO');
+('MXT', 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', 'C', 'RemoteInstrumentation', NULL, 'REALIZA LA INSTRUMENTACIÓN CONECTANDOSE CON EL CORE BANCARIO'),
+('MXT', 'mobile.logic.person.QueryPersonInfo', 'QRY', 'B', 'QueryPersonInfo', NULL, 'CONSULTA LOS DATOS DE PERSONAS');
 
 -- --------------------------------------------------------
 
@@ -339,13 +341,15 @@ CREATE TABLE IF NOT EXISTS `COMPONENT_ID` (
 INSERT INTO `COMPONENT_ID` (`COMPONENT_ID`, `TYPE_ID`) VALUES
 ('mobile.core.processor.MaintenanceProcessor', 'MNT'),
 ('mobile.core.processor.QueryProcessor', 'QRY'),
+('mobile.core.security.ChangePassword', 'MNT'),
 ('mobile.core.security.Loggin', 'QRY'),
 ('mobile.core.security.Logout', 'MNT'),
 ('mobile.core.security.query.QueryProfilesForUser', 'QRY'),
 ('mobile.logic.general.MenuGenerator', 'QRY'),
 ('mobile.logic.microxt.query.QueryPartnerInfo', 'QRY'),
 ('mobile.logic.microxt.query.QuerySolicitude', 'QRY'),
-('mobile.logic.microxt.RemoteInstrumentation', 'MNT');
+('mobile.logic.microxt.RemoteInstrumentation', 'MNT'),
+('mobile.logic.person.QueryPersonInfo', 'QRY');
 
 -- --------------------------------------------------------
 
@@ -434,7 +438,7 @@ CREATE TABLE IF NOT EXISTS `CURRENCY` (
 
 INSERT INTO `CURRENCY` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `CURRENCY_ID`, `CREATED`, `DESCRIPTION`, `INITIALS`) VALUES
 ('MXT', 'ES', '9999-12-31 00:00:00', 'EUR', '2012-01-20 20:46:58', 'EURO', '$'),
-('MXT', 'ES', '9999-12-31 00:00:00', 'USD', '2012-01-20 20:46:58', 'DOLAR', '?');
+('MXT', 'ES', '9999-12-31 00:00:00', 'USD', '2012-01-20 20:46:58', 'DOLAR', '');
 
 -- --------------------------------------------------------
 
@@ -1149,13 +1153,6 @@ INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`,
 ('ALL', 'USER_ACCOUNT', 'USER_ID', 1, 'String', 20, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User Id'),
 ('ALL', 'USER_ACCOUNT', 'USER_STATUS_ID', 4, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'User status Id'),
 ('ALL', 'USER_ACCOUNT', 'USER_TYPE_ID', 3, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'User type Id'),
-('ALL', 'USER_NOTIFICATION', 'MESSAGE', 4, 'String', 4000, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Message'),
-('ALL', 'USER_NOTIFICATION', 'READ_', 5, 'Boolean', 0, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Read'),
-('ALL', 'USER_NOTIFICATION', 'SUBJECT', 3, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Subject'),
-('ALL', 'USER_NOTIFICATION', 'USER_ID', 1, 'String', 20, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User Id'),
-('ALL', 'USER_NOTIFICATION', 'USER_NOTIFICATION_TYPE_ID', 2, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'User notification type Id'),
-('ALL', 'USER_NOTIFICATION_TYPE', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of user notification type'),
-('ALL', 'USER_NOTIFICATION_TYPE', 'USER_NOTIFICATION_TYPE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User notification type Id'),
 ('ALL', 'USER_PROFILE', 'PROFILE_ID', 2, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Profile Id'),
 ('ALL', 'USER_PROFILE', 'USER_ID', 1, 'String', 20, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User Id'),
 ('ALL', 'USER_SESSION', 'HOST_ID', 2, 'String', 40, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Host Id'),
@@ -1643,18 +1640,6 @@ INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
 ('USER_ACCOUNT', 'USER_STATUS_ID'),
 ('USER_ACCOUNT', 'USER_TYPE_ID'),
 ('USER_ACCOUNT_ID', 'USER_ID'),
-('USER_NOTIFICATION', 'COMPANY_ID'),
-('USER_NOTIFICATION', 'CREATED'),
-('USER_NOTIFICATION', 'EXPIRED'),
-('USER_NOTIFICATION', 'MESSAGE'),
-('USER_NOTIFICATION', 'READ_'),
-('USER_NOTIFICATION', 'SUBJECT'),
-('USER_NOTIFICATION', 'USER_ID'),
-('USER_NOTIFICATION', 'USER_NOTIFICATION_TYPE_ID'),
-('USER_NOTIFICATION_TYPE', 'LANGUAGE_ID'),
-('USER_NOTIFICATION_TYPE', 'NAME'),
-('USER_NOTIFICATION_TYPE', 'USER_NOTIFICATION_TYPE_ID'),
-('USER_NOTIFICATION_TYPE_ID', 'USER_NOTIFICATION_TYPE_ID'),
 ('USER_PROFILE', 'COMPANY_ID'),
 ('USER_PROFILE', 'CREATED'),
 ('USER_PROFILE', 'EXPIRED'),
@@ -1782,8 +1767,6 @@ INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHI
 ('ALL', 'USER_ACCOUNT_PERSON_ID_FK', 1, 'USER_ACCOUNT', 'PERSON_ID', 'PERSON_ID', 'PERSON_ID'),
 ('ALL', 'USER_ACCOUNT_USER_STATUS_ID_FK', 1, 'USER_ACCOUNT', 'USER_STATUS_ID', 'USER_STATUS_ID', 'USER_STATUS_ID'),
 ('ALL', 'USER_ACCOUNT_USER_TYPE_ID_FK', 1, 'USER_ACCOUNT', 'USER_TYPE_ID', 'USER_TYPE_ID', 'USER_TYPE_ID'),
-('ALL', 'USER_NOTIF_USER_ACCOUNT_ID_FK', 1, 'USER_NOTIFICATION', 'USER_ID', 'USER_ACCOUNT_ID', 'USER_ID'),
-('ALL', 'USER_NOTIF_USER_NOT_TYPE_ID_FK', 1, 'USER_NOTIFICATION', 'USER_NOTIFICATION_TYPE_ID', 'USER_NOTIFICATION_TYPE_ID', 'USER_NOTIFICATION_TYPE_ID'),
 ('ALL', 'USER_PROF_USER_ACCOUNT_ID_FK', 1, 'USER_PROFILE', 'USER_ID', 'USER_ACCOUNT_ID', 'USER_ID'),
 ('ALL', 'USER_SESSION_HOST_ID_FK', 1, 'USER_SESSION', 'HOST_ID', 'HOST_ID', 'HOST_ID'),
 ('ALL', 'USER_SESS_USER_ACCOUNT_ID_FK', 1, 'USER_SESSION', 'USER_ID', 'USER_ACCOUNT_ID', 'USER_ID'),
@@ -1922,8 +1905,6 @@ INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHI
 ('MXT', 'USER_ACCESS_COMPANY_FK', 1, 'USER_ACCESS', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
 ('MXT', 'USER_ACCOUNT_COMPANY_FK', 1, 'USER_ACCOUNT', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
 ('MXT', 'USER_ACCOUNT_ID_FK', 1, 'USER_ACCOUNT', 'USER_ID', 'USER_ACCOUNT_ID', 'USER_ID'),
-('MXT', 'USER_NOTIFICATION_COMPANY_FK', 1, 'USER_NOTIFICATION', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'USER_NOTIFICATION_TYPE_ID_FK', 1, 'USER_NOTIFICATION_TYPE', 'USER_NOTIFICATION_TYPE_ID', 'USER_NOTIFICATION_TYPE_ID', 'USER_NOTIFICATION_TYPE_ID'),
 ('MXT', 'USER_PROFILE_COMPANY_FK', 1, 'USER_PROFILE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
 ('MXT', 'USER_SESSION_COMPANY_FK', 1, 'USER_SESSION', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
 ('MXT', 'USER_STATUS_COMPANY_FK', 1, 'USER_STATUS', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
@@ -1931,8 +1912,7 @@ INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHI
 ('MXT', 'USER_STATUS_LANGUAGE_FK', 1, 'USER_STATUS', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
 ('MXT', 'USER_TYPE_COMPANY_FK', 1, 'USER_TYPE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
 ('MXT', 'USER_TYPE_ID_FK', 1, 'USER_TYPE', 'USER_TYPE_ID', 'USER_TYPE_ID', 'USER_TYPE_ID'),
-('MXT', 'USER_TYPE_LANGUAGE_FK', 1, 'USER_TYPE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'USER__LANGUAGE_FK', 1, 'USER_NOTIFICATION_TYPE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID');
+('MXT', 'USER_TYPE_LANGUAGE_FK', 1, 'USER_TYPE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID');
 
 -- --------------------------------------------------------
 
@@ -2017,8 +1997,6 @@ INSERT INTO `ENTITY_TABLE` (`COMPANY_ID`, `TABLE_ID`, `HAS_TABLE_ID`, `PACKAGE_N
 ('ALL', 'SUBSYSTEM', 1, 'security', 1, 1, 0, 0, 1, 0, 'Values of subsystems'),
 ('ALL', 'USER_ACCESS', 0, 'security', 1, 0, 1, 0, 0, 0, 'Values of user access'),
 ('ALL', 'USER_ACCOUNT', 1, 'security', 1, 0, 1, 1, 0, 0, 'Values of user accounts'),
-('ALL', 'USER_NOTIFICATION', 0, 'security', 1, 0, 1, 0, 0, 0, 'Values of user notification'),
-('ALL', 'USER_NOTIFICATION_TYPE', 1, 'security', 0, 1, 0, 0, 1, 0, 'Values of user notification types'),
 ('ALL', 'USER_PROFILE', 0, 'security', 1, 0, 1, 0, 0, 0, 'Values of user profiles'),
 ('ALL', 'USER_SESSION', 0, 'security', 1, 0, 1, 1, 0, 0, 'Values of user sessions'),
 ('ALL', 'USER_STATUS', 1, 'security', 1, 1, 0, 0, 1, 0, 'Values of user status'),
@@ -2139,9 +2117,6 @@ INSERT INTO `ENTITY_TABLE_ID` (`TABLE_ID`) VALUES
 ('USER_ACCESS'),
 ('USER_ACCOUNT'),
 ('USER_ACCOUNT_ID'),
-('USER_NOTIFICATION'),
-('USER_NOTIFICATION_TYPE'),
-('USER_NOTIFICATION_TYPE_ID'),
 ('USER_PROFILE'),
 ('USER_SESSION'),
 ('USER_STATUS'),
@@ -2171,6 +2146,7 @@ CREATE TABLE IF NOT EXISTS `FREQUENCY` (
 --
 
 INSERT INTO `FREQUENCY` (`COMPANY_ID`, `LANGUAGE_ID`, `FREQUENCY_ID`, `DESCRIPTION`) VALUES
+('MXT', 'ES', '0', 'AL VENCIMIENTO'),
 ('MXT', 'ES', '1', 'DIARIO'),
 ('MXT', 'ES', '2', 'SEMANAL'),
 ('MXT', 'ES', '3', 'QUINCENAL'),
@@ -2196,6 +2172,7 @@ CREATE TABLE IF NOT EXISTS `FREQUENCY_ID` (
 --
 
 INSERT INTO `FREQUENCY_ID` (`FREQUENCY_ID`) VALUES
+('0'),
 ('1'),
 ('2'),
 ('3'),
@@ -2318,9 +2295,6 @@ CREATE TABLE IF NOT EXISTS `GEOGRAPHIC_ZONE` (
 -- Volcar la base de datos para la tabla `GEOGRAPHIC_ZONE`
 --
 
-INSERT INTO `GEOGRAPHIC_ZONE` (`COMPANY_ID`, `LANGUAGE_ID`, `GEOGRAPHIC_ZONE_ID`, `DESCRIPTION`, `COORDINATE_TYPE`, `P11`, `P12`, `P21`, `P22`, `P31`, `P32`, `P41`, `P42`) VALUES
-('MXT', 'ES', 1, 'ASFDASFSFDASFD', 'ZONA', '-2.89692395461964', '-79.01985168457031', '-2.91063923190347', '-79.01976585388184', '-2.918954037532118', '-78.99624824523926', '-2.9031815705361996', '-78.98886680603027'),
-('MXT', 'ES', 2, 'DFASFDASFDASFD', 'PUNTO', '-2.8956381388441645', '-79.02302742004395', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2337,9 +2311,6 @@ CREATE TABLE IF NOT EXISTS `GEOGRAPHIC_ZONE_ID` (
 -- Volcar la base de datos para la tabla `GEOGRAPHIC_ZONE_ID`
 --
 
-INSERT INTO `GEOGRAPHIC_ZONE_ID` (`GEOGRAPHIC_ZONE_ID`) VALUES
-(1),
-(2);
 
 -- --------------------------------------------------------
 
@@ -2871,8 +2842,7 @@ CREATE TABLE IF NOT EXISTS `PERSON` (
 
 INSERT INTO `PERSON` (`COMPANY_ID`, `EXPIRED`, `PERSON_ID`, `CREATED`, `NAME`, `LAST_NAME`, `SECOND_LAST_NAME`, `IDENTIFICATION_TYPE_ID`, `IDENTIFICATION_NUMBER`, `DATE_OF_BIRTH`, `GENDER_TYPE_ID`, `CIVIL_STATUS_ID`, `COUNTRY_ID`, `CITY_ID`, `PROVINCE_ID`, `DISTRICT_ID`, `PROFESSION_TYPE_ID`, `VERSION`) VALUES
 ('MXT', '9999-12-31 00:00:00', 1, '2012-03-13 23:46:56', 'RONALD MARCELO', 'GUALÁN', 'SAAVEDRA', 'CED', '1400658611', '1988-09-28 00:00:00', 'M', 'SOL', 'EC', 'CU', 'AZ', 'RIC', '101', 1),
-('MXT', '9999-12-31 00:00:00', 2, '2012-03-13 23:48:24', 'DIEGO FABIAN', 'MONTUFAR', NULL, 'CED', '0105362651', '1988-12-05 00:00:00', 'M', 'SOL', 'EC', 'CU', 'AZ', 'TOT', '103', 1),
-('MXT', '9999-12-31 00:00:00', 3, '2012-03-22 13:01:50', 'MARIO', 'GOMEZ', 'LEE', 'PER', '213423424234', '1970-10-10 00:00:00', 'M', 'CAS', 'EC', 'CU', 'AZ', 'BAÑ', '102', 1);
+('MXT', '9999-12-31 00:00:00', 2, '2012-03-13 23:48:24', 'DIEGO FABIAN', 'MONTUFAR', NULL, 'CED', '0105362651', '1988-12-05 00:00:00', 'M', 'SOL', 'EC', 'CU', 'AZ', 'TOT', '103', 1);
 
 -- --------------------------------------------------------
 
@@ -2919,8 +2889,7 @@ CREATE TABLE IF NOT EXISTS `PERSON_ID` (
 
 INSERT INTO `PERSON_ID` (`PERSON_ID`) VALUES
 (1),
-(2),
-(3);
+(2);
 
 -- --------------------------------------------------------
 
@@ -3079,7 +3048,7 @@ INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '01', '2011-10-14 00:00:00', 'ESTADO DE USUARIOS', 1, 1, 'A101', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '02', '2011-11-27 00:00:00', 'TIPOS DE USUARIO', 1, 1, 'A102', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '03', '2011-11-27 00:00:00', 'SUBSISTEMAS', 1, 1, 'A103', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '04', '2011-11-27 00:00:00', 'MODULOS', 1, 1, 'A104', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '04', '2011-11-27 00:00:00', 'MÓDULOS', 1, 1, 'A104', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '05', '2011-11-27 00:00:00', 'PROCESOS', 1, 1, 'A105', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '06', '2012-03-03 12:08:36', 'COMPONENTES', 1, 1, 'A106', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '1', '07', '2012-03-03 12:08:36', 'COMPONENTES POR PROCESO', 1, 1, 'A107', NULL),
@@ -3091,16 +3060,16 @@ INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '06', '2011-11-30 00:00:00', 'RESETEO CONTRASEÑA', 1, 1, 'A205', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '07', '2011-12-07 00:00:00', 'TERMINALES', 1, 1, 'A206', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '01', '2012-01-21 19:34:18', 'TIPOS DE PERSONA', 1, 1, 'B001', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '02', '2012-01-21 19:34:18', 'TIPOS DE IDENTIFICACION', 1, 1, 'B002', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '03', '2012-01-21 19:34:18', 'GENEROS', 1, 1, 'B003', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '02', '2012-01-21 19:34:18', 'TIPOS DE IDENTIFICACIÓN', 1, 1, 'B002', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '03', '2012-01-21 19:34:18', 'GÉNEROS', 1, 1, 'B003', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '04', '2012-01-21 19:34:18', 'ESTADOS CIVILES', 1, 1, 'B004', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '05', '2012-01-21 19:34:18', 'PROFESIONES', 1, 1, 'B005', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '06', '2011-10-14 00:00:00', 'TIPOS DE DIRECCION', 1, 1, 'B006', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '07', '2011-10-14 00:00:00', 'TIPOS DE TELEFONO', 1, 1, 'B007', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '06', '2011-10-14 00:00:00', 'TIPOS DE DIRECCIÓN', 1, 1, 'B006', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '07', '2011-10-14 00:00:00', 'TIPOS DE TELÉFONO', 1, 1, 'B007', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'B', '1', '01', '2011-10-14 00:00:00', 'PERSONAS NATURALES', 1, 1, 'B101', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'B', '1', '02', '2011-10-14 00:00:00', 'DIRECCIONES', 1, 1, 'B102', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'B', '1', '03', '2011-10-14 00:00:00', 'TELEFONOS', 1, 1, 'B103', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'B', '1', '04', '2011-10-14 00:00:00', 'PERSONAS NATURALES GENERAL', 1, 1, 'B104', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'B', '1', '04', '2011-10-14 00:00:00', 'PERSONAS NATURALES GENERAL', 0, 1, 'B104', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '01', '2012-01-14 16:55:33', 'MONEDAS', 1, 1, 'C001', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '02', '2012-01-14 16:55:34', 'ESTATUS SOLICITUD', 1, 1, 'C002', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '03', '2012-01-14 16:55:34', 'TIPOS DE CUOTA', 1, 1, 'C003', NULL),
@@ -3108,15 +3077,15 @@ INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '05', '2012-01-14 16:55:35', 'DESTINOS DE FONDOS', 1, 1, 'C005', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '06', '2012-03-13 23:53:53', 'CONDICIONES OPERATIVAS', 1, 1, 'C006', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '07', '2012-03-14 23:30:18', 'ESTATUS DE CUENTA', 1, 1, 'C007', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '01', '2012-01-08 00:00:00', 'ASESOR DE CREDITO', 1, 1, 'C001', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '02', '2012-01-08 00:00:00', 'ZONAS GEOGRAFICAS', 1, 1, 'C102', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '01', '2012-01-08 00:00:00', 'ASESOR DE CRÉDITO', 1, 1, 'C001', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '02', '2012-01-08 00:00:00', 'ZONAS GEOGRÁFICAS', 1, 1, 'C102', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '03', '2012-01-08 00:00:00', 'ZONAS POR ASESOR', 1, 1, 'C003', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '04', '2012-01-08 00:00:00', 'PRODUCTOS', 1, 1, 'C004', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '05', '2012-01-08 00:00:00', 'PRODUCTOS POR ASESOR', 1, 1, 'C005', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '2', '01', '2012-01-14 16:57:27', 'SOCIOS INDIVIDUALES', 1, 1, 'C201', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '2', '02', '2012-01-14 16:57:28', 'SOCIOS GRUPALES', 1, 1, 'C202', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'C', '3', '01', '2012-01-14 16:58:40', 'SOLICITUD DE MICROCREDITO', 1, 1, 'C301', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'C', '3', '02', '2012-01-14 16:58:41', 'RECOMENDACION', 1, 1, 'C302', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '3', '01', '2012-01-14 16:58:40', 'SOLICITUD DE MICROCRÉDITO', 1, 1, 'C301', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '3', '02', '2012-01-14 16:58:41', 'RECOMENDACIÓN', 1, 1, 'C302', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '4', '01', '2012-02-29 14:14:17', 'CONSULTA SOLICITUDES', 1, 1, 'C401', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '4', '02', '2012-02-29 14:14:17', 'INSTRUMENTACIÓN CORE', 1, 1, 'C402', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '5', '01', '2012-02-29 14:15:47', 'VERIFICACIÓN DESTINO', 1, 1, 'C501', NULL),
@@ -3126,9 +3095,10 @@ INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '5', '05', '2012-02-29 14:15:47', 'PRECANCELACIÓN', 1, 1, 'C505', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '0', '01', '2011-10-14 00:00:00', 'MENU PRINCIPAL', 1, 0, 'G001', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '1', '01', '2011-10-14 00:00:00', 'PARAMETROS GENERALES', 1, 1, 'G101', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '01', '2011-10-14 00:00:00', 'LISTA DE VALORES PARA LOS COMBOS', 1, 0, 'G201', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '01', '2011-10-14 00:00:00', 'LOV PARA LOS COMBOS', 1, 0, 'G201', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '02', '2012-03-03 12:09:42', 'LOV PARA SOCIOS INDIVIDUALES', 1, 0, 'G202', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '03', '2012-03-03 12:09:42', 'LOV PARA ROLES POR USUARIO', 1, 0, 'G203', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'G', '2', '04', '2012-03-03 12:09:42', 'LOV PARA PERSONAS', 1, 0, 'G204', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '01', '2011-10-14 00:00:00', 'PAISES', 1, 1, 'G301', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '02', '2011-10-14 00:00:00', 'PROVINCIAS', 1, 1, 'G302', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'G', '3', '03', '2011-10-14 00:00:00', 'CANTONES', 1, 1, 'G303', NULL),
@@ -3162,12 +3132,14 @@ CREATE TABLE IF NOT EXISTS `PROCESS_COMPONENT` (
 INSERT INTO `PROCESS_COMPONENT` (`COMPANY_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`, `PROCESS_SEQUENCE`, `COMPONENT_ID`, `TYPE_ID`, `ENABLE`, `AUTHORIZE`) VALUES
 ('MXT', 'A', '0', '01', 1, 'mobile.core.security.Loggin', 'QRY', 1, 0),
 ('MXT', 'A', '0', '02', 1, 'mobile.core.security.Logout', 'MNT', 1, 0),
+('MXT', 'A', '2', '05', 1, 'mobile.core.security.ChangePassword', 'MNT', 1, NULL),
 ('MXT', 'C', '4', '01', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 1, NULL),
 ('MXT', 'C', '4', '02', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 1, NULL),
 ('MXT', 'C', '4', '02', 2, 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', 1, NULL),
 ('MXT', 'G', '0', '01', 1, 'mobile.logic.general.MenuGenerator', 'QRY', 1, 0),
 ('MXT', 'G', '2', '02', 1, 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', 1, NULL),
-('MXT', 'G', '2', '03', 1, 'mobile.core.security.query.QueryProfilesForUser', 'QRY', 1, NULL);
+('MXT', 'G', '2', '03', 1, 'mobile.core.security.query.QueryProfilesForUser', 'QRY', 1, NULL),
+('MXT', 'G', '2', '04', 1, 'mobile.logic.person.QueryPersonInfo', 'QRY', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -3242,6 +3214,7 @@ INSERT INTO `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) VALUES
 ('G', '2', '01'),
 ('G', '2', '02'),
 ('G', '2', '03'),
+('G', '2', '04'),
 ('G', '3', '01'),
 ('G', '3', '02'),
 ('G', '3', '03'),
@@ -3948,6 +3921,21 @@ CREATE TABLE IF NOT EXISTS `ROLE` (
 -- Volcar la base de datos para la tabla `ROLE`
 --
 
+INSERT INTO `ROLE` (`COMPANY_ID`, `EXPIRED`, `PROFILE_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`, `CREATED`, `DAY_ID`, `HOUR_FROM`, `HOUR_TO`, `EDITABLE`) VALUES
+('MXT', '9999-12-31 00:00:00', 'ASE', 'A', '0', '01', '2012-03-28 11:54:10', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'A', '0', '02', '2012-03-28 11:54:10', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'A', '2', '05', '2012-03-28 11:54:10', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'B', '1', '01', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'B', '1', '02', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'B', '1', '03', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '2', '01', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '2', '02', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '3', '01', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '3', '02', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '4', '01', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '4', '02', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '5', '02', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '5', '03', '2012-03-28 12:03:06', NULL, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -3969,10 +3957,10 @@ CREATE TABLE IF NOT EXISTS `SEQUENTIAL` (
 --
 
 INSERT INTO `SEQUENTIAL` (`COMPANY_ID`, `SEQUENTIAL_ID`, `SEQUENTIAL_VALUE`, `VERSION`) VALUES
-('MXT', 'GEOZONE', 3, 2),
+('MXT', 'GEOZONE', 1, 0),
 ('MXT', 'PARTNER', 1, 0),
 ('MXT', 'PARTNERGRP', 1, 0),
-('MXT', 'PERSON', 4, 1),
+('MXT', 'PERSON', 3, 0),
 ('MXT', 'SOLICITUDE', 1000, 2);
 
 -- --------------------------------------------------------
@@ -4183,7 +4171,8 @@ CREATE TABLE IF NOT EXISTS `USER_ACCESS` (
 
 INSERT INTO `USER_ACCESS` (`COMPANY_ID`, `EXPIRED`, `USER_ID`, `CREATED`, `USER_KEY`, `LAST_CHANGE`, `QUESTION`, `ANSWER`) VALUES
 ('MXT', '9999-12-31 00:00:00', 'ADMIN', '2012-03-14 00:00:00', 'b34d7dbecec802e49a6cdb0d0a9334a5', '2012-03-14 00:00:00', NULL, NULL),
-('MXT', '9999-12-31 00:00:00', 'JPEREZ', '2012-03-14 00:00:00', 'b34d7dbecec802e49a6cdb0d0a9334a5', '2012-03-14 00:00:00', NULL, NULL);
+('MXT', '9999-12-31 00:00:00', 'JPEREZ', '2012-03-14 00:00:00', 'b34d7dbecec802e49a6cdb0d0a9334a5', '2012-03-14 00:00:00', NULL, NULL),
+('MXT', '9999-12-31 00:00:00', 'MLOPEZ', '2012-03-14 00:00:00', 'b34d7dbecec802e49a6cdb0d0a9334a5', '2012-03-14 00:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -4216,7 +4205,8 @@ CREATE TABLE IF NOT EXISTS `USER_ACCOUNT` (
 
 INSERT INTO `USER_ACCOUNT` (`COMPANY_ID`, `EXPIRED`, `USER_ID`, `CREATED`, `NAME`, `USER_TYPE_ID`, `USER_STATUS_ID`, `LANGUAGE_ID`, `EMAIL`, `PERSON_ID`, `VERSION`) VALUES
 ('MXT', '9999-12-31 00:00:00', 'ADMIN', '2012-01-20 20:46:12', 'ADMINISTRATOR', 'SYS', 'ACT', 'ES', 'admin@mobile.com', NULL, 1),
-('MXT', '9999-12-31 00:00:00', 'JPEREZ', '2012-03-13 23:43:15', 'JUAN PEREZ', 'ASE', 'ACT', 'ES', 'jperez@mobile.com', NULL, 1);
+('MXT', '9999-12-31 00:00:00', 'JPEREZ', '2012-03-13 23:43:15', 'JUAN PEREZ', 'ASE', 'ACT', 'ES', 'jperez@mobile.com', NULL, 1),
+('MXT', '9999-12-31 00:00:00', 'MLOPEZ', '2012-04-01 13:39:54', 'MARÍA LOPEZ', 'ASE', 'ACT', 'ES', 'mlopez@mobile.com', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -4235,67 +4225,8 @@ CREATE TABLE IF NOT EXISTS `USER_ACCOUNT_ID` (
 
 INSERT INTO `USER_ACCOUNT_ID` (`USER_ID`) VALUES
 ('ADMIN'),
-('JPEREZ');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `USER_NOTIFICATION`
---
-
-CREATE TABLE IF NOT EXISTS `USER_NOTIFICATION` (
-  `COMPANY_ID` varchar(4) NOT NULL,
-  `EXPIRED` datetime NOT NULL,
-  `USER_ID` varchar(20) NOT NULL,
-  `CREATED` datetime NOT NULL,
-  `USER_NOTIFICATION_TYPE_ID` varchar(4) NOT NULL,
-  `SUBJECT` varchar(100) NOT NULL,
-  `MESSAGE` varchar(4000) NOT NULL,
-  `READ_` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`COMPANY_ID`,`EXPIRED`,`USER_ID`),
-  KEY `USER_NOTIF_USER_ACCOUNT_ID_FK` (`USER_ID`),
-  KEY `USER_NOTIF_USER_NOT_TYPE_ID_FK` (`USER_NOTIFICATION_TYPE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `USER_NOTIFICATION`
---
-
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `USER_NOTIFICATION_TYPE`
---
-
-CREATE TABLE IF NOT EXISTS `USER_NOTIFICATION_TYPE` (
-  `LANGUAGE_ID` varchar(2) NOT NULL,
-  `USER_NOTIFICATION_TYPE_ID` varchar(4) NOT NULL,
-  `NAME` varchar(40) NOT NULL,
-  PRIMARY KEY (`LANGUAGE_ID`,`USER_NOTIFICATION_TYPE_ID`),
-  KEY `USER_NOTIFICATION_TYPE_ID_FK` (`USER_NOTIFICATION_TYPE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `USER_NOTIFICATION_TYPE`
---
-
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `USER_NOTIFICATION_TYPE_ID`
---
-
-CREATE TABLE IF NOT EXISTS `USER_NOTIFICATION_TYPE_ID` (
-  `USER_NOTIFICATION_TYPE_ID` varchar(4) NOT NULL,
-  PRIMARY KEY (`USER_NOTIFICATION_TYPE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `USER_NOTIFICATION_TYPE_ID`
---
-
+('JPEREZ'),
+('MLOPEZ');
 
 -- --------------------------------------------------------
 
@@ -4320,7 +4251,8 @@ CREATE TABLE IF NOT EXISTS `USER_PROFILE` (
 INSERT INTO `USER_PROFILE` (`COMPANY_ID`, `EXPIRED`, `USER_ID`, `PROFILE_ID`, `CREATED`) VALUES
 ('MXT', '9999-12-31 00:00:00', 'ADMIN', 'ADM', '2012-03-18 00:00:00'),
 ('MXT', '9999-12-31 00:00:00', 'ADMIN', 'ASE', '2012-03-18 00:00:00'),
-('MXT', '9999-12-31 00:00:00', 'JPEREZ', 'ASE', '2012-03-18 00:00:00');
+('MXT', '9999-12-31 00:00:00', 'JPEREZ', 'ASE', '2012-03-18 00:00:00'),
+('MXT', '9999-12-31 00:00:00', 'MLOPEZ', 'ASE', '2012-03-18 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -4346,12 +4278,9 @@ CREATE TABLE IF NOT EXISTS `USER_SESSION` (
 --
 
 INSERT INTO `USER_SESSION` (`COMPANY_ID`, `EXPIRED`, `USER_ID`, `HOST_ID`, `CREATED`, `SESSION_ID`, `VERSION`) VALUES
-('MXT', '2012-03-17 02:33:08', 'ADMIN', 'LOCALHOST', '2012-03-17 00:54:31', 'FCD708B8E428C1FB7B04EAF180EBF32320120317005431002', 1),
-('MXT', '2012-03-17 17:45:21', 'ADMIN', 'LOCALHOST', '2012-03-17 02:33:50', 'FCD708B8E428C1FB7B04EAF180EBF32320120317023350399', 1),
-('MXT', '2012-03-20 02:26:27', 'JPEREZ', 'LOCALHOST', '2012-03-19 08:52:32', 'F61BAAA6A2793CFA275D296B85D76B482012031908523271', 1),
-('MXT', '2012-03-21 16:49:03', 'ADMIN', 'LOCALHOST', '2012-03-18 13:22:07', 'FCD708B8E428C1FB7B04EAF180EBF3232012031813220747', 1),
-('MXT', '9999-12-31 00:00:00', 'ADMIN', 'LOCALHOST', '2012-03-21 16:50:00', 'FCD708B8E428C1FB7B04EAF180EBF32320120321164959529', 1),
-('MXT', '9999-12-31 00:00:00', 'JPEREZ', 'LOCALHOST', '2012-03-21 00:13:45', 'F61BAAA6A2793CFA275D296B85D76B4820120321001344712', 1);
+('MXT', '2012-04-01 13:58:28', 'ADMIN', 'LOCALHOST', '2012-04-01 13:26:00', 'FCD708B8E428C1FB7B04EAF180EBF32320120401132559987', 1),
+('MXT', '2012-04-01 15:49:16', 'ADMIN', 'LOCALHOST', '2012-04-01 15:34:34', 'FCD708B8E428C1FB7B04EAF180EBF32320120401153434222', 1),
+('MXT', '9999-12-31 00:00:00', 'ADMIN', 'LOCALHOST', '2012-04-01 15:49:56', 'FCD708B8E428C1FB7B04EAF180EBF32320120401154956349', 1);
 
 -- --------------------------------------------------------
 
@@ -4394,7 +4323,6 @@ CREATE TABLE IF NOT EXISTS `USER_STATUS_ID` (
 --
 
 INSERT INTO `USER_STATUS_ID` (`USER_STATUS_ID`) VALUES
-('ACAT'),
 ('ACT'),
 ('BLO'),
 ('INA');
@@ -4464,9 +4392,6 @@ CREATE TABLE IF NOT EXISTS `ZONE_ASESSOR` (
 -- Volcar la base de datos para la tabla `ZONE_ASESSOR`
 --
 
-INSERT INTO `ZONE_ASESSOR` (`USER_ID`, `GEOGRAPHIC_ZONE_ID`, `OBSERVATIONS`) VALUES
-('ADMIN', 2, 'ASFASFASDAFSDFFS'),
-('JPEREZ', 1, 'ASDFASFASDFASFD');
 
 --
 -- Filtros para las tablas descargadas (dump)
@@ -4933,21 +4858,6 @@ ALTER TABLE `USER_ACCOUNT`
   ADD CONSTRAINT `USER_ACCOUNT_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`),
   ADD CONSTRAINT `USER_ACCOUNT_USER_STATUS_ID_FK` FOREIGN KEY (`USER_STATUS_ID`) REFERENCES `USER_STATUS_ID` (`USER_STATUS_ID`),
   ADD CONSTRAINT `USER_ACCOUNT_USER_TYPE_ID_FK` FOREIGN KEY (`USER_TYPE_ID`) REFERENCES `USER_TYPE_ID` (`USER_TYPE_ID`);
-
---
--- Filtros para la tabla `USER_NOTIFICATION`
---
-ALTER TABLE `USER_NOTIFICATION`
-  ADD CONSTRAINT `USER_NOTIFICATION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_NOTIF_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
-  ADD CONSTRAINT `USER_NOTIF_USER_NOT_TYPE_ID_FK` FOREIGN KEY (`USER_NOTIFICATION_TYPE_ID`) REFERENCES `USER_NOTIFICATION_TYPE_ID` (`USER_NOTIFICATION_TYPE_ID`);
-
---
--- Filtros para la tabla `USER_NOTIFICATION_TYPE`
---
-ALTER TABLE `USER_NOTIFICATION_TYPE`
-  ADD CONSTRAINT `USER_NOTIFICATION_TYPE_ID_FK` FOREIGN KEY (`USER_NOTIFICATION_TYPE_ID`) REFERENCES `USER_NOTIFICATION_TYPE_ID` (`USER_NOTIFICATION_TYPE_ID`),
-  ADD CONSTRAINT `USER__LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
 
 --
 -- Filtros para la tabla `USER_PROFILE`

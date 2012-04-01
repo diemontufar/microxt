@@ -21,6 +21,8 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
+import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
+import com.extjs.gxt.ui.client.widget.grid.filters.StringFilter;
 import com.google.gwt.user.client.Element;
 
 public class B005 extends MyGeneralForm {
@@ -53,12 +55,18 @@ public class B005 extends MyGeneralForm {
 
 		ColumnModel cm = new ColumnModel(configs);
 
+		// Filters
+		GridFilters filters = new GridFilters();
+		StringFilter nameFilter = new StringFilter("name");
+		filters.addFilter(nameFilter);
+		
 		// Content panel
 		EntityContentPanel cp = new EntityContentPanel("Tipos de Profesión", 400, 230);
 
 		// Grid
 		final EntityEditorGrid grid = new EntityEditorGrid(getStore(), cm);
 		grid.setAutoExpandColumn("name");
+		grid.addPlugin(filters);
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {

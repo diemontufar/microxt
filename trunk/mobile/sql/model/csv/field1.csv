@@ -51,7 +51,7 @@ FK(I),COMPANY_ID,TABLE_ID,FIELD_ID,FIELD_ORDER,DATA_TYPE_ID,DATA_SIZE,DATA_SCALE
 ,ALL,PRODUCT_ASESSOR,OBSERVATIONS,3,String,50,0,0,0,1,(null),(null),(null),(null),Observations
 
 ,ALL,PARTNER,PARTNER_ID,1,Integer,0,0,1,0,0,(null),PARTNER,(null),(null),Person id
-1,ALL,PARTNER,PERSON_ID,2,Long,10,0,0,0,0,(null),(null),(null),(null),Person id
+1,ALL,PARTNER,PERSON_ID,2,Integer,0,0,0,0,0,(null),(null),(null),(null),Person id
 ,ALL,PARTNER,ACTIVITY,3,String,300,0,0,0,1,(null),(null),(null),(null),Activity
 1,ALL,PARTNER,USER_ID,4,String,20,0,0,0,0,(null),(null),(null),(null),User Id
 1,ALL,PARTNER,FREQUENCY_ID,5,String,3,0,0,0,1,(null),(null),(null),(null),Meeting Frequency id
@@ -107,7 +107,7 @@ FK(I),COMPANY_ID,TABLE_ID,FIELD_ID,FIELD_ORDER,DATA_TYPE_ID,DATA_SIZE,DATA_SCALE
 
 ,ALL,MICRO_ACCOUNT,ACCOUNT_ID,1,String,25,0,1,0,0,(null),(null),(null),(null),Account number and id
 1,ALL,MICRO_ACCOUNT,SOLICITUDE_ID,2,Integer,0,0,0,0,0,(null),(null),(null),(null),Solicitude Id
-,ALL,MICRO_ACCOUNT,CLIENT_NAME,3,String,25,0,0,0,0,(null),(null),(null),(null),Client's name
+,ALL,MICRO_ACCOUNT,CLIENT_NAME,3,String,120,0,0,0,0,(null),(null),(null),(null),Client's name
 1,ALL,MICRO_ACCOUNT,ASSESSOR,4,String,20,0,0,0,0,(null),(null),(null),(null),Assessor
 1,ALL,MICRO_ACCOUNT,PARTNER_CLIENT_ID,5,Integer,0,0,0,0,1,(null),(null),(null),(null),Client
 1,ALL,MICRO_ACCOUNT,GROUP_CLIENT_ID,6,Integer,0,0,0,0,1,(null),(null),(null),(null),Group
