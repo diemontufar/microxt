@@ -11,6 +11,8 @@ import java.net.URL;
 import mobile.common.message.Message;
 import mobile.tools.common.Config;
 import mobile.tools.common.Log;
+import mobile.tools.common.Objection;
+import mobile.tools.common.enums.ObjectionCode;
 import mobile.tools.common.msg.Parser;
 
 import org.apache.log4j.Logger;
@@ -62,7 +64,8 @@ public class SimulatorClient {
 				rspMsg = parser.parseMsg(rspMsgStr, Message.XML);
 			}
 		} catch (IOException e) {
-			throw new Exception("Connection error (is server running at " + url + " ?): " + e);
+			//throw new Exception("Connection error (is server running at " + url + " ?): " + e);
+			throw new Objection(ObjectionCode.SIMULATOR_CONNECTION_ERROR);
 		} finally {
 			if (httpConnection != null)
 				httpConnection.disconnect();
