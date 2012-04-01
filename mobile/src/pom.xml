@@ -6,8 +6,8 @@
 	<packaging>pom</packaging>
 	<version>2.0</version>
 	<name>MOBILE</name>
-        <properties>
-	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<modules>
@@ -29,16 +29,16 @@
 					<target>1.6</target>
 					<encoding>UTF-8</encoding>
 					<showDeprecation>true</showDeprecation>
-            				<showWarnings>true</showWarnings>
+					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
 			<plugin>
-				  <groupId>org.apache.maven.plugins</groupId>
-				  <artifactId>maven-resources-plugin</artifactId>
-				  <version>2.5</version>
-				  <configuration>
-				    <encoding>UTF-8</encoding>
-				  </configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
