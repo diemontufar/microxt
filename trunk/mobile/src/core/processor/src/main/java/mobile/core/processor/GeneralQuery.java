@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import mobile.common.message.EntityData;
 import mobile.common.message.Field;
 import mobile.common.message.Item;
@@ -96,19 +98,25 @@ public class GeneralQuery implements QueryProcessor {
 			for (String filter : lFilters) {
 				String[] part = filter.split(":");
 				String field = part[0];
-
-				// Normal field
-				// queryFields.add(field);
-				if (fieldCounter > 0) {
-					sql.append(", ");
+				
+				if (field.indexOf(".") > 0) {
+					field = field.replaceAll("\\.", "_");
 				}
+				
+				if(!ArrayUtils.contains(queryFields.toArray(), field)){
+					// Normal field
+					// queryFields.add(field);
+					if (fieldCounter > 0) {
+						sql.append(", ");
+					}
 
-				if (normalQuery){
-					//sql.append("a." + field.replaceAll("pk_", "pk."));
-				}else{
-					sql.append("a." + JpManager.toSqlName(field.replaceAll("pk_", "")));
+					if (normalQuery){
+						//sql.append("a." + field.replaceAll("pk_", "pk."));
+					}else{
+						sql.append("a." + JpManager.toSqlName(field.replaceAll("pk_", "")));
+					}
+					//fieldCounter++;
 				}
-				//fieldCounter++;
 			}
 		}
 
@@ -117,9 +125,6 @@ public class GeneralQuery implements QueryProcessor {
 			sql.append(" from " + data.getDataId() + " a");
 		else
 			sql.append(" from " + JpManager.toSqlName(data.getDataId()) + " a");
-
-		// Set data types map
-		// util.fillQueryTypes(entity);
 
 		// ---------------------------------------------
 		// Filters
@@ -196,6 +201,10 @@ public class GeneralQuery implements QueryProcessor {
 					String comparator = part[1];
 					String value = part[2];
 					Object cValue = CoreConverter.convertToType(value);
+					
+					if(cValue instanceof String){
+						cValue = util.convertParameter(entity, field, cValue);
+					}
 
 					comparator = util.analizeComparator(comparator);
 
