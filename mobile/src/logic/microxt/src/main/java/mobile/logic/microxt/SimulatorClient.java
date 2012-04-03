@@ -64,7 +64,6 @@ public class SimulatorClient {
 				rspMsg = parser.parseMsg(rspMsgStr, Message.XML);
 			}
 		} catch (IOException e) {
-			//throw new Exception("Connection error (is server running at " + url + " ?): " + e);
 			throw new Objection(ObjectionCode.SIMULATOR_CONNECTION_ERROR);
 		} finally {
 			if (httpConnection != null)
