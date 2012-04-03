@@ -157,7 +157,7 @@ public class CoreProcessor {
 	}
 
 	public Message setResponse(Message msg, Throwable throwable) {
-		Objection objection = new Objection(throwable, ObjectionCode.FAILED);
+		Objection objection = null;
 
 		if (throwable == null) {
 			msg.getResponse().setCode(ObjectionCode.SUCCESS.getCode());
@@ -178,12 +178,16 @@ public class CoreProcessor {
 					} else if (errorCode == 1451 || errorCode == 1452) {
 						objection = new Objection(dbe, ObjectionCode.DB_FOREIGN_KEY);
 					} else if (errorCode == 1048) {
-						objection = new Objection(dbe, ObjectionCode.DB_FOREIGN_KEY);
+						objection = new Objection(dbe, ObjectionCode.DB_NULL);
 					}
 				}
 			}
 		} else if (throwable instanceof CommunicationsException) {
 			objection = new Objection(throwable, ObjectionCode.DB_CONNECTION_ERROR);
+		} else if (throwable instanceof Objection){
+			objection = (Objection) throwable;
+		}else{
+			objection = new Objection(throwable, ObjectionCode.FAILED);
 		}
 
 		msg.getResponse().setCode(objection.getCode());
