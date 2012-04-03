@@ -19,6 +19,8 @@ import org.apache.log4j.Logger;
 
 public class Instrumentation {
 
+	private final Integer WEEK_DAYS = 7;
+	private final Integer FORTNIGHT_DAYS = 15;
 	private final Integer MONTH_DAYS = 30;
 	private final Integer PAYMENT_BASE = 360; // 365/360
 
@@ -85,6 +87,8 @@ public class Instrumentation {
 		Integer term = Integer.parseInt(item.getField("term").getValue());
 		Date startDate = FormatDates.getDateFormat().parse(item.getField("solicitudeDate").getValue());
 		String product = item.getField("productId").getValue();
+		String quotaType = item.getField("quotaType").getValue();
+		String frequency = item.getField("frecuency").getValue();
 
 		acc.setAccountId(solId.toString());
 		acc.setSolicitudId(solId);
@@ -93,6 +97,8 @@ public class Instrumentation {
 		acc.setAmount(amount);
 		acc.setTerm(term);
 		acc.setStartDate(startDate);
+		acc.setQuotaType(quotaType);
+		acc.setFrequency(Integer.parseInt(frequency));
 
 		return acc;
 	}
@@ -112,34 +118,65 @@ public class Instrumentation {
 		BigDecimal rate = mRates.get(product);
 		Integer term = acc.getTerm();
 		Date startDate = acc.getStartDate();
+		Integer freq = acc.getFrequency();
+
+		if (acc.getQuotaType().compareTo("AMR") != 0) {
+			throw new RuntimeException("AMORTIZACIÓN NO SOPORTADA");
+		}
 
 		log.info("Begin instrumentation::::::::::::::::::::::::::::::::::::::");
 		log.info("Capital: " + capital);
 		log.info("Product: " + product);
-		log.info("Rate: " + rate);
+		log.info("Rate: " + rate); // annual rate
 		log.info("Term: " + term);
 		log.info("Start date: " + FormatDates.getDateFormat().format(startDate));
+		log.info("Frequency: " + freq);
 
 		// Process
-		BigDecimal monthlyRate = rate.divide(BigDecimal.valueOf(12), 6, RoundingMode.HALF_UP);
-		log.info("Monthly rate: " + monthlyRate);
 		BigDecimal dailyRate = rate.divide(BigDecimal.valueOf(PAYMENT_BASE), 6, RoundingMode.HALF_UP);
-		log.info("Dayly rate: " + dailyRate);
-		Integer monthlyTerm = term / MONTH_DAYS;
+		Integer provisionDays = null;
+		BigDecimal calcRate = null;
+		Integer calcTerm = null;
+		if (freq == 0) { // at maturity
+			provisionDays = term;
+		} else if (freq == 1) { // daily
+			provisionDays = 1;
+		} else if (freq == 2) { // weekly
+			provisionDays = WEEK_DAYS;
+		} else if (freq == 3) { // biweekly
+			provisionDays = FORTNIGHT_DAYS;
+		} else if (freq == 4) { // monthly
+			provisionDays = MONTH_DAYS;
+		} else if (freq == 5) { // bimonthly
+			provisionDays = 2 * MONTH_DAYS;
+		} else if (freq == 6) { // quarterly
+			provisionDays = 3 * MONTH_DAYS;
+		} else if (freq == 7) { // semiannual
+			provisionDays = 6 * MONTH_DAYS;
+		} else if (freq == 8) { // annual
+			provisionDays = 12 * MONTH_DAYS;
+		}
 
-		acc.setNumberQuotas(monthlyTerm);
+		calcRate = BigDecimal.valueOf(provisionDays).multiply(dailyRate);
+		calcTerm = term / provisionDays;
 
-		BigDecimal fixedQuota = pmt(monthlyRate, monthlyTerm, capital);
+		log.info("Daily rate: " + dailyRate);
+		log.info("Calculus rate: " + calcRate);
+		log.info("Calculos periods: " + calcTerm);
+
+		acc.setNumberQuotas(calcTerm);
+
+		BigDecimal fixedQuota = pmt(calcRate, calcTerm, capital);
 		log.info("Fixed quota: " + fixedQuota);
 
 		List<AccountQuota> lquota = new ArrayList<AccountQuota>();
 
 		Date next = startDate;
-		for (int i = 0; i < monthlyTerm; i++) {
+		for (int i = 0; i < calcTerm; i++) {
 			AccountQuota q = new AccountQuota();
 			q.setAccount(acc);
 			q.setId(i + 1);
-			q.setProvisionDays(MONTH_DAYS);
+			q.setProvisionDays(provisionDays);
 			if (i == 0) {
 				q.setReducedCapital(capital);
 			} else {
@@ -147,11 +184,11 @@ public class Instrumentation {
 				BigDecimal reduced = aq.getReducedCapital().subtract(aq.getCapital());
 				q.setReducedCapital(reduced);
 			}
-			BigDecimal inter0 = q.getReducedCapital().multiply(dailyRate).multiply(BigDecimal.valueOf(MONTH_DAYS));
+			BigDecimal inter0 = q.getReducedCapital().multiply(dailyRate).multiply(BigDecimal.valueOf(provisionDays));
 			q.setInterest(inter0);
 			q.setCapital(fixedQuota.subtract(inter0));
 			q.setQuota(fixedQuota);
-			q.setProvisionDays(MONTH_DAYS);
+			q.setProvisionDays(provisionDays);
 
 			q.setFromDate(next);
 			next = DateUtils.addDays(next, 30);
@@ -242,6 +279,8 @@ public class Instrumentation {
 		acc.setProduct("M01");
 		acc.setTerm(360);
 		acc.setStartDate(FormatDates.getDateFormat().parse("2012-01-01"));
+		acc.setQuotaType("AMR");
+		acc.setFrequency(4);
 
 		Instrumentation proc = new Instrumentation();
 

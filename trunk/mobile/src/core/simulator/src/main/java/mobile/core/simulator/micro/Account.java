@@ -12,6 +12,8 @@ public class Account {
 	private Integer term;
 	private Integer numberQuotas;
 	private Date startDate;
+	private String quotaType;
+	private Integer frequency;
 
 	public String getAccountId() {
 		return accountId;
@@ -76,4 +78,21 @@ public class Account {
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+
+	public String getQuotaType() {
+		return quotaType;
+	}
+
+	public void setQuotaType(String quotaType) {
+		this.quotaType = quotaType;
+	}
+
+	public Integer getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(Integer frequency) {
+		this.frequency = frequency;
+	}
+	
 }
