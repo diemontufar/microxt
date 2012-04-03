@@ -24,7 +24,9 @@ import mobile.entity.microcredit.ProductMicrocredit;
 import mobile.entity.microcredit.Solicitude;
 import mobile.entity.person.Person;
 import mobile.entity.person.PersonPk;
+import mobile.tools.common.Objection;
 import mobile.tools.common.convertion.FormatDates;
+import mobile.tools.common.enums.ObjectionCode;
 import mobile.tools.common.param.LocalParameter;
 import mobile.tools.common.param.ParameterEnum;
 import mobile.tools.common.param.Timer;
@@ -33,10 +35,16 @@ import mobile.tools.common.structure.MaintenanceProcessor;
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 
+/**
+ * Performs the instrumentation through the remote core (simulator)
+ */
 public class RemoteInstrumentation implements MaintenanceProcessor {
 	private final String PRODUCT_QL = "Select p from ProductMicrocredit p where p.pk.companyId = :companyId and p.pk.languageId = :languageId and p.pk.expired = :expired";
 	private final String SOLICITUDE_QL = "Select s from Solicitude s where s.assessor = :assessor and s.statusId = '002' and s.pk.expired = :expired and s.instrumentationDate is null";
 	private int count = 1;
+	
+	private final String REMOTE_INSTRUMENTATION_PROCESS = "06-2000";
+	private final String REMOTE_INSTRUMENTATION_PROCESS_type = "005";
 
 	List<ProductMicrocredit> lProduct = new ArrayList<ProductMicrocredit>();
 	List<Solicitude> lSolicitude = new ArrayList<Solicitude>();
@@ -59,7 +67,7 @@ public class RemoteInstrumentation implements MaintenanceProcessor {
 		// Communicate with simulator
 		Message rspMsg = SimulatorClient.sendMessage(msg2);
 		if (rspMsg == null) {
-			throw new Exception("Invalid response from simulator");
+			throw new Objection(ObjectionCode.INSTRUMENTATION_RSP);
 		}
 
 		// Persist response from simulator
@@ -108,8 +116,13 @@ public class RemoteInstrumentation implements MaintenanceProcessor {
 	}
 
 	private void getSolicitudes(Message msg) {
+		// Only user with ASSESSOR profile 
+		if(msg.getRequest().getProfile().compareTo("ASE")!=0){
+			throw new Objection(ObjectionCode.INSTRUMENTATION_ROLE);
+		}
+		
 		String assessor = msg.getControlFieldValue("user");
-
+		
 		TypedQuery<Solicitude> query = JpManager.getEntityManager().createQuery(SOLICITUDE_QL, Solicitude.class);
 		// query.setHint(QueryHints.READ_ONLY, HintValues.TRUE);
 		query.setParameter("assessor", assessor);
@@ -123,8 +136,8 @@ public class RemoteInstrumentation implements MaintenanceProcessor {
 		Message msg2 = new Message();
 
 		// Header
-		msg2.getRequest().setProcess("06-2000");
-		msg2.getRequest().setProcessType("005");
+		msg2.getRequest().setProcess(REMOTE_INSTRUMENTATION_PROCESS);
+		msg2.getRequest().setProcessType(REMOTE_INSTRUMENTATION_PROCESS_type);
 
 		// Products
 		Data productData = new Data("MICROCREDIT_PRODUCT");
@@ -170,12 +183,10 @@ public class RemoteInstrumentation implements MaintenanceProcessor {
 		Data accountData = msg.getData("MICROCREDIT_ACCOUNT");
 
 		for (Item item : accountData.getItemList()) {
+			// Create data
 			Integer solId = Integer.parseInt(item.getFieldValue("solicitudeId"));
 			Solicitude solicitude = findSolicitude(solId);
 
-			log.debug("Contains " + JpManager.getEntityManager().contains(solicitude));
-
-			// Update solicitude
 			String accId = item.getFieldValue("accountId");
 			String statusId = item.getFieldValue("status");
 			Integer numberQuotas = Integer.parseInt(item.getFieldValue("quotas"));
@@ -183,6 +194,7 @@ public class RemoteInstrumentation implements MaintenanceProcessor {
 			solicitude.setAccount(accId);
 			solicitude.setInstrumentationDate(Timer.getCurrentDate());
 			solicitude.setNumberQuotas(numberQuotas);
+			solicitude.setOperativeConditionId("NOR");
 
 			// Create account
 			MicroAccountPk accPk = new MicroAccountPk(accId);
@@ -208,17 +220,17 @@ public class RemoteInstrumentation implements MaintenanceProcessor {
 		Data quotaData = msg.getData("MICROCREDIT_QUOTA");
 
 		for (Item item : quotaData.getItemList()) {
-			// Create quotas
+			// Get data
 			String accId = item.getFieldValue("accountId");
 			Integer id = Integer.parseInt(item.getFieldValue("quotaId"));
 			Integer provisionDays = Integer.parseInt(item.getFieldValue("provisionDays"));
 			BigDecimal reducedCapital = new BigDecimal(item.getFieldValue("reducedCapital"));
 			BigDecimal interest = new BigDecimal(item.getFieldValue("interest"));
 			BigDecimal capital = new BigDecimal(item.getFieldValue("capital"));
-			//BigDecimal quotaVal = new BigDecimal(item.getFieldValue("quota"));
 			Date fromDate = new Date(FormatDates.getDateFormat().parse(item.getFieldValue("fromDate")).getTime());
 			Date endDate = new Date(FormatDates.getDateFormat().parse(item.getFieldValue("toDate")).getTime());
 
+			// Create quotas
 			MicroAccountQuotaPk quotaPk = new MicroAccountQuotaPk(accId, id);
 			MicroAccountQuota quota = new MicroAccountQuota(quotaPk);
 			quota.setProvisionDays(provisionDays);
@@ -228,7 +240,6 @@ public class RemoteInstrumentation implements MaintenanceProcessor {
 			quota.setCapital(capital);
 			quota.setInterest(interest);
 			quota.setCharge(BigDecimal.ZERO);
-			//quota.setQuota(quotaVal);
 
 			lAccountQuota.add(quota);
 		}
