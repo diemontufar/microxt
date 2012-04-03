@@ -3,6 +3,7 @@ package mobile.web.webxt.client.devform;
 import java.util.ArrayList;
 import java.util.List;
 
+import mobile.web.webxt.client.MobileConstants;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.form.EntityContentPanel;
@@ -18,6 +19,7 @@ import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
 import mobile.web.webxt.client.form.widgetsgrid.NumericColumn;
 import mobile.web.webxt.client.util.NumberType;
 
+import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
@@ -56,7 +58,7 @@ public class C402 extends MyGeneralForm {
 		final MyFormPanel form = new MyFormPanel(this, "");
 		InputBox user = new InputBox();
 		user.setDataSource(new DataSource("user", DataSourceType.CONTROL));
-		user.setValue("JPEREZ");
+		user.setValue(Registry.get(MobileConstants.USER).toString());
 		form.add(user);
 
 		// Columns configuration
@@ -68,6 +70,7 @@ public class C402 extends MyGeneralForm {
 		cdata.add(new MyColumnData("solicitudeDate", "F. solicitud", 80, true));
 		cdata.add(new MyColumnData("productId", "Prod", 50, true));
 		cdata.add(new MyColumnData("status", "Estatus", 75, true));
+		cdata.add(new MyColumnData("instrumented", "Instrumentada?", 75, true));
 		cdata.add(new MyColumnData("amount", "Monto", 60, true));
 		cdata.add(new MyColumnData("term", "Plazo", 60, true));
 		cdata.add(new MyColumnData("quotaTypeId", "T. Cuota", 60, true));
@@ -85,11 +88,12 @@ public class C402 extends MyGeneralForm {
 		configs.add(new DateColumn(cdata.get(4)));
 		configs.add(new NormalColumn(cdata.get(5)));
 		configs.add(new NormalColumn(cdata.get(6)));
-		configs.add(new NumericColumn(cdata.get(7), NumberType.DECIMAL));
-		configs.add(new NumericColumn(cdata.get(8), NumberType.INTEGER));
-		configs.add(new NormalColumn(cdata.get(9)));
+		configs.add(new NormalColumn(cdata.get(7)));
+		configs.add(new NumericColumn(cdata.get(8), NumberType.DECIMAL));
+		configs.add(new NumericColumn(cdata.get(9), NumberType.INTEGER));
 		configs.add(new NormalColumn(cdata.get(10)));
 		configs.add(new NormalColumn(cdata.get(11)));
+		configs.add(new NormalColumn(cdata.get(12)));
 
 		ColumnModel cm = new ColumnModel(configs);
 
@@ -123,6 +127,16 @@ public class C402 extends MyGeneralForm {
 		statusStore.add(model);
 		final ListFilter statusListFilter = new ListFilter("status", statusStore);
 		statusListFilter.setDisplayProperty("status");
+		
+		final ListStore<ModelData> instrumentedStore = new ListStore<ModelData>();
+		model = new BaseModelData();
+		model.set("instrumented", "SI");
+		instrumentedStore.add(model);
+		model = new BaseModelData();
+		model.set("instrumented", "NO");
+		instrumentedStore.add(model);
+		final ListFilter instrumentedFilter = new ListFilter("instrumented", instrumentedStore);
+		instrumentedFilter.setDisplayProperty("instrumented");
 
 		filters.addFilter(idFilter);
 		filters.addFilter(nameFilter);
@@ -131,6 +145,7 @@ public class C402 extends MyGeneralForm {
 		filters.addFilter(termFilter);
 		filters.addFilter(typeListFilter);
 		filters.addFilter(statusListFilter);
+		filters.addFilter(instrumentedFilter);
 
 		// Content panel
 		EntityContentPanel cp = new EntityContentPanel("Instrumentación Core", 700, 340);
@@ -142,11 +157,15 @@ public class C402 extends MyGeneralForm {
 		cp.add(grid);
 		grid.addListener(Events.Attach, new Listener<BaseEvent>() {
 			public void handleEvent(BaseEvent be) {
-				// getStore().sort(cdata.getIdFields().get(0), SortDir.ASC);
-				// Begin filter
+				// Approved filter
 				List<ModelData> approved = new ArrayList<ModelData>();
 				approved.add(statusStore.getAt(1));
 				statusListFilter.setValue(approved);
+				
+				// No instrumented filter
+				List<ModelData> instrumented = new ArrayList<ModelData>();
+				instrumented.add(instrumentedStore.getAt(1));
+				instrumentedFilter.setValue(instrumented);
 			}
 		});
 
@@ -158,6 +177,10 @@ public class C402 extends MyGeneralForm {
 				form.commitForm();
 			}
 		});
+		if(Registry.get(MobileConstants.PROFILE).toString().compareTo("ASE")!=0){
+			instButton.setEnabled(false);
+		}
+		
 		ToolBar toolBar = new ToolBar();
 		toolBar.add(instButton);
 		cp.setTopComponent(toolBar);

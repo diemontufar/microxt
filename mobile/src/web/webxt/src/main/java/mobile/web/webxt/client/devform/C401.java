@@ -54,6 +54,7 @@ public class C401 extends MyGeneralForm {
 		cdata.add(new MyColumnData("solicitudeDate", "F. solicitud", 80, true));
 		cdata.add(new MyColumnData("productId", "Prod", 50, true));
 		cdata.add(new MyColumnData("status", "Estatus", 75, true));
+		cdata.add(new MyColumnData("instrumented", "Instrumentada?", 75, true));
 		cdata.add(new MyColumnData("amount", "Monto", 60, true));
 		cdata.add(new MyColumnData("term", "Plazo", 60, true));
 		cdata.add(new MyColumnData("quotaTypeId", "T. Cuota", 60, true));
@@ -71,11 +72,12 @@ public class C401 extends MyGeneralForm {
 		configs.add(new DateColumn(cdata.get(4)));
 		configs.add(new NormalColumn(cdata.get(5)));
 		configs.add(new NormalColumn(cdata.get(6)));
-		configs.add(new NumericColumn(cdata.get(7), NumberType.DECIMAL));
-		configs.add(new NumericColumn(cdata.get(8), NumberType.INTEGER));
-		configs.add(new NormalColumn(cdata.get(9)));
+		configs.add(new NormalColumn(cdata.get(7)));
+		configs.add(new NumericColumn(cdata.get(8), NumberType.DECIMAL));
+		configs.add(new NumericColumn(cdata.get(9), NumberType.INTEGER));
 		configs.add(new NormalColumn(cdata.get(10)));
 		configs.add(new NormalColumn(cdata.get(11)));
+		configs.add(new NormalColumn(cdata.get(12)));
 
 		ColumnModel cm = new ColumnModel(configs);
 
@@ -96,7 +98,7 @@ public class C401 extends MyGeneralForm {
 		clientTypeStore.add(model);
 		ListFilter typeListFilter = new ListFilter("tipoCliente", clientTypeStore);
 		typeListFilter.setDisplayProperty("tipoCliente");
-
+		
 		ListStore<ModelData> statusStore = new ListStore<ModelData>();
 		model = new BaseModelData();
 		model.set("status", "SOLICITADA");
@@ -109,6 +111,16 @@ public class C401 extends MyGeneralForm {
 		statusStore.add(model);
 		ListFilter statusListFilter = new ListFilter("status", statusStore);
 		statusListFilter.setDisplayProperty("status");
+		
+		ListStore<ModelData> instrumentedStore = new ListStore<ModelData>();
+		model = new BaseModelData();
+		model.set("instrumented", "SI");
+		instrumentedStore.add(model);
+		model = new BaseModelData();
+		model.set("instrumented", "NO");
+		instrumentedStore.add(model);
+		ListFilter instrumentedFilter = new ListFilter("instrumented", instrumentedStore);
+		instrumentedFilter.setDisplayProperty("instrumented");
 
 		filters.addFilter(idFilter);
 		filters.addFilter(nameFilter);
@@ -117,6 +129,7 @@ public class C401 extends MyGeneralForm {
 		filters.addFilter(termFilter);
 		filters.addFilter(typeListFilter);
 		filters.addFilter(statusListFilter);
+		filters.addFilter(instrumentedFilter);
 
 		// Content panel
 		EntityContentPanel cp = new EntityContentPanel("Consulta de Solicitudes", 700, 340);

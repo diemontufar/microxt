@@ -61,10 +61,10 @@ public class AppView extends View {
 		if (!MobileConfig.FORM_DEVELOPMENT) {
 			showLoggin();
 		} else {
-			Registry.register(MobileConstants.USER, "ADMIN");
-			Registry.register(MobileConstants.HOST, "LOCALHOST");
-			Registry.register(MobileConstants.CHANNEL, "PC");
-			Registry.register(MobileConstants.PROFILE, "ADM");
+			Registry.register(MobileConstants.USER, MobileConfig.USER);
+			Registry.register(MobileConstants.HOST, MobileConfig.HOST);
+			Registry.register(MobileConstants.CHANNEL, MobileConfig.CHANNEL);
+			Registry.register(MobileConstants.PROFILE, MobileConfig.PROFILE);
 			Dispatcher.forwardEvent(AppEvents.UIReady);
 		}
 

@@ -189,10 +189,12 @@ public class MyFormPanel extends FormPanel {
 		} else if (f instanceof DateField) {
 			DateField field = (DateField) f;
 			Date newValue = null;
-			if (newObject instanceof Date) {
-				newValue = (Date) newObject;
-			} else {
-				newValue = DatesManager.stringToDate(newObject.toString(), Format.DATE);
+			if (newObject != null) {
+				if (newObject instanceof Date) {
+					newValue = (Date) newObject;
+				} else {
+					newValue = DatesManager.stringToDate(newObject.toString(), Format.DATE);
+				}			
 			}
 
 			if (!diff || field.getValue() == null || (newValue != null && !field.getValue().equals(newValue))) {
@@ -256,7 +258,8 @@ public class MyFormPanel extends FormPanel {
 				}
 				if (rqField.containsKey(key)) {
 					//System.out.print(">>>>>Clean " + ds);
-					setValueToField(f, null, diff);
+					//setValueToField(f, null, diff);
+					f.clear();
 				}
 			}
 		}

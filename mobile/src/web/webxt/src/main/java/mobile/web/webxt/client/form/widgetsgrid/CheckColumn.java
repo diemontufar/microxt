@@ -1,14 +1,13 @@
 package mobile.web.webxt.client.form.widgetsgrid;
 
-import com.extjs.gxt.ui.client.widget.form.CheckBox;
-import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.CheckColumnConfig;
 
 public class CheckColumn extends CheckColumnConfig {
 	public CheckColumn(MyColumnData columnData) {
 		super(columnData.getId(), columnData.getName(), columnData.getWidth());
+	}
 
-		CellEditor checkBoxEditor = new CellEditor(new CheckBox());
-		setEditor(checkBoxEditor);
+	public CheckColumn(String arg0, String arg1, Integer arg2) {
+		super(arg0, arg1, arg2);
 	}
 }

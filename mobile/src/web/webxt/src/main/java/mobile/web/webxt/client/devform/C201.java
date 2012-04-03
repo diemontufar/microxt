@@ -151,7 +151,7 @@ public class C201 extends MyGeneralForm {
 		row = new RowContainer();
 		label = new MyLabel("Identificación:", LABEL_WIDTH + 10);
 		row.add(label);
-		identification = new InputBox(150, 11, Validate.ALPHANUMERIC);
+		identification = new InputBox(150, 20, Validate.ALPHANUMERIC);
 		row.add(identification);
 		fieldSet.add(row);
 
@@ -186,7 +186,7 @@ public class C201 extends MyGeneralForm {
 		fieldSet.add(row);
 
 		identification.setReadOnly(true);
-		name.setReadOnly(true);name.setEnabled(false);
+		name.setReadOnly(true);
 		lastName.setReadOnly(true);
 		gender.setReadOnly(true);
 		civilStatus.setReadOnly(true);
