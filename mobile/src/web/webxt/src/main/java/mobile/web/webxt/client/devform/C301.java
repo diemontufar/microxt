@@ -89,12 +89,18 @@ public class C301 extends MyGeneralForm {
 
 		final ComboForm solicitudeId = new ComboForm(100);
 		solicitudeId.setDataSource(new DataSource("sol", "pk_solicitudeId", DataSourceType.CRITERION));
-
+		
 		Reference refSolicitude = new Reference("sol1", "Solicitude");
 		final ArrayColumnData solCdata = new ArrayColumnData();
 		solCdata.add(new MyColumnData("sol1", "pk_solicitudeId", "Id", 100));
 		solicitudeId.setQueryData(refSolicitude, solCdata);
 		solicitudeId.setDisplayField("pk_solicitudeId");
+		
+		FilterConfig filterInstrumentation = new BaseStringFilterConfig();
+		filterInstrumentation.setField("instrumentationDate");
+		filterInstrumentation.setComparison("!null");
+		filterInstrumentation.setValue(null);
+		solicitudeId.addFilter(filterInstrumentation);
 
 		solicitudeId.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
 			@Override
