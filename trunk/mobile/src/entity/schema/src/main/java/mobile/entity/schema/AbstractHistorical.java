@@ -12,7 +12,7 @@ import javax.persistence.MappedSuperclass;
  * Un campo de fecha create 
  */
 @MappedSuperclass
-public abstract class AbstractHistorical implements Historical {
+public abstract class AbstractHistorical extends AbstractEntity implements Historical {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "CREATED", unique = true, nullable = false)

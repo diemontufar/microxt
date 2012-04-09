@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class AbstractHistoricalKey implements HistoricalKey {
+public abstract class AbstractHistoricalKey extends AbstractEntityKey implements HistoricalKey {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "EXPIRED", unique = true, nullable = false)

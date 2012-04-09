@@ -183,6 +183,8 @@ public class QueryUtil {
 			comparator2 = ">";
 		else if (comparator.compareTo("on") == 0)
 			comparator2 = "=";
+		else if (comparator.compareTo("!null") == 0)
+			comparator2 = "is not null";
 
 		return comparator2;
 	}

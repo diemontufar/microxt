@@ -7,7 +7,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
 @MappedSuperclass
-public abstract class AbstractHistoricalLocking implements Historical, OptimisticLocking {
+public abstract class AbstractHistoricalLocking extends AbstractEntity implements Historical, OptimisticLocking {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "CREATED", unique = true, nullable = false)
