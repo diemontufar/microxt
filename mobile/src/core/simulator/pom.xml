@@ -32,11 +32,6 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>mobile.common</groupId>
-			<artifactId>mobile.common.message</artifactId>
-			<version>2.0</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<finalName>simulator</finalName>
