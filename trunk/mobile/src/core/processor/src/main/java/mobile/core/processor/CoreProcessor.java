@@ -37,6 +37,9 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class CoreProcessor {
 
 	private final Logger log = Log.getInstance();
