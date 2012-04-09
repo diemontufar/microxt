@@ -48,7 +48,7 @@
         <semanticModel xmi:type='DI:SimpleSemanticModelBridge' typeInfo='EXPANDED'/>
         <size height='145.28466796875' width='200.0'/>
       </contained>
-      <position x='0.0' y='-45.0'/>
+      <position x='30.0' y='-45.0'/>
       <property key='showPackage' value='false'/>
       <property key='showAttributeVisibility' value='true'/>
       <property key='filterMethodViz' value='PUBLIC PROTECTED PACKAGE PRIVATE'/>
