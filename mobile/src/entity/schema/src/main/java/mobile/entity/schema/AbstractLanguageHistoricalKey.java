@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class AbstractLanguageHistoricalKey implements HistoricalKey {
+public abstract class AbstractLanguageHistoricalKey extends AbstractEntityKey implements HistoricalKey {
 	private static final long serialVersionUID = 1L;
 
 	// @Temporal( TemporalType.TIMESTAMP)
