@@ -143,7 +143,7 @@ public class MyHttpProxy implements DataProxy<PagingLoadResult<ModelData>> {
 					}
 					String filterComp = (filter.getComparison() == null) ? "" : filter.getComparison();
 					String filterValue = null;
-					if (!(filter.getValue() instanceof ArrayList)) {
+					if (!(filter.getValue() instanceof List)) {
 						filterValue = WebConverter.completeValue(filter.getValue());
 					} else {
 						Object filterValue0 = ((ArrayList) filter.getValue()).get(0);

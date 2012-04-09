@@ -15,6 +15,10 @@ public class WebConverter extends CommonConverter {
 	public static String completeValue(Object value) {
 		String completeValue = null;
 
+		if(value == null){
+			return "";
+		}
+		
 		if (value instanceof String) {
 			completeValue = value.toString();
 		} else if (value instanceof Integer) {
