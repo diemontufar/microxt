@@ -80,7 +80,7 @@ public class A206 extends MyGeneralForm {
 		formParameter = new MyFormPanel(formContainerParameter, "", 200) {
 			@Override
 			protected void postQuery() {
-				grid.getStore().getLoader().load();
+				//grid.getStore().getLoader().load();
 			}
 		};
 		formParameter.setVisible(false);

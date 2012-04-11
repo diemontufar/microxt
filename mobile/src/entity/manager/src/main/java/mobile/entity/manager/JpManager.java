@@ -37,9 +37,11 @@ import org.eclipse.persistence.config.QueryHints;
 
 public class JpManager {
 
-	public static JpManager INSTANCE = null;
+	private static JpManager INSTANCE = null;
 
-	private EntityManager em;
+	private final ThreadLocal<EntityManager> em = new ThreadLocal<EntityManager>();
+	     
+	//private EntityManager em;
 
 	private final static String ENTITY_PACKAGE = "mobile.entity";
 
@@ -55,7 +57,8 @@ public class JpManager {
 	}
 
 	public static void createEntityManager() {
-		getInstance().em = JPManagerFactory.createEntityManager();
+		//getInstance().em = JPManagerFactory.createEntityManager();
+		getInstance().em.set(JPManagerFactory.createEntityManager());
 	}
 
 	// creador sincronizado para protegerse de posibles problemas multi-hilo
@@ -72,6 +75,14 @@ public class JpManager {
 		}
 		return INSTANCE;
 	}
+	
+	public synchronized static boolean isBusy(){
+		//if(getInstance().em == null || (getInstance().em != null && !getInstance().em.isOpen())){
+		if(getInstance().em == null || (getInstance().em != null && !getInstance().em.get().isOpen())){
+			return false;
+		}
+		return true;
+	} 
 
 	public static void beginTransaction() {
 		log.info("Begin transaction");
@@ -91,7 +102,7 @@ public class JpManager {
 	}
 
 	public static EntityManager getEntityManager() {
-		return getInstance().em;
+		return getInstance().em.get();
 	}
 
 	public static void close() {
