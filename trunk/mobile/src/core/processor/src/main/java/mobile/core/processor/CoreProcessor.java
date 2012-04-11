@@ -37,9 +37,6 @@ import org.eclipse.persistence.exceptions.DatabaseException;
 
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
 public class CoreProcessor {
 
 	private final Logger log = Log.getInstance();
@@ -52,9 +49,15 @@ public class CoreProcessor {
 	private final int MAX_STACK_TRACE = 500;
 
 	public Message process(Message msg) {
+		log.info("Begin processing... ");
+		long init = System.currentTimeMillis();
 		log.info("Input message: \n" + formatXml(msg.toXML(), 2));
 
 		try {
+//			while (JpManager.isBusy()) {
+//				log.info("Waiting...");
+//				Thread.sleep(100);
+//			}
 			// Create entity manager
 			JpManager.createEntityManager();
 			// Begin transaction
@@ -74,7 +77,6 @@ public class CoreProcessor {
 				// Rollback
 				JpManager.rollbackTransaction();
 			}
-
 			// Set error response
 			setResponse(msg, e);
 		} finally {
@@ -82,6 +84,8 @@ public class CoreProcessor {
 		}
 
 		log.info("Output message: \n" + formatXml(msg.toXML(), 2));
+		log.info("Processing time: "
+				+ FormatDates.getMinuteFormat().format(new Date(System.currentTimeMillis() - init)));
 
 		return msg;
 	}
@@ -187,9 +191,9 @@ public class CoreProcessor {
 			}
 		} else if (throwable instanceof CommunicationsException) {
 			objection = new Objection(throwable, ObjectionCode.DB_CONNECTION_ERROR);
-		} else if (throwable instanceof Objection){
+		} else if (throwable instanceof Objection) {
 			objection = (Objection) throwable;
-		}else{
+		} else {
 			objection = new Objection(throwable, ObjectionCode.FAILED);
 		}
 

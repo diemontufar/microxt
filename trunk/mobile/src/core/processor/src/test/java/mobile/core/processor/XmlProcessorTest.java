@@ -25,8 +25,10 @@ import org.junit.Test;
 
 public class XmlProcessorTest {
 
-	private String input = "/home/ronald/Escritorio/input.xml";
-	private String output = "/home/ronald/Escritorio/output.xml";
+	// private String input = "/home/ronald/Escritorio/input.xml";
+	private String input = "C:/Documents and Settings/Ronald/Escritorio/input.xml";
+	// private String output = "/home/ronald/Escritorio/output.xml";
+	private String output = "C:/Documents and Settings/Ronald/Escritorio/output.xml";
 
 	Logger log = Log.getInstance();
 
@@ -48,13 +50,29 @@ public class XmlProcessorTest {
 			// Message
 			String strMsg = FileUtil.readFile(input);
 			Parser parser = new Parser();
-			Message msg = parser.parseMsg(strMsg, Message.XML);
+			final Message msg = parser.parseMsg(strMsg, Message.XML);
 
 			// Processor
-			CoreProcessor proc = new CoreProcessor();
+			final CoreProcessor proc = new CoreProcessor();
+			// final CoreProcessor proc2 = new CoreProcessor();
+
+			// (new Runnable() {
+			// @Override
+			// public void run() {
+			// proc.process(msg);
+			// }
+			// }).run();
+			//
+			// (new Runnable() {
+			// @Override
+			// public void run() {
+			// proc2.process(msg);
+			// }
+			// }).run();
 
 			// Process
 			Message outputMsg = proc.process(msg);
+
 			FileUtil.writeFile(output, formatXml(outputMsg.toXML(), 2));
 		} catch (Exception e) {
 			e.printStackTrace();

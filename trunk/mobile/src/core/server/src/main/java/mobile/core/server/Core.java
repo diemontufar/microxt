@@ -60,12 +60,12 @@ public class Core extends HttpServlet {
 			// Get data from json
 			Parser parser = new Parser();
 			Message msg = parser.parseMsg(message, Message.JSON);
-			
+
 			// Set address
-			if(msg.getRequest().getHost() == null){
+			if (msg.getRequest().getHost() == null) {
 				msg.getRequest().setAddress(request.getRemoteAddr());
 			}
-			
+
 			// Process
 			CoreProcessor proc = new CoreProcessor();
 			proc.process(msg);

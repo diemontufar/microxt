@@ -317,16 +317,17 @@ public class B101 extends MyGeneralForm {
 		idTypeCombo.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+				if(idTypeCombo.getValue() != null){
+					String valorId = idTypeCombo.getValue().get("pk_identificationTypeId").toString();
 
-				String valorId = idTypeCombo.getValue().get("pk_identificationTypeId").toString();
-
-				if (valorId.compareTo("CED") == 0) {
-					type = IdType.CED;
-				} else if (valorId.compareTo("RUC") == 0) {
-					type = IdType.RUC;
-				} else {
-					type = null;
-				}
+					if (valorId.compareTo("CED") == 0) {
+						type = IdType.CED;
+					} else if (valorId.compareTo("RUC") == 0) {
+						type = IdType.RUC;
+					} else {
+						type = null;
+					}
+				}	
 			}
 		});
 
