@@ -25,10 +25,10 @@ import org.junit.Test;
 
 public class XmlProcessorTest {
 
-	// private String input = "/home/ronald/Escritorio/input.xml";
-	private String input = "C:/Documents and Settings/Ronald/Escritorio/input.xml";
-	// private String output = "/home/ronald/Escritorio/output.xml";
-	private String output = "C:/Documents and Settings/Ronald/Escritorio/output.xml";
+	private String input = "/home/ronald/Escritorio/input.xml";
+	// private String input = "C:/Documents and Settings/Ronald/Escritorio/input.xml";
+	private String output = "/home/ronald/Escritorio/output.xml";
+	// private String output = "C:/Documents and Settings/Ronald/Escritorio/output.xml";
 
 	Logger log = Log.getInstance();
 
