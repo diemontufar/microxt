@@ -191,7 +191,7 @@ public class Instrumentation {
 			q.setProvisionDays(provisionDays);
 
 			q.setFromDate(next);
-			next = DateUtils.addDays(next, 30);
+			next = DateUtils.addDays(next, provisionDays);
 			q.setToDate(next);
 
 			lquota.add(q);

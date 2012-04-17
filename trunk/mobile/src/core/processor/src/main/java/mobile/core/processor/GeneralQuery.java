@@ -250,9 +250,9 @@ public class GeneralQuery implements QueryProcessor {
 						}
 						
 						if (comparator.compareTo("is not null") == 0 || comparator.compareTo("is null") == 0) {
-							sql.append("a." + field.replaceAll("pk_", "pk.") + " " + comparator + " ");
+							sql.append(JpManager.toSqlName(field.replaceAll("pk_", "")) + " " + comparator + " ");
 						}else{
-							sql.append("a." + field.replaceAll("pk_", "pk.") + " " + comparator + " ?"
+							sql.append(JpManager.toSqlName(field.replaceAll("pk_", "")) + " " + comparator + " ?"
 									+ (parametersCounter + 1));
 							lParameters.add(cValue);
 							filtersCounter++;
