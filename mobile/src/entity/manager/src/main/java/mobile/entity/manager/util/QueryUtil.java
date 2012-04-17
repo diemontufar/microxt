@@ -185,6 +185,8 @@ public class QueryUtil {
 			comparator2 = "=";
 		else if (comparator.compareTo("!null") == 0)
 			comparator2 = "is not null";
+		else if (comparator.compareTo("=null") == 0)
+			comparator2 = "is null";
 
 		return comparator2;
 	}
