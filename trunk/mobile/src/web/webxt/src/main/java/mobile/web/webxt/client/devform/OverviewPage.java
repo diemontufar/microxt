@@ -3,10 +3,12 @@ package mobile.web.webxt.client.devform;
 import java.util.ArrayList;
 import java.util.List;
 
+import mobile.web.webxt.client.MobileConstants;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.resources.Resources;
 import mobile.web.webxt.client.util.ShortcutProcess;
 
+import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.Scroll;
 import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -34,19 +36,28 @@ public class OverviewPage extends LayoutContainer {
 		setScrollMode(Scroll.AUTO);
 
 		lProcess = new ArrayList<ShortcutProcess>();
-		lProcess.add(new ShortcutProcess("B101", "Personas Naturales", Resources.IMAGES.person().getHTML()));
-		lProcess.add(new ShortcutProcess("B102", "Direcciones", Resources.IMAGES.address().getHTML()));
-		lProcess.add(new ShortcutProcess("B103", "Teléfonos", Resources.IMAGES.phone().getHTML()));
-		lProcess.add(new ShortcutProcess("C201", "Socios Individuales", Resources.IMAGES.individual().getHTML()));
-		lProcess.add(new ShortcutProcess("C202", "Socios Grupales", Resources.IMAGES.groupal().getHTML()));
-		lProcess.add(new ShortcutProcess("C301", "Solicitud", Resources.IMAGES.solicitude().getHTML()));
-		lProcess.add(new ShortcutProcess("C106", "Zonas Asignadas", Resources.IMAGES.zones().getHTML()));
-		lProcess.add(new ShortcutProcess("C302", "Aprobación", Resources.IMAGES.approval().getHTML()));
-		lProcess.add(new ShortcutProcess("C402", "Instrumentación", Resources.IMAGES.instrumentation().getHTML()));
-		lProcess.add(new ShortcutProcess("C503", "Pago de Cuotas", Resources.IMAGES.payment().getHTML()));
-		lProcess.add(new ShortcutProcess("C401", "Consulta Solicitudes", Resources.IMAGES.solicitudes().getHTML()));
-		lProcess.add(new ShortcutProcess("C502", "Consulta de Cuotas", Resources.IMAGES.quotas().getHTML()));
-		lProcess.add(new ShortcutProcess("C401", "Movimientos del Día", Resources.IMAGES.movements().getHTML()));
+		
+		if(Registry.get(MobileConstants.PROFILE)!= null && (Registry.get(MobileConstants.PROFILE).toString().compareTo("ASE")==0
+				|| Registry.get(MobileConstants.PROFILE).toString().compareTo("ADM")==0)){
+			lProcess.add(new ShortcutProcess("B101", "Personas Naturales", Resources.IMAGES.person().getHTML()));
+			lProcess.add(new ShortcutProcess("B102", "Direcciones", Resources.IMAGES.address().getHTML()));
+			lProcess.add(new ShortcutProcess("B103", "Teléfonos", Resources.IMAGES.phone().getHTML()));
+			lProcess.add(new ShortcutProcess("C201", "Socios Individuales", Resources.IMAGES.individual().getHTML()));
+			lProcess.add(new ShortcutProcess("C202", "Socios Grupales", Resources.IMAGES.groupal().getHTML()));
+			lProcess.add(new ShortcutProcess("C301", "Solicitud", Resources.IMAGES.solicitude().getHTML()));
+			lProcess.add(new ShortcutProcess("C106", "Zonas Asignadas", Resources.IMAGES.zones().getHTML()));
+			lProcess.add(new ShortcutProcess("C302", "Aprobación", Resources.IMAGES.approval().getHTML()));
+			lProcess.add(new ShortcutProcess("C402", "Instrumentación", Resources.IMAGES.instrumentation().getHTML()));
+			lProcess.add(new ShortcutProcess("C503", "Pago de Cuotas", Resources.IMAGES.payment().getHTML()));
+			lProcess.add(new ShortcutProcess("C401", "Consulta Solicitudes", Resources.IMAGES.solicitudes().getHTML()));
+			lProcess.add(new ShortcutProcess("C502", "Consulta de Cuotas", Resources.IMAGES.quotas().getHTML()));
+			lProcess.add(new ShortcutProcess("C401", "Movimientos del Día", Resources.IMAGES.movements().getHTML()));	
+		}else if(Registry.get(MobileConstants.PROFILE)!= null && Registry.get(MobileConstants.PROFILE).toString().compareTo("CRD")==0){
+			lProcess.add(new ShortcutProcess("B101", "Personas Naturales", Resources.IMAGES.person().getHTML()));
+			lProcess.add(new ShortcutProcess("B102", "Direcciones", Resources.IMAGES.address().getHTML()));
+			lProcess.add(new ShortcutProcess("B103", "Teléfonos", Resources.IMAGES.phone().getHTML()));
+		}
+		
 		ListStore<ShortcutProcess> store = new ListStore<ShortcutProcess>();
 		store.add(lProcess);
 

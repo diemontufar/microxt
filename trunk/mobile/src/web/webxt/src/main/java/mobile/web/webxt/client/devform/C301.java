@@ -98,7 +98,7 @@ public class C301 extends MyGeneralForm {
 		
 		FilterConfig filterInstrumentation = new BaseStringFilterConfig();
 		filterInstrumentation.setField("instrumentationDate");
-		filterInstrumentation.setComparison("!null");
+		filterInstrumentation.setComparison("=null");
 		filterInstrumentation.setValue(null);
 		solicitudeId.addFilter(filterInstrumentation);
 
@@ -519,6 +519,7 @@ public class C301 extends MyGeneralForm {
 
 		MyTextArea fundsDescription = new MyTextArea(375, 44, 250);
 		fundsDescription.setDataSource(new DataSource("sol", "destinationDescription", DataSourceType.RECORD));
+		fundsDescription.setAllowBlank(false);
 		row.add(fundsDescription);
 
 		fieldSet.add(row);
