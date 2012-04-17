@@ -199,7 +199,11 @@ public class GeneralQuery implements QueryProcessor {
 					String[] part = filter.split(":");
 					String field = part[0];
 					String comparator = part[1];
-					String value = part[2];
+					String value = null;
+					if(part.length>2){
+						value = part[2];
+					}
+					
 					Object cValue = CoreConverter.convertToType(value);
 					
 					if(cValue instanceof String){
@@ -207,15 +211,19 @@ public class GeneralQuery implements QueryProcessor {
 					}
 
 					comparator = util.analizeComparator(comparator);
-
 					if (comparator.compareTo("like") == 0 && !comparator.endsWith("%")) {
 						cValue = cValue + "%";
 					}
-					sql.append("a." + field.replaceAll("pk_", "pk.") + " " + comparator + " ?"
-							+ (parametersCounter + 1));
-					lParameters.add(cValue);
-					filtersCounter++;
-					parametersCounter++;
+					
+					if (comparator.compareTo("is not null") == 0 || comparator.compareTo("is null") == 0) {
+						sql.append("a." + field.replaceAll("pk_", "pk.") + " " + comparator + " ");
+					}else{
+						sql.append("a." + field.replaceAll("pk_", "pk.") + " " + comparator + " ?"
+								+ (parametersCounter + 1));
+						lParameters.add(cValue);
+						filtersCounter++;
+						parametersCounter++;	
+					}
 				}
 			} else {
 				sql.insert(0, "Select * from (");
@@ -238,13 +246,18 @@ public class GeneralQuery implements QueryProcessor {
 
 						comparator = util.analizeComparator(comparator);
 						if (comparator.compareTo("like") == 0 && !comparator.endsWith("%")) {
-							cValue = value + "%";
+							cValue = cValue + "%";
 						}
-						sql.append(JpManager.toSqlName(field.replaceAll("pk_", "").replaceAll("\\.", "_")) + " "
-								+ comparator + " ?" + (parametersCounter + 1));
-						lParameters.add(cValue);
-						filtersCounter++;
-						parametersCounter++;
+						
+						if (comparator.compareTo("is not null") == 0 || comparator.compareTo("is null") == 0) {
+							sql.append("a." + field.replaceAll("pk_", "pk.") + " " + comparator + " ");
+						}else{
+							sql.append("a." + field.replaceAll("pk_", "pk.") + " " + comparator + " ?"
+									+ (parametersCounter + 1));
+							lParameters.add(cValue);
+							filtersCounter++;
+							parametersCounter++;	
+						}
 					}
 				}
 			}
