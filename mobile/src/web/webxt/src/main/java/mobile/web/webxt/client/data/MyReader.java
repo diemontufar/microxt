@@ -76,12 +76,13 @@ public class MyReader implements DataReader<PagingLoadResult<ModelData>> {
 
 			// Pagination
 			System.out.println("reading pagination");
-//			if (entityData.getOffset() != null) {
-//				paginatedModels.setOffset(entityData.getOffset());
-//			}
-//			if (entityData.getTotal() != null) {
-//				paginatedModels.setTotalLength(entityData.getTotal());
-//			}
+			if (entityData.getOffset() != null) {
+				paginatedModels.setOffset(entityData.getOffset());
+			}
+			if (entityData.getTotal() != null) {
+				paginatedModels.setTotalLength(entityData.getTotal());
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			MobileError.report("MENSAJE DE RETORNO INCORRECTO");

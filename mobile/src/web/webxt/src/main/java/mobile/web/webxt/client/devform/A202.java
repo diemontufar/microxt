@@ -117,7 +117,6 @@ public class A202 extends MyGeneralForm {
 		// Combo process
 		ComboColumn comboProcess = new ComboColumn(cdata.get(0));
 		Reference refProcess = new Reference("proc", "Process");
-		comboProcess.getComboBox().setPageSize(10);
 		ArrayColumnData cdataCombo = new ArrayColumnData();
 		cdataCombo.add(new MyColumnData("proc", "url", "Proceso", 70));
 		cdataCombo.add(new MyColumnData("proc", "name", "Nombre	", 200));
@@ -128,6 +127,7 @@ public class A202 extends MyGeneralForm {
 		comboProcess.getComboBox().setPageSize(10);
 		comboProcess.getComboBox().addFilter("enable", "1");
 		comboProcess.getComboBox().addFilter("menu", "1");
+		comboProcess.getComboBox().setEditable(true);
 		configs.add(comboProcess);
 
 		NormalColumn subCol = new NormalColumn(cdata.get(1));
