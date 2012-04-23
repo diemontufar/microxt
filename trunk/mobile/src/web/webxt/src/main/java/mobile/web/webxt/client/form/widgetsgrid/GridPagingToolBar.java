@@ -58,4 +58,35 @@ public class GridPagingToolBar extends PagingToolBar {
 		}
 	}
 	
+	public void commitChanges(){
+		if (grid instanceof DependentGrid) {
+			if(((DependentGrid) grid).validateDependencies()){
+				DependentGrid dgrid = (DependentGrid) this.grid;
+				try {
+					MyProcessConfig config = (MyProcessConfig) ((MyPagingLoader) grid.getStore().getLoader()).getConfig();
+					Map<DataSource, String> map = dgrid.getDsDependencies();
+					if (map != null) {
+						for (DataSource ds : map.keySet()) {
+							String value = map.get(ds);
+							if (ds.getType() == DataSourceType.CRITERION && value != null) {
+								FilterConfig filter = new BaseStringFilterConfig();
+								filter.setField(ds.getField());
+								filter.setComparison(ds.getComparator());
+								filter.setValue(value);
+								config.addFilter(filter);
+							}
+						}
+					}
+					grid.getStore().commitChanges();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else{
+				Info.display("Campos requeridos", "Existe campos requeridos que no han sido ingresados");
+			}
+		}else{
+			grid.getStore().commitChanges();
+		}
+	}
+	
 }

@@ -95,7 +95,7 @@ public class C302 extends MyGeneralForm {
 		fieldSet.add(documents);
 
 		// Economic unit
-		MyTextArea economicUnit = new MyTextArea("Unidad economica");
+		MyTextArea economicUnit = new MyTextArea("Unidad económica");
 		economicUnit.setDataSource(new DataSource("rec", "economicUnit"));
 		economicUnit.setHeight(WIDGET_HEIGHT);
 		economicUnit.setWidth(WIDGET_WIDTH);

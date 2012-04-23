@@ -1,6 +1,7 @@
 package mobile.web.webxt.client.devform;
 
 import mobile.common.message.Item;
+import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
@@ -8,6 +9,7 @@ import mobile.web.webxt.client.form.MyFormPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
 import mobile.web.webxt.client.form.widgets.ComboForm;
 import mobile.web.webxt.client.form.widgets.InputBox;
+import mobile.web.webxt.client.form.widgets.MyComboBox;
 import mobile.web.webxt.client.form.widgets.MyDateField;
 import mobile.web.webxt.client.form.widgets.MyLabel;
 import mobile.web.webxt.client.form.widgets.MyNumberField;
@@ -28,11 +30,11 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.Info;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.extjs.gxt.ui.client.widget.TabPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.form.CheckBox;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.form.PropertyEditor;
 import com.extjs.gxt.ui.client.widget.form.Radio;
@@ -40,6 +42,7 @@ import com.extjs.gxt.ui.client.widget.form.RadioGroup;
 import com.extjs.gxt.ui.client.widget.layout.CardLayout;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.layout.HBoxLayoutData;
+import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Element;
 
@@ -59,6 +62,8 @@ public class C301 extends MyGeneralForm {
 	Radio groupalRadio;
 	ComboForm individualId;
 	ComboForm groupId;
+	ComboForm renewedAccount;
+	CheckBox chkReprestamo;
 
 	@Override
 	protected void onRender(Element parent, int index) {
@@ -89,13 +94,13 @@ public class C301 extends MyGeneralForm {
 
 		final ComboForm solicitudeId = new ComboForm(100);
 		solicitudeId.setDataSource(new DataSource("sol", "pk_solicitudeId", DataSourceType.CRITERION));
-		
+
 		Reference refSolicitude = new Reference("sol1", "Solicitude");
 		final ArrayColumnData solCdata = new ArrayColumnData();
 		solCdata.add(new MyColumnData("sol1", "pk_solicitudeId", "Id", 100));
 		solicitudeId.setQueryData(refSolicitude, solCdata);
 		solicitudeId.setDisplayField("pk_solicitudeId");
-		
+
 		FilterConfig filterInstrumentation = new BaseStringFilterConfig();
 		filterInstrumentation.setField("instrumentationDate");
 		filterInstrumentation.setComparison("=null");
@@ -186,6 +191,7 @@ public class C301 extends MyGeneralForm {
 		individualId.setProcess("G202");
 		individualId.setPageSize(10);
 		individualId.setEditable(true);
+		individualId.setAllowBlank(false);
 
 		Reference refPartner1 = new Reference("cli1", "Partner");
 		final ArrayColumnData combodata = new ArrayColumnData();
@@ -241,9 +247,18 @@ public class C301 extends MyGeneralForm {
 				RadioGroup rg = (RadioGroup) fe.getField();
 				if (rg.getValue().getBoxLabel().compareTo("Individual") == 0) {
 					layout.setActiveItem(row1);
+					individualId.setAllowBlank(false);
+					groupId.setAllowBlank(true);
+					groupId.reset();
 				} else {
 					layout.setActiveItem(row2);
+					individualId.setAllowBlank(true);
+					groupId.setAllowBlank(false);
+					individualId.reset();
 				}
+
+				//renewedAccount.reset();
+				//((MyPagingLoader)renewedAccount.getStore().getLoader()).getConfig().removeAllFilters();
 			};
 		});
 
@@ -266,6 +281,7 @@ public class C301 extends MyGeneralForm {
 
 		// Product combo
 		final ComboForm productCombo = new ComboForm(80);
+		productCombo.setAllowBlank(false);
 		productCombo.setDataSource(new DataSource("sol", "productId", DataSourceType.RECORD));
 
 		Reference refProduct = new Reference("pro", "ProductMicrocredit");
@@ -304,7 +320,7 @@ public class C301 extends MyGeneralForm {
 			public String convertStringValue(String value) {
 				String out = null;
 				if (value != null) {
-					out = value.substring(0, value.length()-1);
+					out = value.substring(0, value.length() - 1);
 				}
 				return out;
 			}
@@ -376,8 +392,9 @@ public class C301 extends MyGeneralForm {
 		fieldSet.setLayout(new FlowLayout());
 
 		row = new RowContainer();
+		row.setAutoHeight(true);
 
-		label = new MyLabel("Monto:", LABEL_WIDTH);
+		label = new MyLabel("Monto:", 40);
 		row.add(label);
 
 		final MyNumberField amount = new MyNumberField();
@@ -413,13 +430,14 @@ public class C301 extends MyGeneralForm {
 			}
 		});
 
-		label = new MyLabel("Plazo:", LABEL_WIDTH);
-		row.add(label, new HBoxLayoutData(0, 10, 0, 30));
+		label = new MyLabel("Plazo:", 40);
+		row.add(label, new HBoxLayoutData(0, 10, 0, 10));
 
 		final MyNumberField term = new MyNumberField();
 		term.setWidth(80);
 		term.setDataSource(new DataSource("sol", "term", DataSourceType.RECORD));
 		term.setPropertyEditorType(Integer.class);
+		term.setAllowBlank(false);
 		row.add(term);
 
 		// Min / max validations
@@ -446,15 +464,12 @@ public class C301 extends MyGeneralForm {
 			}
 		});
 
-		fieldSet.add(row);
-
-		row = new RowContainer();
-		row.setAutoHeight(true);
-
 		label = new MyLabel("Frecuencia de pago:", LABEL_WIDTH);
-		row.add(label);
+		row.add(label, new HBoxLayoutData(0, 10, 0, 10));
+		// row.add(label);
 
 		final ComboForm paymentFreq = new ComboForm(80);
+		paymentFreq.setAllowBlank(false);
 		paymentFreq.setDataSource(new DataSource("sol", "paymentFrequencyId", DataSourceType.RECORD));
 
 		Reference refPaymentFreq = new Reference("freq", "Frequency");
@@ -465,16 +480,106 @@ public class C301 extends MyGeneralForm {
 		paymentFreq.setDisplayField("pk_frequencyId");
 		row.add(paymentFreq);
 
-		InputBox paymentFreqDesc = new InputBox(150);
-		paymentFreqDesc.setDataSource(new DataSource("Frequency", "description", DataSourceType.DESCRIPTION));
-		paymentFreqDesc.setReadOnly(true);
-		row.add(paymentFreqDesc);
+		// InputBox paymentFreqDesc = new InputBox(150);
+		// paymentFreqDesc.setDataSource(new DataSource("Frequency",
+		// "description", DataSourceType.DESCRIPTION));
+		// paymentFreqDesc.setReadOnly(true);
+		// row.add(paymentFreqDesc);
 
-		paymentFreq.linkWithField(paymentFreqDesc, "description");
+		// paymentFreq.linkWithField(paymentFreqDesc, "description");
 
 		fieldSet.add(row);
 
+		final RowContainer rowRenewal = new RowContainer();
+		rowRenewal.setAutoHeight(true);
+
+		label = new MyLabel("Es représtamo:", 85);
+		rowRenewal.add(label, new HBoxLayoutData(0, 10, 0, 0));
+
+		chkReprestamo = new CheckBox();
+		rowRenewal.add(chkReprestamo);
+
+		final MyLabel labelRenAcc = new MyLabel("Cuenta anterior:", 50);
+		labelRenAcc.setVisible(true);
+		rowRenewal.add(labelRenAcc, new HBoxLayoutData(0, 10, 0, 10));
+
+		renewedAccount = new ComboForm(80);
+		renewedAccount.setVisible(true);
+		renewedAccount.setDataSource(new DataSource("sol", "renewedAccount", DataSourceType.RECORD));
+
+		Reference refRenAcc = new Reference("acc", "MicroAccount");
+		final ArrayColumnData renAccCdata = new ArrayColumnData();
+		renAccCdata.add(new MyColumnData("acc", "pk_accountId", "Cuenta", 80));
+		renAccCdata.add(new MyColumnData("acc", "clientName", "Nombre", 150));
+		renAccCdata.add(new MyColumnData("acc", "numberRenewal"));
+		renewedAccount.setQueryData(refRenAcc, renAccCdata);
+		((MyPagingLoader) renewedAccount.getStore().getLoader()).setReuseLoadConfig(false);
+		rowRenewal.add(renewedAccount);
+
+		final MyLabel labelNumRen = new MyLabel("Nro de renovación:", LABEL_WIDTH);
+		labelNumRen.setVisible(true);
+		rowRenewal.add(labelNumRen, new HBoxLayoutData(0, 10, 0, 10));
+
+		final MyNumberField numberRenewalAux = new MyNumberField();
+		numberRenewalAux.setVisible(false);
+		numberRenewalAux.setPropertyEditorType(Integer.class);
+		rowRenewal.add(numberRenewalAux);
+
+		renewedAccount.addDependency(individualId, "partnerClientId");
+		renewedAccount.addDependency(groupId, "groupClientId");
+		renewedAccount.linkWithField(numberRenewalAux, "numberRenewal");
+
+		final MyNumberField numberRenewal = new MyNumberField();
+		numberRenewal.setVisible(true);
+		numberRenewal.setWidth(50);
+		numberRenewal.setDataSource(new DataSource("sol", "numberRenewal", DataSourceType.RECORD));
+		numberRenewal.setPropertyEditorType(Integer.class);
+		numberRenewal.setReadOnly(true);
+		numberRenewal.setValue(0);
+		rowRenewal.add(numberRenewal);
+
+		numberRenewalAux.setFireChangeEventOnSetValue(true);
+		numberRenewalAux.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent be) {
+				if (numberRenewalAux.getValue() != null) {
+					Integer num = (Integer) numberRenewalAux.getValue();
+					numberRenewal.setValue(num + 1);
+				} else {
+					numberRenewal.setValue(0);
+				}
+			}
+		});
+
+		fieldSet.add(rowRenewal);
+
 		basic.add(fieldSet);
+
+		chkReprestamo.addListener(Events.Change, new Listener<FieldEvent>() {
+			public void handleEvent(FieldEvent be) {
+				labelRenAcc.setVisible((Boolean) be.getValue());
+				renewedAccount.setVisible((Boolean) be.getValue());
+				labelNumRen.setVisible((Boolean) be.getValue());
+				numberRenewal.setVisible((Boolean) be.getValue());
+
+				renewedAccount.setAllowBlank(!(Boolean) be.getValue());
+			}
+		});
+		rowRenewal.addAttachHandler(new AttachEvent.Handler() {
+			public void onAttachOrDetach(AttachEvent event) {
+				labelRenAcc.setVisible(false);
+				renewedAccount.setVisible(false);
+				labelNumRen.setVisible(false);
+				numberRenewal.setVisible(false);
+			}
+		});
+		renewedAccount.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
+				MyComboBox mycombo = (MyComboBox) se.getSource(); 
+				mycombo.setLoaded(false);
+				((MyPagingLoader)mycombo.getStore().getLoader()).getConfig().removeAllFilters();
+			}
+		});
 
 		// //////////////////////
 		// Destiny tab
@@ -499,6 +604,7 @@ public class C301 extends MyGeneralForm {
 
 		// Funds destination combo
 		final ComboForm fundsDestinationCombo = new ComboForm(80);
+		fundsDestinationCombo.setAllowBlank(false);
 		fundsDestinationCombo.setDataSource(new DataSource("sol", "fundsDestinationId", DataSourceType.RECORD));
 
 		Reference refFundsDest = new Reference("fd", "FundsDestination");
@@ -539,6 +645,7 @@ public class C301 extends MyGeneralForm {
 		row.add(label);
 
 		final ComboForm statusCombo = new ComboForm(80);
+		statusCombo.setAllowBlank(false);
 		statusCombo.setDataSource(new DataSource("sol", "statusId", DataSourceType.RECORD));
 
 		Reference statusRef = new Reference("sta", "SolicitudeStatus");
@@ -564,6 +671,7 @@ public class C301 extends MyGeneralForm {
 		row.add(label);
 
 		ComboForm assessorCombo = new ComboForm(80);
+		assessorCombo.setAllowBlank(false);
 		assessorCombo.setDataSource(new DataSource("sol", "assessor", DataSourceType.RECORD));
 
 		Reference refUserAcco = new Reference("usa", "UserAccount");
@@ -609,12 +717,6 @@ public class C301 extends MyGeneralForm {
 		expirationDate.setValue(DatesManager.DEFAULT_EXPIRED_DATE);
 		form.add(expirationDate);
 
-		InputBox numberRenewal = new InputBox();
-		numberRenewal.setVisible(false);
-		numberRenewal.setDataSource(new DataSource("sol", "numberRenewal", DataSourceType.RECORD));
-		numberRenewal.setValue("0");
-		form.add(numberRenewal);
-
 		InputBox quotaType = new InputBox();
 		quotaType.setDataSource(new DataSource("sol", "quotaTypeId", DataSourceType.RECORD));
 		quotaType.setVisible(false);
@@ -625,21 +727,40 @@ public class C301 extends MyGeneralForm {
 		form.addButton(new Button("Guardar", new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce) {
-				if (debtorRadioGroup.getValue().getBoxLabel().compareTo("Individual") == 0
-						&& individualId.getValue() == null) {
-					Info.display("Requerido", "Ingresar un cliente individual");
-					return;
-				} else if (debtorRadioGroup.getValue().getBoxLabel().compareTo("Grupal") == 0
-						&& groupId.getValue() == null) {
-					Info.display("Requerido", "Ingresar un cliente grupal");
-					return;
-				}
+				// if
+				// (debtorRadioGroup.getValue().getBoxLabel().compareTo("Individual")
+				// == 0
+				// && individualId.getValue() == null) {
+				// Info.display("Requerido", "Ingresar un cliente individual");
+				// return;
+				// } else if
+				// (debtorRadioGroup.getValue().getBoxLabel().compareTo("Grupal")
+				// == 0
+				// && groupId.getValue() == null) {
+				// Info.display("Requerido", "Ingresar un cliente grupal");
+				// return;
+				// }
 
-				if (debtorRadioGroup.getValue().getBoxLabel().compareTo("Individual") == 0) {
-					groupId.setValue(null);
-				} else {
-					individualId.setValue(null);
-				}
+				// if
+				// (debtorRadioGroup.getValue().getBoxLabel().compareTo("Individual")
+				// == 0) {
+				// groupId.setValue(null);
+				// } else {
+				// individualId.setValue(null);
+				// }
+
+				// if (chkReprestamo.getValue() == true &&
+				// renewedAccount.getRawValue() == null) {
+				// Info.display("Requerido", "Ingresar un cliente individual");
+				// return;
+				// } else if
+				// (debtorRadioGroup.getValue().getBoxLabel().compareTo("Grupal")
+				// == 0
+				// && groupId.getValue() == null) {
+				// Info.display("Requerido", "Ingresar un cliente grupal");
+				// return;
+				// }
+
 				form.commitForm();
 			}
 		}));
@@ -652,6 +773,13 @@ public class C301 extends MyGeneralForm {
 			debtorRadioGroup.setValue(individualRadio);
 		} else if (groupId.getValue() != null) {
 			debtorRadioGroup.setValue(groupalRadio);
+		}
+
+		if (renewedAccount.getValue() != null
+				|| (renewedAccount.getRawValue() != null && renewedAccount.getRawValue().toString().trim().length() > 0)) {
+			chkReprestamo.setValue(true);
+		} else {
+			chkReprestamo.setValue(false);
 		}
 	}
 }

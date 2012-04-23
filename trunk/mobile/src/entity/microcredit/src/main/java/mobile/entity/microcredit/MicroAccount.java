@@ -64,6 +64,12 @@ public class MicroAccount extends AbstractHistoricalLocking implements Multicomp
 	private String statusId;
 
 	/**
+	 * Renewed account
+	 */
+	@Column(name = "RENEWED_ACCOUNT", nullable = true)
+	private String renewedAccount;
+
+	/**
 	 * Number of renewal
 	 */
 	@Column(name = "NUMBER_RENEWAL", nullable = false)
@@ -193,6 +199,14 @@ public class MicroAccount extends AbstractHistoricalLocking implements Multicomp
 		this.statusId = statusId;
 	}
 
+	public String getRenewedAccount() {
+		return this.renewedAccount;
+	}
+
+	public void setRenewedAccount(String renewedAccount) {
+		this.renewedAccount = renewedAccount;
+	}
+
 	public Integer getNumberRenewal() {
 		return this.numberRenewal;
 	}
@@ -266,8 +280,8 @@ public class MicroAccount extends AbstractHistoricalLocking implements Multicomp
 		return "MICRO_ACCOUNT:[" + this.getPk().toString() + ", " + this.getCreated() + ", " + this.getSolicitudeId()
 				+ ", " + this.getClientName() + ", " + this.getAssessor() + ", " + this.getPartnerClientId() + ", "
 				+ this.getGroupClientId() + ", " + this.getProductId() + ", " + this.getStatusId() + ", "
-				+ this.getNumberRenewal() + ", " + this.getPreviousAccount() + ", " + this.getAmount() + ", "
-				+ this.getTerm() + ", " + this.getQuotaTypeId() + ", " + this.getNumberQuotas() + ", "
-				+ this.getPaymentFrequencyId() + ", " + this.getVersion() + "]";
+				+ this.getRenewedAccount() + ", " + this.getNumberRenewal() + ", " + this.getPreviousAccount() + ", "
+				+ this.getAmount() + ", " + this.getTerm() + ", " + this.getQuotaTypeId() + ", "
+				+ this.getNumberQuotas() + ", " + this.getPaymentFrequencyId() + ", " + this.getVersion() + "]";
 	}
 }

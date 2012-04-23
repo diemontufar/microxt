@@ -118,4 +118,14 @@ public class NormalColumn extends ColumnConfig {
 		}
 	}
 
+	public InputBox getInputbox() {
+		return inputbox;
+	}
+
+	public void setInputbox(InputBox inputbox) {
+		this.inputbox = inputbox;
+	}
+	
+	
+
 }

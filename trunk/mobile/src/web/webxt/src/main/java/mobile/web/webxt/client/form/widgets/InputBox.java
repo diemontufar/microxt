@@ -5,10 +5,8 @@ import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.validations.ValidationTypes;
 import mobile.web.webxt.client.form.validations.ValidationTypesValidator;
 
-import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.FieldEvent;
-import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.ComponentEvent;
+import com.extjs.gxt.ui.client.event.KeyListener;
 import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.google.gwt.user.client.Element;
 
@@ -17,6 +15,7 @@ public class InputBox extends TextField<String> implements PersistentField {
 	DataSource dataSource;
 	Validate type;
 	boolean toolTip = false;
+	boolean toUpperCase = true;
 
 	public InputBox() {
 		super();
@@ -35,7 +34,6 @@ public class InputBox extends TextField<String> implements PersistentField {
 		this.setWidth(width);
 		this.setMaxLength(maxLenght);
 		setType(type);
-		createValidator(type);
 	}
 
 	public InputBox(String lbl, String field, int width, int maxLenght, Validate type) {
@@ -44,10 +42,9 @@ public class InputBox extends TextField<String> implements PersistentField {
 		this.setWidth(width);
 		this.setMaxLength(maxLenght);
 		setType(type);
-		createValidator(type);
 	}
 
-	public void createValidator(Validate type) {
+	private void createValidator() {
 
 		if (type == Validate.REQUIRED) {
 			setAllowBlank(false);
@@ -59,19 +56,23 @@ public class InputBox extends TextField<String> implements PersistentField {
 
 		if (type == Validate.ALPHANUMERIC) {
 			setValidator(new ValidationTypesValidator(ValidationTypes.ALPHANUMERIC));
-			setAllowBlank(true);
+			// setAllowBlank(true);
 		}
 
 		if (type == Validate.NUMERIC) {
 			setValidator(new ValidationTypesValidator(ValidationTypes.NUMERIC));
-			setAllowBlank(true);
+			// setAllowBlank(true);
 		}
 
 		if (type == Validate.PASSWORD) {
 			setPassword(true);
 		}
+		if (isPassword()) {
+			toUpperCase = false;
+		}
 
 		if (type == Validate.EMAIL) {
+			toUpperCase = false;
 			setValidator(new ValidationTypesValidator(ValidationTypes.EMAIL));
 		}
 
@@ -79,6 +80,10 @@ public class InputBox extends TextField<String> implements PersistentField {
 			setValidator(new ValidationTypesValidator(ValidationTypes.DATE));
 			setToolTip("Formato: dd-mm-aaaa");
 			setMaxLength(10);
+		}
+
+		if (type == Validate.OTHER) {
+			toUpperCase = false;
 		}
 
 	}
@@ -96,21 +101,29 @@ public class InputBox extends TextField<String> implements PersistentField {
 		super.onRender(target, index);
 		getInputEl().setElementAttribute("maxLength", getMaxLength());
 
-		this.addListener(Events.OnMouseOver, new Listener<BaseEvent>() {
-			public void handleEvent(BaseEvent be) {
-				if (toolTip) {
-					setToolTip(getValue());
+		createValidator();
+
+		if (toolTip) {
+			setToolTip(getValue());
+		}
+
+		this.addKeyListener(new KeyListener() {
+			@Override
+			public void handleEvent(ComponentEvent e) {
+				super.handleEvent(e);
+				if (getValue() != null && toUpperCase) {
+					setValue(getValue().toString().toUpperCase());
 				}
 			}
 		});
 
-		this.addListener(Events.OnBlur, new Listener<FieldEvent>() {
-			public void handleEvent(FieldEvent e) {
-				if (getValue() != null && getType() != Validate.EMAIL && getType() != Validate.PASSWORD) {
-					// setValue(getValue().toString().toUpperCase());
-				}
-			}
-		});
+		// this.addListener(Events.OnBlur, new Listener<FieldEvent>() {
+		// public void handleEvent(FieldEvent e) {
+		// if (getValue() != null && toUpperCase) {
+		// setValue(getValue().toString().toUpperCase());
+		// }
+		// }
+		// });
 	}
 
 	public DataSource getDataSource() {
@@ -121,22 +134,24 @@ public class InputBox extends TextField<String> implements PersistentField {
 		this.dataSource = dataSource;
 	}
 
-	public boolean getToolTipValue() {
+	public boolean getIsToolTip() {
 		return toolTip;
 	}
 
-	public void setToolTipValue(boolean value) {
-		this.toolTip = value;
+	public void setToolTip(boolean toolTip) {
+		this.toolTip = toolTip;
 	}
 
 	@Override
 	public String getValue() {
-		if (super.getValue() != null && getType() != Validate.EMAIL && getType() != Validate.PASSWORD) {
-			// return super.getValue().toUpperCase();
-			return super.getValue();
-		} else {
-			return super.getValue();
-		}
+		// if (super.getValue() != null && getType() != Validate.EMAIL &&
+		// getType() != Validate.PASSWORD) {
+		// // return super.getValue().toUpperCase();
+		// return super.getValue();
+		// } else {
+		// return super.getValue();
+		// }
+		return super.getValue();
 	}
 
 	public Validate getType() {

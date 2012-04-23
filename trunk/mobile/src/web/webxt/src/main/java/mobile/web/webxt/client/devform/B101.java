@@ -151,7 +151,7 @@ public class B101 extends MyGeneralForm {
 
 		InputBox lastName = new InputBox(FIELD_WIDTH, 40, Validate.TEXT);
 		lastName.setDataSource(new DataSource("per", "lastName", DataSourceType.RECORD));
-		lastName.createValidator(Validate.REQUIRED);
+		lastName.setAllowBlank(false);
 		row.add(lastName);
 
 		fieldSet.add(row);
@@ -263,7 +263,7 @@ public class B101 extends MyGeneralForm {
 		final InputBox descProfession = new InputBox(FIELD_WIDTH - 60);
 		descProfession.setReadOnly(true);
 		descProfession.setDataSource(new DataSource("ProfessionType", "name", DataSourceType.DESCRIPTION));
-		descProfession.setToolTipValue(true);
+		descProfession.setToolTip(true);
 		row.add(descProfession);
 
 		profesionCombo.linkWithField(descProfession, "name");
@@ -296,7 +296,7 @@ public class B101 extends MyGeneralForm {
 		final InputBox descTipoId = new InputBox(FIELD_WIDTH_2 - 60);
 		descTipoId.setDataSource(new DataSource("IdentificationType", "name", DataSourceType.DESCRIPTION));
 		descTipoId.setReadOnly(true);
-		descTipoId.setToolTipValue(true);
+		descTipoId.setToolTip(true);
 		row.add(descTipoId);
 
 		idTypeCombo.linkWithField(descTipoId, "name");

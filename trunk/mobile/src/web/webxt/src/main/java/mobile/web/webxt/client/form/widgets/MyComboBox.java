@@ -98,6 +98,7 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 	protected void onKeyDown(FieldEvent fe) {
 		if (fe.getKeyCode() == KeyCodes.KEY_DELETE) {
 			isLoaded = false;
+			reset();
 		} else {
 			super.onKeyDown(fe);
 		}
@@ -108,6 +109,11 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 		return super.findModel(property, value);
 	}
 
+	public void reset() {
+		super.reset();
+		((MyPagingLoader)getStore().getLoader()).getConfig().removeAllFilters();
+	};
+	
 	public void setQueryData(Reference reference, ArrayColumnData cdata) {
 		// Proxy - Loader - Store
 		final MyProcessConfig config = new MyProcessConfig(process, reference, cdata.getDataSources());
@@ -203,7 +209,7 @@ public class MyComboBox extends ComboBox<ModelData> implements Dependent {
 		// Directly related
 		for (String criterion : mdependency.keySet()) {
 			Field<?> f = mdependency.get(criterion);
-			if (f.getValue() == null) {
+			if (f.isVisible() && f.getValue() == null) {
 				f.markInvalid("Requerido");
 				valid = false;
 			}

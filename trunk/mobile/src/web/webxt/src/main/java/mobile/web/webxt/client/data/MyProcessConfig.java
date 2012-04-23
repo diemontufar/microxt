@@ -63,6 +63,20 @@ public class MyProcessConfig extends BaseFilterPagingLoadConfig {
 		setFilterConfigs(filters);
 	}
 
+	public void removeFilter(String strFilter) {
+		if (getFilterConfigs() != null) {
+			FilterConfig filter = new BaseStringFilterConfig();
+			filter.setField(strFilter);
+			
+			for (FilterConfig fil : getFilterConfigs()) {
+				if (fil.getField().compareTo(filter.getField()) == 0) {
+					getFilterConfigs().remove(fil);
+					return;
+				}
+			}
+		}
+	}
+	
 	public void removeFilter(FilterConfig filter) {
 		if (getFilterConfigs() != null) {
 			for (FilterConfig fil : getFilterConfigs()) {
@@ -90,6 +104,11 @@ public class MyProcessConfig extends BaseFilterPagingLoadConfig {
 			removeFilter(filter);
 		}
 	}
+	
+	public void removeAllFilters() {
+		setFilterConfigs(new ArrayList<FilterConfig>());
+	}
+
 
 	public String getProcess() {
 		return process;

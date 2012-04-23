@@ -2,9 +2,14 @@ package mobile.web.webxt.client.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import mobile.web.webxt.client.data.form.DataSource;
+import mobile.web.webxt.client.data.form.DataSourceType;
+import mobile.web.webxt.client.form.widgetsgrid.DependentGrid;
 import mobile.web.webxt.client.mvc.AppEvents;
 
+import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
 import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -12,6 +17,7 @@ import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.store.Record;
+import com.extjs.gxt.ui.client.widget.Info;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class MyListStore extends ListStore<ModelData> {
@@ -53,17 +59,6 @@ public class MyListStore extends ListStore<ModelData> {
 		};
 
 		myloader.commitChanges(lModified, callback);
-	}
-
-	@Override
-	public void rejectChanges() {
-		super.rejectChanges();
-		// for (ModelData model : this.getModels()) {
-		// if (model.get("_isNew") != null
-		// && parseBoolean(model.get("_isNew").toString()) == true ) {
-		// this.getModels().remove(model);
-		// }
-		// }
 	}
 
 	@Override

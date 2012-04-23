@@ -8,6 +8,7 @@ import java.util.Map;
 
 import mobile.common.message.Item;
 import mobile.common.tools.Format;
+import mobile.web.webxt.client.MobileConfig;
 import mobile.web.webxt.client.data.MyHttpProxy;
 import mobile.web.webxt.client.data.MyMessageReader;
 import mobile.web.webxt.client.data.form.DataSource;
@@ -248,18 +249,22 @@ public class MyFormPanel extends FormPanel {
 		
 		// Clear solicited fields
 		//System.out.println(">>>>>>Clear fields");
-		for (Field<?> f : getPersistentFields()) {
-			PersistentField pf = (PersistentField) f;
-			DataSource ds = pf.getDataSource();
-			if (ds != null && ds.getType() != DataSourceType.CRITERION) {
-				String key = MyMessageReader.buildKey(ds);
-				if (ds.getType() == DataSourceType.DESCRIPTION) {
-					key = uncompleteDescriptionKey(key);
-				}
-				if (rqField.containsKey(key)) {
-					//System.out.print(">>>>>Clean " + ds);
-					//setValueToField(f, null, diff);
-					f.clear();
+		
+		if (!diff) {
+			for (Field<?> f : getPersistentFields()) {
+				PersistentField pf = (PersistentField) f;
+				DataSource ds = pf.getDataSource();
+				if (ds != null && ds.getType() != DataSourceType.CRITERION) {
+					String key = MyMessageReader.buildKey(ds);
+					if (ds.getType() == DataSourceType.DESCRIPTION) {
+						key = uncompleteDescriptionKey(key);
+					}
+					if (rqField.containsKey(key)) {
+						// if (rmfields.containsKey(key)) {
+						// System.out.print(">>>>>Clean " + ds);
+						// setValueToField(f, null, diff);
+						f.clear();
+					}
 				}
 			}
 		}
@@ -319,12 +324,27 @@ public class MyFormPanel extends FormPanel {
 		}
 	}
 
+	@Override
+	public boolean isValid(boolean preventMark) {
+		boolean valid = true;
+		for (Field<?> f : getFields()) {
+			if (!f.isValid(preventMark)) {
+				valid = false;
+				if(MobileConfig.FORM_DEVELOPMENT){
+					//Info.display("",f + " " + ((f instanceof PersistentField)?((PersistentField)f).getDataSource():""));
+					System.out.println(f + " " + ((f instanceof PersistentField)?((PersistentField)f).getDataSource():""));
+				}
+			}
+		}
+		return valid;
+	}
+	
 	public void commitForm() {
 		System.out.println("::MyFormPanel.commitForm");
 
 		// Validate
 		if (!isValid()) {
-			Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification, "Existen errores de Validación"));
+			Dispatcher.forwardEvent(new AppEvent(AppEvents.UserNotification, "Existe errores de Validación"));
 			return;
 		}
 
