@@ -32,19 +32,19 @@ public interface Images extends ImageBundle {
 	@Resource(path + "nodisponible.png")
 	AbstractImagePrototype approval();
 	
-	@Resource(path + "nodisponible.png")
+	@Resource(path + "instrumentation.jpg")
 	AbstractImagePrototype instrumentation();
 	
-	@Resource(path + "nodisponible.png")
+	@Resource(path + "paycuota.jpg")
 	AbstractImagePrototype payment();
 	
-	@Resource(path + "nodisponible.png")
+	@Resource(path + "solquery.jpg")
 	AbstractImagePrototype solicitudes();
 	
-	@Resource(path + "nodisponible.png")
+	@Resource(path + "quotaquery.jpg")
 	AbstractImagePrototype quotas();
 	
-	@Resource(path + "nodisponible.png")
+	@Resource(path + "movimientos.jpg")
 	AbstractImagePrototype movements();
 
 }
