@@ -46,10 +46,6 @@ FK(I),COMPANY_ID,TABLE_ID,FIELD_ID,FIELD_ORDER,DATA_TYPE_ID,DATA_SIZE,DATA_SCALE
 1,ALL,ZONE_ASESSOR,GEOGRAPHIC_ZONE_ID,2,Integer,0,0,1,0,0,(null),(null),(null),(null),Geographic zone id
 ,ALL,ZONE_ASESSOR,OBSERVATIONS,3,String,50,0,0,0,1,(null),(null),(null),(null),Observations
 
-1,ALL,PRODUCT_ASESSOR,USER_ID,1,String,20,0,1,0,0,(null),(null),(null),(null),Assessor
-1,ALL,PRODUCT_ASESSOR,PRODUCT_ID,2,String,3,0,1,0,0,(null),(null),(null),(null),Product id
-,ALL,PRODUCT_ASESSOR,OBSERVATIONS,3,String,50,0,0,0,1,(null),(null),(null),(null),Observations
-
 ,ALL,PARTNER,PARTNER_ID,1,Integer,0,0,1,0,0,(null),PARTNER,(null),(null),Person id
 1,ALL,PARTNER,PERSON_ID,2,Integer,0,0,0,0,0,(null),(null),(null),(null),Person id
 ,ALL,PARTNER,ACTIVITY,3,String,300,0,0,0,1,(null),(null),(null),(null),Activity
@@ -88,14 +84,15 @@ FK(I),COMPANY_ID,TABLE_ID,FIELD_ID,FIELD_ORDER,DATA_TYPE_ID,DATA_SIZE,DATA_SCALE
 1,ALL,SOLICITUDE,PRODUCT_ID,12,String,3,0,0,0,0,(null),(null),(null),(null),Product id
 1,ALL,SOLICITUDE,STATUS_ID,13,String,3,0,0,0,0,(null),(null),(null),(null),Solicitude status id
 1,ALL,SOLICITUDE,OPERATIVE_CONDITION_ID,14,String,3,0,0,0,1,(null),(null),(null),(null),Operative condition
-,ALL,SOLICITUDE,NUMBER_RENEWAL,15,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of renewal
-,ALL,SOLICITUDE,AMOUNT,16,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Amount
-,ALL,SOLICITUDE,TERM,17,Long,0,0,0,0,0,(null),(null),(null),(null),Term
-1,ALL,SOLICITUDE,QUOTA_TYPE_ID,18,String,3,0,0,0,0,(null),(null),(null),(null),Quota type id
-,ALL,SOLICITUDE,NUMBER_QUOTAS,19,Integer,0,0,0,0,1,(null),(null),(null),(null),Number of fees
-1,ALL,SOLICITUDE,PAYMENT_FREQUENCY_ID,20,String,3,0,0,0,0,(null),(null),(null),(null),Frequency of payment
-1,ALL,SOLICITUDE,FUNDS_DESTINATION_ID,21,String,3,0,0,0,0,(null),(null),(null),(null),Destination of funds
-,ALL,SOLICITUDE,DESTINATION_DESCRIPTION,22,String,500,0,0,0,0,(null),(null),(null),(null),Description of destination
+1,ALL,SOLICITUDE,RENEWED_ACCOUNT,15,String,25,0,0,0,1,(null),(null),(null),(null),Renewed account
+,ALL,SOLICITUDE,NUMBER_RENEWAL,16,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of renewal
+,ALL,SOLICITUDE,AMOUNT,17,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Amount
+,ALL,SOLICITUDE,TERM,18,Long,0,0,0,0,0,(null),(null),(null),(null),Term
+1,ALL,SOLICITUDE,QUOTA_TYPE_ID,19,String,3,0,0,0,0,(null),(null),(null),(null),Quota type id
+,ALL,SOLICITUDE,NUMBER_QUOTAS,20,Integer,0,0,0,0,1,(null),(null),(null),(null),Number of fees
+1,ALL,SOLICITUDE,PAYMENT_FREQUENCY_ID,21,String,3,0,0,0,0,(null),(null),(null),(null),Frequency of payment
+1,ALL,SOLICITUDE,FUNDS_DESTINATION_ID,22,String,3,0,0,0,0,(null),(null),(null),(null),Destination of funds
+,ALL,SOLICITUDE,DESTINATION_DESCRIPTION,23,String,500,0,0,0,0,(null),(null),(null),(null),Description of destination
 
 1,ALL,RECOMMENDATION,SOLICITUDE_ID,1,Integer,0,0,1,0,0,(null),(null),(null),(null),Solicitude Id
 ,ALL,RECOMMENDATION,DOCUMENTS,2,String,500,0,0,0,0,(null),(null),(null),(null),Comments about documents
@@ -113,13 +110,14 @@ FK(I),COMPANY_ID,TABLE_ID,FIELD_ID,FIELD_ORDER,DATA_TYPE_ID,DATA_SIZE,DATA_SCALE
 1,ALL,MICRO_ACCOUNT,GROUP_CLIENT_ID,6,Integer,0,0,0,0,1,(null),(null),(null),(null),Group
 1,ALL,MICRO_ACCOUNT,PRODUCT_ID,7,String,3,0,0,0,0,(null),(null),(null),(null),Product id
 1,ALL,MICRO_ACCOUNT,STATUS_ID,8,String,3,0,0,0,0,(null),(null),(null),(null),Account status id
-,ALL,MICRO_ACCOUNT,NUMBER_RENEWAL,9,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of renewal
-1,ALL,MICRO_ACCOUNT,PREVIOUS_ACCOUNT,10,String,25,0,0,0,1,(null),(null),(null),(null),Renewed account 
-,ALL,MICRO_ACCOUNT,AMOUNT,11,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Amount
-,ALL,MICRO_ACCOUNT,TERM,12,Long,0,0,0,0,0,(null),(null),(null),(null),Term
-1,ALL,MICRO_ACCOUNT,QUOTA_TYPE_ID,13,String,3,0,0,0,0,(null),(null),(null),(null),Quota type id
-,ALL,MICRO_ACCOUNT,NUMBER_QUOTAS,14,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of fees
-1,ALL,MICRO_ACCOUNT,PAYMENT_FREQUENCY_ID,15,String,3,0,0,0,0,(null),(null),(null),(null),Frequency of payment
+1,ALL,MICRO_ACCOUNT,RENEWED_ACCOUNT,9,String,25,0,0,0,1,(null),(null),(null),(null),Renewed account
+,ALL,MICRO_ACCOUNT,NUMBER_RENEWAL,10,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of renewal
+1,ALL,MICRO_ACCOUNT,PREVIOUS_ACCOUNT,11,String,25,0,0,0,1,(null),(null),(null),(null),Renewed account 
+,ALL,MICRO_ACCOUNT,AMOUNT,12,BigDecimal,19,6,0,0,0,(null),(null),(null),(null),Amount
+,ALL,MICRO_ACCOUNT,TERM,13,Long,0,0,0,0,0,(null),(null),(null),(null),Term
+1,ALL,MICRO_ACCOUNT,QUOTA_TYPE_ID,14,String,3,0,0,0,0,(null),(null),(null),(null),Quota type id
+,ALL,MICRO_ACCOUNT,NUMBER_QUOTAS,15,Integer,0,0,0,0,0,(null),(null),(null),(null),Number of fees
+1,ALL,MICRO_ACCOUNT,PAYMENT_FREQUENCY_ID,16,String,3,0,0,0,0,(null),(null),(null),(null),Frequency of payment
 
 
 1,ALL,MICRO_ACCOUNT_QUOTA,ACCOUNT_ID,1,String,25,0,1,0,0,(null),(null),(null),(null),Account number and id
