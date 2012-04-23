@@ -1,7 +1,6 @@
 package mobile.entity.microcredit;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 import mobile.entity.schema.AbstractEntityKey;
 import mobile.entity.schema.GeneralEntityKey;
@@ -10,8 +9,7 @@ import mobile.entity.schema.GeneralEntityKey;
  * The primary key class for the ZONE_ASESSOR database table.
  */
 @Embeddable
-public class ZoneAsessorPk extends AbstractEntityKey implements
-		GeneralEntityKey {
+public class ZoneAsessorPk extends AbstractEntityKey implements GeneralEntityKey {
 	private static final long serialVersionUID = 1L;
 
 	/**

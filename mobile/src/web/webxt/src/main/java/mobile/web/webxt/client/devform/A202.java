@@ -3,6 +3,7 @@ package mobile.web.webxt.client.devform;
 import java.util.ArrayList;
 import java.util.List;
 
+import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
@@ -27,6 +28,8 @@ import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.data.BaseModelData;
+import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
+import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -125,9 +128,15 @@ public class A202 extends MyGeneralForm {
 		cdataCombo.add(new MyColumnData("proc", "pk_processId"));
 		comboProcess.setQueryData(refProcess, cdataCombo);
 		comboProcess.getComboBox().setPageSize(10);
+		
+//		FilterConfig filter = new BaseStringFilterConfig();
+//		filter.setField("enable");
+//		filter.setValue("1");
+//		((MyPagingLoader) comboProcess.getComboBox().getStore().getLoader()).getConfig().addFilter(filter);
+		
 		comboProcess.getComboBox().addFilter("enable", "1");
 		comboProcess.getComboBox().addFilter("menu", "1");
-		comboProcess.getComboBox().setEditable(true);
+		//comboProcess.getComboBox().setEditable(true);
 		configs.add(comboProcess);
 
 		NormalColumn subCol = new NormalColumn(cdata.get(1));

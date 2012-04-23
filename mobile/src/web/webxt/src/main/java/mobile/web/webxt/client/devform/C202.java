@@ -10,7 +10,6 @@ import mobile.web.webxt.client.data.form.Reference;
 import mobile.web.webxt.client.form.EntityContentPanel;
 import mobile.web.webxt.client.form.MyFormPanel;
 import mobile.web.webxt.client.form.MyGeneralForm;
-import mobile.web.webxt.client.form.validations.Validate;
 import mobile.web.webxt.client.form.widgets.ComboForm;
 import mobile.web.webxt.client.form.widgets.InputBox;
 import mobile.web.webxt.client.form.widgets.MyDateField;
@@ -28,10 +27,10 @@ import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.DatesManager;
-import mobile.web.webxt.client.util.TextType;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Orientation;
+import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
 import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -45,9 +44,6 @@ import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.mvc.AppEvent;
 import com.extjs.gxt.ui.client.mvc.Dispatcher;
 import com.extjs.gxt.ui.client.store.ListStore;
-import com.extjs.gxt.ui.client.store.Store;
-import com.extjs.gxt.ui.client.store.StoreEvent;
-import com.extjs.gxt.ui.client.store.StoreListener;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -69,7 +65,7 @@ public class C202 extends MyGeneralForm {
 
 	private final int LABEL_WIDTH = 65;
 	private final int FORM_WIDTH = 600;
-	private int membersNumber = 0;
+	// private int membersNumber = 0;
 	private int numberOfPresidents, numberOfDeletes;
 
 	// Containers and fields
@@ -102,13 +98,8 @@ public class C202 extends MyGeneralForm {
 			@Override
 			protected void postMaintenance() {
 				// Save members (after save group)
-				grid.getStore().commitChanges();
-			}
-
-			@Override
-			protected void postQuery() {
-				// Query the members
-				pagingToolBar.refresh();
+				//grid.getStore().commitChanges();
+				pagingToolBar.commitChanges();
 			}
 		};
 		formGroup.setHeaderVisible(false);
@@ -159,11 +150,9 @@ public class C202 extends MyGeneralForm {
 
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void createGrid() {
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_partnerGroupId", "Grupo", 70, 4, false));
 		cdata.add(new MyColumnData("pk_personId", "Persona", 40, 4, false));
 		DataSource ds = new DataSource("Person", "lastName", DataSourceType.DESCRIPTION);
 		cdata.add(new MyColumnData(ds, "Apellido", 50));
@@ -180,11 +169,7 @@ public class C202 extends MyGeneralForm {
 
 		configs.add(new RowNumberer());
 
-		NormalColumn groupColumn = new NormalColumn(cdata.get(0), TextType.TEXT, Validate.TEXT);
-		groupColumn.setHidden(true);
-		configs.add(groupColumn);
-
-		ComboColumn personComboColumn = new ComboColumn(cdata.get(1));
+		ComboColumn personComboColumn = new ComboColumn(cdata.get(0));
 		Reference refPerson = new Reference("per", "Person");
 		ArrayColumnData perCdata = new ArrayColumnData();
 		perCdata.add(new MyColumnData("per", "pk_personId", "Cod", 40));
@@ -195,10 +180,10 @@ public class C202 extends MyGeneralForm {
 		personComboColumn.getComboBox().setPageSize(10);
 		configs.add(personComboColumn);
 
-		NormalColumn lnameCol = new NormalColumn(cdata.get(2));
+		NormalColumn lnameCol = new NormalColumn(cdata.get(1));
 		lnameCol.setHidden(true);
 		configs.add(lnameCol);
-		NormalColumn nameCol = new NormalColumn(cdata.get(3));
+		NormalColumn nameCol = new NormalColumn(cdata.get(2));
 		nameCol.setHidden(true);
 		configs.add(nameCol);
 		personComboColumn.linkWithColumn("lastName", lnameCol);
@@ -218,22 +203,22 @@ public class C202 extends MyGeneralForm {
 		completeName.setRenderer(nameRenderer);
 		completeName.setSortable(false);
 		configs.add(completeName);
-		
-		NormalColumn resposabilityIdCol = new NormalColumn(cdata.get(4));
+
+		NormalColumn resposabilityIdCol = new NormalColumn(cdata.get(3));
 		resposabilityIdCol.setHidden(true);
 		configs.add(resposabilityIdCol);
 
-		ComboColumn responsabilityColumn = new ComboColumn(cdata.get(5));
+		ComboColumn responsabilityColumn = new ComboColumn(cdata.get(4));
 		Reference refResponsa = new Reference("res", "Responsability");
 		ArrayColumnData resCdata = new ArrayColumnData();
 		resCdata.add(new MyColumnData("res", "name", "Nombre", 120));
 		resCdata.add(new MyColumnData("res", "pk_responsabilityId"));
 		responsabilityColumn.setQueryData(refResponsa, resCdata);
 		configs.add(responsabilityColumn);
-		
+
 		responsabilityColumn.linkWithColumn("pk_responsabilityId", resposabilityIdCol);
 
-		configs.add(new NormalColumn(cdata.get(6)));
+		configs.add(new NormalColumn(cdata.get(5)));
 
 		configs.add(new ExpireColumnConfig());
 
@@ -247,7 +232,6 @@ public class C202 extends MyGeneralForm {
 		grid.setAutoExpandColumn("pk_personId");
 		grid.setBorders(true);
 		grid.addDependency(partnerGroupCode);
-		grid.getColumnModel().getColumn(1).getEditor().disable();
 
 		gridPanel.add(grid);
 
@@ -260,27 +244,17 @@ public class C202 extends MyGeneralForm {
 		pagingToolBar = new GridPagingToolBar(grid, 10);
 		gridPanel.setBottomComponent(pagingToolBar);
 
-		Store store = formContainerMembersGrid.getStore();
-
-		store.addStoreListener(new StoreListener() {
-			public void handleEvent(StoreEvent se) {
-				if (se.getType() == Store.Add) {
-					membersNumber = grid.getStore().getCount();
-					grid.getStore().getAt(membersNumber - 1).set("pk_partnerGroupId", generatedId.getRawValue());
-				}
-			}
-		});
-
 		// Operations
 		partnerGroupCode.addSelectionChangedListener(new SelectionChangedListener<ModelData>() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent<ModelData> se) {
 
-				if (((ComboForm) se.getSource()).isSomeSelected() || partnerGroupCode.getValue() != null) {
-					generatedId.setValue(partnerGroupCode.getRawValue());
+				if (((ComboForm) se.getSource()).isSomeSelected()) {
 					formGroup.queryForm();
-				} else {
-					grid.getStore().removeAll();
+					pagingToolBar.refresh();
+//				} else {
+//					formGroup.queryForm();
+//					grid.getStore().removeAll();
 				}
 			}
 		});
@@ -333,8 +307,11 @@ public class C202 extends MyGeneralForm {
 		generatedId.addListener(Events.Change, new Listener<FieldEvent>() {
 			public void handleEvent(FieldEvent e) {
 				if (e.getValue() != null) {
-					partnerGroupCode.setRawValue((String) e.getValue());
 					partnerGroupCode.setLoaded(false);
+					partnerGroupCode.setRawValue((String) e.getValue());
+					ModelData model = new BaseModelData();
+					model.set(partnerGroupCode.getDisplayField(), e.getValue());
+					partnerGroupCode.setValue(model);
 				}
 			}
 		});
@@ -397,7 +374,7 @@ public class C202 extends MyGeneralForm {
 
 		// Frequency:
 		row = new RowContainer();
-		label = new MyLabel("Frecuencia:", LABEL_WIDTH);
+		label = new MyLabel("Frecuencia de reunión:", LABEL_WIDTH);
 		row.add(label);
 
 		freqCombo = new ComboForm(80);

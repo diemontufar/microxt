@@ -9,5 +9,5 @@ public enum Validate {
 	NUMERIC, 
 	PASSWORD, 
 	EMAIL,
-	
+	OTHER
 };

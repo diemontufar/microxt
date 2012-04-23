@@ -103,6 +103,12 @@ public class Solicitude extends AbstractHistoricalLocking implements Multicompan
 	private String operativeConditionId;
 
 	/**
+	 * Renewed account
+	 */
+	@Column(name = "RENEWED_ACCOUNT", nullable = true)
+	private String renewedAccount;
+
+	/**
 	 * Number of renewal
 	 */
 	@Column(name = "NUMBER_RENEWAL", nullable = false)
@@ -286,6 +292,14 @@ public class Solicitude extends AbstractHistoricalLocking implements Multicompan
 		this.operativeConditionId = operativeConditionId;
 	}
 
+	public String getRenewedAccount() {
+		return this.renewedAccount;
+	}
+
+	public void setRenewedAccount(String renewedAccount) {
+		this.renewedAccount = renewedAccount;
+	}
+
 	public Integer getNumberRenewal() {
 		return this.numberRenewal;
 	}
@@ -369,9 +383,9 @@ public class Solicitude extends AbstractHistoricalLocking implements Multicompan
 				+ this.getSolicitudeDate() + ", " + this.getApprovalDate() + ", " + this.getDisbursementDate() + ", "
 				+ this.getInstrumentationDate() + ", " + this.getExpirationDate() + ", " + this.getInitialPayDate()
 				+ ", " + this.getProductId() + ", " + this.getStatusId() + ", " + this.getOperativeConditionId() + ", "
-				+ this.getNumberRenewal() + ", " + this.getAmount() + ", " + this.getTerm() + ", "
-				+ this.getQuotaTypeId() + ", " + this.getNumberQuotas() + ", " + this.getPaymentFrequencyId() + ", "
-				+ this.getFundsDestinationId() + ", " + this.getDestinationDescription() + ", " + this.getVersion()
-				+ "]";
+				+ this.getRenewedAccount() + ", " + this.getNumberRenewal() + ", " + this.getAmount() + ", "
+				+ this.getTerm() + ", " + this.getQuotaTypeId() + ", " + this.getNumberQuotas() + ", "
+				+ this.getPaymentFrequencyId() + ", " + this.getFundsDestinationId() + ", "
+				+ this.getDestinationDescription() + ", " + this.getVersion() + "]";
 	}
 }

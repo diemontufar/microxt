@@ -101,7 +101,9 @@ public class A106 extends MyGeneralForm {
 
 		// Columns
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
-		configs.add(new NormalColumn(cdata.get(0)));
+		NormalColumn componentCol = new NormalColumn(cdata.get(0));
+		componentCol.getInputbox().setType(Validate.OTHER);
+		configs.add(componentCol);
 		
 		ComboColumn typeColumn = new ComboColumn(cdata.get(1));
 		Reference refType = new Reference("ct", "ComponentType");
@@ -111,8 +113,10 @@ public class A106 extends MyGeneralForm {
 		typeColumn.setQueryData(refType, typeCdata);
 		configs.add(typeColumn);
 
+		NormalColumn componentName = new NormalColumn(cdata.get(2));
+		componentName.getInputbox().setType(Validate.OTHER);
+		configs.add(componentName);
 		
-		configs.add(new NormalColumn(cdata.get(2)));
 		configs.add(new NormalColumn(cdata.get(3), Validate.TEXT));
 		configs.add(new ExpireColumnConfig());
 		ColumnModel cm = new ColumnModel(configs);
