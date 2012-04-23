@@ -7,7 +7,6 @@ ALL,QUOTA_TYPE,1,microcredit,1,1,0,0,0,0,Quota type
 ALL,FREQUENCY,1,microcredit,1,1,0,0,0,0,Frequencies
 ALL,FUNDS_DESTINATION,1,microcredit,1,1,0,0,0,0,Destination of funds
 ALL,PRODUCT_MICROCREDIT,1,microcredit,1,1,1,0,0,0,Products of microcredit
-ALL,PRODUCT_ASESSOR,1,microcredit,1,1,0,0,0,0,Products per Asessor
 ALL,SOLICITUDE,1,microcredit,1,1,1,1,0,0,Solicitude of microcredit
 ALL,RECOMMENDATION,1,microcredit,1,1,1,1,0,0,Recommendation of microcredit
 ALL,GEOGRAPHIC_ZONE,1,microcredit,1,1,0,0,0,0,Geographic zones
@@ -16,6 +15,5 @@ ALL,PARTNER,1,microcredit,1,1,1,0,0,0,Partners
 ALL,PARTNER_GROUP,1,microcredit,1,1,1,0,0,0,Partner groups
 ALL,PARTNER_GROUP_MEMBER,0,microcredit,0,0,0,0,0,0,Group Members
 ALL,RESPONSABILITY,1,microcredit,1,1,1,0,0,0,Responsabilities of each partner
-
 ALL,MICRO_ACCOUNT,1,microcredit,1,0,1,1,0,0,Microcredit accounts
 ALL,MICRO_ACCOUNT_QUOTA,1,microcredit,1,0,1,1,0,0,Microcredit quotas associated to a account

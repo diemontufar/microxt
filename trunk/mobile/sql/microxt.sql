@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 02-04-2012 a las 00:48:37
+-- Tiempo de generación: 22-04-2012 a las 17:13:01
 -- Versión del servidor: 5.5.8
 -- Versión de PHP: 5.3.5
 
@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `microxt3`
+-- Base de datos: `microxt5`
 --
 
 -- --------------------------------------------------------
@@ -310,13 +310,13 @@ CREATE TABLE IF NOT EXISTS `COMPONENT` (
 --
 
 INSERT INTO `COMPONENT` (`COMPANY_ID`, `COMPONENT_ID`, `TYPE_ID`, `SUBSYSTEM_ID`, `CLASS_NAME`, `METHOD_NAME`, `DESCRIPTION`) VALUES
-('MXT', 'mobile.core.processor.MaintenanceProcessor', 'MNT', 'G', 'MaintenanceProcessor', 'general', 'General maintenance processor'),
-('MXT', 'mobile.core.processor.QueryProcessor', 'QRY', 'G', 'QueryProcessor', 'general', 'General query processor'),
+('MXT', 'mobile.core.processor.MaintenanceProcessor', 'MNT', 'G', 'MaintenanceProcessor', NULL, 'General maintenance processor'),
+('MXT', 'mobile.core.processor.QueryProcessor', 'QRY', 'G', 'QueryProcessor', NULL, 'General query processor'),
 ('MXT', 'mobile.core.security.ChangePassword', 'MNT', 'A', 'ChangePassword', NULL, 'Change password'),
-('MXT', 'mobile.core.security.Loggin', 'QRY', 'A', 'Loggin', 'general', 'Process loggin'),
+('MXT', 'mobile.core.security.Loggin', 'QRY', 'A', 'Loggin', NULL, 'Process loggin'),
 ('MXT', 'mobile.core.security.Logout', 'MNT', 'A', 'Logout', NULL, 'Process logout'),
-('MXT', 'mobile.core.security.query.QueryProfilesForUser', 'QRY', 'A', 'QueryProfilesForUser', 'general', 'CONSULTA LOS ROLES DE UN USUARIO'),
-('MXT', 'mobile.logic.general.MenuGenerator', 'QRY', 'G', 'MenuGenerator', 'general', 'Query the menu items'),
+('MXT', 'mobile.core.security.query.QueryProfilesForUser', 'QRY', 'A', 'QueryProfilesForUser', NULL, 'CONSULTA LOS ROLES DE UN USUARIO'),
+('MXT', 'mobile.logic.general.MenuGenerator', 'QRY', 'G', 'MenuGenerator', NULL, 'Query the menu items'),
 ('MXT', 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', 'C', 'QueryPartnerInfo', NULL, 'CONSULTA INFORMACION DE CLIENTES INDIVIDUALES'),
 ('MXT', 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 'C', 'QuerySolicitude', NULL, 'CONSULTA INFORMACION DE LAS SOLICITUDES'),
 ('MXT', 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', 'C', 'RemoteInstrumentation', NULL, 'REALIZA LA INSTRUMENTACIÓN CONECTANDOSE CON EL CORE BANCARIO'),
@@ -866,305 +866,6 @@ CREATE TABLE IF NOT EXISTS `ENTITY_FIELD` (
 -- Volcar la base de datos para la tabla `ENTITY_FIELD`
 --
 
-INSERT INTO `ENTITY_FIELD` (`COMPANY_ID`, `TABLE_ID`, `FIELD_ID`, `FIELD_ORDER`, `DATA_TYPE_ID`, `DATA_SIZE`, `DATA_SCALE`, `PRIMARY_KEY`, `UNIQUE_KEY`, `NULLABLE`, `DEFAULT_VALUE`, `SEQUENTIAL_ID`, `MINIMUM_VALUE`, `MAXIMUM_VALUE`, `DESCRIPTION`) VALUES
-('ALL', 'ACCOUNT_STATUS', 'DESCRIPTION', 2, 'String', 50, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Description'),
-('ALL', 'ACCOUNT_STATUS', 'STATUS_ID', 1, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Status'),
-('ALL', 'ADDRESS_TYPE', 'ADDRESS_TYPE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Address type Id'),
-('ALL', 'ADDRESS_TYPE', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of address type'),
-('ALL', 'CHANNEL', 'CHANNEL_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Channel Id'),
-('ALL', 'CHANNEL', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name'),
-('ALL', 'CITY', 'CITY_ID', 3, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'City Id'),
-('ALL', 'CITY', 'COUNTRY_ID', 1, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Country Id'),
-('ALL', 'CITY', 'NAME', 4, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of city'),
-('ALL', 'CITY', 'PROVINCE_ID', 2, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Province Id'),
-('ALL', 'CIVIL_STATUS', 'CIVIL_STATUS_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Civil type status Id'),
-('ALL', 'CIVIL_STATUS', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of civil status'),
-('ALL', 'COMPANY', 'COMPANY_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Company Id'),
-('ALL', 'COMPANY', 'DATAFILE_ID', 3, 'Long', 10, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Document Id'),
-('ALL', 'COMPANY', 'ENABLE', 6, 'Boolean', 0, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Enable'),
-('ALL', 'COMPANY', 'LICENSE_DATE', 5, 'Date', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'License date of company'),
-('ALL', 'COMPANY', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of company'),
-('ALL', 'COMPANY', 'UPGRADE_NUMBER', 4, 'BigDecimal', 4, 2, 0, 0, 1, NULL, NULL, NULL, NULL, 'Upgrade number of company'),
-('ALL', 'COMPONENT', 'CLASS_NAME', 4, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Class name'),
-('ALL', 'COMPONENT', 'COMPONENT_ID', 1, 'String', 150, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Component Id'),
-('ALL', 'COMPONENT', 'DESCRIPTION', 6, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Description'),
-('ALL', 'COMPONENT', 'METHOD_NAME', 5, 'String', 100, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Method name'),
-('ALL', 'COMPONENT', 'SUBSYSTEM_ID', 3, 'String', 2, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Subsystem Id'),
-('ALL', 'COMPONENT', 'TYPE_ID', 2, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Component type Id'),
-('ALL', 'COMPONENT_TYPE', 'COMPONENT_TYPE_ID', 1, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Component type Id'),
-('ALL', 'COMPONENT_TYPE', 'DESCRIPTION', 2, 'String', 50, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Component type description'),
-('ALL', 'COUNTRY', 'AREA_CODE', 3, 'String', 4, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Area code'),
-('ALL', 'COUNTRY', 'COUNTRY_ID', 1, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Country Id'),
-('ALL', 'COUNTRY', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of country'),
-('ALL', 'CURRENCY', 'CURRENCY_ID', 1, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Currency'),
-('ALL', 'CURRENCY', 'DESCRIPTION', 2, 'String', 50, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Description'),
-('ALL', 'CURRENCY', 'INITIALS', 3, 'String', 3, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Initials'),
-('ALL', 'DATABASE_TYPE', 'DATABASE_ID', 2, 'String', 30, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Database Id'),
-('ALL', 'DATABASE_TYPE', 'DATABASE_TYPE', 4, 'String', 30, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Data type of database'),
-('ALL', 'DATABASE_TYPE', 'DATA_SIZE', 3, 'Integer', 5, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Data size of field'),
-('ALL', 'DATABASE_TYPE', 'DATA_TYPE_ID', 1, 'String', 30, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Data type Id'),
-('ALL', 'DATAFILE', 'BINARY_BYTES', 4, 'Long', 10, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Binary bytes'),
-('ALL', 'DATAFILE', 'BINARY_OBJECT', 5, 'Blob', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Binary object'),
-('ALL', 'DATAFILE', 'BINARY_PATH', 3, 'String', 200, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Binary path'),
-('ALL', 'DATAFILE', 'CHARACTER_DATA', 6, 'Clob', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Character data'),
-('ALL', 'DATAFILE', 'DATAFILE_ID', 1, 'Long', 10, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Datafile Id'),
-('ALL', 'DATAFILE', 'DATAFILE_TYPE_ID', 2, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Datafile type Id'),
-('ALL', 'DATAFILE_TYPE', 'DATAFILE_TYPE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Datafile type Id'),
-('ALL', 'DATAFILE_TYPE', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of datafile type'),
-('ALL', 'DATA_TYPE', 'DATA_TYPE_ID', 1, 'String', 30, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Data type Id'),
-('ALL', 'DATA_TYPE', 'DESCRIPTION', 2, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of data type'),
-('ALL', 'DISTRICT', 'CITY_ID', 3, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'City Id'),
-('ALL', 'DISTRICT', 'COUNTRY_ID', 1, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Country Id'),
-('ALL', 'DISTRICT', 'DISTRICT_ID', 4, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'District Id'),
-('ALL', 'DISTRICT', 'NAME', 5, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of district'),
-('ALL', 'DISTRICT', 'PROVINCE_ID', 2, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Province Id'),
-('ALL', 'ENTITY_FIELD', 'DATA_SCALE', 6, 'Integer', 3, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Data scale of field'),
-('ALL', 'ENTITY_FIELD', 'DATA_SIZE', 5, 'Integer', 5, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Data size of field'),
-('ALL', 'ENTITY_FIELD', 'DATA_TYPE_ID', 4, 'String', 30, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Data type of field'),
-('ALL', 'ENTITY_FIELD', 'DEFAULT_VALUE', 10, 'String', 30, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Default value of field'),
-('ALL', 'ENTITY_FIELD', 'DESCRIPTION', 14, 'String', 100, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Description of field'),
-('ALL', 'ENTITY_FIELD', 'FIELD_ID', 2, 'String', 30, 0, 1, 1, 0, NULL, NULL, NULL, NULL, 'Field Id'),
-('ALL', 'ENTITY_FIELD', 'FIELD_ORDER', 3, 'Integer', 3, 0, 0, 1, 0, NULL, NULL, NULL, NULL, 'Field order'),
-('ALL', 'ENTITY_FIELD', 'MAXIMUM_VALUE', 13, 'String', 30, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Maximum value of field'),
-('ALL', 'ENTITY_FIELD', 'MINIMUM_VALUE', 12, 'String', 30, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Minimum value of field'),
-('ALL', 'ENTITY_FIELD', 'NULLABLE', 9, 'Boolean', 0, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Nullable'),
-('ALL', 'ENTITY_FIELD', 'PRIMARY_KEY', 7, 'Boolean', 0, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Primary key'),
-('ALL', 'ENTITY_FIELD', 'SEQUENTIAL_ID', 11, 'String', 30, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Sequential Id of field'),
-('ALL', 'ENTITY_FIELD', 'TABLE_ID', 1, 'String', 30, 0, 1, 1, 0, NULL, NULL, NULL, NULL, 'Table Id'),
-('ALL', 'ENTITY_FIELD', 'UNIQUE_KEY', 8, 'Boolean', 0, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Unique key'),
-('ALL', 'ENTITY_RELATIONSHIP', 'FIELD_FROM', 4, 'String', 30, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Field from'),
-('ALL', 'ENTITY_RELATIONSHIP', 'FIELD_TO', 6, 'String', 30, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Filed to'),
-('ALL', 'ENTITY_RELATIONSHIP', 'RELATIONSHIP_ID', 1, 'String', 30, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Relationship order'),
-('ALL', 'ENTITY_RELATIONSHIP', 'RELATIONSHIP_ORDER', 2, 'Integer', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Field order'),
-('ALL', 'ENTITY_RELATIONSHIP', 'TABLE_FROM', 3, 'String', 30, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Table from'),
-('ALL', 'ENTITY_RELATIONSHIP', 'TABLE_TO', 5, 'String', 30, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Table to'),
-('ALL', 'ENTITY_TABLE', 'CACHE_MEMORY', 9, 'Boolean', 0, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Cache memory of entity'),
-('ALL', 'ENTITY_TABLE', 'DESCRIPTION', 10, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Description of entity'),
-('ALL', 'ENTITY_TABLE', 'ENUMERATED_TYPES', 8, 'Boolean', 0, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Enumerated type of entity'),
-('ALL', 'ENTITY_TABLE', 'HAS_TABLE_ID', 2, 'Boolean', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Order of fields'),
-('ALL', 'ENTITY_TABLE', 'HISTORICAL_DATA', 6, 'Boolean', 0, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Historical data of entity'),
-('ALL', 'ENTITY_TABLE', 'MULTI_COMPANY', 4, 'Boolean', 0, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Multi company of entity'),
-('ALL', 'ENTITY_TABLE', 'MULTI_LANGUAGE', 5, 'Boolean', 0, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Multi language of entity'),
-('ALL', 'ENTITY_TABLE', 'OPTIMISTIC_LOCKING', 7, 'Boolean', 0, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Optimistic locking of entity'),
-('ALL', 'ENTITY_TABLE', 'PACKAGE_NAME', 3, 'String', 30, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Package name of entity'),
-('ALL', 'ENTITY_TABLE', 'TABLE_ID', 1, 'String', 30, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Table Id'),
-('ALL', 'FREQUENCY', 'DESCRIPTION', 2, 'String', 50, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Description'),
-('ALL', 'FREQUENCY', 'FREQUENCY_ID', 1, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Frecuency'),
-('ALL', 'FUNDS_DESTINATION', 'DESCRIPTION', 2, 'String', 50, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Description'),
-('ALL', 'FUNDS_DESTINATION', 'FUNDS_DESTINATION_ID', 1, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Destination of funds'),
-('ALL', 'GENDER_TYPE', 'GENDER_TYPE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Gender type Id'),
-('ALL', 'GENDER_TYPE', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of gender'),
-('ALL', 'GEOGRAPHIC_ZONE', 'COORDINATE_TYPE', 3, 'String', 20, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Type of coordinate: Point, Route, Polygon'),
-('ALL', 'GEOGRAPHIC_ZONE', 'DESCRIPTION', 2, 'String', 100, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Description of the zone'),
-('ALL', 'GEOGRAPHIC_ZONE', 'GEOGRAPHIC_ZONE_ID', 1, 'Integer', 0, 0, 1, 0, 0, NULL, 'GEOZONE', NULL, NULL, 'Geographic zone id'),
-('ALL', 'GEOGRAPHIC_ZONE', 'P11', 4, 'String', 50, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Point of coordinate 1,1'),
-('ALL', 'GEOGRAPHIC_ZONE', 'P12', 5, 'String', 50, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Point of coordinate 1,2'),
-('ALL', 'GEOGRAPHIC_ZONE', 'P21', 6, 'String', 50, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Point of coordinate 2,1'),
-('ALL', 'GEOGRAPHIC_ZONE', 'P22', 7, 'String', 50, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Point of coordinate 2,2'),
-('ALL', 'GEOGRAPHIC_ZONE', 'P31', 8, 'String', 50, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Point of coordinate 3,1'),
-('ALL', 'GEOGRAPHIC_ZONE', 'P32', 9, 'String', 50, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Point of coordinate 3,2'),
-('ALL', 'GEOGRAPHIC_ZONE', 'P41', 10, 'String', 50, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Point of coordinate 4,1'),
-('ALL', 'GEOGRAPHIC_ZONE', 'P42', 11, 'String', 50, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Point of coordinate 4,2'),
-('ALL', 'HOST', 'ADDRESS', 2, 'String', 60, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Address'),
-('ALL', 'HOST', 'CHANNEL_ID', 3, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Channel Id'),
-('ALL', 'HOST', 'HOST_ID', 1, 'String', 40, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Host Id'),
-('ALL', 'HOST', 'TIME_ZONE', 4, 'String', 4, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Time zone'),
-('ALL', 'IDENTIFICATION_TYPE', 'IDENTIFICATION_TYPE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Identification type Id'),
-('ALL', 'IDENTIFICATION_TYPE', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of identification type'),
-('ALL', 'LANGUAGE', 'LANGUAGE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Language Id'),
-('ALL', 'LANGUAGE', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of language'),
-('ALL', 'MICRO_ACCOUNT', 'ACCOUNT_ID', 1, 'String', 25, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Account number and id'),
-('ALL', 'MICRO_ACCOUNT', 'AMOUNT', 11, 'BigDecimal', 19, 6, 0, 0, 0, NULL, NULL, NULL, NULL, 'Amount'),
-('ALL', 'MICRO_ACCOUNT', 'ASSESSOR', 4, 'String', 20, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Assessor'),
-('ALL', 'MICRO_ACCOUNT', 'CLIENT_NAME', 3, 'String', 120, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Client''s name'),
-('ALL', 'MICRO_ACCOUNT', 'GROUP_CLIENT_ID', 6, 'Integer', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Group'),
-('ALL', 'MICRO_ACCOUNT', 'NUMBER_QUOTAS', 14, 'Integer', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Number of fees'),
-('ALL', 'MICRO_ACCOUNT', 'NUMBER_RENEWAL', 9, 'Integer', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Number of renewal'),
-('ALL', 'MICRO_ACCOUNT', 'PARTNER_CLIENT_ID', 5, 'Integer', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Client'),
-('ALL', 'MICRO_ACCOUNT', 'PAYMENT_FREQUENCY_ID', 15, 'String', 3, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Frequency of payment'),
-('ALL', 'MICRO_ACCOUNT', 'PREVIOUS_ACCOUNT', 10, 'String', 25, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Renewed account'),
-('ALL', 'MICRO_ACCOUNT', 'PRODUCT_ID', 7, 'String', 3, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Product id'),
-('ALL', 'MICRO_ACCOUNT', 'QUOTA_TYPE_ID', 13, 'String', 3, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Quota type id'),
-('ALL', 'MICRO_ACCOUNT', 'SOLICITUDE_ID', 2, 'Integer', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Solicitude Id'),
-('ALL', 'MICRO_ACCOUNT', 'STATUS_ID', 8, 'String', 3, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Account status id'),
-('ALL', 'MICRO_ACCOUNT', 'TERM', 12, 'Long', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Term'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 'ACCOUNT_ID', 1, 'String', 25, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Account number and id'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 'CAPITAL', 8, 'BigDecimal', 19, 6, 0, 0, 0, NULL, NULL, NULL, NULL, 'Capital amount'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 'CHARGE', 10, 'BigDecimal', 19, 6, 0, 0, 0, NULL, NULL, NULL, NULL, 'Charge amount'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 'EXPIRATION_DATE', 5, 'Date', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Expiration date'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 'FROM_DATE', 4, 'Date', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Initial date for term'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 'INTEREST', 9, 'BigDecimal', 19, 6, 0, 0, 0, NULL, NULL, NULL, NULL, 'Interest amount'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 'PAYMENT_DATE', 6, 'Date', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Payment date'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 'PROVISION_DAYS', 3, 'Integer', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Number of provisioned days'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 'REDUCED_CAPITAL', 7, 'BigDecimal', 19, 6, 0, 0, 0, NULL, NULL, NULL, NULL, 'Reduced capital'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 'SUBACCOUNT', 2, 'Integer', 0, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Quota number'),
-('ALL', 'MODULE', 'MODULE_ID', 2, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Module Id'),
-('ALL', 'MODULE', 'NAME', 3, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of module'),
-('ALL', 'MODULE', 'SUBSYSTEM_ID', 1, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Subsystem Id'),
-('ALL', 'OPERATIVE_CONDITION', 'DESCRIPTION', 2, 'String', 50, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Description'),
-('ALL', 'OPERATIVE_CONDITION', 'OPERATIVE_CONDITION_ID', 1, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Operative condition'),
-('ALL', 'PARAMETER', 'DATA_TYPE_ID', 3, 'String', 30, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Data type of parameter'),
-('ALL', 'PARAMETER', 'DESCRIPTION', 5, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Description of parameter'),
-('ALL', 'PARAMETER', 'PARAMETER_ID', 1, 'String', 40, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Parameter Id'),
-('ALL', 'PARAMETER', 'PARAMETER_VALUE', 4, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Value of parameter'),
-('ALL', 'PARAMETER', 'SUBSYSTEM_ID', 2, 'String', 2, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Subsystem Id'),
-('ALL', 'PARTNER', 'ACTIVITY', 3, 'String', 300, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Activity'),
-('ALL', 'PARTNER', 'FREQUENCY_ID', 5, 'String', 3, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Meeting Frequency id'),
-('ALL', 'PARTNER', 'MEETING_DAY', 6, 'Integer', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Meeting day'),
-('ALL', 'PARTNER', 'PARTNER_ID', 1, 'Integer', 0, 0, 1, 0, 0, NULL, 'PARTNER', NULL, NULL, 'Person id'),
-('ALL', 'PARTNER', 'PERSON_ID', 2, 'Integer', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Person id'),
-('ALL', 'PARTNER', 'USER_ID', 4, 'String', 20, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'User Id'),
-('ALL', 'PARTNER_GROUP', 'ACTIVITY', 4, 'String', 300, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Activity'),
-('ALL', 'PARTNER_GROUP', 'CREATION_DATE', 3, 'Date', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Creation date'),
-('ALL', 'PARTNER_GROUP', 'FREQUENCY_ID', 6, 'String', 3, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Meeting Frequency id'),
-('ALL', 'PARTNER_GROUP', 'GROUP_DESCRIPTION', 2, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Group description'),
-('ALL', 'PARTNER_GROUP', 'MEETING_DAY', 7, 'Integer', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Meeting day'),
-('ALL', 'PARTNER_GROUP', 'PARTNER_GROUP_ID', 1, 'Integer', 0, 0, 1, 0, 0, NULL, 'PARTNERGRP', NULL, NULL, 'Partner group id'),
-('ALL', 'PARTNER_GROUP', 'USER_ID', 5, 'String', 20, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Assessor'),
-('ALL', 'PARTNER_GROUP_MEMBER', 'OBSERVATIONS', 5, 'String', 200, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Observations'),
-('ALL', 'PARTNER_GROUP_MEMBER', 'PARTNER_GROUP_ID', 2, 'Integer', 0, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Partner group id'),
-('ALL', 'PARTNER_GROUP_MEMBER', 'PERSON_ID', 3, 'Integer', 0, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Person id'),
-('ALL', 'PARTNER_GROUP_MEMBER', 'RESPONSABILITY_ID', 4, 'String', 3, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Responsability id'),
-('ALL', 'PERSON', 'CITY_ID', 11, 'String', 3, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'City Id'),
-('ALL', 'PERSON', 'CIVIL_STATUS_ID', 9, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Civil type status Id'),
-('ALL', 'PERSON', 'COUNTRY_ID', 10, 'String', 2, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Country Id'),
-('ALL', 'PERSON', 'DATE_OF_BIRTH', 7, 'Date', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Date of birth'),
-('ALL', 'PERSON', 'DISTRICT_ID', 13, 'String', 4, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'District Id'),
-('ALL', 'PERSON', 'GENDER_TYPE_ID', 8, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Gender type Id'),
-('ALL', 'PERSON', 'IDENTIFICATION_NUMBER', 6, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Identification number'),
-('ALL', 'PERSON', 'IDENTIFICATION_TYPE_ID', 5, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Identification type Id'),
-('ALL', 'PERSON', 'LAST_NAME', 3, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Lastname of person'),
-('ALL', 'PERSON', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of person'),
-('ALL', 'PERSON', 'PERSON_ID', 1, 'Integer', 0, 0, 1, 0, 0, NULL, 'PERSON', NULL, NULL, 'Person Id'),
-('ALL', 'PERSON', 'PROFESSION_TYPE_ID', 14, 'String', 4, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Profession type Id'),
-('ALL', 'PERSON', 'PROVINCE_ID', 12, 'String', 2, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Province Id'),
-('ALL', 'PERSON', 'SECOND_LAST_NAME', 4, 'String', 40, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Second lastname of person'),
-('ALL', 'PERSON_ADDRESS', 'ADDRESS_DESCRIPTION', 4, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'First street'),
-('ALL', 'PERSON_ADDRESS', 'ADDRESS_SEQUENCE', 2, 'Integer', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Sequence of person address'),
-('ALL', 'PERSON_ADDRESS', 'ADDRESS_TYPE_ID', 3, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Address type Id'),
-('ALL', 'PERSON_ADDRESS', 'CITY_ID', 6, 'String', 3, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'City Id'),
-('ALL', 'PERSON_ADDRESS', 'COUNTRY_ID', 5, 'String', 2, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Country Id'),
-('ALL', 'PERSON_ADDRESS', 'DISTRICT_ID', 8, 'String', 4, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'District Id'),
-('ALL', 'PERSON_ADDRESS', 'PERSON_ID', 1, 'Long', 10, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Person Id'),
-('ALL', 'PERSON_ADDRESS', 'PROVINCE_ID', 7, 'String', 2, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Province Id'),
-('ALL', 'PERSON_PHONE', 'AREA_CODE', 4, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Area code'),
-('ALL', 'PERSON_PHONE', 'PERSON_ID', 1, 'Long', 10, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Person Id'),
-('ALL', 'PERSON_PHONE', 'PHONE_NUMBER', 5, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Phone number'),
-('ALL', 'PERSON_PHONE', 'PHONE_SEQUENCE', 2, 'Integer', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Sequence of person phone'),
-('ALL', 'PERSON_PHONE', 'PHONE_TYPE_ID', 3, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Phone type Id'),
-('ALL', 'PERSON_TYPE', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of person type'),
-('ALL', 'PERSON_TYPE', 'PERSON_TYPE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Person type Id'),
-('ALL', 'PHONE_TYPE', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of phone'),
-('ALL', 'PHONE_TYPE', 'PHONE_TYPE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Phone type Id'),
-('ALL', 'PROCESS', 'DATAFILE_ID', 8, 'Long', 10, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Datafile Id'),
-('ALL', 'PROCESS', 'ENABLE', 5, 'Boolean', 0, 0, 0, 0, 0, '1', NULL, NULL, NULL, 'Enable'),
-('ALL', 'PROCESS', 'MENU', 6, 'Boolean', 0, 0, 0, 0, 0, '1', NULL, NULL, NULL, 'Show in app  menu'),
-('ALL', 'PROCESS', 'MODULE_ID', 2, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Module Id'),
-('ALL', 'PROCESS', 'NAME', 4, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of process'),
-('ALL', 'PROCESS', 'PROCESS_ID', 3, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Process Id'),
-('ALL', 'PROCESS', 'SUBSYSTEM_ID', 1, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Subsystem Id'),
-('ALL', 'PROCESS', 'URL', 7, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'URL'),
-('ALL', 'PROCESS_COMPONENT', 'AUTHORIZE', 9, 'Boolean', 0, 0, 0, 0, 1, '0', NULL, NULL, NULL, 'Authorize'),
-('ALL', 'PROCESS_COMPONENT', 'COMPONENT_ID', 6, 'String', 150, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Component Id'),
-('ALL', 'PROCESS_COMPONENT', 'ENABLE', 8, 'Boolean', 0, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Enable'),
-('ALL', 'PROCESS_COMPONENT', 'MODULE_ID', 3, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Module Id'),
-('ALL', 'PROCESS_COMPONENT', 'PROCESS_ID', 4, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Process Id'),
-('ALL', 'PROCESS_COMPONENT', 'PROCESS_SEQUENCE', 5, 'Integer', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Process sequence'),
-('ALL', 'PROCESS_COMPONENT', 'SUBSYSTEM_ID', 2, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Subsystem Id'),
-('ALL', 'PROCESS_COMPONENT', 'TYPE_ID', 7, 'String', 3, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Component type Id'),
-('ALL', 'PRODUCT_ASESSOR', 'OBSERVATIONS', 3, 'String', 50, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Observations'),
-('ALL', 'PRODUCT_ASESSOR', 'PRODUCT_ID', 2, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Product id'),
-('ALL', 'PRODUCT_ASESSOR', 'USER_ID', 1, 'String', 20, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Assessor'),
-('ALL', 'PRODUCT_MICROCREDIT', 'CURRENCY_ID', 3, 'String', 3, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Currency id'),
-('ALL', 'PRODUCT_MICROCREDIT', 'DESCRIPTION', 2, 'String', 50, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Description of product'),
-('ALL', 'PRODUCT_MICROCREDIT', 'MAX_AMOUNT', 5, 'BigDecimal', 19, 6, 0, 0, 0, NULL, NULL, NULL, NULL, 'Maximun amount'),
-('ALL', 'PRODUCT_MICROCREDIT', 'MAX_PERIOD', 7, 'Long', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Maximun period'),
-('ALL', 'PRODUCT_MICROCREDIT', 'MIN_AMOUNT', 4, 'BigDecimal', 19, 6, 0, 0, 0, NULL, NULL, NULL, NULL, 'Minimun amount'),
-('ALL', 'PRODUCT_MICROCREDIT', 'MIN_PERIOD', 6, 'Long', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Minimun period'),
-('ALL', 'PRODUCT_MICROCREDIT', 'PRODUCT_ID', 1, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Product id'),
-('ALL', 'PRODUCT_MICROCREDIT', 'RATE', 8, 'BigDecimal', 19, 6, 0, 0, 0, NULL, NULL, NULL, NULL, 'Rate'),
-('ALL', 'PROFESSION_TYPE', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of profession type'),
-('ALL', 'PROFESSION_TYPE', 'PROFESSION_TYPE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Profession type Id'),
-('ALL', 'PROFILE', 'DESCRIPTION', 3, 'String', 150, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Description of profile'),
-('ALL', 'PROFILE', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of profile'),
-('ALL', 'PROFILE', 'PROFILE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Profile Id'),
-('ALL', 'PROVINCE', 'COUNTRY_ID', 1, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Country Id'),
-('ALL', 'PROVINCE', 'NAME', 3, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of province'),
-('ALL', 'PROVINCE', 'PROVINCE_ID', 2, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Province Id'),
-('ALL', 'QUOTA_TYPE', 'DESCRIPTION', 2, 'String', 50, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Description'),
-('ALL', 'QUOTA_TYPE', 'QUOTA_TYPE_ID', 1, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Fee type'),
-('ALL', 'RECOMMENDATION', 'CREDIT_HISTORY', 6, 'String', 500, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Comments about credit history'),
-('ALL', 'RECOMMENDATION', 'DOCUMENTS', 2, 'String', 500, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Comments about documents'),
-('ALL', 'RECOMMENDATION', 'ECONOMIC_UNIT', 3, 'String', 500, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Comments about economic unit'),
-('ALL', 'RECOMMENDATION', 'FAMILY_UNIT', 4, 'String', 500, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Comments about family unit'),
-('ALL', 'RECOMMENDATION', 'PAYMENT_MORALE', 5, 'String', 500, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Comments about payment morale'),
-('ALL', 'RECOMMENDATION', 'PROPOSAL', 7, 'String', 25, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Proposal'),
-('ALL', 'RECOMMENDATION', 'SOLICITUDE_ID', 1, 'Integer', 0, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Solicitude Id'),
-('ALL', 'RESPONSABILITY', 'DESCRIPTION', 3, 'String', 60, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Description'),
-('ALL', 'RESPONSABILITY', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name'),
-('ALL', 'RESPONSABILITY', 'RESPONSABILITY_ID', 1, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Responsability id'),
-('ALL', 'RESPONSE', 'DESCRIPTION', 2, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Description of response'),
-('ALL', 'RESPONSE', 'RESPONSE_ID', 1, 'String', 8, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Response Id'),
-('ALL', 'ROLE', 'DAY_ID', 5, 'String', 3, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Day Id'),
-('ALL', 'ROLE', 'EDITABLE', 8, 'Boolean', 0, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Editable'),
-('ALL', 'ROLE', 'HOUR_FROM', 6, 'String', 4, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Hour From'),
-('ALL', 'ROLE', 'HOUR_TO', 7, 'String', 4, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Hour To'),
-('ALL', 'ROLE', 'MODULE_ID', 3, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Module Id'),
-('ALL', 'ROLE', 'PROCESS_ID', 4, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Process Id'),
-('ALL', 'ROLE', 'PROFILE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Profile Id'),
-('ALL', 'ROLE', 'SUBSYSTEM_ID', 2, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Subsystem Id'),
-('ALL', 'SEQUENTIAL', 'SEQUENTIAL_ID', 1, 'String', 40, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Sequential Id'),
-('ALL', 'SEQUENTIAL', 'SEQUENTIAL_VALUE', 2, 'Long', 10, 0, 0, 0, 0, '0', NULL, NULL, NULL, 'Value of sequential'),
-('ALL', 'SOLICITUDE', 'ACCOUNT', 2, 'String', 25, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Generated account'),
-('ALL', 'SOLICITUDE', 'AMOUNT', 16, 'BigDecimal', 19, 6, 0, 0, 0, NULL, NULL, NULL, NULL, 'Amount'),
-('ALL', 'SOLICITUDE', 'APPROVAL_DATE', 7, 'Date', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Approval date'),
-('ALL', 'SOLICITUDE', 'ASSESSOR', 3, 'String', 20, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Assessor'),
-('ALL', 'SOLICITUDE', 'DESTINATION_DESCRIPTION', 22, 'String', 500, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Description of destination'),
-('ALL', 'SOLICITUDE', 'DISBURSEMENT_DATE', 8, 'Date', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Disbursement date'),
-('ALL', 'SOLICITUDE', 'EXPIRATION_DATE', 10, 'Date', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Expiration date'),
-('ALL', 'SOLICITUDE', 'FUNDS_DESTINATION_ID', 21, 'String', 3, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Destination of funds'),
-('ALL', 'SOLICITUDE', 'GROUP_CLIENT_ID', 5, 'Integer', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Group'),
-('ALL', 'SOLICITUDE', 'INITIAL_PAY_DATE', 11, 'Date', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Date for the first pay'),
-('ALL', 'SOLICITUDE', 'INSTRUMENTATION_DATE', 9, 'Date', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Instrumentation date'),
-('ALL', 'SOLICITUDE', 'NUMBER_QUOTAS', 19, 'Integer', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Number of fees'),
-('ALL', 'SOLICITUDE', 'NUMBER_RENEWAL', 15, 'Integer', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Number of renewal'),
-('ALL', 'SOLICITUDE', 'OPERATIVE_CONDITION_ID', 14, 'String', 3, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Operative condition'),
-('ALL', 'SOLICITUDE', 'PARTNER_CLIENT_ID', 4, 'Integer', 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Client'),
-('ALL', 'SOLICITUDE', 'PAYMENT_FREQUENCY_ID', 20, 'String', 3, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Frequency of payment'),
-('ALL', 'SOLICITUDE', 'PRODUCT_ID', 12, 'String', 3, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Product id'),
-('ALL', 'SOLICITUDE', 'QUOTA_TYPE_ID', 18, 'String', 3, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Quota type id'),
-('ALL', 'SOLICITUDE', 'SOLICITUDE_DATE', 6, 'Date', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Solicitud date'),
-('ALL', 'SOLICITUDE', 'SOLICITUDE_ID', 1, 'Integer', 0, 0, 1, 0, 0, NULL, 'SOLICITUDE', NULL, NULL, 'Name'),
-('ALL', 'SOLICITUDE', 'STATUS_ID', 13, 'String', 3, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Solicitude status id'),
-('ALL', 'SOLICITUDE', 'TERM', 17, 'Long', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Term'),
-('ALL', 'SOLICITUDE_STATUS', 'DESCRIPTION', 2, 'String', 50, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Description'),
-('ALL', 'SOLICITUDE_STATUS', 'STATUS_ID', 1, 'String', 3, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Status'),
-('ALL', 'SUBSYSTEM', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of subsystem'),
-('ALL', 'SUBSYSTEM', 'SUBSYSTEM_ID', 1, 'String', 2, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Subsystem Id'),
-('ALL', 'USER_ACCESS', 'ANSWER', 5, 'String', 100, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Answer'),
-('ALL', 'USER_ACCESS', 'LAST_CHANGE', 3, 'Date', 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Last change'),
-('ALL', 'USER_ACCESS', 'QUESTION', 4, 'String', 100, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Question'),
-('ALL', 'USER_ACCESS', 'USER_ID', 1, 'String', 20, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User Id'),
-('ALL', 'USER_ACCESS', 'USER_KEY', 2, 'String', 300, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'User Key'),
-('ALL', 'USER_ACCOUNT', 'EMAIL', 6, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Email'),
-('ALL', 'USER_ACCOUNT', 'LANGUAGE_ID', 5, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Language Id'),
-('ALL', 'USER_ACCOUNT', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of user'),
-('ALL', 'USER_ACCOUNT', 'PERSON_ID', 7, 'Long', 10, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Person Id'),
-('ALL', 'USER_ACCOUNT', 'USER_ID', 1, 'String', 20, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User Id'),
-('ALL', 'USER_ACCOUNT', 'USER_STATUS_ID', 4, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'User status Id'),
-('ALL', 'USER_ACCOUNT', 'USER_TYPE_ID', 3, 'String', 4, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'User type Id'),
-('ALL', 'USER_PROFILE', 'PROFILE_ID', 2, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Profile Id'),
-('ALL', 'USER_PROFILE', 'USER_ID', 1, 'String', 20, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User Id'),
-('ALL', 'USER_SESSION', 'HOST_ID', 2, 'String', 40, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Host Id'),
-('ALL', 'USER_SESSION', 'SESSION_ID', 3, 'String', 100, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Token'),
-('ALL', 'USER_SESSION', 'USER_ID', 1, 'String', 20, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User Id'),
-('ALL', 'USER_STATUS', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of user status'),
-('ALL', 'USER_STATUS', 'USER_STATUS_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User status Id'),
-('ALL', 'USER_TYPE', 'NAME', 2, 'String', 40, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Name of user type'),
-('ALL', 'USER_TYPE', 'USER_TYPE_ID', 1, 'String', 4, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User type Id'),
-('ALL', 'ZONE_ASESSOR', 'GEOGRAPHIC_ZONE_ID', 2, 'Integer', 0, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'Geographic zone id'),
-('ALL', 'ZONE_ASESSOR', 'OBSERVATIONS', 3, 'String', 50, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 'Observations'),
-('ALL', 'ZONE_ASESSOR', 'USER_ID', 1, 'String', 20, 0, 1, 0, 0, NULL, NULL, NULL, NULL, 'User Id');
 
 -- --------------------------------------------------------
 
@@ -1182,488 +883,6 @@ CREATE TABLE IF NOT EXISTS `ENTITY_FIELD_ID` (
 -- Volcar la base de datos para la tabla `ENTITY_FIELD_ID`
 --
 
-INSERT INTO `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`) VALUES
-('ACCOUNT_STATUS', 'COMPANY_ID'),
-('ACCOUNT_STATUS', 'DESCRIPTION'),
-('ACCOUNT_STATUS', 'LANGUAGE_ID'),
-('ACCOUNT_STATUS', 'STATUS_ID'),
-('ACCOUNT_STATUS_ID', 'STATUS_ID'),
-('ADDRESS_TYPE', 'ADDRESS_TYPE_ID'),
-('ADDRESS_TYPE', 'COMPANY_ID'),
-('ADDRESS_TYPE', 'LANGUAGE_ID'),
-('ADDRESS_TYPE', 'NAME'),
-('ADDRESS_TYPE_ID', 'ADDRESS_TYPE_ID'),
-('CHANNEL', 'CHANNEL_ID'),
-('CHANNEL', 'NAME'),
-('CITY', 'CITY_ID'),
-('CITY', 'COMPANY_ID'),
-('CITY', 'COUNTRY_ID'),
-('CITY', 'LANGUAGE_ID'),
-('CITY', 'NAME'),
-('CITY', 'PROVINCE_ID'),
-('CITY_ID', 'CITY_ID'),
-('CITY_ID', 'COUNTRY_ID'),
-('CITY_ID', 'PROVINCE_ID'),
-('CIVIL_STATUS', 'CIVIL_STATUS_ID'),
-('CIVIL_STATUS', 'COMPANY_ID'),
-('CIVIL_STATUS', 'LANGUAGE_ID'),
-('CIVIL_STATUS', 'NAME'),
-('CIVIL_STATUS_ID', 'CIVIL_STATUS_ID'),
-('COMPANY', 'COMPANY_ID'),
-('COMPANY', 'DATAFILE_ID'),
-('COMPANY', 'ENABLE'),
-('COMPANY', 'LICENSE_DATE'),
-('COMPANY', 'NAME'),
-('COMPANY', 'UPGRADE_NUMBER'),
-('COMPONENT', 'CLASS_NAME'),
-('COMPONENT', 'COMPANY_ID'),
-('COMPONENT', 'COMPONENT_ID'),
-('COMPONENT', 'DESCRIPTION'),
-('COMPONENT', 'METHOD_NAME'),
-('COMPONENT', 'SUBSYSTEM_ID'),
-('COMPONENT', 'TYPE_ID'),
-('COMPONENT_ID', 'COMPONENT_ID'),
-('COMPONENT_ID', 'TYPE_ID'),
-('COMPONENT_TYPE', 'COMPONENT_TYPE_ID'),
-('COMPONENT_TYPE', 'DESCRIPTION'),
-('COUNTRY', 'AREA_CODE'),
-('COUNTRY', 'COMPANY_ID'),
-('COUNTRY', 'COUNTRY_ID'),
-('COUNTRY', 'LANGUAGE_ID'),
-('COUNTRY', 'NAME'),
-('COUNTRY_ID', 'COUNTRY_ID'),
-('CURRENCY', 'COMPANY_ID'),
-('CURRENCY', 'CREATED'),
-('CURRENCY', 'CURRENCY_ID'),
-('CURRENCY', 'DESCRIPTION'),
-('CURRENCY', 'EXPIRED'),
-('CURRENCY', 'INITIALS'),
-('CURRENCY', 'LANGUAGE_ID'),
-('CURRENCY_ID', 'CURRENCY_ID'),
-('DATABASE_TYPE', 'DATABASE_ID'),
-('DATABASE_TYPE', 'DATABASE_TYPE'),
-('DATABASE_TYPE', 'DATA_SIZE'),
-('DATABASE_TYPE', 'DATA_TYPE_ID'),
-('DATAFILE', 'BINARY_BYTES'),
-('DATAFILE', 'BINARY_OBJECT'),
-('DATAFILE', 'BINARY_PATH'),
-('DATAFILE', 'CHARACTER_DATA'),
-('DATAFILE', 'COMPANY_ID'),
-('DATAFILE', 'CREATED'),
-('DATAFILE', 'DATAFILE_ID'),
-('DATAFILE', 'DATAFILE_TYPE_ID'),
-('DATAFILE', 'EXPIRED'),
-('DATAFILE_ID', 'DATAFILE_ID'),
-('DATAFILE_TYPE', 'DATAFILE_TYPE_ID'),
-('DATAFILE_TYPE', 'NAME'),
-('DATA_TYPE', 'DATA_TYPE_ID'),
-('DATA_TYPE', 'DESCRIPTION'),
-('DISTRICT', 'CITY_ID'),
-('DISTRICT', 'COMPANY_ID'),
-('DISTRICT', 'COUNTRY_ID'),
-('DISTRICT', 'DISTRICT_ID'),
-('DISTRICT', 'LANGUAGE_ID'),
-('DISTRICT', 'NAME'),
-('DISTRICT', 'PROVINCE_ID'),
-('DISTRICT_ID', 'CITY_ID'),
-('DISTRICT_ID', 'COUNTRY_ID'),
-('DISTRICT_ID', 'DISTRICT_ID'),
-('DISTRICT_ID', 'PROVINCE_ID'),
-('ENTITY_FIELD', 'COMPANY_ID'),
-('ENTITY_FIELD', 'DATA_SCALE'),
-('ENTITY_FIELD', 'DATA_SIZE'),
-('ENTITY_FIELD', 'DATA_TYPE_ID'),
-('ENTITY_FIELD', 'DEFAULT_VALUE'),
-('ENTITY_FIELD', 'DESCRIPTION'),
-('ENTITY_FIELD', 'FIELD_ID'),
-('ENTITY_FIELD', 'FIELD_ORDER'),
-('ENTITY_FIELD', 'MAXIMUM_VALUE'),
-('ENTITY_FIELD', 'MINIMUM_VALUE'),
-('ENTITY_FIELD', 'NULLABLE'),
-('ENTITY_FIELD', 'PRIMARY_KEY'),
-('ENTITY_FIELD', 'SEQUENTIAL_ID'),
-('ENTITY_FIELD', 'TABLE_ID'),
-('ENTITY_FIELD', 'UNIQUE_KEY'),
-('ENTITY_FIELD_ID', 'FIELD_ID'),
-('ENTITY_FIELD_ID', 'TABLE_ID'),
-('ENTITY_RELATIONSHIP', 'COMPANY_ID'),
-('ENTITY_RELATIONSHIP', 'FIELD_FROM'),
-('ENTITY_RELATIONSHIP', 'FIELD_TO'),
-('ENTITY_RELATIONSHIP', 'RELATIONSHIP_ID'),
-('ENTITY_RELATIONSHIP', 'RELATIONSHIP_ORDER'),
-('ENTITY_RELATIONSHIP', 'TABLE_FROM'),
-('ENTITY_RELATIONSHIP', 'TABLE_TO'),
-('ENTITY_TABLE', 'CACHE_MEMORY'),
-('ENTITY_TABLE', 'COMPANY_ID'),
-('ENTITY_TABLE', 'DESCRIPTION'),
-('ENTITY_TABLE', 'ENUMERATED_TYPES'),
-('ENTITY_TABLE', 'HAS_TABLE_ID'),
-('ENTITY_TABLE', 'HISTORICAL_DATA'),
-('ENTITY_TABLE', 'MULTI_COMPANY'),
-('ENTITY_TABLE', 'MULTI_LANGUAGE'),
-('ENTITY_TABLE', 'OPTIMISTIC_LOCKING'),
-('ENTITY_TABLE', 'PACKAGE_NAME'),
-('ENTITY_TABLE', 'TABLE_ID'),
-('ENTITY_TABLE_ID', 'TABLE_ID'),
-('FREQUENCY', 'COMPANY_ID'),
-('FREQUENCY', 'DESCRIPTION'),
-('FREQUENCY', 'FREQUENCY_ID'),
-('FREQUENCY', 'LANGUAGE_ID'),
-('FREQUENCY_ID', 'FREQUENCY_ID'),
-('FUNDS_DESTINATION', 'COMPANY_ID'),
-('FUNDS_DESTINATION', 'DESCRIPTION'),
-('FUNDS_DESTINATION', 'FUNDS_DESTINATION_ID'),
-('FUNDS_DESTINATION', 'LANGUAGE_ID'),
-('FUNDS_DESTINATION_ID', 'FUNDS_DESTINATION_ID'),
-('GENDER_TYPE', 'GENDER_TYPE_ID'),
-('GENDER_TYPE', 'LANGUAGE_ID'),
-('GENDER_TYPE', 'NAME'),
-('GENDER_TYPE_ID', 'GENDER_TYPE_ID'),
-('GEOGRAPHIC_ZONE', 'COMPANY_ID'),
-('GEOGRAPHIC_ZONE', 'COORDINATE_TYPE'),
-('GEOGRAPHIC_ZONE', 'DESCRIPTION'),
-('GEOGRAPHIC_ZONE', 'GEOGRAPHIC_ZONE_ID'),
-('GEOGRAPHIC_ZONE', 'LANGUAGE_ID'),
-('GEOGRAPHIC_ZONE', 'P11'),
-('GEOGRAPHIC_ZONE', 'P12'),
-('GEOGRAPHIC_ZONE', 'P21'),
-('GEOGRAPHIC_ZONE', 'P22'),
-('GEOGRAPHIC_ZONE', 'P31'),
-('GEOGRAPHIC_ZONE', 'P32'),
-('GEOGRAPHIC_ZONE', 'P41'),
-('GEOGRAPHIC_ZONE', 'P42'),
-('GEOGRAPHIC_ZONE_ID', 'GEOGRAPHIC_ZONE_ID'),
-('HOST', 'ADDRESS'),
-('HOST', 'CHANNEL_ID'),
-('HOST', 'COMPANY_ID'),
-('HOST', 'CREATED'),
-('HOST', 'EXPIRED'),
-('HOST', 'HOST_ID'),
-('HOST', 'TIME_ZONE'),
-('HOST_ID', 'HOST_ID'),
-('IDENTIFICATION_TYPE', 'COMPANY_ID'),
-('IDENTIFICATION_TYPE', 'IDENTIFICATION_TYPE_ID'),
-('IDENTIFICATION_TYPE', 'LANGUAGE_ID'),
-('IDENTIFICATION_TYPE', 'NAME'),
-('IDENTIFICATION_TYPE_ID', 'IDENTIFICATION_TYPE_ID'),
-('LANGUAGE', 'LANGUAGE_ID'),
-('LANGUAGE', 'NAME'),
-('MICRO_ACCOUNT', 'ACCOUNT_ID'),
-('MICRO_ACCOUNT', 'AMOUNT'),
-('MICRO_ACCOUNT', 'ASSESSOR'),
-('MICRO_ACCOUNT', 'CLIENT_NAME'),
-('MICRO_ACCOUNT', 'COMPANY_ID'),
-('MICRO_ACCOUNT', 'CREATED'),
-('MICRO_ACCOUNT', 'EXPIRED'),
-('MICRO_ACCOUNT', 'GROUP_CLIENT_ID'),
-('MICRO_ACCOUNT', 'NUMBER_QUOTAS'),
-('MICRO_ACCOUNT', 'NUMBER_RENEWAL'),
-('MICRO_ACCOUNT', 'PARTNER_CLIENT_ID'),
-('MICRO_ACCOUNT', 'PAYMENT_FREQUENCY_ID'),
-('MICRO_ACCOUNT', 'PREVIOUS_ACCOUNT'),
-('MICRO_ACCOUNT', 'PRODUCT_ID'),
-('MICRO_ACCOUNT', 'QUOTA_TYPE_ID'),
-('MICRO_ACCOUNT', 'SOLICITUDE_ID'),
-('MICRO_ACCOUNT', 'STATUS_ID'),
-('MICRO_ACCOUNT', 'TERM'),
-('MICRO_ACCOUNT_ID', 'ACCOUNT_ID'),
-('MICRO_ACCOUNT_QUOTA', 'ACCOUNT_ID'),
-('MICRO_ACCOUNT_QUOTA', 'CAPITAL'),
-('MICRO_ACCOUNT_QUOTA', 'CHARGE'),
-('MICRO_ACCOUNT_QUOTA', 'COMPANY_ID'),
-('MICRO_ACCOUNT_QUOTA', 'CREATED'),
-('MICRO_ACCOUNT_QUOTA', 'EXPIRATION_DATE'),
-('MICRO_ACCOUNT_QUOTA', 'EXPIRED'),
-('MICRO_ACCOUNT_QUOTA', 'FROM_DATE'),
-('MICRO_ACCOUNT_QUOTA', 'INTEREST'),
-('MICRO_ACCOUNT_QUOTA', 'PAYMENT_DATE'),
-('MICRO_ACCOUNT_QUOTA', 'PROVISION_DAYS'),
-('MICRO_ACCOUNT_QUOTA', 'REDUCED_CAPITAL'),
-('MICRO_ACCOUNT_QUOTA', 'SUBACCOUNT'),
-('MICRO_ACCOUNT_QUOTA_ID', 'ACCOUNT_ID'),
-('MICRO_ACCOUNT_QUOTA_ID', 'SUBACCOUNT'),
-('MODULE', 'COMPANY_ID'),
-('MODULE', 'LANGUAGE_ID'),
-('MODULE', 'MODULE_ID'),
-('MODULE', 'NAME'),
-('MODULE', 'SUBSYSTEM_ID'),
-('MODULE_ID', 'MODULE_ID'),
-('MODULE_ID', 'SUBSYSTEM_ID'),
-('OPERATIVE_CONDITION', 'COMPANY_ID'),
-('OPERATIVE_CONDITION', 'DESCRIPTION'),
-('OPERATIVE_CONDITION', 'LANGUAGE_ID'),
-('OPERATIVE_CONDITION', 'OPERATIVE_CONDITION_ID'),
-('OPERATIVE_CONDITION_ID', 'OPERATIVE_CONDITION_ID'),
-('PARAMETER', 'COMPANY_ID'),
-('PARAMETER', 'CREATED'),
-('PARAMETER', 'DATA_TYPE_ID'),
-('PARAMETER', 'DESCRIPTION'),
-('PARAMETER', 'EXPIRED'),
-('PARAMETER', 'PARAMETER_ID'),
-('PARAMETER', 'PARAMETER_VALUE'),
-('PARAMETER', 'SUBSYSTEM_ID'),
-('PARAMETER_ID', 'PARAMETER_ID'),
-('PARTNER', 'ACTIVITY'),
-('PARTNER', 'COMPANY_ID'),
-('PARTNER', 'CREATED'),
-('PARTNER', 'EXPIRED'),
-('PARTNER', 'FREQUENCY_ID'),
-('PARTNER', 'LANGUAGE_ID'),
-('PARTNER', 'MEETING_DAY'),
-('PARTNER', 'PARTNER_ID'),
-('PARTNER', 'PERSON_ID'),
-('PARTNER', 'USER_ID'),
-('PARTNER_GROUP', 'ACTIVITY'),
-('PARTNER_GROUP', 'COMPANY_ID'),
-('PARTNER_GROUP', 'CREATED'),
-('PARTNER_GROUP', 'CREATION_DATE'),
-('PARTNER_GROUP', 'EXPIRED'),
-('PARTNER_GROUP', 'FREQUENCY_ID'),
-('PARTNER_GROUP', 'GROUP_DESCRIPTION'),
-('PARTNER_GROUP', 'LANGUAGE_ID'),
-('PARTNER_GROUP', 'MEETING_DAY'),
-('PARTNER_GROUP', 'PARTNER_GROUP_ID'),
-('PARTNER_GROUP', 'USER_ID'),
-('PARTNER_GROUP_ID', 'PARTNER_GROUP_ID'),
-('PARTNER_GROUP_MEMBER', 'OBSERVATIONS'),
-('PARTNER_GROUP_MEMBER', 'PARTNER_GROUP_ID'),
-('PARTNER_GROUP_MEMBER', 'PERSON_ID'),
-('PARTNER_GROUP_MEMBER', 'RESPONSABILITY_ID'),
-('PARTNER_ID', 'PARTNER_ID'),
-('PERSON', 'CITY_ID'),
-('PERSON', 'CIVIL_STATUS_ID'),
-('PERSON', 'COMPANY_ID'),
-('PERSON', 'COUNTRY_ID'),
-('PERSON', 'CREATED'),
-('PERSON', 'DATE_OF_BIRTH'),
-('PERSON', 'DISTRICT_ID'),
-('PERSON', 'EXPIRED'),
-('PERSON', 'GENDER_TYPE_ID'),
-('PERSON', 'IDENTIFICATION_NUMBER'),
-('PERSON', 'IDENTIFICATION_TYPE_ID'),
-('PERSON', 'LAST_NAME'),
-('PERSON', 'NAME'),
-('PERSON', 'PERSON_ID'),
-('PERSON', 'PROFESSION_TYPE_ID'),
-('PERSON', 'PROVINCE_ID'),
-('PERSON', 'SECOND_LAST_NAME'),
-('PERSON_ADDRESS', 'ADDRESS_DESCRIPTION'),
-('PERSON_ADDRESS', 'ADDRESS_SEQUENCE'),
-('PERSON_ADDRESS', 'ADDRESS_TYPE_ID'),
-('PERSON_ADDRESS', 'CITY_ID'),
-('PERSON_ADDRESS', 'COMPANY_ID'),
-('PERSON_ADDRESS', 'COUNTRY_ID'),
-('PERSON_ADDRESS', 'CREATED'),
-('PERSON_ADDRESS', 'DISTRICT_ID'),
-('PERSON_ADDRESS', 'EXPIRED'),
-('PERSON_ADDRESS', 'PERSON_ID'),
-('PERSON_ADDRESS', 'PROVINCE_ID'),
-('PERSON_ID', 'PERSON_ID'),
-('PERSON_PHONE', 'AREA_CODE'),
-('PERSON_PHONE', 'COMPANY_ID'),
-('PERSON_PHONE', 'CREATED'),
-('PERSON_PHONE', 'EXPIRED'),
-('PERSON_PHONE', 'PERSON_ID'),
-('PERSON_PHONE', 'PHONE_NUMBER'),
-('PERSON_PHONE', 'PHONE_SEQUENCE'),
-('PERSON_PHONE', 'PHONE_TYPE_ID'),
-('PERSON_TYPE', 'COMPANY_ID'),
-('PERSON_TYPE', 'LANGUAGE_ID'),
-('PERSON_TYPE', 'NAME'),
-('PERSON_TYPE', 'PERSON_TYPE_ID'),
-('PERSON_TYPE_ID', 'PERSON_TYPE_ID'),
-('PHONE_TYPE', 'COMPANY_ID'),
-('PHONE_TYPE', 'LANGUAGE_ID'),
-('PHONE_TYPE', 'NAME'),
-('PHONE_TYPE', 'PHONE_TYPE_ID'),
-('PHONE_TYPE_ID', 'PHONE_TYPE_ID'),
-('PROCESS', 'COMPANY_ID'),
-('PROCESS', 'CREATED'),
-('PROCESS', 'DATAFILE_ID'),
-('PROCESS', 'ENABLE'),
-('PROCESS', 'EXPIRED'),
-('PROCESS', 'LANGUAGE_ID'),
-('PROCESS', 'MENU'),
-('PROCESS', 'MODULE_ID'),
-('PROCESS', 'NAME'),
-('PROCESS', 'PROCESS_ID'),
-('PROCESS', 'SUBSYSTEM_ID'),
-('PROCESS', 'URL'),
-('PROCESS_COMPONENT', 'AUTHORIZE'),
-('PROCESS_COMPONENT', 'COMPANY_ID'),
-('PROCESS_COMPONENT', 'COMPONENT_ID'),
-('PROCESS_COMPONENT', 'ENABLE'),
-('PROCESS_COMPONENT', 'MODULE_ID'),
-('PROCESS_COMPONENT', 'PROCESS_ID'),
-('PROCESS_COMPONENT', 'PROCESS_SEQUENCE'),
-('PROCESS_COMPONENT', 'SUBSYSTEM_ID'),
-('PROCESS_COMPONENT', 'TYPE_ID'),
-('PROCESS_ID', 'MODULE_ID'),
-('PROCESS_ID', 'PROCESS_ID'),
-('PROCESS_ID', 'SUBSYSTEM_ID'),
-('PRODUCT_ASESSOR', 'COMPANY_ID'),
-('PRODUCT_ASESSOR', 'LANGUAGE_ID'),
-('PRODUCT_ASESSOR', 'OBSERVATIONS'),
-('PRODUCT_ASESSOR', 'PRODUCT_ID'),
-('PRODUCT_ASESSOR', 'USER_ID'),
-('PRODUCT_ASESSOR_ID', 'PRODUCT_ID'),
-('PRODUCT_ASESSOR_ID', 'USER_ID'),
-('PRODUCT_MICROCREDIT', 'COMPANY_ID'),
-('PRODUCT_MICROCREDIT', 'CREATED'),
-('PRODUCT_MICROCREDIT', 'CURRENCY_ID'),
-('PRODUCT_MICROCREDIT', 'DESCRIPTION'),
-('PRODUCT_MICROCREDIT', 'EXPIRED'),
-('PRODUCT_MICROCREDIT', 'LANGUAGE_ID'),
-('PRODUCT_MICROCREDIT', 'MAX_AMOUNT'),
-('PRODUCT_MICROCREDIT', 'MAX_PERIOD'),
-('PRODUCT_MICROCREDIT', 'MIN_AMOUNT'),
-('PRODUCT_MICROCREDIT', 'MIN_PERIOD'),
-('PRODUCT_MICROCREDIT', 'PRODUCT_ID'),
-('PRODUCT_MICROCREDIT', 'RATE'),
-('PRODUCT_MICROCREDIT_ID', 'PRODUCT_ID'),
-('PROFESSION_TYPE', 'COMPANY_ID'),
-('PROFESSION_TYPE', 'LANGUAGE_ID'),
-('PROFESSION_TYPE', 'NAME'),
-('PROFESSION_TYPE', 'PROFESSION_TYPE_ID'),
-('PROFESSION_TYPE_ID', 'PROFESSION_TYPE_ID'),
-('PROFILE', 'COMPANY_ID'),
-('PROFILE', 'DESCRIPTION'),
-('PROFILE', 'LANGUAGE_ID'),
-('PROFILE', 'NAME'),
-('PROFILE', 'PROFILE_ID'),
-('PROFILE_ID', 'PROFILE_ID'),
-('PROVINCE', 'COMPANY_ID'),
-('PROVINCE', 'COUNTRY_ID'),
-('PROVINCE', 'LANGUAGE_ID'),
-('PROVINCE', 'NAME'),
-('PROVINCE', 'PROVINCE_ID'),
-('PROVINCE_ID', 'COUNTRY_ID'),
-('PROVINCE_ID', 'PROVINCE_ID'),
-('QUOTA_TYPE', 'COMPANY_ID'),
-('QUOTA_TYPE', 'DESCRIPTION'),
-('QUOTA_TYPE', 'LANGUAGE_ID'),
-('QUOTA_TYPE', 'QUOTA_TYPE_ID'),
-('QUOTA_TYPE_ID', 'QUOTA_TYPE_ID'),
-('RECOMMENDATION', 'COMPANY_ID'),
-('RECOMMENDATION', 'CREATED'),
-('RECOMMENDATION', 'CREDIT_HISTORY'),
-('RECOMMENDATION', 'DOCUMENTS'),
-('RECOMMENDATION', 'ECONOMIC_UNIT'),
-('RECOMMENDATION', 'EXPIRED'),
-('RECOMMENDATION', 'FAMILY_UNIT'),
-('RECOMMENDATION', 'LANGUAGE_ID'),
-('RECOMMENDATION', 'PAYMENT_MORALE'),
-('RECOMMENDATION', 'PROPOSAL'),
-('RECOMMENDATION', 'SOLICITUDE_ID'),
-('RECOMMENDATION_ID', 'SOLICITUDE_ID'),
-('RESPONSABILITY', 'COMPANY_ID'),
-('RESPONSABILITY', 'CREATED'),
-('RESPONSABILITY', 'DESCRIPTION'),
-('RESPONSABILITY', 'EXPIRED'),
-('RESPONSABILITY', 'LANGUAGE_ID'),
-('RESPONSABILITY', 'NAME'),
-('RESPONSABILITY', 'RESPONSABILITY_ID'),
-('RESPONSABILITY_ID', 'RESPONSABILITY_ID'),
-('RESPONSE', 'COMPANY_ID'),
-('RESPONSE', 'DESCRIPTION'),
-('RESPONSE', 'LANGUAGE_ID'),
-('RESPONSE', 'RESPONSE_ID'),
-('RESPONSE_ID', 'RESPONSE_ID'),
-('ROLE', 'COMPANY_ID'),
-('ROLE', 'CREATED'),
-('ROLE', 'DAY_ID'),
-('ROLE', 'EDITABLE'),
-('ROLE', 'EXPIRED'),
-('ROLE', 'HOUR_FROM'),
-('ROLE', 'HOUR_TO'),
-('ROLE', 'MODULE_ID'),
-('ROLE', 'PROCESS_ID'),
-('ROLE', 'PROFILE_ID'),
-('ROLE', 'SUBSYSTEM_ID'),
-('SEQUENTIAL', 'COMPANY_ID'),
-('SEQUENTIAL', 'SEQUENTIAL_ID'),
-('SEQUENTIAL', 'SEQUENTIAL_VALUE'),
-('SEQUENTIAL_ID', 'SEQUENTIAL_ID'),
-('SOLICITUDE', 'ACCOUNT'),
-('SOLICITUDE', 'AMOUNT'),
-('SOLICITUDE', 'APPROVAL_DATE'),
-('SOLICITUDE', 'ASSESSOR'),
-('SOLICITUDE', 'COMPANY_ID'),
-('SOLICITUDE', 'CREATED'),
-('SOLICITUDE', 'DESTINATION_DESCRIPTION'),
-('SOLICITUDE', 'DISBURSEMENT_DATE'),
-('SOLICITUDE', 'EXPIRATION_DATE'),
-('SOLICITUDE', 'EXPIRED'),
-('SOLICITUDE', 'FUNDS_DESTINATION_ID'),
-('SOLICITUDE', 'GROUP_CLIENT_ID'),
-('SOLICITUDE', 'INITIAL_PAY_DATE'),
-('SOLICITUDE', 'INSTRUMENTATION_DATE'),
-('SOLICITUDE', 'LANGUAGE_ID'),
-('SOLICITUDE', 'NUMBER_QUOTAS'),
-('SOLICITUDE', 'NUMBER_RENEWAL'),
-('SOLICITUDE', 'OPERATIVE_CONDITION_ID'),
-('SOLICITUDE', 'PARTNER_CLIENT_ID'),
-('SOLICITUDE', 'PAYMENT_FREQUENCY_ID'),
-('SOLICITUDE', 'PRODUCT_ID'),
-('SOLICITUDE', 'QUOTA_TYPE_ID'),
-('SOLICITUDE', 'SOLICITUDE_DATE'),
-('SOLICITUDE', 'SOLICITUDE_ID'),
-('SOLICITUDE', 'STATUS_ID'),
-('SOLICITUDE', 'TERM'),
-('SOLICITUDE_ID', 'SOLICITUDE_ID'),
-('SOLICITUDE_STATUS', 'COMPANY_ID'),
-('SOLICITUDE_STATUS', 'DESCRIPTION'),
-('SOLICITUDE_STATUS', 'LANGUAGE_ID'),
-('SOLICITUDE_STATUS', 'STATUS_ID'),
-('SOLICITUDE_STATUS_ID', 'STATUS_ID'),
-('SUBSYSTEM', 'COMPANY_ID'),
-('SUBSYSTEM', 'LANGUAGE_ID'),
-('SUBSYSTEM', 'NAME'),
-('SUBSYSTEM', 'SUBSYSTEM_ID'),
-('SUBSYSTEM_ID', 'SUBSYSTEM_ID'),
-('USER_ACCESS', 'ANSWER'),
-('USER_ACCESS', 'COMPANY_ID'),
-('USER_ACCESS', 'CREATED'),
-('USER_ACCESS', 'EXPIRED'),
-('USER_ACCESS', 'LAST_CHANGE'),
-('USER_ACCESS', 'QUESTION'),
-('USER_ACCESS', 'USER_ID'),
-('USER_ACCESS', 'USER_KEY'),
-('USER_ACCOUNT', 'COMPANY_ID'),
-('USER_ACCOUNT', 'CREATED'),
-('USER_ACCOUNT', 'EMAIL'),
-('USER_ACCOUNT', 'EXPIRED'),
-('USER_ACCOUNT', 'LANGUAGE_ID'),
-('USER_ACCOUNT', 'NAME'),
-('USER_ACCOUNT', 'PERSON_ID'),
-('USER_ACCOUNT', 'USER_ID'),
-('USER_ACCOUNT', 'USER_STATUS_ID'),
-('USER_ACCOUNT', 'USER_TYPE_ID'),
-('USER_ACCOUNT_ID', 'USER_ID'),
-('USER_PROFILE', 'COMPANY_ID'),
-('USER_PROFILE', 'CREATED'),
-('USER_PROFILE', 'EXPIRED'),
-('USER_PROFILE', 'PROFILE_ID'),
-('USER_PROFILE', 'USER_ID'),
-('USER_SESSION', 'COMPANY_ID'),
-('USER_SESSION', 'CREATED'),
-('USER_SESSION', 'EXPIRED'),
-('USER_SESSION', 'HOST_ID'),
-('USER_SESSION', 'SESSION_ID'),
-('USER_SESSION', 'USER_ID'),
-('USER_STATUS', 'COMPANY_ID'),
-('USER_STATUS', 'LANGUAGE_ID'),
-('USER_STATUS', 'NAME'),
-('USER_STATUS', 'USER_STATUS_ID'),
-('USER_STATUS_ID', 'USER_STATUS_ID'),
-('USER_TYPE', 'COMPANY_ID'),
-('USER_TYPE', 'LANGUAGE_ID'),
-('USER_TYPE', 'NAME'),
-('USER_TYPE', 'USER_TYPE_ID'),
-('USER_TYPE_ID', 'USER_TYPE_ID'),
-('ZONE_ASESSOR', 'GEOGRAPHIC_ZONE_ID'),
-('ZONE_ASESSOR', 'OBSERVATIONS'),
-('ZONE_ASESSOR', 'USER_ID');
 
 -- --------------------------------------------------------
 
@@ -1688,231 +907,6 @@ CREATE TABLE IF NOT EXISTS `ENTITY_RELATIONSHIP` (
 -- Volcar la base de datos para la tabla `ENTITY_RELATIONSHIP`
 --
 
-INSERT INTO `ENTITY_RELATIONSHIP` (`COMPANY_ID`, `RELATIONSHIP_ID`, `RELATIONSHIP_ORDER`, `TABLE_FROM`, `FIELD_FROM`, `TABLE_TO`, `FIELD_TO`) VALUES
-('ALL', 'CITY_ID_PROVINCE_ID_FK', 1, 'CITY_ID', 'COUNTRY_ID', 'PROVINCE_ID', 'COUNTRY_ID'),
-('ALL', 'CITY_ID_PROVINCE_ID_FK', 2, 'CITY_ID', 'PROVINCE_ID', 'PROVINCE_ID', 'PROVINCE_ID'),
-('ALL', 'COMPONENT_COM_TYPE_ID_FK', 1, 'COMPONENT', 'TYPE_ID', 'COMPONENT_TYPE', 'COMPONENT_TYPE_ID'),
-('ALL', 'COMPONENT_SUBSYSTEM_ID_FK', 1, 'COMPONENT', 'SUBSYSTEM_ID', 'SUBSYSTEM_ID', 'SUBSYSTEM_ID'),
-('ALL', 'DATABASE_TYPE_DATA_TYPE_FK', 1, 'DATABASE_TYPE', 'DATA_TYPE_ID', 'DATA_TYPE', 'DATA_TYPE_ID'),
-('ALL', 'DATAFILE_DATAFILE_TYPE_FK', 1, 'DATAFILE', 'DATAFILE_TYPE_ID', 'DATAFILE_TYPE', 'DATAFILE_TYPE_ID'),
-('ALL', 'DISTRICT_ID_CITY_ID_FK', 1, 'DISTRICT_ID', 'COUNTRY_ID', 'CITY_ID', 'COUNTRY_ID'),
-('ALL', 'DISTRICT_ID_CITY_ID_FK', 2, 'DISTRICT_ID', 'PROVINCE_ID', 'CITY_ID', 'PROVINCE_ID'),
-('ALL', 'DISTRICT_ID_CITY_ID_FK', 3, 'DISTRICT_ID', 'CITY_ID', 'CITY_ID', 'CITY_ID'),
-('ALL', 'ENTITY_FIELD_DATA_TYPE_FK', 1, 'ENTITY_FIELD', 'DATA_TYPE_ID', 'DATA_TYPE', 'DATA_TYPE_ID'),
-('ALL', 'ENTITY_FIELD_ID_TABLE_ID_FK', 1, 'ENTITY_FIELD_ID', 'TABLE_ID', 'ENTITY_TABLE_ID', 'TABLE_ID'),
-('ALL', 'ENTITY_FIELD_SEQUENTIAL_ID_FK', 1, 'ENTITY_FIELD', 'SEQUENTIAL_ID', 'SEQUENTIAL_ID', 'SEQUENTIAL_ID'),
-('ALL', 'ENTITY_RELATIONSHIP_FROM_FK', 1, 'ENTITY_RELATIONSHIP', 'TABLE_FROM', 'ENTITY_FIELD_ID', 'TABLE_ID'),
-('ALL', 'ENTITY_RELATIONSHIP_FROM_FK', 2, 'ENTITY_RELATIONSHIP', 'FIELD_FROM', 'ENTITY_FIELD_ID', 'FIELD_ID'),
-('ALL', 'ENTITY_RELATIONSHIP_TO_FK', 1, 'ENTITY_RELATIONSHIP', 'TABLE_TO', 'ENTITY_FIELD_ID', 'TABLE_ID'),
-('ALL', 'ENTITY_RELATIONSHIP_TO_FK', 2, 'ENTITY_RELATIONSHIP', 'FIELD_TO', 'ENTITY_FIELD_ID', 'FIELD_ID'),
-('ALL', 'HOST_CHANNEL_ID_FK', 1, 'HOST', 'CHANNEL_ID', 'CHANNEL', 'CHANNEL_ID'),
-('ALL', 'MIC_ACC_FREQ_ID_FK', 1, 'MICRO_ACCOUNT', 'PAYMENT_FREQUENCY_ID', 'FREQUENCY_ID', 'FREQUENCY_ID'),
-('ALL', 'MIC_ACC_MIC_ACC_ID_FK', 1, 'MICRO_ACCOUNT', 'PREVIOUS_ACCOUNT', 'MICRO_ACCOUNT_ID', 'ACCOUNT_ID'),
-('ALL', 'MIC_ACC_PARTNER_GRP_ID_FK', 1, 'MICRO_ACCOUNT', 'GROUP_CLIENT_ID', 'PARTNER_GROUP_ID', 'PARTNER_GROUP_ID'),
-('ALL', 'MIC_ACC_PARTNER_ID_FK', 1, 'MICRO_ACCOUNT', 'PARTNER_CLIENT_ID', 'PARTNER_ID', 'PARTNER_ID'),
-('ALL', 'MIC_ACC_PRODUCT_ID_FK', 1, 'MICRO_ACCOUNT', 'PRODUCT_ID', 'PRODUCT_MICROCREDIT_ID', 'PRODUCT_ID'),
-('ALL', 'MIC_ACC_QUOTA_TYPE_ID_FK', 1, 'MICRO_ACCOUNT', 'QUOTA_TYPE_ID', 'QUOTA_TYPE_ID', 'QUOTA_TYPE_ID'),
-('ALL', 'MIC_ACC_QUO_ACC_ID_FK', 1, 'MICRO_ACCOUNT_QUOTA', 'ACCOUNT_ID', 'MICRO_ACCOUNT_ID', 'ACCOUNT_ID'),
-('ALL', 'MIC_ACC_SOLICITUDE_ID_FK', 1, 'MICRO_ACCOUNT', 'SOLICITUDE_ID', 'SOLICITUDE_ID', 'SOLICITUDE_ID'),
-('ALL', 'MIC_ACC_STATUS_ID_FK', 1, 'MICRO_ACCOUNT', 'STATUS_ID', 'ACCOUNT_STATUS_ID', 'STATUS_ID'),
-('ALL', 'MIC_ACC_USER_ID_FK', 1, 'MICRO_ACCOUNT', 'ASSESSOR', 'USER_ACCOUNT_ID', 'USER_ID'),
-('ALL', 'MODULE_ID_SUBSYSTEM_ID_FK', 1, 'MODULE_ID', 'SUBSYSTEM_ID', 'SUBSYSTEM_ID', 'SUBSYSTEM_ID'),
-('ALL', 'PARAMETER_DATA_TYPE_FK', 1, 'PARAMETER', 'DATA_TYPE_ID', 'DATA_TYPE', 'DATA_TYPE_ID'),
-('ALL', 'PARTNER_FREQ_ID_FK', 1, 'PARTNER', 'FREQUENCY_ID', 'FREQUENCY_ID', 'FREQUENCY_ID'),
-('ALL', 'PARTNER_GROUP_FREQ_ID_FK', 1, 'PARTNER_GROUP', 'FREQUENCY_ID', 'FREQUENCY_ID', 'FREQUENCY_ID'),
-('ALL', 'PARTNER_GROUP_PAR_GRP_ID_FK', 1, 'PARTNER_GROUP', 'PARTNER_GROUP_ID', 'PARTNER_GROUP_ID', 'PARTNER_GROUP_ID'),
-('ALL', 'PARTNER_GROUP_USER_ID_FK', 1, 'PARTNER_GROUP', 'USER_ID', 'USER_ACCOUNT_ID', 'USER_ID'),
-('ALL', 'PARTNER_GRP_MEM_GRP_ID_FK', 1, 'PARTNER_GROUP_MEMBER', 'PARTNER_GROUP_ID', 'PARTNER_GROUP_ID', 'PARTNER_GROUP_ID'),
-('ALL', 'PARTNER_GRP_MEM_PERSON_ID_FK', 1, 'PARTNER_GROUP_MEMBER', 'PERSON_ID', 'PERSON_ID', 'PERSON_ID'),
-('ALL', 'PARTNER_GRP_MEM_RESP_ID_FK', 1, 'PARTNER_GROUP_MEMBER', 'RESPONSABILITY_ID', 'RESPONSABILITY_ID', 'RESPONSABILITY_ID'),
-('ALL', 'PARTNER_PERSON_ID_FK', 1, 'PARTNER', 'PERSON_ID', 'PERSON_ID', 'PERSON_ID'),
-('ALL', 'PARTNER_USER_ID_FK', 1, 'PARTNER', 'USER_ID', 'USER_ACCOUNT_ID', 'USER_ID'),
-('ALL', 'PERSON_ADDRESS_DISTRICT_ID_FK', 1, 'PERSON_ADDRESS', 'COUNTRY_ID', 'DISTRICT_ID', 'COUNTRY_ID'),
-('ALL', 'PERSON_ADDRESS_DISTRICT_ID_FK', 2, 'PERSON_ADDRESS', 'PROVINCE_ID', 'DISTRICT_ID', 'PROVINCE_ID'),
-('ALL', 'PERSON_ADDRESS_DISTRICT_ID_FK', 3, 'PERSON_ADDRESS', 'CITY_ID', 'DISTRICT_ID', 'CITY_ID'),
-('ALL', 'PERSON_ADDRESS_DISTRICT_ID_FK', 4, 'PERSON_ADDRESS', 'DISTRICT_ID', 'DISTRICT_ID', 'DISTRICT_ID'),
-('ALL', 'PERSON_CITY_ID_FK', 1, 'PERSON', 'COUNTRY_ID', 'CITY_ID', 'COUNTRY_ID'),
-('ALL', 'PERSON_CITY_ID_FK', 2, 'PERSON', 'PROVINCE_ID', 'CITY_ID', 'PROVINCE_ID'),
-('ALL', 'PERSON_CITY_ID_FK', 3, 'PERSON', 'CITY_ID', 'CITY_ID', 'CITY_ID'),
-('ALL', 'PERSON_CIVIL_STATUS_ID_FK', 1, 'PERSON', 'CIVIL_STATUS_ID', 'CIVIL_STATUS_ID', 'CIVIL_STATUS_ID'),
-('ALL', 'PERSON_GENDER_TYPE_ID_FK', 1, 'PERSON', 'GENDER_TYPE_ID', 'GENDER_TYPE_ID', 'GENDER_TYPE_ID'),
-('ALL', 'PERSON_IDENTIF_TYPE_ID_FK', 1, 'PERSON', 'IDENTIFICATION_TYPE_ID', 'IDENTIFICATION_TYPE_ID', 'IDENTIFICATION_TYPE_ID'),
-('ALL', 'PERSON_PROFESSION_TYPE_ID_FK', 1, 'PERSON', 'PROFESSION_TYPE_ID', 'PROFESSION_TYPE_ID', 'PROFESSION_TYPE_ID'),
-('ALL', 'PROCESS_COMP_COMPONENT_ID_FK', 1, 'PROCESS_COMPONENT', 'COMPONENT_ID', 'COMPONENT_ID', 'COMPONENT_ID'),
-('ALL', 'PROCESS_COMP_COMPONENT_ID_FK', 2, 'PROCESS_COMPONENT', 'TYPE_ID', 'COMPONENT_ID', 'TYPE_ID'),
-('ALL', 'PROCESS_COMP_PROCESS_ID_FK', 1, 'PROCESS_COMPONENT', 'SUBSYSTEM_ID', 'PROCESS_ID', 'SUBSYSTEM_ID'),
-('ALL', 'PROCESS_COMP_PROCESS_ID_FK', 2, 'PROCESS_COMPONENT', 'MODULE_ID', 'PROCESS_ID', 'MODULE_ID'),
-('ALL', 'PROCESS_COMP_PROCESS_ID_FK', 3, 'PROCESS_COMPONENT', 'PROCESS_ID', 'PROCESS_ID', 'PROCESS_ID'),
-('ALL', 'PROCESS_DATAFILE_ID_FK', 1, 'PROCESS', 'DATAFILE_ID', 'DATAFILE_ID', 'DATAFILE_ID'),
-('ALL', 'PROCESS_ID_MODULE_ID_FK', 1, 'PROCESS_ID', 'SUBSYSTEM_ID', 'MODULE_ID', 'SUBSYSTEM_ID'),
-('ALL', 'PROCESS_ID_MODULE_ID_FK', 2, 'PROCESS_ID', 'MODULE_ID', 'MODULE_ID', 'MODULE_ID'),
-('ALL', 'PRODUCT_MIC_CURRENCY_ID_FK', 1, 'PRODUCT_MICROCREDIT', 'CURRENCY_ID', 'CURRENCY_ID', 'CURRENCY_ID'),
-('ALL', 'PROD_ASSESSOR_PRODUCT_ID_FK', 1, 'PRODUCT_ASESSOR', 'PRODUCT_ID', 'PRODUCT_MICROCREDIT_ID', 'PRODUCT_ID'),
-('ALL', 'PROD_ASSESSOR_USER_ID_FK', 1, 'PRODUCT_ASESSOR', 'USER_ID', 'USER_ACCOUNT_ID', 'USER_ID'),
-('ALL', 'PROVINCE_ID_COUNTRY_ID_FK', 1, 'PROVINCE_ID', 'COUNTRY_ID', 'COUNTRY_ID', 'COUNTRY_ID'),
-('ALL', 'RECOMMENDATION_SOLICITUDE_ID', 1, 'RECOMMENDATION', 'SOLICITUDE_ID', 'SOLICITUDE_ID', 'SOLICITUDE_ID'),
-('ALL', 'ROLE_PROCESS_ID_FK', 1, 'ROLE', 'SUBSYSTEM_ID', 'PROCESS_ID', 'SUBSYSTEM_ID'),
-('ALL', 'ROLE_PROCESS_ID_FK', 2, 'ROLE', 'MODULE_ID', 'PROCESS_ID', 'MODULE_ID'),
-('ALL', 'ROLE_PROCESS_ID_FK', 3, 'ROLE', 'PROCESS_ID', 'PROCESS_ID', 'PROCESS_ID'),
-('ALL', 'SOLICITUDE_FUNDS_DEST_ID_FK', 1, 'SOLICITUDE', 'FUNDS_DESTINATION_ID', 'FUNDS_DESTINATION_ID', 'FUNDS_DESTINATION_ID'),
-('ALL', 'SOLICITUDE_GROUP_CLIENT_ID_FK', 1, 'SOLICITUDE', 'GROUP_CLIENT_ID', 'PARTNER_GROUP_ID', 'PARTNER_GROUP_ID'),
-('ALL', 'SOLICITUDE_OPE_COND_ID_FK', 1, 'SOLICITUDE', 'OPERATIVE_CONDITION_ID', 'OPERATIVE_CONDITION_ID', 'OPERATIVE_CONDITION_ID'),
-('ALL', 'SOLICITUDE_PARTNER_CLIE_ID_FK', 1, 'SOLICITUDE', 'PARTNER_CLIENT_ID', 'PARTNER_ID', 'PARTNER_ID'),
-('ALL', 'SOLICITUDE_PAY_FREQ_ID_FK', 1, 'SOLICITUDE', 'PAYMENT_FREQUENCY_ID', 'FREQUENCY_ID', 'FREQUENCY_ID'),
-('ALL', 'SOLICITUDE_PRODUCT_ID_FK', 1, 'SOLICITUDE', 'PRODUCT_ID', 'PRODUCT_MICROCREDIT_ID', 'PRODUCT_ID'),
-('ALL', 'SOLICITUDE_QUOTA_TYPE_ID_FK', 1, 'SOLICITUDE', 'QUOTA_TYPE_ID', 'QUOTA_TYPE_ID', 'QUOTA_TYPE_ID'),
-('ALL', 'SOLICITUDE_SOL_STATUS_ID_FK', 1, 'SOLICITUDE', 'STATUS_ID', 'SOLICITUDE_STATUS_ID', 'STATUS_ID'),
-('ALL', 'SOLICITUDE_USER_ACCOUNT_ID_FK', 1, 'SOLICITUDE', 'ASSESSOR', 'USER_ACCOUNT_ID', 'USER_ID'),
-('ALL', 'USER_ACCESS_USER_ACCOUNT_ID_FK', 1, 'USER_ACCESS', 'USER_ID', 'USER_ACCOUNT_ID', 'USER_ID'),
-('ALL', 'USER_ACCOUNT_PERSON_ID_FK', 1, 'USER_ACCOUNT', 'PERSON_ID', 'PERSON_ID', 'PERSON_ID'),
-('ALL', 'USER_ACCOUNT_USER_STATUS_ID_FK', 1, 'USER_ACCOUNT', 'USER_STATUS_ID', 'USER_STATUS_ID', 'USER_STATUS_ID'),
-('ALL', 'USER_ACCOUNT_USER_TYPE_ID_FK', 1, 'USER_ACCOUNT', 'USER_TYPE_ID', 'USER_TYPE_ID', 'USER_TYPE_ID'),
-('ALL', 'USER_PROF_USER_ACCOUNT_ID_FK', 1, 'USER_PROFILE', 'USER_ID', 'USER_ACCOUNT_ID', 'USER_ID'),
-('ALL', 'USER_SESSION_HOST_ID_FK', 1, 'USER_SESSION', 'HOST_ID', 'HOST_ID', 'HOST_ID'),
-('ALL', 'USER_SESS_USER_ACCOUNT_ID_FK', 1, 'USER_SESSION', 'USER_ID', 'USER_ACCOUNT_ID', 'USER_ID'),
-('ALL', 'ZONE_ASE_GEO_ZONE_ID_FK', 1, 'ZONE_ASESSOR', 'GEOGRAPHIC_ZONE_ID', 'GEOGRAPHIC_ZONE_ID', 'GEOGRAPHIC_ZONE_ID'),
-('ALL', 'ZONE_ASE_USER_ID_FK', 1, 'ZONE_ASESSOR', 'USER_ID', 'USER_ACCOUNT_ID', 'USER_ID'),
-('MXT', 'ACCOUNT_STATUS_COMPANY_FK', 1, 'ACCOUNT_STATUS', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'ACCOUNT_STATUS_ID_FK', 1, 'ACCOUNT_STATUS', 'STATUS_ID', 'ACCOUNT_STATUS_ID', 'STATUS_ID'),
-('MXT', 'ACCOUNT_STATUS_LANGUAGE_FK', 1, 'ACCOUNT_STATUS', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'ADDRESS_TYPE_COMPANY_FK', 1, 'ADDRESS_TYPE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'ADDRESS_TYPE_ID_FK', 1, 'ADDRESS_TYPE', 'ADDRESS_TYPE_ID', 'ADDRESS_TYPE_ID', 'ADDRESS_TYPE_ID'),
-('MXT', 'ADDRESS_TYPE_LANGUAGE_FK', 1, 'ADDRESS_TYPE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'CITY_COMPANY_FK', 1, 'CITY', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'CITY_ID_FK', 1, 'CITY', 'COUNTRY_ID', 'CITY_ID', 'COUNTRY_ID'),
-('MXT', 'CITY_ID_FK', 2, 'CITY', 'PROVINCE_ID', 'CITY_ID', 'PROVINCE_ID'),
-('MXT', 'CITY_ID_FK', 3, 'CITY', 'CITY_ID', 'CITY_ID', 'CITY_ID'),
-('MXT', 'CITY_LANGUAGE_FK', 1, 'CITY', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'CIVIL_STATUS_COMPANY_FK', 1, 'CIVIL_STATUS', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'CIVIL_STATUS_ID_FK', 1, 'CIVIL_STATUS', 'CIVIL_STATUS_ID', 'CIVIL_STATUS_ID', 'CIVIL_STATUS_ID'),
-('MXT', 'CIVIL_STATUS_LANGUAGE_FK', 1, 'CIVIL_STATUS', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'COMPONENT_COMPANY_FK', 1, 'COMPONENT', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'COMPONENT_ID_FK', 1, 'COMPONENT', 'COMPONENT_ID', 'COMPONENT_ID', 'COMPONENT_ID'),
-('MXT', 'COMPONENT_ID_FK', 2, 'COMPONENT', 'TYPE_ID', 'COMPONENT_ID', 'TYPE_ID'),
-('MXT', 'COUNTRY_COMPANY_FK', 1, 'COUNTRY', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'COUNTRY_ID_FK', 1, 'COUNTRY', 'COUNTRY_ID', 'COUNTRY_ID', 'COUNTRY_ID'),
-('MXT', 'COUNTRY_LANGUAGE_FK', 1, 'COUNTRY', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'CURRENCY_COMPANY_FK', 1, 'CURRENCY', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'CURRENCY_ID_FK', 1, 'CURRENCY', 'CURRENCY_ID', 'CURRENCY_ID', 'CURRENCY_ID'),
-('MXT', 'CURRENCY_LANGUAGE_FK', 1, 'CURRENCY', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'DATAFILE_COMPANY_FK', 1, 'DATAFILE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'DATAFILE_ID_FK', 1, 'DATAFILE', 'DATAFILE_ID', 'DATAFILE_ID', 'DATAFILE_ID'),
-('MXT', 'DISTRICT_COMPANY_FK', 1, 'DISTRICT', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'DISTRICT_ID_FK', 1, 'DISTRICT', 'COUNTRY_ID', 'DISTRICT_ID', 'COUNTRY_ID'),
-('MXT', 'DISTRICT_ID_FK', 2, 'DISTRICT', 'PROVINCE_ID', 'DISTRICT_ID', 'PROVINCE_ID'),
-('MXT', 'DISTRICT_ID_FK', 3, 'DISTRICT', 'CITY_ID', 'DISTRICT_ID', 'CITY_ID'),
-('MXT', 'DISTRICT_ID_FK', 4, 'DISTRICT', 'DISTRICT_ID', 'DISTRICT_ID', 'DISTRICT_ID'),
-('MXT', 'DISTRICT_LANGUAGE_FK', 1, 'DISTRICT', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'ENTITY_FIELD_COMPANY_FK', 1, 'ENTITY_FIELD', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'ENTITY_FIELD_ID_FK', 1, 'ENTITY_FIELD', 'TABLE_ID', 'ENTITY_FIELD_ID', 'TABLE_ID'),
-('MXT', 'ENTITY_FIELD_ID_FK', 2, 'ENTITY_FIELD', 'FIELD_ID', 'ENTITY_FIELD_ID', 'FIELD_ID'),
-('MXT', 'ENTITY_RELATIONSHIP_COMPANY_FK', 1, 'ENTITY_RELATIONSHIP', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'ENTITY_TABLE_COMPANY_FK', 1, 'ENTITY_TABLE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'ENTITY_TABLE_ID_FK', 1, 'ENTITY_TABLE', 'TABLE_ID', 'ENTITY_TABLE_ID', 'TABLE_ID'),
-('MXT', 'FREQUENCY_COMPANY_FK', 1, 'FREQUENCY', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'FREQUENCY_ID_FK', 1, 'FREQUENCY', 'FREQUENCY_ID', 'FREQUENCY_ID', 'FREQUENCY_ID'),
-('MXT', 'FREQUENCY_LANGUAGE_FK', 1, 'FREQUENCY', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'FUNDS_DESTINATION_COMPANY_FK', 1, 'FUNDS_DESTINATION', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'FUNDS_DESTINATION_ID_FK', 1, 'FUNDS_DESTINATION', 'FUNDS_DESTINATION_ID', 'FUNDS_DESTINATION_ID', 'FUNDS_DESTINATION_ID'),
-('MXT', 'FUNDS_DESTINATION_LANGUAGE_FK', 1, 'FUNDS_DESTINATION', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'GENDER_TYPE_ID_FK', 1, 'GENDER_TYPE', 'GENDER_TYPE_ID', 'GENDER_TYPE_ID', 'GENDER_TYPE_ID'),
-('MXT', 'GENDER_TYPE_LANGUAGE_FK', 1, 'GENDER_TYPE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'GEOGRAPHIC_ZONE_COMPANY_FK', 1, 'GEOGRAPHIC_ZONE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'GEOGRAPHIC_ZONE_ID_FK', 1, 'GEOGRAPHIC_ZONE', 'GEOGRAPHIC_ZONE_ID', 'GEOGRAPHIC_ZONE_ID', 'GEOGRAPHIC_ZONE_ID'),
-('MXT', 'GEOGRAPHIC_ZONE_LANGUAGE_FK', 1, 'GEOGRAPHIC_ZONE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'HOST_COMPANY_FK', 1, 'HOST', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'HOST_ID_FK', 1, 'HOST', 'HOST_ID', 'HOST_ID', 'HOST_ID'),
-('MXT', 'IDENTIFICATION_TYPE_COMPANY_FK', 1, 'IDENTIFICATION_TYPE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'IDENTIFICATION_TYPE_ID_FK', 1, 'IDENTIFICATION_TYPE', 'IDENTIFICATION_TYPE_ID', 'IDENTIFICATION_TYPE_ID', 'IDENTIFICATION_TYPE_ID'),
-('MXT', 'IDENT_LANGUAGE_FK', 1, 'IDENTIFICATION_TYPE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'MICRO_ACCOUNT_COMPANY_FK', 1, 'MICRO_ACCOUNT', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'MICRO_ACCOUNT_ID_FK', 1, 'MICRO_ACCOUNT', 'ACCOUNT_ID', 'MICRO_ACCOUNT_ID', 'ACCOUNT_ID'),
-('MXT', 'MICRO_ACCOUNT_QUOTA_COMPANY_FK', 1, 'MICRO_ACCOUNT_QUOTA', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'MICRO_ACCOUNT_QUOTA_ID_FK', 1, 'MICRO_ACCOUNT_QUOTA', 'ACCOUNT_ID', 'MICRO_ACCOUNT_QUOTA_ID', 'ACCOUNT_ID'),
-('MXT', 'MICRO_ACCOUNT_QUOTA_ID_FK', 2, 'MICRO_ACCOUNT_QUOTA', 'SUBACCOUNT', 'MICRO_ACCOUNT_QUOTA_ID', 'SUBACCOUNT'),
-('MXT', 'MODULE_COMPANY_FK', 1, 'MODULE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'MODULE_ID_FK', 1, 'MODULE', 'SUBSYSTEM_ID', 'MODULE_ID', 'SUBSYSTEM_ID'),
-('MXT', 'MODULE_ID_FK', 2, 'MODULE', 'MODULE_ID', 'MODULE_ID', 'MODULE_ID'),
-('MXT', 'MODULE_LANGUAGE_FK', 1, 'MODULE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'OPERATIVE_CONDITION_COMPANY_FK', 1, 'OPERATIVE_CONDITION', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'OPERATIVE_CONDITION_ID_FK', 1, 'OPERATIVE_CONDITION', 'OPERATIVE_CONDITION_ID', 'OPERATIVE_CONDITION_ID', 'OPERATIVE_CONDITION_ID'),
-('MXT', 'OPERA_LANGUAGE_FK', 1, 'OPERATIVE_CONDITION', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'PARAMETER_COMPANY_FK', 1, 'PARAMETER', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PARAMETER_ID_FK', 1, 'PARAMETER', 'PARAMETER_ID', 'PARAMETER_ID', 'PARAMETER_ID'),
-('MXT', 'PARTNER_COMPANY_FK', 1, 'PARTNER', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PARTNER_GROUP_COMPANY_FK', 1, 'PARTNER_GROUP', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PARTNER_GROUP_ID_FK', 1, 'PARTNER_GROUP', 'PARTNER_GROUP_ID', 'PARTNER_GROUP_ID', 'PARTNER_GROUP_ID'),
-('MXT', 'PARTNER_GROUP_LANGUAGE_FK', 1, 'PARTNER_GROUP', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'PARTNER_ID_FK', 1, 'PARTNER', 'PARTNER_ID', 'PARTNER_ID', 'PARTNER_ID'),
-('MXT', 'PARTNER_LANGUAGE_FK', 1, 'PARTNER', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'PERSON_ADDRESS_COMPANY_FK', 1, 'PERSON_ADDRESS', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PERSON_COMPANY_FK', 1, 'PERSON', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PERSON_ID_FK', 1, 'PERSON', 'PERSON_ID', 'PERSON_ID', 'PERSON_ID'),
-('MXT', 'PERSON_PHONE_COMPANY_FK', 1, 'PERSON_PHONE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PERSON_TYPE_COMPANY_FK', 1, 'PERSON_TYPE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PERSON_TYPE_ID_FK', 1, 'PERSON_TYPE', 'PERSON_TYPE_ID', 'PERSON_TYPE_ID', 'PERSON_TYPE_ID'),
-('MXT', 'PERSON_TYPE_LANGUAGE_FK', 1, 'PERSON_TYPE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'PHONE_TYPE_COMPANY_FK', 1, 'PHONE_TYPE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PHONE_TYPE_ID_FK', 1, 'PHONE_TYPE', 'PHONE_TYPE_ID', 'PHONE_TYPE_ID', 'PHONE_TYPE_ID'),
-('MXT', 'PHONE_TYPE_LANGUAGE_FK', 1, 'PHONE_TYPE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'PROCESS_COMPANY_FK', 1, 'PROCESS', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PROCESS_COMPONENT_COMPANY_FK', 1, 'PROCESS_COMPONENT', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PROCESS_ID_FK', 1, 'PROCESS', 'SUBSYSTEM_ID', 'PROCESS_ID', 'SUBSYSTEM_ID'),
-('MXT', 'PROCESS_ID_FK', 2, 'PROCESS', 'MODULE_ID', 'PROCESS_ID', 'MODULE_ID'),
-('MXT', 'PROCESS_ID_FK', 3, 'PROCESS', 'PROCESS_ID', 'PROCESS_ID', 'PROCESS_ID'),
-('MXT', 'PROCESS_LANGUAGE_FK', 1, 'PROCESS', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'PRODUCT_ASESSOR_COMPANY_FK', 1, 'PRODUCT_ASESSOR', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PRODUCT_ASESSOR_ID_FK', 1, 'PRODUCT_ASESSOR', 'USER_ID', 'PRODUCT_ASESSOR_ID', 'USER_ID'),
-('MXT', 'PRODUCT_ASESSOR_ID_FK', 2, 'PRODUCT_ASESSOR', 'PRODUCT_ID', 'PRODUCT_ASESSOR_ID', 'PRODUCT_ID'),
-('MXT', 'PRODUCT_ASESSOR_LANGUAGE_FK', 1, 'PRODUCT_ASESSOR', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'PRODUCT_MICROCREDIT_COMPANY_FK', 1, 'PRODUCT_MICROCREDIT', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PRODUCT_MICROCREDIT_ID_FK', 1, 'PRODUCT_MICROCREDIT', 'PRODUCT_ID', 'PRODUCT_MICROCREDIT_ID', 'PRODUCT_ID'),
-('MXT', 'PRODU_LANGUAGE_FK', 1, 'PRODUCT_MICROCREDIT', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'PROFESSION_TYPE_COMPANY_FK', 1, 'PROFESSION_TYPE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PROFESSION_TYPE_ID_FK', 1, 'PROFESSION_TYPE', 'PROFESSION_TYPE_ID', 'PROFESSION_TYPE_ID', 'PROFESSION_TYPE_ID'),
-('MXT', 'PROFESSION_TYPE_LANGUAGE_FK', 1, 'PROFESSION_TYPE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'PROFILE_COMPANY_FK', 1, 'PROFILE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PROFILE_ID_FK', 1, 'PROFILE', 'PROFILE_ID', 'PROFILE_ID', 'PROFILE_ID'),
-('MXT', 'PROFILE_LANGUAGE_FK', 1, 'PROFILE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'PROVINCE_COMPANY_FK', 1, 'PROVINCE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'PROVINCE_ID_FK', 1, 'PROVINCE', 'COUNTRY_ID', 'PROVINCE_ID', 'COUNTRY_ID'),
-('MXT', 'PROVINCE_ID_FK', 2, 'PROVINCE', 'PROVINCE_ID', 'PROVINCE_ID', 'PROVINCE_ID'),
-('MXT', 'PROVINCE_LANGUAGE_FK', 1, 'PROVINCE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'QUOTA_TYPE_COMPANY_FK', 1, 'QUOTA_TYPE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'QUOTA_TYPE_ID_FK', 1, 'QUOTA_TYPE', 'QUOTA_TYPE_ID', 'QUOTA_TYPE_ID', 'QUOTA_TYPE_ID'),
-('MXT', 'QUOTA_TYPE_LANGUAGE_FK', 1, 'QUOTA_TYPE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'RECOMMENDATION_COMPANY_FK', 1, 'RECOMMENDATION', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'RECOMMENDATION_ID_FK', 1, 'RECOMMENDATION', 'SOLICITUDE_ID', 'RECOMMENDATION_ID', 'SOLICITUDE_ID'),
-('MXT', 'RECOMMENDATION_LANGUAGE_FK', 1, 'RECOMMENDATION', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'RESPONSABILITY_COMPANY_FK', 1, 'RESPONSABILITY', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'RESPONSABILITY_ID_FK', 1, 'RESPONSABILITY', 'RESPONSABILITY_ID', 'RESPONSABILITY_ID', 'RESPONSABILITY_ID'),
-('MXT', 'RESPONSABILITY_LANGUAGE_FK', 1, 'RESPONSABILITY', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'RESPONSE_COMPANY_FK', 1, 'RESPONSE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'RESPONSE_ID_FK', 1, 'RESPONSE', 'RESPONSE_ID', 'RESPONSE_ID', 'RESPONSE_ID'),
-('MXT', 'RESPONSE_LANGUAGE_FK', 1, 'RESPONSE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'ROLE_COMPANY_FK', 1, 'ROLE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'SEQUENTIAL_COMPANY_FK', 1, 'SEQUENTIAL', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'SEQUENTIAL_ID_FK', 1, 'SEQUENTIAL', 'SEQUENTIAL_ID', 'SEQUENTIAL_ID', 'SEQUENTIAL_ID'),
-('MXT', 'SOLICITUDE_COMPANY_FK', 1, 'SOLICITUDE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'SOLICITUDE_ID_FK', 1, 'SOLICITUDE', 'SOLICITUDE_ID', 'SOLICITUDE_ID', 'SOLICITUDE_ID'),
-('MXT', 'SOLICITUDE_LANGUAGE_FK', 1, 'SOLICITUDE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'SOLICITUDE_STATUS_COMPANY_FK', 1, 'SOLICITUDE_STATUS', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'SOLICITUDE_STATUS_ID_FK', 1, 'SOLICITUDE_STATUS', 'STATUS_ID', 'SOLICITUDE_STATUS_ID', 'STATUS_ID'),
-('MXT', 'SOLICITUDE_STATUS_LANGUAGE_FK', 1, 'SOLICITUDE_STATUS', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'SUBSYSTEM_COMPANY_FK', 1, 'SUBSYSTEM', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'SUBSYSTEM_ID_FK', 1, 'SUBSYSTEM', 'SUBSYSTEM_ID', 'SUBSYSTEM_ID', 'SUBSYSTEM_ID'),
-('MXT', 'SUBSYSTEM_LANGUAGE_FK', 1, 'SUBSYSTEM', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'USER_ACCESS_COMPANY_FK', 1, 'USER_ACCESS', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'USER_ACCOUNT_COMPANY_FK', 1, 'USER_ACCOUNT', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'USER_ACCOUNT_ID_FK', 1, 'USER_ACCOUNT', 'USER_ID', 'USER_ACCOUNT_ID', 'USER_ID'),
-('MXT', 'USER_PROFILE_COMPANY_FK', 1, 'USER_PROFILE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'USER_SESSION_COMPANY_FK', 1, 'USER_SESSION', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'USER_STATUS_COMPANY_FK', 1, 'USER_STATUS', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'USER_STATUS_ID_FK', 1, 'USER_STATUS', 'USER_STATUS_ID', 'USER_STATUS_ID', 'USER_STATUS_ID'),
-('MXT', 'USER_STATUS_LANGUAGE_FK', 1, 'USER_STATUS', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID'),
-('MXT', 'USER_TYPE_COMPANY_FK', 1, 'USER_TYPE', 'COMPANY_ID', 'COMPANY', 'COMPANY_ID'),
-('MXT', 'USER_TYPE_ID_FK', 1, 'USER_TYPE', 'USER_TYPE_ID', 'USER_TYPE_ID', 'USER_TYPE_ID'),
-('MXT', 'USER_TYPE_LANGUAGE_FK', 1, 'USER_TYPE', 'LANGUAGE_ID', 'LANGUAGE', 'LANGUAGE_ID');
 
 -- --------------------------------------------------------
 
@@ -1940,68 +934,6 @@ CREATE TABLE IF NOT EXISTS `ENTITY_TABLE` (
 -- Volcar la base de datos para la tabla `ENTITY_TABLE`
 --
 
-INSERT INTO `ENTITY_TABLE` (`COMPANY_ID`, `TABLE_ID`, `HAS_TABLE_ID`, `PACKAGE_NAME`, `MULTI_COMPANY`, `MULTI_LANGUAGE`, `HISTORICAL_DATA`, `OPTIMISTIC_LOCKING`, `ENUMERATED_TYPES`, `CACHE_MEMORY`, `DESCRIPTION`) VALUES
-('ALL', 'ACCOUNT_STATUS', 1, 'microcredit', 1, 1, 0, 0, 0, 0, 'Account status'),
-('ALL', 'ADDRESS_TYPE', 1, 'person', 1, 1, 0, 0, 0, 0, 'Values of address types'),
-('ALL', 'CHANNEL', 0, 'security', 0, 0, 0, 0, 0, 0, 'Values of channels'),
-('ALL', 'CITY', 1, 'parameter', 1, 1, 0, 0, 0, 0, 'Values of cities'),
-('ALL', 'CIVIL_STATUS', 1, 'person', 1, 1, 0, 0, 0, 0, 'Values of civil statuses'),
-('ALL', 'COMPANY', 0, 'common', 0, 0, 0, 0, 0, 0, 'Values of companies'),
-('ALL', 'COMPONENT', 1, 'security', 1, 0, 0, 0, 0, 1, 'Values of components'),
-('ALL', 'COMPONENT_TYPE', 0, 'security', 0, 0, 0, 0, 0, 0, 'Values of component types'),
-('ALL', 'COUNTRY', 1, 'parameter', 1, 1, 0, 0, 0, 0, 'Values of countries'),
-('ALL', 'CURRENCY', 1, 'microcredit', 1, 1, 1, 0, 0, 0, 'Currency'),
-('ALL', 'DATABASE_TYPE', 0, 'common', 0, 0, 0, 0, 0, 0, 'Values of database types'),
-('ALL', 'DATAFILE', 1, 'parameter', 1, 0, 1, 1, 0, 0, 'Values of datafiles'),
-('ALL', 'DATAFILE_TYPE', 0, 'parameter', 0, 0, 0, 0, 1, 0, 'Values of datafile types'),
-('ALL', 'DATA_TYPE', 0, 'common', 0, 0, 0, 0, 1, 0, 'Values of data types'),
-('ALL', 'DISTRICT', 1, 'parameter', 1, 1, 0, 0, 0, 0, 'Values of districts'),
-('ALL', 'ENTITY_FIELD', 1, 'common', 1, 0, 0, 0, 0, 0, 'Values of entity fields'),
-('ALL', 'ENTITY_RELATIONSHIP', 0, 'common', 1, 0, 0, 0, 0, 0, 'Values of entity relationships'),
-('ALL', 'ENTITY_TABLE', 1, 'common', 1, 0, 0, 0, 0, 0, 'Values of entity tables'),
-('ALL', 'FREQUENCY', 1, 'microcredit', 1, 1, 0, 0, 0, 0, 'Frequencies'),
-('ALL', 'FUNDS_DESTINATION', 1, 'microcredit', 1, 1, 0, 0, 0, 0, 'Destination of funds'),
-('ALL', 'GENDER_TYPE', 1, 'person', 0, 1, 0, 0, 1, 0, 'Values of gender types'),
-('ALL', 'GEOGRAPHIC_ZONE', 1, 'microcredit', 1, 1, 0, 0, 0, 0, 'Geographic zones'),
-('ALL', 'HOST', 1, 'security', 1, 0, 1, 0, 0, 0, 'Values of hosts'),
-('ALL', 'IDENTIFICATION_TYPE', 1, 'person', 1, 1, 0, 0, 0, 0, 'Values of identification types'),
-('ALL', 'LANGUAGE', 0, 'common', 0, 0, 0, 0, 1, 0, 'Values of languages'),
-('ALL', 'MICRO_ACCOUNT', 1, 'microcredit', 1, 0, 1, 1, 0, 0, 'Microcredit accounts'),
-('ALL', 'MICRO_ACCOUNT_QUOTA', 1, 'microcredit', 1, 0, 1, 1, 0, 0, 'Microcredit quotas associated to a account'),
-('ALL', 'MODULE', 1, 'security', 1, 1, 0, 0, 0, 0, 'Values of modules'),
-('ALL', 'OPERATIVE_CONDITION', 1, 'microcredit', 1, 1, 0, 0, 0, 0, 'Operative conditions'),
-('ALL', 'PARAMETER', 1, 'parameter', 1, 0, 1, 0, 1, 1, 'Values of parameters'),
-('ALL', 'PARTNER', 1, 'microcredit', 1, 1, 1, 0, 0, 0, 'Partners'),
-('ALL', 'PARTNER_GROUP', 1, 'microcredit', 1, 1, 1, 0, 0, 0, 'Partner groups'),
-('ALL', 'PARTNER_GROUP_MEMBER', 0, 'microcredit', 0, 0, 0, 0, 0, 0, 'Group Members'),
-('ALL', 'PERSON', 1, 'person', 1, 0, 1, 1, 0, 0, 'Values of person'),
-('ALL', 'PERSON_ADDRESS', 0, 'person', 1, 0, 1, 1, 0, 0, 'Values of person address'),
-('ALL', 'PERSON_PHONE', 0, 'person', 1, 0, 1, 1, 0, 0, 'Values of person phones'),
-('ALL', 'PERSON_TYPE', 1, 'person', 1, 1, 0, 0, 0, 0, 'Values of person types'),
-('ALL', 'PHONE_TYPE', 1, 'person', 1, 1, 0, 0, 0, 0, 'Values of phone types'),
-('ALL', 'PROCESS', 1, 'security', 1, 1, 1, 0, 0, 1, 'Values of processes'),
-('ALL', 'PROCESS_COMPONENT', 0, 'security', 1, 0, 0, 0, 0, 1, 'Values of process components'),
-('ALL', 'PRODUCT_ASESSOR', 1, 'microcredit', 1, 1, 0, 0, 0, 0, 'Products per Asessor'),
-('ALL', 'PRODUCT_MICROCREDIT', 1, 'microcredit', 1, 1, 1, 0, 0, 0, 'Products of microcredit'),
-('ALL', 'PROFESSION_TYPE', 1, 'person', 1, 1, 0, 0, 0, 0, 'Values of profession types'),
-('ALL', 'PROFILE', 1, 'security', 1, 1, 0, 0, 0, 0, 'Values of profiles'),
-('ALL', 'PROVINCE', 1, 'parameter', 1, 1, 0, 0, 0, 0, 'Values of provinces'),
-('ALL', 'QUOTA_TYPE', 1, 'microcredit', 1, 1, 0, 0, 0, 0, 'Quota type'),
-('ALL', 'RECOMMENDATION', 1, 'microcredit', 1, 1, 1, 1, 0, 0, 'Recommendation of microcredit'),
-('ALL', 'RESPONSABILITY', 1, 'microcredit', 1, 1, 1, 0, 0, 0, 'Responsabilities of each partner'),
-('ALL', 'RESPONSE', 1, 'parameter', 1, 1, 0, 0, 1, 1, 'Values of responses'),
-('ALL', 'ROLE', 0, 'security', 1, 0, 1, 0, 0, 0, 'Values of roles'),
-('ALL', 'SEQUENTIAL', 1, 'common', 1, 0, 0, 1, 1, 0, 'Values of sequences'),
-('ALL', 'SOLICITUDE', 1, 'microcredit', 1, 1, 1, 1, 0, 0, 'Solicitude of microcredit'),
-('ALL', 'SOLICITUDE_STATUS', 1, 'microcredit', 1, 1, 0, 0, 0, 0, 'Solicitude status'),
-('ALL', 'SUBSYSTEM', 1, 'security', 1, 1, 0, 0, 1, 0, 'Values of subsystems'),
-('ALL', 'USER_ACCESS', 0, 'security', 1, 0, 1, 0, 0, 0, 'Values of user access'),
-('ALL', 'USER_ACCOUNT', 1, 'security', 1, 0, 1, 1, 0, 0, 'Values of user accounts'),
-('ALL', 'USER_PROFILE', 0, 'security', 1, 0, 1, 0, 0, 0, 'Values of user profiles'),
-('ALL', 'USER_SESSION', 0, 'security', 1, 0, 1, 1, 0, 0, 'Values of user sessions'),
-('ALL', 'USER_STATUS', 1, 'security', 1, 1, 0, 0, 1, 0, 'Values of user status'),
-('ALL', 'USER_TYPE', 1, 'security', 1, 1, 0, 0, 1, 0, 'Values of user types'),
-('ALL', 'ZONE_ASESSOR', 0, 'microcredit', 0, 0, 0, 0, 0, 0, 'Zones per Assessor');
 
 -- --------------------------------------------------------
 
@@ -2018,112 +950,6 @@ CREATE TABLE IF NOT EXISTS `ENTITY_TABLE_ID` (
 -- Volcar la base de datos para la tabla `ENTITY_TABLE_ID`
 --
 
-INSERT INTO `ENTITY_TABLE_ID` (`TABLE_ID`) VALUES
-('ACCOUNT_STATUS'),
-('ACCOUNT_STATUS_ID'),
-('ADDRESS_TYPE'),
-('ADDRESS_TYPE_ID'),
-('CHANNEL'),
-('CITY'),
-('CITY_ID'),
-('CIVIL_STATUS'),
-('CIVIL_STATUS_ID'),
-('COMPANY'),
-('COMPONENT'),
-('COMPONENT_ID'),
-('COMPONENT_TYPE'),
-('COUNTRY'),
-('COUNTRY_ID'),
-('CURRENCY'),
-('CURRENCY_ID'),
-('DATABASE_TYPE'),
-('DATAFILE'),
-('DATAFILE_ID'),
-('DATAFILE_TYPE'),
-('DATA_TYPE'),
-('DISTRICT'),
-('DISTRICT_ID'),
-('ENTITY_FIELD'),
-('ENTITY_FIELD_ID'),
-('ENTITY_RELATIONSHIP'),
-('ENTITY_TABLE'),
-('ENTITY_TABLE_ID'),
-('FREQUENCY'),
-('FREQUENCY_ID'),
-('FUNDS_DESTINATION'),
-('FUNDS_DESTINATION_ID'),
-('GENDER_TYPE'),
-('GENDER_TYPE_ID'),
-('GEOGRAPHIC_ZONE'),
-('GEOGRAPHIC_ZONE_ID'),
-('HOST'),
-('HOST_ID'),
-('IDENTIFICATION_TYPE'),
-('IDENTIFICATION_TYPE_ID'),
-('LANGUAGE'),
-('MICRO_ACCOUNT'),
-('MICRO_ACCOUNT_ID'),
-('MICRO_ACCOUNT_QUOTA'),
-('MICRO_ACCOUNT_QUOTA_ID'),
-('MODULE'),
-('MODULE_ID'),
-('OPERATIVE_CONDITION'),
-('OPERATIVE_CONDITION_ID'),
-('PARAMETER'),
-('PARAMETER_ID'),
-('PARTNER'),
-('PARTNER_GROUP'),
-('PARTNER_GROUP_ID'),
-('PARTNER_GROUP_MEMBER'),
-('PARTNER_ID'),
-('PERSON'),
-('PERSON_ADDRESS'),
-('PERSON_ID'),
-('PERSON_PHONE'),
-('PERSON_TYPE'),
-('PERSON_TYPE_ID'),
-('PHONE_TYPE'),
-('PHONE_TYPE_ID'),
-('PROCESS'),
-('PROCESS_COMPONENT'),
-('PROCESS_ID'),
-('PRODUCT_ASESSOR'),
-('PRODUCT_ASESSOR_ID'),
-('PRODUCT_MICROCREDIT'),
-('PRODUCT_MICROCREDIT_ID'),
-('PROFESSION_TYPE'),
-('PROFESSION_TYPE_ID'),
-('PROFILE'),
-('PROFILE_ID'),
-('PROVINCE'),
-('PROVINCE_ID'),
-('QUOTA_TYPE'),
-('QUOTA_TYPE_ID'),
-('RECOMMENDATION'),
-('RECOMMENDATION_ID'),
-('RESPONSABILITY'),
-('RESPONSABILITY_ID'),
-('RESPONSE'),
-('RESPONSE_ID'),
-('ROLE'),
-('SEQUENTIAL'),
-('SEQUENTIAL_ID'),
-('SOLICITUDE'),
-('SOLICITUDE_ID'),
-('SOLICITUDE_STATUS'),
-('SOLICITUDE_STATUS_ID'),
-('SUBSYSTEM'),
-('SUBSYSTEM_ID'),
-('USER_ACCESS'),
-('USER_ACCOUNT'),
-('USER_ACCOUNT_ID'),
-('USER_PROFILE'),
-('USER_SESSION'),
-('USER_STATUS'),
-('USER_STATUS_ID'),
-('USER_TYPE'),
-('USER_TYPE_ID'),
-('ZONE_ASESSOR');
 
 -- --------------------------------------------------------
 
@@ -2441,6 +1267,7 @@ CREATE TABLE IF NOT EXISTS `MICRO_ACCOUNT` (
   `GROUP_CLIENT_ID` int(11) DEFAULT NULL,
   `PRODUCT_ID` varchar(3) NOT NULL,
   `STATUS_ID` varchar(3) NOT NULL,
+  `RENEWED_ACCOUNT` varchar(25) DEFAULT NULL,
   `NUMBER_RENEWAL` int(11) NOT NULL,
   `PREVIOUS_ACCOUNT` varchar(25) DEFAULT NULL,
   `AMOUNT` decimal(19,6) NOT NULL,
@@ -2457,6 +1284,7 @@ CREATE TABLE IF NOT EXISTS `MICRO_ACCOUNT` (
   KEY `MIC_ACC_PARTNER_ID_FK` (`PARTNER_CLIENT_ID`),
   KEY `MIC_ACC_PRODUCT_ID_FK` (`PRODUCT_ID`),
   KEY `MIC_ACC_QUOTA_TYPE_ID_FK` (`QUOTA_TYPE_ID`),
+  KEY `MIC_ACC_REN_ACC_FK` (`RENEWED_ACCOUNT`),
   KEY `MIC_ACC_SOLICITUDE_ID_FK` (`SOLICITUDE_ID`),
   KEY `MIC_ACC_STATUS_ID_FK` (`STATUS_ID`),
   KEY `MIC_ACC_USER_ID_FK` (`ASSESSOR`)
@@ -3057,8 +1885,8 @@ INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '03', '2011-11-30 00:00:00', 'USUARIOS', 1, 1, 'A203', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '04', '2011-11-30 00:00:00', 'ROLES POR USUARIO', 1, 1, 'A204', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '05', '2011-11-30 00:00:00', 'CAMBIO CONTRASEÑA', 1, 1, 'A205', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '06', '2011-11-30 00:00:00', 'RESETEO CONTRASEÑA', 1, 1, 'A205', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '07', '2011-12-07 00:00:00', 'TERMINALES', 1, 1, 'A206', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '06', '2011-11-30 00:00:00', 'RESETEO CONTRASEÑA', 1, 1, 'A206', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'A', '2', '07', '2011-12-07 00:00:00', 'TERMINALES', 1, 1, 'A207', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '01', '2012-01-21 19:34:18', 'TIPOS DE PERSONA', 1, 1, 'B001', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '02', '2012-01-21 19:34:18', 'TIPOS DE IDENTIFICACIÓN', 1, 1, 'B002', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'B', '0', '03', '2012-01-21 19:34:18', 'GÉNEROS', 1, 1, 'B003', NULL),
@@ -3077,11 +1905,12 @@ INSERT INTO `PROCESS` (`COMPANY_ID`, `LANGUAGE_ID`, `EXPIRED`, `SUBSYSTEM_ID`, `
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '05', '2012-01-14 16:55:35', 'DESTINOS DE FONDOS', 1, 1, 'C005', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '06', '2012-03-13 23:53:53', 'CONDICIONES OPERATIVAS', 1, 1, 'C006', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '0', '07', '2012-03-14 23:30:18', 'ESTATUS DE CUENTA', 1, 1, 'C007', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '01', '2012-01-08 00:00:00', 'ASESOR DE CRÉDITO', 1, 1, 'C001', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '01', '2012-01-08 00:00:00', 'ASESOR DE CRÉDITO', 1, 1, 'C101', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '02', '2012-01-08 00:00:00', 'ZONAS GEOGRÁFICAS', 1, 1, 'C102', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '03', '2012-01-08 00:00:00', 'ZONAS POR ASESOR', 1, 1, 'C003', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '04', '2012-01-08 00:00:00', 'PRODUCTOS', 1, 1, 'C004', NULL),
-('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '05', '2012-01-08 00:00:00', 'PRODUCTOS POR ASESOR', 1, 1, 'C005', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '03', '2012-01-08 00:00:00', 'ZONAS POR ASESOR', 1, 1, 'C103', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '04', '2012-01-08 00:00:00', 'PRODUCTOS', 1, 1, 'C104', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '05', '2012-04-17 17:08:22', 'PRODUCTOS POR ASESOR', 1, 1, 'C105', NULL),
+('MXT', 'ES', '9999-12-31 00:00:00', 'C', '1', '06', '2012-04-17 17:08:23', 'ZONAS ASIGNADAS', 1, 1, 'C106', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '2', '01', '2012-01-14 16:57:27', 'SOCIOS INDIVIDUALES', 1, 1, 'C201', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '2', '02', '2012-01-14 16:57:28', 'SOCIOS GRUPALES', 1, 1, 'C202', NULL),
 ('MXT', 'ES', '9999-12-31 00:00:00', 'C', '3', '01', '2012-01-14 16:58:40', 'SOLICITUD DE MICROCRÉDITO', 1, 1, 'C301', NULL),
@@ -3130,13 +1959,13 @@ CREATE TABLE IF NOT EXISTS `PROCESS_COMPONENT` (
 --
 
 INSERT INTO `PROCESS_COMPONENT` (`COMPANY_ID`, `SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`, `PROCESS_SEQUENCE`, `COMPONENT_ID`, `TYPE_ID`, `ENABLE`, `AUTHORIZE`) VALUES
-('MXT', 'A', '0', '01', 1, 'mobile.core.security.Loggin', 'QRY', 1, 0),
-('MXT', 'A', '0', '02', 1, 'mobile.core.security.Logout', 'MNT', 1, 0),
+('MXT', 'A', '0', '01', 1, 'mobile.core.security.Loggin', 'QRY', 1, NULL),
+('MXT', 'A', '0', '02', 1, 'mobile.core.security.Logout', 'MNT', 1, NULL),
 ('MXT', 'A', '2', '05', 1, 'mobile.core.security.ChangePassword', 'MNT', 1, NULL),
 ('MXT', 'C', '4', '01', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 1, NULL),
 ('MXT', 'C', '4', '02', 1, 'mobile.logic.microxt.query.QuerySolicitude', 'QRY', 1, NULL),
 ('MXT', 'C', '4', '02', 2, 'mobile.logic.microxt.RemoteInstrumentation', 'MNT', 1, NULL),
-('MXT', 'G', '0', '01', 1, 'mobile.logic.general.MenuGenerator', 'QRY', 1, 0),
+('MXT', 'G', '0', '01', 1, 'mobile.logic.general.MenuGenerator', 'QRY', 1, NULL),
 ('MXT', 'G', '2', '02', 1, 'mobile.logic.microxt.query.QueryPartnerInfo', 'QRY', 1, NULL),
 ('MXT', 'G', '2', '03', 1, 'mobile.core.security.query.QueryProfilesForUser', 'QRY', 1, NULL),
 ('MXT', 'G', '2', '04', 1, 'mobile.logic.person.QueryPersonInfo', 'QRY', 1, NULL);
@@ -3198,6 +2027,7 @@ INSERT INTO `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) VALUES
 ('C', '1', '03'),
 ('C', '1', '04'),
 ('C', '1', '05'),
+('C', '1', '06'),
 ('C', '2', '01'),
 ('C', '2', '02'),
 ('C', '3', '01'),
@@ -3219,46 +2049,6 @@ INSERT INTO `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) VALUES
 ('G', '3', '02'),
 ('G', '3', '03'),
 ('G', '3', '04');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `PRODUCT_ASESSOR`
---
-
-CREATE TABLE IF NOT EXISTS `PRODUCT_ASESSOR` (
-  `COMPANY_ID` varchar(4) NOT NULL,
-  `LANGUAGE_ID` varchar(2) NOT NULL,
-  `USER_ID` varchar(20) NOT NULL,
-  `PRODUCT_ID` varchar(3) NOT NULL,
-  `OBSERVATIONS` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`COMPANY_ID`,`LANGUAGE_ID`,`USER_ID`,`PRODUCT_ID`),
-  KEY `PRODUCT_ASESSOR_ID_FK` (`USER_ID`,`PRODUCT_ID`),
-  KEY `PRODUCT_ASESSOR_LANGUAGE_FK` (`LANGUAGE_ID`),
-  KEY `PROD_ASSESSOR_PRODUCT_ID_FK` (`PRODUCT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `PRODUCT_ASESSOR`
---
-
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `PRODUCT_ASESSOR_ID`
---
-
-CREATE TABLE IF NOT EXISTS `PRODUCT_ASESSOR_ID` (
-  `USER_ID` varchar(20) NOT NULL,
-  `PRODUCT_ID` varchar(3) NOT NULL,
-  PRIMARY KEY (`USER_ID`,`PRODUCT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `PRODUCT_ASESSOR_ID`
---
-
 
 -- --------------------------------------------------------
 
@@ -3607,8 +2397,9 @@ CREATE TABLE IF NOT EXISTS `PROFILE` (
 --
 
 INSERT INTO `PROFILE` (`COMPANY_ID`, `LANGUAGE_ID`, `PROFILE_ID`, `NAME`, `DESCRIPTION`) VALUES
-('MXT', 'ES', 'ADM', 'ADMINISTRADOR', 'ADMINISTRADOR DEL SISTEMA'),
-('MXT', 'ES', 'ASE', 'ASESOR', 'ASESOR DE MICROCRÉDITO');
+('MXT', 'ES', 'ADM', 'ADMINISTRADOR', 'ADMINISTRADOR'),
+('MXT', 'ES', 'ASE', 'ASESOR', 'ASESOR'),
+('MXT', 'ES', 'CRD', 'COORDINADOR', 'COORDINADOR');
 
 -- --------------------------------------------------------
 
@@ -3627,7 +2418,8 @@ CREATE TABLE IF NOT EXISTS `PROFILE_ID` (
 
 INSERT INTO `PROFILE_ID` (`PROFILE_ID`) VALUES
 ('ADM'),
-('ASE');
+('ASE'),
+('CRD');
 
 -- --------------------------------------------------------
 
@@ -3928,6 +2720,7 @@ INSERT INTO `ROLE` (`COMPANY_ID`, `EXPIRED`, `PROFILE_ID`, `SUBSYSTEM_ID`, `MODU
 ('MXT', '9999-12-31 00:00:00', 'ASE', 'B', '1', '01', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
 ('MXT', '9999-12-31 00:00:00', 'ASE', 'B', '1', '02', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
 ('MXT', '9999-12-31 00:00:00', 'ASE', 'B', '1', '03', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '1', '06', '2012-04-17 17:15:00', NULL, NULL, NULL, 0),
 ('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '2', '01', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
 ('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '2', '02', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
 ('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '3', '01', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
@@ -3935,7 +2728,19 @@ INSERT INTO `ROLE` (`COMPANY_ID`, `EXPIRED`, `PROFILE_ID`, `SUBSYSTEM_ID`, `MODU
 ('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '4', '01', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
 ('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '4', '02', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
 ('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '5', '02', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
-('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '5', '03', '2012-03-28 12:03:06', NULL, NULL, NULL, 0);
+('MXT', '9999-12-31 00:00:00', 'ASE', 'C', '5', '03', '2012-03-28 12:03:06', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'CRD', 'A', '2', '03', '2012-04-17 15:58:18', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'CRD', 'A', '2', '04', '2012-04-17 15:58:19', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'CRD', 'A', '2', '05', '2012-04-17 15:58:19', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'CRD', 'A', '2', '06', '2012-04-17 16:13:35', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'CRD', 'A', '2', '07', '2012-04-17 15:58:19', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'CRD', 'B', '1', '01', '2012-04-17 15:58:19', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'CRD', 'B', '1', '02', '2012-04-17 15:58:19', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'CRD', 'B', '1', '03', '2012-04-17 15:58:19', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'CRD', 'C', '1', '01', '2012-04-17 16:02:57', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'CRD', 'C', '1', '02', '2012-04-17 15:58:19', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'CRD', 'C', '1', '03', '2012-04-17 16:02:57', NULL, NULL, NULL, 0),
+('MXT', '9999-12-31 00:00:00', 'CRD', 'C', '1', '04', '2012-04-17 16:02:57', NULL, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -4010,6 +2815,7 @@ CREATE TABLE IF NOT EXISTS `SOLICITUDE` (
   `PRODUCT_ID` varchar(3) NOT NULL,
   `STATUS_ID` varchar(3) NOT NULL,
   `OPERATIVE_CONDITION_ID` varchar(3) DEFAULT NULL,
+  `RENEWED_ACCOUNT` varchar(25) DEFAULT NULL,
   `NUMBER_RENEWAL` int(11) NOT NULL,
   `AMOUNT` decimal(19,6) NOT NULL,
   `TERM` bigint(20) NOT NULL,
@@ -4029,6 +2835,7 @@ CREATE TABLE IF NOT EXISTS `SOLICITUDE` (
   KEY `SOLICITUDE_PAY_FREQ_ID_FK` (`PAYMENT_FREQUENCY_ID`),
   KEY `SOLICITUDE_PRODUCT_ID_FK` (`PRODUCT_ID`),
   KEY `SOLICITUDE_QUOTA_TYPE_ID_FK` (`QUOTA_TYPE_ID`),
+  KEY `SOLICITUDE_REN_ACC_FK` (`RENEWED_ACCOUNT`),
   KEY `SOLICITUDE_SOL_STATUS_ID_FK` (`STATUS_ID`),
   KEY `SOLICITUDE_USER_ACCOUNT_ID_FK` (`ASSESSOR`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -4277,10 +3084,6 @@ CREATE TABLE IF NOT EXISTS `USER_SESSION` (
 -- Volcar la base de datos para la tabla `USER_SESSION`
 --
 
-INSERT INTO `USER_SESSION` (`COMPANY_ID`, `EXPIRED`, `USER_ID`, `HOST_ID`, `CREATED`, `SESSION_ID`, `VERSION`) VALUES
-('MXT', '2012-04-01 13:58:28', 'ADMIN', 'LOCALHOST', '2012-04-01 13:26:00', 'FCD708B8E428C1FB7B04EAF180EBF32320120401132559987', 1),
-('MXT', '2012-04-01 15:49:16', 'ADMIN', 'LOCALHOST', '2012-04-01 15:34:34', 'FCD708B8E428C1FB7B04EAF180EBF32320120401153434222', 1),
-('MXT', '9999-12-31 00:00:00', 'ADMIN', 'LOCALHOST', '2012-04-01 15:49:56', 'FCD708B8E428C1FB7B04EAF180EBF32320120401154956349', 1);
 
 -- --------------------------------------------------------
 
@@ -4401,25 +3204,25 @@ CREATE TABLE IF NOT EXISTS `ZONE_ASESSOR` (
 -- Filtros para la tabla `ACCOUNT_STATUS`
 --
 ALTER TABLE `ACCOUNT_STATUS`
+  ADD CONSTRAINT `ACCOUNT_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `ACCOUNT_STATUS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ACCOUNT_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `ACCOUNT_STATUS_ID` (`STATUS_ID`),
-  ADD CONSTRAINT `ACCOUNT_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `ACCOUNT_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `ACCOUNT_STATUS_ID` (`STATUS_ID`);
 
 --
 -- Filtros para la tabla `ADDRESS_TYPE`
 --
 ALTER TABLE `ADDRESS_TYPE`
+  ADD CONSTRAINT `ADDRESS_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `ADDRESS_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ADDRESS_TYPE_ID_FK` FOREIGN KEY (`ADDRESS_TYPE_ID`) REFERENCES `ADDRESS_TYPE_ID` (`ADDRESS_TYPE_ID`),
-  ADD CONSTRAINT `ADDRESS_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `ADDRESS_TYPE_ID_FK` FOREIGN KEY (`ADDRESS_TYPE_ID`) REFERENCES `ADDRESS_TYPE_ID` (`ADDRESS_TYPE_ID`);
 
 --
 -- Filtros para la tabla `CITY`
 --
 ALTER TABLE `CITY`
+  ADD CONSTRAINT `CITY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `CITY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `CITY_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) REFERENCES `CITY_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`),
-  ADD CONSTRAINT `CITY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `CITY_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) REFERENCES `CITY_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`);
 
 --
 -- Filtros para la tabla `CITY_ID`
@@ -4431,34 +3234,34 @@ ALTER TABLE `CITY_ID`
 -- Filtros para la tabla `CIVIL_STATUS`
 --
 ALTER TABLE `CIVIL_STATUS`
+  ADD CONSTRAINT `CIVIL_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `CIVIL_STATUS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `CIVIL_STATUS_ID_FK` FOREIGN KEY (`CIVIL_STATUS_ID`) REFERENCES `CIVIL_STATUS_ID` (`CIVIL_STATUS_ID`),
-  ADD CONSTRAINT `CIVIL_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `CIVIL_STATUS_ID_FK` FOREIGN KEY (`CIVIL_STATUS_ID`) REFERENCES `CIVIL_STATUS_ID` (`CIVIL_STATUS_ID`);
 
 --
 -- Filtros para la tabla `COMPONENT`
 --
 ALTER TABLE `COMPONENT`
+  ADD CONSTRAINT `COMPONENT_SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `SUBSYSTEM_ID` (`SUBSYSTEM_ID`),
   ADD CONSTRAINT `COMPONENT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `COMPONENT_COM_TYPE_ID_FK` FOREIGN KEY (`TYPE_ID`) REFERENCES `COMPONENT_TYPE` (`COMPONENT_TYPE_ID`),
-  ADD CONSTRAINT `COMPONENT_ID_FK` FOREIGN KEY (`COMPONENT_ID`, `TYPE_ID`) REFERENCES `COMPONENT_ID` (`COMPONENT_ID`, `TYPE_ID`),
-  ADD CONSTRAINT `COMPONENT_SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `SUBSYSTEM_ID` (`SUBSYSTEM_ID`);
+  ADD CONSTRAINT `COMPONENT_ID_FK` FOREIGN KEY (`COMPONENT_ID`, `TYPE_ID`) REFERENCES `COMPONENT_ID` (`COMPONENT_ID`, `TYPE_ID`);
 
 --
 -- Filtros para la tabla `COUNTRY`
 --
 ALTER TABLE `COUNTRY`
+  ADD CONSTRAINT `COUNTRY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `COUNTRY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `COUNTRY_ID_FK` FOREIGN KEY (`COUNTRY_ID`) REFERENCES `COUNTRY_ID` (`COUNTRY_ID`),
-  ADD CONSTRAINT `COUNTRY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `COUNTRY_ID_FK` FOREIGN KEY (`COUNTRY_ID`) REFERENCES `COUNTRY_ID` (`COUNTRY_ID`);
 
 --
 -- Filtros para la tabla `CURRENCY`
 --
 ALTER TABLE `CURRENCY`
+  ADD CONSTRAINT `CURRENCY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `CURRENCY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `CURRENCY_ID_FK` FOREIGN KEY (`CURRENCY_ID`) REFERENCES `CURRENCY_ID` (`CURRENCY_ID`),
-  ADD CONSTRAINT `CURRENCY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `CURRENCY_ID_FK` FOREIGN KEY (`CURRENCY_ID`) REFERENCES `CURRENCY_ID` (`CURRENCY_ID`);
 
 --
 -- Filtros para la tabla `DATABASE_TYPE`
@@ -4470,17 +3273,17 @@ ALTER TABLE `DATABASE_TYPE`
 -- Filtros para la tabla `DATAFILE`
 --
 ALTER TABLE `DATAFILE`
+  ADD CONSTRAINT `DATAFILE_ID_FK` FOREIGN KEY (`DATAFILE_ID`) REFERENCES `DATAFILE_ID` (`DATAFILE_ID`),
   ADD CONSTRAINT `DATAFILE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `DATAFILE_DATAFILE_TYPE_FK` FOREIGN KEY (`DATAFILE_TYPE_ID`) REFERENCES `DATAFILE_TYPE` (`DATAFILE_TYPE_ID`),
-  ADD CONSTRAINT `DATAFILE_ID_FK` FOREIGN KEY (`DATAFILE_ID`) REFERENCES `DATAFILE_ID` (`DATAFILE_ID`);
+  ADD CONSTRAINT `DATAFILE_DATAFILE_TYPE_FK` FOREIGN KEY (`DATAFILE_TYPE_ID`) REFERENCES `DATAFILE_TYPE` (`DATAFILE_TYPE_ID`);
 
 --
 -- Filtros para la tabla `DISTRICT`
 --
 ALTER TABLE `DISTRICT`
+  ADD CONSTRAINT `DISTRICT_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `DISTRICT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `DISTRICT_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`) REFERENCES `DISTRICT_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`),
-  ADD CONSTRAINT `DISTRICT_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `DISTRICT_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`) REFERENCES `DISTRICT_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`);
 
 --
 -- Filtros para la tabla `DISTRICT_ID`
@@ -4492,10 +3295,10 @@ ALTER TABLE `DISTRICT_ID`
 -- Filtros para la tabla `ENTITY_FIELD`
 --
 ALTER TABLE `ENTITY_FIELD`
+  ADD CONSTRAINT `ENTITY_FIELD_SEQUENTIAL_ID_FK` FOREIGN KEY (`SEQUENTIAL_ID`) REFERENCES `SEQUENTIAL_ID` (`SEQUENTIAL_ID`),
   ADD CONSTRAINT `ENTITY_FIELD_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `ENTITY_FIELD_DATA_TYPE_FK` FOREIGN KEY (`DATA_TYPE_ID`) REFERENCES `DATA_TYPE` (`DATA_TYPE_ID`),
-  ADD CONSTRAINT `ENTITY_FIELD_ID_FK` FOREIGN KEY (`TABLE_ID`, `FIELD_ID`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`),
-  ADD CONSTRAINT `ENTITY_FIELD_SEQUENTIAL_ID_FK` FOREIGN KEY (`SEQUENTIAL_ID`) REFERENCES `SEQUENTIAL_ID` (`SEQUENTIAL_ID`);
+  ADD CONSTRAINT `ENTITY_FIELD_ID_FK` FOREIGN KEY (`TABLE_ID`, `FIELD_ID`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`);
 
 --
 -- Filtros para la tabla `ENTITY_FIELD_ID`
@@ -4507,68 +3310,69 @@ ALTER TABLE `ENTITY_FIELD_ID`
 -- Filtros para la tabla `ENTITY_RELATIONSHIP`
 --
 ALTER TABLE `ENTITY_RELATIONSHIP`
+  ADD CONSTRAINT `ENTITY_RELATIONSHIP_TO_FK` FOREIGN KEY (`TABLE_TO`, `FIELD_TO`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`),
   ADD CONSTRAINT `ENTITY_RELATIONSHIP_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ENTITY_RELATIONSHIP_FROM_FK` FOREIGN KEY (`TABLE_FROM`, `FIELD_FROM`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`),
-  ADD CONSTRAINT `ENTITY_RELATIONSHIP_TO_FK` FOREIGN KEY (`TABLE_TO`, `FIELD_TO`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`);
+  ADD CONSTRAINT `ENTITY_RELATIONSHIP_FROM_FK` FOREIGN KEY (`TABLE_FROM`, `FIELD_FROM`) REFERENCES `ENTITY_FIELD_ID` (`TABLE_ID`, `FIELD_ID`);
 
 --
 -- Filtros para la tabla `ENTITY_TABLE`
 --
 ALTER TABLE `ENTITY_TABLE`
-  ADD CONSTRAINT `ENTITY_TABLE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ENTITY_TABLE_ID_FK` FOREIGN KEY (`TABLE_ID`) REFERENCES `ENTITY_TABLE_ID` (`TABLE_ID`);
+  ADD CONSTRAINT `ENTITY_TABLE_ID_FK` FOREIGN KEY (`TABLE_ID`) REFERENCES `ENTITY_TABLE_ID` (`TABLE_ID`),
+  ADD CONSTRAINT `ENTITY_TABLE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `FREQUENCY`
 --
 ALTER TABLE `FREQUENCY`
+  ADD CONSTRAINT `FREQUENCY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `FREQUENCY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `FREQUENCY_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
-  ADD CONSTRAINT `FREQUENCY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `FREQUENCY_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`);
 
 --
 -- Filtros para la tabla `FUNDS_DESTINATION`
 --
 ALTER TABLE `FUNDS_DESTINATION`
+  ADD CONSTRAINT `FUNDS_DESTINATION_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `FUNDS_DESTINATION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `FUNDS_DESTINATION_ID_FK` FOREIGN KEY (`FUNDS_DESTINATION_ID`) REFERENCES `FUNDS_DESTINATION_ID` (`FUNDS_DESTINATION_ID`),
-  ADD CONSTRAINT `FUNDS_DESTINATION_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `FUNDS_DESTINATION_ID_FK` FOREIGN KEY (`FUNDS_DESTINATION_ID`) REFERENCES `FUNDS_DESTINATION_ID` (`FUNDS_DESTINATION_ID`);
 
 --
 -- Filtros para la tabla `GENDER_TYPE`
 --
 ALTER TABLE `GENDER_TYPE`
-  ADD CONSTRAINT `GENDER_TYPE_ID_FK` FOREIGN KEY (`GENDER_TYPE_ID`) REFERENCES `GENDER_TYPE_ID` (`GENDER_TYPE_ID`),
-  ADD CONSTRAINT `GENDER_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `GENDER_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
+  ADD CONSTRAINT `GENDER_TYPE_ID_FK` FOREIGN KEY (`GENDER_TYPE_ID`) REFERENCES `GENDER_TYPE_ID` (`GENDER_TYPE_ID`);
 
 --
 -- Filtros para la tabla `GEOGRAPHIC_ZONE`
 --
 ALTER TABLE `GEOGRAPHIC_ZONE`
+  ADD CONSTRAINT `GEOGRAPHIC_ZONE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `GEOGRAPHIC_ZONE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `GEOGRAPHIC_ZONE_ID_FK` FOREIGN KEY (`GEOGRAPHIC_ZONE_ID`) REFERENCES `GEOGRAPHIC_ZONE_ID` (`GEOGRAPHIC_ZONE_ID`),
-  ADD CONSTRAINT `GEOGRAPHIC_ZONE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `GEOGRAPHIC_ZONE_ID_FK` FOREIGN KEY (`GEOGRAPHIC_ZONE_ID`) REFERENCES `GEOGRAPHIC_ZONE_ID` (`GEOGRAPHIC_ZONE_ID`);
 
 --
 -- Filtros para la tabla `HOST`
 --
 ALTER TABLE `HOST`
+  ADD CONSTRAINT `HOST_ID_FK` FOREIGN KEY (`HOST_ID`) REFERENCES `HOST_ID` (`HOST_ID`),
   ADD CONSTRAINT `HOST_CHANNEL_ID_FK` FOREIGN KEY (`CHANNEL_ID`) REFERENCES `CHANNEL` (`CHANNEL_ID`),
-  ADD CONSTRAINT `HOST_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `HOST_ID_FK` FOREIGN KEY (`HOST_ID`) REFERENCES `HOST_ID` (`HOST_ID`);
+  ADD CONSTRAINT `HOST_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `IDENTIFICATION_TYPE`
 --
 ALTER TABLE `IDENTIFICATION_TYPE`
+  ADD CONSTRAINT `IDENT_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `IDENTIFICATION_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `IDENTIFICATION_TYPE_ID_FK` FOREIGN KEY (`IDENTIFICATION_TYPE_ID`) REFERENCES `IDENTIFICATION_TYPE_ID` (`IDENTIFICATION_TYPE_ID`),
-  ADD CONSTRAINT `IDENT_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `IDENTIFICATION_TYPE_ID_FK` FOREIGN KEY (`IDENTIFICATION_TYPE_ID`) REFERENCES `IDENTIFICATION_TYPE_ID` (`IDENTIFICATION_TYPE_ID`);
 
 --
 -- Filtros para la tabla `MICRO_ACCOUNT`
 --
 ALTER TABLE `MICRO_ACCOUNT`
+  ADD CONSTRAINT `MIC_ACC_USER_ID_FK` FOREIGN KEY (`ASSESSOR`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
   ADD CONSTRAINT `MICRO_ACCOUNT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `MICRO_ACCOUNT_ID_FK` FOREIGN KEY (`ACCOUNT_ID`) REFERENCES `MICRO_ACCOUNT_ID` (`ACCOUNT_ID`),
   ADD CONSTRAINT `MIC_ACC_FREQ_ID_FK` FOREIGN KEY (`PAYMENT_FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
@@ -4577,25 +3381,25 @@ ALTER TABLE `MICRO_ACCOUNT`
   ADD CONSTRAINT `MIC_ACC_PARTNER_ID_FK` FOREIGN KEY (`PARTNER_CLIENT_ID`) REFERENCES `PARTNER_ID` (`PARTNER_ID`),
   ADD CONSTRAINT `MIC_ACC_PRODUCT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`),
   ADD CONSTRAINT `MIC_ACC_QUOTA_TYPE_ID_FK` FOREIGN KEY (`QUOTA_TYPE_ID`) REFERENCES `QUOTA_TYPE_ID` (`QUOTA_TYPE_ID`),
+  ADD CONSTRAINT `MIC_ACC_REN_ACC_FK` FOREIGN KEY (`RENEWED_ACCOUNT`) REFERENCES `MICRO_ACCOUNT_ID` (`ACCOUNT_ID`),
   ADD CONSTRAINT `MIC_ACC_SOLICITUDE_ID_FK` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `SOLICITUDE_ID` (`SOLICITUDE_ID`),
-  ADD CONSTRAINT `MIC_ACC_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `ACCOUNT_STATUS_ID` (`STATUS_ID`),
-  ADD CONSTRAINT `MIC_ACC_USER_ID_FK` FOREIGN KEY (`ASSESSOR`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `MIC_ACC_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `ACCOUNT_STATUS_ID` (`STATUS_ID`);
 
 --
 -- Filtros para la tabla `MICRO_ACCOUNT_QUOTA`
 --
 ALTER TABLE `MICRO_ACCOUNT_QUOTA`
+  ADD CONSTRAINT `MIC_ACC_QUO_ACC_ID_FK` FOREIGN KEY (`ACCOUNT_ID`) REFERENCES `MICRO_ACCOUNT_ID` (`ACCOUNT_ID`),
   ADD CONSTRAINT `MICRO_ACCOUNT_QUOTA_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `MICRO_ACCOUNT_QUOTA_ID_FK` FOREIGN KEY (`ACCOUNT_ID`, `SUBACCOUNT`) REFERENCES `MICRO_ACCOUNT_QUOTA_ID` (`ACCOUNT_ID`, `SUBACCOUNT`),
-  ADD CONSTRAINT `MIC_ACC_QUO_ACC_ID_FK` FOREIGN KEY (`ACCOUNT_ID`) REFERENCES `MICRO_ACCOUNT_ID` (`ACCOUNT_ID`);
+  ADD CONSTRAINT `MICRO_ACCOUNT_QUOTA_ID_FK` FOREIGN KEY (`ACCOUNT_ID`, `SUBACCOUNT`) REFERENCES `MICRO_ACCOUNT_QUOTA_ID` (`ACCOUNT_ID`, `SUBACCOUNT`);
 
 --
 -- Filtros para la tabla `MODULE`
 --
 ALTER TABLE `MODULE`
+  ADD CONSTRAINT `MODULE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `MODULE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `MODULE_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`) REFERENCES `MODULE_ID` (`SUBSYSTEM_ID`, `MODULE_ID`),
-  ADD CONSTRAINT `MODULE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `MODULE_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`) REFERENCES `MODULE_ID` (`SUBSYSTEM_ID`, `MODULE_ID`);
 
 --
 -- Filtros para la tabla `MODULE_ID`
@@ -4607,66 +3411,66 @@ ALTER TABLE `MODULE_ID`
 -- Filtros para la tabla `OPERATIVE_CONDITION`
 --
 ALTER TABLE `OPERATIVE_CONDITION`
+  ADD CONSTRAINT `OPERA_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `OPERATIVE_CONDITION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `OPERATIVE_CONDITION_ID_FK` FOREIGN KEY (`OPERATIVE_CONDITION_ID`) REFERENCES `OPERATIVE_CONDITION_ID` (`OPERATIVE_CONDITION_ID`),
-  ADD CONSTRAINT `OPERA_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `OPERATIVE_CONDITION_ID_FK` FOREIGN KEY (`OPERATIVE_CONDITION_ID`) REFERENCES `OPERATIVE_CONDITION_ID` (`OPERATIVE_CONDITION_ID`);
 
 --
 -- Filtros para la tabla `PARAMETER`
 --
 ALTER TABLE `PARAMETER`
+  ADD CONSTRAINT `PARAMETER_ID_FK` FOREIGN KEY (`PARAMETER_ID`) REFERENCES `PARAMETER_ID` (`PARAMETER_ID`),
   ADD CONSTRAINT `PARAMETER_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PARAMETER_DATA_TYPE_FK` FOREIGN KEY (`DATA_TYPE_ID`) REFERENCES `DATA_TYPE` (`DATA_TYPE_ID`),
-  ADD CONSTRAINT `PARAMETER_ID_FK` FOREIGN KEY (`PARAMETER_ID`) REFERENCES `PARAMETER_ID` (`PARAMETER_ID`);
+  ADD CONSTRAINT `PARAMETER_DATA_TYPE_FK` FOREIGN KEY (`DATA_TYPE_ID`) REFERENCES `DATA_TYPE` (`DATA_TYPE_ID`);
 
 --
 -- Filtros para la tabla `PARTNER`
 --
 ALTER TABLE `PARTNER`
+  ADD CONSTRAINT `PARTNER_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
   ADD CONSTRAINT `PARTNER_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `PARTNER_FREQ_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
   ADD CONSTRAINT `PARTNER_ID_FK` FOREIGN KEY (`PARTNER_ID`) REFERENCES `PARTNER_ID` (`PARTNER_ID`),
   ADD CONSTRAINT `PARTNER_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `PARTNER_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`),
-  ADD CONSTRAINT `PARTNER_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `PARTNER_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`);
 
 --
 -- Filtros para la tabla `PARTNER_GROUP`
 --
 ALTER TABLE `PARTNER_GROUP`
+  ADD CONSTRAINT `PARTNER_GROUP_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
   ADD CONSTRAINT `PARTNER_GROUP_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `PARTNER_GROUP_FREQ_ID_FK` FOREIGN KEY (`FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
   ADD CONSTRAINT `PARTNER_GROUP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`),
   ADD CONSTRAINT `PARTNER_GROUP_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `PARTNER_GROUP_PAR_GRP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`),
-  ADD CONSTRAINT `PARTNER_GROUP_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `PARTNER_GROUP_PAR_GRP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`);
 
 --
 -- Filtros para la tabla `PARTNER_GROUP_MEMBER`
 --
 ALTER TABLE `PARTNER_GROUP_MEMBER`
+  ADD CONSTRAINT `PARTNER_GRP_MEM_RESP_ID_FK` FOREIGN KEY (`RESPONSABILITY_ID`) REFERENCES `RESPONSABILITY_ID` (`RESPONSABILITY_ID`),
   ADD CONSTRAINT `PARTNER_GRP_MEM_GRP_ID_FK` FOREIGN KEY (`PARTNER_GROUP_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`),
-  ADD CONSTRAINT `PARTNER_GRP_MEM_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`),
-  ADD CONSTRAINT `PARTNER_GRP_MEM_RESP_ID_FK` FOREIGN KEY (`RESPONSABILITY_ID`) REFERENCES `RESPONSABILITY_ID` (`RESPONSABILITY_ID`);
+  ADD CONSTRAINT `PARTNER_GRP_MEM_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`);
 
 --
 -- Filtros para la tabla `PERSON`
 --
 ALTER TABLE `PERSON`
+  ADD CONSTRAINT `PERSON_PROFESSION_TYPE_ID_FK` FOREIGN KEY (`PROFESSION_TYPE_ID`) REFERENCES `PROFESSION_TYPE_ID` (`PROFESSION_TYPE_ID`),
   ADD CONSTRAINT `PERSON_CITY_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`) REFERENCES `CITY_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`),
   ADD CONSTRAINT `PERSON_CIVIL_STATUS_ID_FK` FOREIGN KEY (`CIVIL_STATUS_ID`) REFERENCES `CIVIL_STATUS_ID` (`CIVIL_STATUS_ID`),
   ADD CONSTRAINT `PERSON_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `PERSON_GENDER_TYPE_ID_FK` FOREIGN KEY (`GENDER_TYPE_ID`) REFERENCES `GENDER_TYPE_ID` (`GENDER_TYPE_ID`),
   ADD CONSTRAINT `PERSON_IDENTIF_TYPE_ID_FK` FOREIGN KEY (`IDENTIFICATION_TYPE_ID`) REFERENCES `IDENTIFICATION_TYPE_ID` (`IDENTIFICATION_TYPE_ID`),
-  ADD CONSTRAINT `PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`),
-  ADD CONSTRAINT `PERSON_PROFESSION_TYPE_ID_FK` FOREIGN KEY (`PROFESSION_TYPE_ID`) REFERENCES `PROFESSION_TYPE_ID` (`PROFESSION_TYPE_ID`);
+  ADD CONSTRAINT `PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`);
 
 --
 -- Filtros para la tabla `PERSON_ADDRESS`
 --
 ALTER TABLE `PERSON_ADDRESS`
-  ADD CONSTRAINT `PERSON_ADDRESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PERSON_ADDRESS_DISTRICT_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`) REFERENCES `DISTRICT_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`);
+  ADD CONSTRAINT `PERSON_ADDRESS_DISTRICT_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`) REFERENCES `DISTRICT_ID` (`COUNTRY_ID`, `PROVINCE_ID`, `CITY_ID`, `DISTRICT_ID`),
+  ADD CONSTRAINT `PERSON_ADDRESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `PERSON_PHONE`
@@ -4678,34 +3482,34 @@ ALTER TABLE `PERSON_PHONE`
 -- Filtros para la tabla `PERSON_TYPE`
 --
 ALTER TABLE `PERSON_TYPE`
+  ADD CONSTRAINT `PERSON_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PERSON_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PERSON_TYPE_ID_FK` FOREIGN KEY (`PERSON_TYPE_ID`) REFERENCES `PERSON_TYPE_ID` (`PERSON_TYPE_ID`),
-  ADD CONSTRAINT `PERSON_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PERSON_TYPE_ID_FK` FOREIGN KEY (`PERSON_TYPE_ID`) REFERENCES `PERSON_TYPE_ID` (`PERSON_TYPE_ID`);
 
 --
 -- Filtros para la tabla `PHONE_TYPE`
 --
 ALTER TABLE `PHONE_TYPE`
+  ADD CONSTRAINT `PHONE_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PHONE_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PHONE_TYPE_ID_FK` FOREIGN KEY (`PHONE_TYPE_ID`) REFERENCES `PHONE_TYPE_ID` (`PHONE_TYPE_ID`),
-  ADD CONSTRAINT `PHONE_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PHONE_TYPE_ID_FK` FOREIGN KEY (`PHONE_TYPE_ID`) REFERENCES `PHONE_TYPE_ID` (`PHONE_TYPE_ID`);
 
 --
 -- Filtros para la tabla `PROCESS`
 --
 ALTER TABLE `PROCESS`
+  ADD CONSTRAINT `PROCESS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PROCESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `PROCESS_DATAFILE_ID_FK` FOREIGN KEY (`DATAFILE_ID`) REFERENCES `DATAFILE_ID` (`DATAFILE_ID`),
-  ADD CONSTRAINT `PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`),
-  ADD CONSTRAINT `PROCESS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`);
 
 --
 -- Filtros para la tabla `PROCESS_COMPONENT`
 --
 ALTER TABLE `PROCESS_COMPONENT`
+  ADD CONSTRAINT `PROCESS_COMP_PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`),
   ADD CONSTRAINT `PROCESS_COMPONENT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PROCESS_COMP_COMPONENT_ID_FK` FOREIGN KEY (`COMPONENT_ID`, `TYPE_ID`) REFERENCES `COMPONENT_ID` (`COMPONENT_ID`, `TYPE_ID`),
-  ADD CONSTRAINT `PROCESS_COMP_PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`);
+  ADD CONSTRAINT `PROCESS_COMP_COMPONENT_ID_FK` FOREIGN KEY (`COMPONENT_ID`, `TYPE_ID`) REFERENCES `COMPONENT_ID` (`COMPONENT_ID`, `TYPE_ID`);
 
 --
 -- Filtros para la tabla `PROCESS_ID`
@@ -4714,47 +3518,37 @@ ALTER TABLE `PROCESS_ID`
   ADD CONSTRAINT `PROCESS_ID_MODULE_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`) REFERENCES `MODULE_ID` (`SUBSYSTEM_ID`, `MODULE_ID`);
 
 --
--- Filtros para la tabla `PRODUCT_ASESSOR`
---
-ALTER TABLE `PRODUCT_ASESSOR`
-  ADD CONSTRAINT `PRODUCT_ASESSOR_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PRODUCT_ASESSOR_ID_FK` FOREIGN KEY (`USER_ID`, `PRODUCT_ID`) REFERENCES `PRODUCT_ASESSOR_ID` (`USER_ID`, `PRODUCT_ID`),
-  ADD CONSTRAINT `PRODUCT_ASESSOR_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `PROD_ASSESSOR_PRODUCT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`),
-  ADD CONSTRAINT `PROD_ASSESSOR_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
-
---
 -- Filtros para la tabla `PRODUCT_MICROCREDIT`
 --
 ALTER TABLE `PRODUCT_MICROCREDIT`
+  ADD CONSTRAINT `PRODU_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PRODUCT_MICROCREDIT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `PRODUCT_MICROCREDIT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`),
-  ADD CONSTRAINT `PRODUCT_MIC_CURRENCY_ID_FK` FOREIGN KEY (`CURRENCY_ID`) REFERENCES `CURRENCY_ID` (`CURRENCY_ID`),
-  ADD CONSTRAINT `PRODU_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PRODUCT_MIC_CURRENCY_ID_FK` FOREIGN KEY (`CURRENCY_ID`) REFERENCES `CURRENCY_ID` (`CURRENCY_ID`);
 
 --
 -- Filtros para la tabla `PROFESSION_TYPE`
 --
 ALTER TABLE `PROFESSION_TYPE`
+  ADD CONSTRAINT `PROFESSION_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PROFESSION_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PROFESSION_TYPE_ID_FK` FOREIGN KEY (`PROFESSION_TYPE_ID`) REFERENCES `PROFESSION_TYPE_ID` (`PROFESSION_TYPE_ID`),
-  ADD CONSTRAINT `PROFESSION_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PROFESSION_TYPE_ID_FK` FOREIGN KEY (`PROFESSION_TYPE_ID`) REFERENCES `PROFESSION_TYPE_ID` (`PROFESSION_TYPE_ID`);
 
 --
 -- Filtros para la tabla `PROFILE`
 --
 ALTER TABLE `PROFILE`
+  ADD CONSTRAINT `PROFILE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PROFILE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PROFILE_ID_FK` FOREIGN KEY (`PROFILE_ID`) REFERENCES `PROFILE_ID` (`PROFILE_ID`),
-  ADD CONSTRAINT `PROFILE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PROFILE_ID_FK` FOREIGN KEY (`PROFILE_ID`) REFERENCES `PROFILE_ID` (`PROFILE_ID`);
 
 --
 -- Filtros para la tabla `PROVINCE`
 --
 ALTER TABLE `PROVINCE`
+  ADD CONSTRAINT `PROVINCE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `PROVINCE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `PROVINCE_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`) REFERENCES `PROVINCE_ID` (`COUNTRY_ID`, `PROVINCE_ID`),
-  ADD CONSTRAINT `PROVINCE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `PROVINCE_ID_FK` FOREIGN KEY (`COUNTRY_ID`, `PROVINCE_ID`) REFERENCES `PROVINCE_ID` (`COUNTRY_ID`, `PROVINCE_ID`);
 
 --
 -- Filtros para la tabla `PROVINCE_ID`
@@ -4766,53 +3560,54 @@ ALTER TABLE `PROVINCE_ID`
 -- Filtros para la tabla `QUOTA_TYPE`
 --
 ALTER TABLE `QUOTA_TYPE`
+  ADD CONSTRAINT `QUOTA_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `QUOTA_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `QUOTA_TYPE_ID_FK` FOREIGN KEY (`QUOTA_TYPE_ID`) REFERENCES `QUOTA_TYPE_ID` (`QUOTA_TYPE_ID`),
-  ADD CONSTRAINT `QUOTA_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `QUOTA_TYPE_ID_FK` FOREIGN KEY (`QUOTA_TYPE_ID`) REFERENCES `QUOTA_TYPE_ID` (`QUOTA_TYPE_ID`);
 
 --
 -- Filtros para la tabla `RECOMMENDATION`
 --
 ALTER TABLE `RECOMMENDATION`
+  ADD CONSTRAINT `RECOMMENDATION_SOLICITUDE_ID` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `SOLICITUDE_ID` (`SOLICITUDE_ID`),
   ADD CONSTRAINT `RECOMMENDATION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `RECOMMENDATION_ID_FK` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `RECOMMENDATION_ID` (`SOLICITUDE_ID`),
-  ADD CONSTRAINT `RECOMMENDATION_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
-  ADD CONSTRAINT `RECOMMENDATION_SOLICITUDE_ID` FOREIGN KEY (`SOLICITUDE_ID`) REFERENCES `SOLICITUDE_ID` (`SOLICITUDE_ID`);
+  ADD CONSTRAINT `RECOMMENDATION_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
 
 --
 -- Filtros para la tabla `RESPONSABILITY`
 --
 ALTER TABLE `RESPONSABILITY`
+  ADD CONSTRAINT `RESPONSABILITY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `RESPONSABILITY_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `RESPONSABILITY_ID_FK` FOREIGN KEY (`RESPONSABILITY_ID`) REFERENCES `RESPONSABILITY_ID` (`RESPONSABILITY_ID`),
-  ADD CONSTRAINT `RESPONSABILITY_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `RESPONSABILITY_ID_FK` FOREIGN KEY (`RESPONSABILITY_ID`) REFERENCES `RESPONSABILITY_ID` (`RESPONSABILITY_ID`);
 
 --
 -- Filtros para la tabla `RESPONSE`
 --
 ALTER TABLE `RESPONSE`
+  ADD CONSTRAINT `RESPONSE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `RESPONSE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `RESPONSE_ID_FK` FOREIGN KEY (`RESPONSE_ID`) REFERENCES `RESPONSE_ID` (`RESPONSE_ID`),
-  ADD CONSTRAINT `RESPONSE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `RESPONSE_ID_FK` FOREIGN KEY (`RESPONSE_ID`) REFERENCES `RESPONSE_ID` (`RESPONSE_ID`);
 
 --
 -- Filtros para la tabla `ROLE`
 --
 ALTER TABLE `ROLE`
-  ADD CONSTRAINT `ROLE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `ROLE_PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`);
+  ADD CONSTRAINT `ROLE_PROCESS_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`) REFERENCES `PROCESS_ID` (`SUBSYSTEM_ID`, `MODULE_ID`, `PROCESS_ID`),
+  ADD CONSTRAINT `ROLE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `SEQUENTIAL`
 --
 ALTER TABLE `SEQUENTIAL`
-  ADD CONSTRAINT `SEQUENTIAL_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `SEQUENTIAL_ID_FK` FOREIGN KEY (`SEQUENTIAL_ID`) REFERENCES `SEQUENTIAL_ID` (`SEQUENTIAL_ID`);
+  ADD CONSTRAINT `SEQUENTIAL_ID_FK` FOREIGN KEY (`SEQUENTIAL_ID`) REFERENCES `SEQUENTIAL_ID` (`SEQUENTIAL_ID`),
+  ADD CONSTRAINT `SEQUENTIAL_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `SOLICITUDE`
 --
 ALTER TABLE `SOLICITUDE`
+  ADD CONSTRAINT `SOLICITUDE_USER_ACCOUNT_ID_FK` FOREIGN KEY (`ASSESSOR`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
   ADD CONSTRAINT `SOLICITUDE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `SOLICITUDE_FUNDS_DEST_ID_FK` FOREIGN KEY (`FUNDS_DESTINATION_ID`) REFERENCES `FUNDS_DESTINATION_ID` (`FUNDS_DESTINATION_ID`),
   ADD CONSTRAINT `SOLICITUDE_GROUP_CLIENT_ID_FK` FOREIGN KEY (`GROUP_CLIENT_ID`) REFERENCES `PARTNER_GROUP_ID` (`PARTNER_GROUP_ID`),
@@ -4823,76 +3618,76 @@ ALTER TABLE `SOLICITUDE`
   ADD CONSTRAINT `SOLICITUDE_PAY_FREQ_ID_FK` FOREIGN KEY (`PAYMENT_FREQUENCY_ID`) REFERENCES `FREQUENCY_ID` (`FREQUENCY_ID`),
   ADD CONSTRAINT `SOLICITUDE_PRODUCT_ID_FK` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `PRODUCT_MICROCREDIT_ID` (`PRODUCT_ID`),
   ADD CONSTRAINT `SOLICITUDE_QUOTA_TYPE_ID_FK` FOREIGN KEY (`QUOTA_TYPE_ID`) REFERENCES `QUOTA_TYPE_ID` (`QUOTA_TYPE_ID`),
-  ADD CONSTRAINT `SOLICITUDE_SOL_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `SOLICITUDE_STATUS_ID` (`STATUS_ID`),
-  ADD CONSTRAINT `SOLICITUDE_USER_ACCOUNT_ID_FK` FOREIGN KEY (`ASSESSOR`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `SOLICITUDE_REN_ACC_FK` FOREIGN KEY (`RENEWED_ACCOUNT`) REFERENCES `MICRO_ACCOUNT_ID` (`ACCOUNT_ID`),
+  ADD CONSTRAINT `SOLICITUDE_SOL_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `SOLICITUDE_STATUS_ID` (`STATUS_ID`);
 
 --
 -- Filtros para la tabla `SOLICITUDE_STATUS`
 --
 ALTER TABLE `SOLICITUDE_STATUS`
+  ADD CONSTRAINT `SOLICITUDE_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `SOLICITUDE_STATUS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `SOLICITUDE_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `SOLICITUDE_STATUS_ID` (`STATUS_ID`),
-  ADD CONSTRAINT `SOLICITUDE_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `SOLICITUDE_STATUS_ID_FK` FOREIGN KEY (`STATUS_ID`) REFERENCES `SOLICITUDE_STATUS_ID` (`STATUS_ID`);
 
 --
 -- Filtros para la tabla `SUBSYSTEM`
 --
 ALTER TABLE `SUBSYSTEM`
+  ADD CONSTRAINT `SUBSYSTEM_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `SUBSYSTEM_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `SUBSYSTEM_ID` (`SUBSYSTEM_ID`),
-  ADD CONSTRAINT `SUBSYSTEM_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `SUBSYSTEM_ID_FK` FOREIGN KEY (`SUBSYSTEM_ID`) REFERENCES `SUBSYSTEM_ID` (`SUBSYSTEM_ID`);
 
 --
 -- Filtros para la tabla `USER_ACCESS`
 --
 ALTER TABLE `USER_ACCESS`
-  ADD CONSTRAINT `USER_ACCESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_ACCESS_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `USER_ACCESS_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
+  ADD CONSTRAINT `USER_ACCESS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `USER_ACCOUNT`
 --
 ALTER TABLE `USER_ACCOUNT`
+  ADD CONSTRAINT `USER_ACCOUNT_USER_TYPE_ID_FK` FOREIGN KEY (`USER_TYPE_ID`) REFERENCES `USER_TYPE_ID` (`USER_TYPE_ID`),
   ADD CONSTRAINT `USER_ACCOUNT_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
   ADD CONSTRAINT `USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
   ADD CONSTRAINT `USER_ACCOUNT_PERSON_ID_FK` FOREIGN KEY (`PERSON_ID`) REFERENCES `PERSON_ID` (`PERSON_ID`),
-  ADD CONSTRAINT `USER_ACCOUNT_USER_STATUS_ID_FK` FOREIGN KEY (`USER_STATUS_ID`) REFERENCES `USER_STATUS_ID` (`USER_STATUS_ID`),
-  ADD CONSTRAINT `USER_ACCOUNT_USER_TYPE_ID_FK` FOREIGN KEY (`USER_TYPE_ID`) REFERENCES `USER_TYPE_ID` (`USER_TYPE_ID`);
+  ADD CONSTRAINT `USER_ACCOUNT_USER_STATUS_ID_FK` FOREIGN KEY (`USER_STATUS_ID`) REFERENCES `USER_STATUS_ID` (`USER_STATUS_ID`);
 
 --
 -- Filtros para la tabla `USER_PROFILE`
 --
 ALTER TABLE `USER_PROFILE`
-  ADD CONSTRAINT `USER_PROFILE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_PROF_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `USER_PROF_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
+  ADD CONSTRAINT `USER_PROFILE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`);
 
 --
 -- Filtros para la tabla `USER_SESSION`
 --
 ALTER TABLE `USER_SESSION`
+  ADD CONSTRAINT `USER_SESS_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
   ADD CONSTRAINT `USER_SESSION_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_SESSION_HOST_ID_FK` FOREIGN KEY (`HOST_ID`) REFERENCES `HOST_ID` (`HOST_ID`),
-  ADD CONSTRAINT `USER_SESS_USER_ACCOUNT_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `USER_SESSION_HOST_ID_FK` FOREIGN KEY (`HOST_ID`) REFERENCES `HOST_ID` (`HOST_ID`);
 
 --
 -- Filtros para la tabla `USER_STATUS`
 --
 ALTER TABLE `USER_STATUS`
+  ADD CONSTRAINT `USER_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `USER_STATUS_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_STATUS_ID_FK` FOREIGN KEY (`USER_STATUS_ID`) REFERENCES `USER_STATUS_ID` (`USER_STATUS_ID`),
-  ADD CONSTRAINT `USER_STATUS_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `USER_STATUS_ID_FK` FOREIGN KEY (`USER_STATUS_ID`) REFERENCES `USER_STATUS_ID` (`USER_STATUS_ID`);
 
 --
 -- Filtros para la tabla `USER_TYPE`
 --
 ALTER TABLE `USER_TYPE`
+  ADD CONSTRAINT `USER_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`),
   ADD CONSTRAINT `USER_TYPE_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `COMPANY` (`COMPANY_ID`),
-  ADD CONSTRAINT `USER_TYPE_ID_FK` FOREIGN KEY (`USER_TYPE_ID`) REFERENCES `USER_TYPE_ID` (`USER_TYPE_ID`),
-  ADD CONSTRAINT `USER_TYPE_LANGUAGE_FK` FOREIGN KEY (`LANGUAGE_ID`) REFERENCES `LANGUAGE` (`LANGUAGE_ID`);
+  ADD CONSTRAINT `USER_TYPE_ID_FK` FOREIGN KEY (`USER_TYPE_ID`) REFERENCES `USER_TYPE_ID` (`USER_TYPE_ID`);
 
 --
 -- Filtros para la tabla `ZONE_ASESSOR`
 --
 ALTER TABLE `ZONE_ASESSOR`
-  ADD CONSTRAINT `ZONE_ASE_GEO_ZONE_ID_FK` FOREIGN KEY (`GEOGRAPHIC_ZONE_ID`) REFERENCES `GEOGRAPHIC_ZONE_ID` (`GEOGRAPHIC_ZONE_ID`),
-  ADD CONSTRAINT `ZONE_ASE_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`);
+  ADD CONSTRAINT `ZONE_ASE_USER_ID_FK` FOREIGN KEY (`USER_ID`) REFERENCES `USER_ACCOUNT_ID` (`USER_ID`),
+  ADD CONSTRAINT `ZONE_ASE_GEO_ZONE_ID_FK` FOREIGN KEY (`GEOGRAPHIC_ZONE_ID`) REFERENCES `GEOGRAPHIC_ZONE_ID` (`GEOGRAPHIC_ZONE_ID`);
