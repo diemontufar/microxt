@@ -16,6 +16,7 @@ import mobile.web.webxt.client.form.widgetsgrid.GridPagingToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.GridToolBar;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
+import mobile.web.webxt.client.form.widgetsgrid.NumericColumn;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
@@ -55,7 +56,7 @@ public class B103 extends MyGeneralForm {
 
 		// Configuration
 		final ArrayColumnData cdata = new ArrayColumnData();
-		cdata.add(new MyColumnData("pk_phoneSequence", "Sec.", 40, 3, false));
+		cdata.add(new MyColumnData("pk_phoneSequence", "Sec.", 50, 3, false));
 		cdata.add(new MyColumnData("phoneTypeId", "Tipo", 60, 4, false));
 		cdata.add(new MyColumnData("areaCode", "Cod Area", 60, 4, false));
 		cdata.add(new MyColumnData("phoneNumber", "Telefono", 150, 40, false));
@@ -64,7 +65,7 @@ public class B103 extends MyGeneralForm {
 		// Column model
 		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
-		NormalColumn a = new NormalColumn(cdata.get(0));
+		NumericColumn a = new NumericColumn(cdata.get(0));
 		// a.getEditor().disable();
 		configs.add(a);
 

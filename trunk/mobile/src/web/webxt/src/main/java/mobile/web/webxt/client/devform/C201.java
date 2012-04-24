@@ -1,6 +1,7 @@
 package mobile.web.webxt.client.devform;
 
 import mobile.common.message.Item;
+import mobile.web.webxt.client.MobileConstants;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
@@ -16,8 +17,10 @@ import mobile.web.webxt.client.form.widgets.RowContainer;
 import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 
+import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Orientation;
+import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
 import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -228,7 +231,7 @@ public class C201 extends MyGeneralForm {
 		perCdata.add(new MyColumnData("par1", "partnerId", "Cod", 40));
 		perCdata.add(new MyColumnData("par1", "identificationNumber", "Id", 100));
 		perCdata.add(new MyColumnData("par1", "name", "Name", 250));
-		
+
 		partnerCode.setQueryData(refPartner, perCdata);
 		partnerCode.setDisplayField("partnerId");
 		partnerCode.setFilteredField("identificationNumber");
@@ -288,7 +291,7 @@ public class C201 extends MyGeneralForm {
 		asessorCombo.setDataSource(new DataSource("par", "userId", DataSourceType.RECORD));
 		asessorCombo.setAllowBlank(false);
 		asessorCombo.setEditable(true);
-
+		
 		Reference refUserAcco = new Reference("usa", "UserAccount");
 		final ArrayColumnData uadata = new ArrayColumnData();
 		uadata.add(new MyColumnData("usa", "pk_userId", "Id", 70));
@@ -296,6 +299,16 @@ public class C201 extends MyGeneralForm {
 		asessorCombo.setQueryData(refUserAcco, uadata);
 		asessorCombo.setDisplayField("pk_userId");
 		asessorCombo.setFilteredField("pk_userId");
+		
+		if (Registry.get(MobileConstants.PROFILE).toString().compareTo("ASE") == 0) {
+			asessorCombo.setReadOnly(true);
+			asessorCombo.setEditable(false);
+			asessorCombo.setEnabled(false);
+			ModelData model = new BaseModelData();
+			model.set(asessorCombo.getDisplayField(), Registry.get(MobileConstants.USER).toString());
+			asessorCombo.setValue(model);
+		}
+		
 		row.add(asessorCombo);
 
 		String filterField = "userTypeId";

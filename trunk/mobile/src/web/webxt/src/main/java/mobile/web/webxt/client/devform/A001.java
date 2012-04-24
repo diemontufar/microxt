@@ -35,6 +35,7 @@ import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.layout.CardLayout;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.FillToolItem;
+import com.google.gwt.user.client.Window;
 import com.googlecode.gwt.crypto.client.TripleDesCipher;
 
 public class A001 extends Dialog {
@@ -177,6 +178,8 @@ public class A001 extends Dialog {
 		host = new InputBox();
 		host.setVisible(false);
 		host.setDataSource(new DataSource("host", DataSourceType.CONTROL));
+		Info.display("",Window.Location.getHost());
+		host.setValue(Window.Location.getHost());
 		formLogin.add(host);
 
 		// Channel
