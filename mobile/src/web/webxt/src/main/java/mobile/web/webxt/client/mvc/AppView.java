@@ -99,7 +99,8 @@ public class AppView extends View {
 			final Listener<MessageBoxEvent> listener = new Listener<MessageBoxEvent>() {
 				public void handleEvent(MessageBoxEvent ce) {
 					String resp = ce.getButtonClicked().getText();
-					if (resp.compareToIgnoreCase("Yes") == 0 || resp.compareToIgnoreCase("Si") == 0) {
+					if (resp.compareToIgnoreCase("Yes") == 0 || resp.compareToIgnoreCase("Si") == 0
+							|| resp.compareToIgnoreCase("Sí") == 0) {
 						new MyHttpProxy().logout();
 						RootPanel.get().clear();
 
