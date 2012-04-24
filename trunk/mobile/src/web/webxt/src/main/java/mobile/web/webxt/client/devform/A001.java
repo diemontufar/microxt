@@ -35,7 +35,6 @@ import com.extjs.gxt.ui.client.widget.form.FieldSet;
 import com.extjs.gxt.ui.client.widget.layout.CardLayout;
 import com.extjs.gxt.ui.client.widget.layout.FlowLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.FillToolItem;
-import com.google.gwt.user.client.Window;
 import com.googlecode.gwt.crypto.client.TripleDesCipher;
 
 public class A001 extends Dialog {
@@ -76,6 +75,7 @@ public class A001 extends Dialog {
 			protected void postQuery() {
 				onResponse();
 			}
+
 			@Override
 			protected void postError() {
 				onError();
@@ -92,7 +92,7 @@ public class A001 extends Dialog {
 		formLogin.add(loginContainer);
 		formLogin.add(profileContainer);
 		formLogin.setHeight(FORM_HEIGHT);
-		
+
 		cardLayout.setActiveItem(loginContainer);
 
 		// Create form
@@ -108,7 +108,7 @@ public class A001 extends Dialog {
 		setHeading("Inicio de sesión");
 		setModal(true);
 		setBodyBorder(true);
-		//setBodyStyle("padding: 8px;background: none");
+		// setBodyStyle("padding: 8px;background: none");
 		setWidth(300);
 		setResizable(false);
 
@@ -178,8 +178,6 @@ public class A001 extends Dialog {
 		host = new InputBox();
 		host.setVisible(false);
 		host.setDataSource(new DataSource("host", DataSourceType.CONTROL));
-		Info.display("",Window.Location.getHost());
-		host.setValue(Window.Location.getHost());
 		formLogin.add(host);
 
 		// Channel
@@ -215,7 +213,7 @@ public class A001 extends Dialog {
 		row = new RowContainer();
 		label = new MyLabel("Rol:", LABEL_WIDTH);
 		row.add(label);
-		
+
 		comboProfile = new ComboForm(60);
 		comboProfile.setProcess("G203");
 
@@ -227,7 +225,7 @@ public class A001 extends Dialog {
 		comboProfile.setDisplayField("profileId");
 		comboProfile.addDependency(user, "userId");
 		row.add(comboProfile);
-		
+
 		fieldSet2.add(row);
 		profileContainer.add(fieldSet2);
 
@@ -273,11 +271,11 @@ public class A001 extends Dialog {
 			getButtonBar().disable();
 			formLogin.queryForm();
 		} else {
-			if(comboProfile.getValue() == null){
+			if (comboProfile.getValue() == null) {
 				comboProfile.forceInvalid("Seleccione un rol");
-			}else{
+			} else {
 				String profile = comboProfile.getRawValue();
-				onProfileSelected(profile);	
+				onProfileSelected(profile);
 			}
 		}
 	}
@@ -286,7 +284,7 @@ public class A001 extends Dialog {
 		status.hide();
 		getButtonBar().enable();
 		loginButton.enable();
-		
+
 		if (responseCode.getValue() != null && responseCode.getValue().compareTo("1") == 0) {
 			// Register global variables
 			Registry.register(MobileConstants.USER, user.getValue());
@@ -297,14 +295,14 @@ public class A001 extends Dialog {
 			System.out.println("Loggin>> " + host.getValue());
 			System.out.println("Loggin>> " + channel.getValue());
 			System.out.println("Loggin>> " + session.getValue());
-			
+
 			if (Integer.parseInt(profileCounter.getValue()) == 1) {
 				onProfileSelected(profile.getValue());
 			} else {
 				cardLayout.setActiveItem(profileContainer);
 				comboProfile.focus();
 			}
-			
+
 		} else {
 			if (responseMsg.getValue() != null) {
 				String msg = responseMsg.getValue();
@@ -317,7 +315,7 @@ public class A001 extends Dialog {
 			user.focus();
 		}
 	}
-	
+
 	private void onError() {
 		status.hide();
 		getButtonBar().enable();
@@ -328,11 +326,11 @@ public class A001 extends Dialog {
 		Registry.register(MobileConstants.PROFILE, profile);
 		System.out.println("Loggin>> " + profile);
 		hide();
-		
+
 		if (responseMsg.getValue() != null) {
 			Info.display("Autenticación", responseMsg.getValue());
 		}
-		
+
 		Dispatcher.forwardEvent(AppEvents.UIReady);
 	}
 }
