@@ -104,7 +104,7 @@ public class C401 extends MyGeneralForm {
 		model.set("status", "SOLICITADA");
 		statusStore.add(model);
 		model = new BaseModelData();
-		model.set("status", "APROVADA");
+		model.set("status", "APROBADA");
 		statusStore.add(model);
 		model = new BaseModelData();
 		model.set("status", "DENEGADA");
@@ -121,6 +121,37 @@ public class C401 extends MyGeneralForm {
 		instrumentedStore.add(model);
 		ListFilter instrumentedFilter = new ListFilter("instrumented", instrumentedStore);
 		instrumentedFilter.setDisplayProperty("instrumented");
+		
+		ListStore<ModelData> payFreqStore = new ListStore<ModelData>();
+		model = new BaseModelData();
+		model.set("freq", "AL VENCIMIENTO");
+		payFreqStore.add(model);
+		model = new BaseModelData();
+		model.set("freq", "DIARIO");
+		payFreqStore.add(model);
+		model = new BaseModelData();
+		model.set("freq", "SEMANAL");
+		payFreqStore.add(model);
+		model = new BaseModelData();
+		model.set("freq", "QUINCENAL");
+		payFreqStore.add(model);
+		model = new BaseModelData();
+		model.set("freq", "MENSUAL");
+		payFreqStore.add(model);
+		model = new BaseModelData();
+		model.set("freq", "BIMENSUAL");
+		payFreqStore.add(model);
+		model = new BaseModelData();
+		model.set("freq", "TRIMESTRAL");
+		payFreqStore.add(model);
+		model = new BaseModelData();
+		model.set("freq", "SEMESTRAL");
+		payFreqStore.add(model);
+		model = new BaseModelData();
+		model.set("freq", "ANUAL");
+		payFreqStore.add(model);
+		ListFilter frequencyFilter = new ListFilter("freq", payFreqStore);
+		frequencyFilter.setDisplayProperty("freq");
 
 		filters.addFilter(idFilter);
 		filters.addFilter(nameFilter);
@@ -130,6 +161,7 @@ public class C401 extends MyGeneralForm {
 		filters.addFilter(typeListFilter);
 		filters.addFilter(statusListFilter);
 		filters.addFilter(instrumentedFilter);
+		filters.addFilter(frequencyFilter);
 
 		// Content panel
 		EntityContentPanel cp = new EntityContentPanel("Consulta de Solicitudes", 700, 340);

@@ -11,6 +11,8 @@ public class ExpireColumnConfig extends CheckColumnConfig{
 		super(Item.EXPIRE_ITEM, "Eliminar", 50);
 		CellEditor checkBoxEditor = new CellEditor(new CheckBox());
 		this.setEditor(checkBoxEditor);
+		this.setSortable(false);
+		this.setMenuDisabled(true);
 	}
 
 }

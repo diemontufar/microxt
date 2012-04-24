@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mobile.common.message.Item;
+import mobile.web.webxt.client.MobileConstants;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
 import mobile.web.webxt.client.data.form.Reference;
@@ -28,6 +29,7 @@ import mobile.web.webxt.client.form.widgetsgrid.NormalColumn;
 import mobile.web.webxt.client.mvc.AppEvents;
 import mobile.web.webxt.client.util.DatesManager;
 
+import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.data.BaseModelData;
@@ -368,6 +370,16 @@ public class C202 extends MyGeneralForm {
 		filter.setComparison("=");
 		filter.setValue("ASE");
 		asessorCombo.addFilter(filter);
+		
+		if (Registry.get(MobileConstants.PROFILE).toString().compareTo("ASE") == 0) {
+			asessorCombo.setReadOnly(true);
+			asessorCombo.setEditable(false);
+			asessorCombo.setEnabled(false);
+			ModelData model = new BaseModelData();
+			model.set(asessorCombo.getDisplayField(), Registry.get(MobileConstants.USER).toString());
+			asessorCombo.setValue(model);
+		}
+		
 		row.add(asessorCombo);
 
 		fieldSetLeft.add(row);

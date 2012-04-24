@@ -1,6 +1,7 @@
 package mobile.web.webxt.client.devform;
 
 import mobile.common.message.Item;
+import mobile.web.webxt.client.MobileConstants;
 import mobile.web.webxt.client.data.MyPagingLoader;
 import mobile.web.webxt.client.data.form.DataSource;
 import mobile.web.webxt.client.data.form.DataSourceType;
@@ -19,7 +20,9 @@ import mobile.web.webxt.client.form.widgetsgrid.ArrayColumnData;
 import mobile.web.webxt.client.form.widgetsgrid.MyColumnData;
 import mobile.web.webxt.client.util.DatesManager;
 
+import com.extjs.gxt.ui.client.Registry;
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.data.BaseModelData;
 import com.extjs.gxt.ui.client.data.BaseStringFilterConfig;
 import com.extjs.gxt.ui.client.data.FilterConfig;
 import com.extjs.gxt.ui.client.data.ModelData;
@@ -686,6 +689,16 @@ public class C301 extends MyGeneralForm {
 		filter.setComparison("=");
 		filter.setValue("ASE");
 		assessorCombo.addFilter(filter);
+		
+		if (Registry.get(MobileConstants.PROFILE).toString().compareTo("ASE") == 0) {
+			assessorCombo.setReadOnly(true);
+			assessorCombo.setEditable(false);
+			assessorCombo.setEnabled(false);
+			ModelData model = new BaseModelData();
+			model.set(assessorCombo.getDisplayField(), Registry.get(MobileConstants.USER).toString());
+			assessorCombo.setValue(model);
+		}
+		
 
 		row.add(assessorCombo);
 

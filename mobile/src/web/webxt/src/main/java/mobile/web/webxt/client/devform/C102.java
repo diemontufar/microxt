@@ -181,6 +181,7 @@ public class C102 extends MyGeneralForm {
 
 		code = new ComboForm(70);
 		code.setDataSource(new DataSource("geo", "pk_geographicZoneId", DataSourceType.CRITERION));
+		code.setData("mobile-type", Integer.class);
 
 		Reference refPartner = new Reference("geo1", "GeographicZone");
 		final ArrayColumnData perCdata = new ArrayColumnData();
@@ -262,7 +263,7 @@ public class C102 extends MyGeneralForm {
 
 		row = new RowContainer();
 		row.setHeight(70);
-		description = new MyTextArea(210, 300);
+		description = new MyTextArea(190, 300);
 		description.setDataSource(new DataSource("geo", "description", DataSourceType.RECORD));
 		description.setAllowBlank(false);
 		description.setEmptyText("Ingrese la descripcion de la zona");
@@ -297,12 +298,14 @@ public class C102 extends MyGeneralForm {
 		row.add(label);
 		fieldSet.add(row);
 
+		final Integer FIELD_WIDTH = 90;
+		
 		row = new RowContainer();
-		latitude = new MyNumberField(100);
+		latitude = new MyNumberField(FIELD_WIDTH);
 		latitude.setDataSource(new DataSource("geo", "p11", DataSourceType.RECORD));
 		latitude.setEditable(false);
 
-		longitude = new MyNumberField(100);
+		longitude = new MyNumberField(FIELD_WIDTH);
 		longitude.setDataSource(new DataSource("geo", "p12", DataSourceType.RECORD));
 		longitude.setEditable(false);
 		longitude.setFireChangeEventOnSetValue(true);
@@ -323,11 +326,11 @@ public class C102 extends MyGeneralForm {
 		fieldSet.add(row);
 
 		row = new RowContainer();
-		latitude2 = new MyNumberField(100);
+		latitude2 = new MyNumberField(FIELD_WIDTH);
 		latitude2.setDataSource(new DataSource("geo", "p21", DataSourceType.RECORD));
 		latitude2.setEditable(false);
 
-		longitude2 = new MyNumberField(100);
+		longitude2 = new MyNumberField(FIELD_WIDTH);
 		longitude2.setDataSource(new DataSource("geo", "p22", DataSourceType.RECORD));
 		longitude2.setEditable(false);
 
@@ -336,11 +339,11 @@ public class C102 extends MyGeneralForm {
 		fieldSet.add(row);
 
 		row = new RowContainer();
-		latitude3 = new MyNumberField(100);
+		latitude3 = new MyNumberField(FIELD_WIDTH);
 		latitude3.setDataSource(new DataSource("geo", "p31", DataSourceType.RECORD));
 		latitude3.setEditable(false);
 
-		longitude3 = new MyNumberField(100);
+		longitude3 = new MyNumberField(FIELD_WIDTH);
 		longitude3.setDataSource(new DataSource("geo", "p32", DataSourceType.RECORD));
 		longitude3.setEditable(false);
 
@@ -349,11 +352,11 @@ public class C102 extends MyGeneralForm {
 		fieldSet.add(row);
 
 		row = new RowContainer();
-		latitude4 = new MyNumberField(100);
+		latitude4 = new MyNumberField(FIELD_WIDTH);
 		latitude4.setDataSource(new DataSource("geo", "p41", DataSourceType.RECORD));
 		latitude4.setEditable(false);
 
-		longitude4 = new MyNumberField(100);
+		longitude4 = new MyNumberField(FIELD_WIDTH);
 		longitude4.setDataSource(new DataSource("geo", "p42", DataSourceType.RECORD));
 		longitude4.setEditable(false);
 		longitude4.setFireChangeEventOnSetValue(true);
