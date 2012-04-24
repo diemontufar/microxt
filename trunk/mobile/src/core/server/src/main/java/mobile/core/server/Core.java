@@ -33,6 +33,13 @@ public class Core extends HttpServlet {
 			log.info("content-length: " + request.getContentLength());
 			log.info("remote-addr: " + request.getRemoteAddr());
 			// log.info("locale: " + request.getLocale());
+			log.info("user-agent: " + request.getHeader("user-agent"));
+			// log.info("headers: " );
+			// Enumeration<String> headers = request.getHeaderNames();
+			// while (headers.hasMoreElements()) {
+			// String header = (String) headers.nextElement();
+			// log.info(header + " > " + request.getHeader(header));
+			// }
 
 			BufferedReader reader = request.getReader();
 			log.info("Message");
